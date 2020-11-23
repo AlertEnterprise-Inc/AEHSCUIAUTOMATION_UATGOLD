@@ -1,0 +1,754 @@
+<testsuite failures="2" name="karateTestCases/identityManagement.feature" skipped="0" tests="8" time="67.510249">
+  <testcase classname="karateTestCases.identityManagement" name="Generate Access Token" time="6.881499">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="Generate Refresh Token" time="6.836857">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="To find a identity" time="11.514233">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="To find a identity with master id" time="11.127591">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "SELECT top 1 master_identity_id  FROM aehscnew.identity_user  where master_identity_id is not NULL " . passed
+* print query ............................................................. passed
+* def masterId = db.readValue(query) ...................................... passed
+Given path 'api/identity/getby/masterIdentityId' .......................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.findidentitybymasterid.values[0] = masterId ................ passed
+And request postdata.findidentitybymasterid ............................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="To save a new identity" time="6.143956">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "SELECT top 1 master_identity_id  FROM aehscnew.identity_user  where master_identity_id is not NULL " . passed
+* print query ............................................................. passed
+* def masterId = db.readValue(query) ...................................... passed
+Given path 'api/identity/getby/masterIdentityId' .......................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.findidentitybymasterid.values[0] = masterId ................ passed
+And request postdata.findidentitybymasterid ............................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="Provisioning log api" time="5.398005">
+    <system-out>* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "SELECT top 1 master_identity_id  FROM aehscnew.identity_user  where master_identity_id is not NULL " . passed
+* print query ............................................................. passed
+* def masterId = db.readValue(query) ...................................... passed
+Given path 'api/identity/getby/masterIdentityId' .......................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.findidentitybymasterid.values[0] = masterId ................ passed
+And request postdata.findidentitybymasterid ............................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/provisioninglog/find' ..................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.provisioninglog ...................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed</system-out>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="To Deactivate a identity" time="9.828989">
+    <failure message="identityManagement.feature:124 - &#10;java.net.SocketTimeoutException: Read timed out">* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "SELECT top 1 master_identity_id  FROM aehscnew.identity_user  where master_identity_id is not NULL " . passed
+* print query ............................................................. passed
+* def masterId = db.readValue(query) ...................................... passed
+Given path 'api/identity/getby/masterIdentityId' .......................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.findidentitybymasterid.values[0] = masterId ................ passed
+And request postdata.findidentitybymasterid ............................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/provisioninglog/find' ..................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.provisioninglog ...................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.apiMessage.messageText ................................. passed
+Given path 'api/identity/external/deactivate' ............................. passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.deactivateIdentity.masterIdentityId = response.data.masterIdentityId . passed
+* set postdata.deactivateIdentity.requestUuid = response.data.requestUuid . passed
+And request postdata.deactivateIdentity ................................... passed
+When method post .......................................................... failed
+
+Stack Trace:
+com.intuit.karate.exception.KarateException: identityManagement.feature:124 - 
+java.net.SocketTimeoutException: Read timed out&#13;
+	at ✽.When method post (identityManagement.feature:124)&#13;
+
+Then status 200 ........................................................... skipped
+And print response ........................................................ skipped</failure>
+  </testcase>
+  <testcase classname="karateTestCases.identityManagement" name="To Activate  a identity" time="9.779118">
+    <failure message="identityManagement.feature:152 - status code was: 500, expected: 200, response time: 5063, url: http://192.168.193.169:60/api/identity/external/deactivate, response: {&quot;pageNumber&quot;:0,&quot;numberOfElements&quot;:0,&quot;success&quot;:false,&quot;totalPages&quot;:0,&quot;messages&quot;:[{&quot;messageDisplayText&quot;:&quot;Oops!!! This is unexpected!!! We are on it ..&quot;,&quot;messageText&quot;:&quot;java.util.concurrent.CompletionException: java.lang.NullPointerException\r\n\tat java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)\r\n\tat java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1155)\r\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: java.lang.NullPointerException\r\n\tat com.alnt.identitymgmt.service.IdentityServiceImpl.deactivateIdentity(IdentityServiceImpl.java:1119)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.lambda$deactivateIdentity$3(IdentityController.java:48)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1146)\r\n\t... 9 more\r\n&quot;,&quot;messageType&quot;:&quot;ERROR&quot;,&quot;messageCode&quot;:&quot;ERR99999&quot;,&quot;priority&quot;:0}],&quot;pageSize&quot;:0,&quot;totalElements&quot;:0}">* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.access_token ........................................... passed
+And print response.refresh_token .......................................... passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'password' ........................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.refresh_token .......................................... passed
+Given path 'api/auth/token' ............................................... passed
+* param grant_type = 'refresh_token' ...................................... passed
+* param refresh_token = response.refresh_token ............................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.generateAuthToken .................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "select top 1 type FROM aehscnew.identity_user  where type is not NULL" . passed
+* print query ............................................................. passed
+* def type = db.readValue(query) .......................................... passed
+Given path 'api/identity/find' ............................................ passed
+And header Authorization = 'Bearer ' + token .............................. passed
+* set postdata.findIdentity.filterCriteria[1].valueList[0] = type ......... passed
+And request postdata.findIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+And print "total number of identities with type as permanent:" + response.totalElements . passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+* def query = "SELECT top 1 master_identity_id  FROM aehscnew.identity_user  where master_identity_id is not NULL " . passed
+* print query ............................................................. passed
+* def masterId = db.readValue(query) ...................................... passed
+Given path 'api/identity/getby/masterIdentityId' .......................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.findidentitybymasterid.values[0] = masterId ................ passed
+And request postdata.findidentitybymasterid ............................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/provisioninglog/find' ..................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And request postdata.provisioninglog ...................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response ........................................................ passed
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.apiMessage.messageText ................................. passed
+Given path 'api/identity/external/deactivate' ............................. passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.deactivateIdentity.masterIdentityId = response.data.masterIdentityId . passed
+* set postdata.deactivateIdentity.requestUuid = response.data.requestUuid . passed
+And request postdata.deactivateIdentity ................................... passed
+When method post .......................................................... failed
+
+Stack Trace:
+com.intuit.karate.exception.KarateException: identityManagement.feature:124 - 
+java.net.SocketTimeoutException: Read timed out&#13;
+	at ✽.When method post (identityManagement.feature:124)&#13;
+
+Then status 200 ........................................................... skipped
+And print response ........................................................ skipped
+* url url ................................................................. passed
+* def postdata = read('classpath:testData/identityManagement.json') ....... passed
+* def result = call read('classpath:karateTestCases/authToken.feature') ... passed
+* def token = result.response.data.access_token ........................... passed
+* def now = function(){ return java.lang.System.currentTimeMillis()} ...... passed
+* def today = function(){ return java.time.LocalDateTime.now()} ........... passed
+* def config = dbConfig ................................................... passed
+* def DbUtils = Java.type('karateTestCases.DbUtils') ...................... passed
+* def db = new DbUtils(config) ............................................ passed
+Given path 'api/identity/external/save' ................................... passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+And request postdata.saveIdentity ......................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... passed
+And print response.apiMessage.messageText ................................. passed
+* def masterIdentityId = response.data.masterIdentityId ................... passed
+* def requestUuid = response.data.requestUuid ............................. passed
+Given path 'api/identity/external/deactivate' ............................. passed
+And header Authorization = 'Bearer ' + token .............................. passed
+And print 'Bearer ' + token ............................................... passed
+* set postdata.deactivateIdentity.masterIdentityId = masterIdentityId ..... passed
+* set postdata.deactivateIdentity.requestorId = masterIdentityId .......... passed
+And request postdata.deactivateIdentity ................................... passed
+When method post .......................................................... passed
+Then status 200 ........................................................... failed
+
+Stack Trace:
+com.intuit.karate.exception.KarateException: identityManagement.feature:152 - status code was: 500, expected: 200, response time: 5063, url: http://192.168.193.169:60/api/identity/external/deactivate, response: {"pageNumber":0,"numberOfElements":0,"success":false,"totalPages":0,"messages":[{"messageDisplayText":"Oops!!! This is unexpected!!! We are on it ..","messageText":"java.util.concurrent.CompletionException: java.lang.NullPointerException\r\n\tat java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)\r\n\tat java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1155)\r\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: java.lang.NullPointerException\r\n\tat com.alnt.identitymgmt.service.IdentityServiceImpl.deactivateIdentity(IdentityServiceImpl.java:1119)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.lambda$deactivateIdentity$3(IdentityController.java:48)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1146)\r\n\t... 9 more\r\n","messageType":"ERROR","messageCode":"ERR99999","priority":0}],"pageSize":0,"totalElements":0}&#13;
+	at ✽.Then status 200 (identityManagement.feature:152)&#13;
+
+And print response ........................................................ skipped
+Given path 'api/identity/external/activate' ............................... skipped
+And header Authorization = 'Bearer ' + token .............................. skipped
+And print 'Bearer ' + token ............................................... skipped
+* set postdata.activateIdentity.masterIdentityId = masterIdentityId ....... skipped
+* set postdata.activateIdentity.requestorId = masterIdentityId ............ skipped
+And request postdata.activateIdentity ..................................... skipped
+When method post .......................................................... skipped
+Then status 200 ........................................................... skipped
+And print response ........................................................ skipped</failure>
+  </testcase>
+</testsuite>

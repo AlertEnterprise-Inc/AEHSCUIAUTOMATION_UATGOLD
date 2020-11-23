@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Karate Timeline</title>
+    <style>
+      body, html { font-family: arial, sans-serif; font-size: 11pt; }
+      #visualization { box-sizing: border-box; width: 100%; height: 300px; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div id="visualization"></div>
+    <script>
+var groups = new vis.DataSet([{"id":1,"content":"ForkJoinPool-1-worker-1"},{"id":2,"content":"ForkJoinPool-1-worker-2"},{"id":3,"content":"ForkJoinPool-1-worker-4"},{"id":4,"content":"ForkJoinPool-1-worker-3"},{"id":5,"content":"ForkJoinPool-1-worker-5"}]);
+var items = new vis.DataSet([{"id":1,"group":1,"content":"identityManagement[1:15]","start":2225,"end":9143,"title":"identityManagement[1:15] 05:30:02.225-05:30:09.143 Generate Access Token"},{"id":2,"group":2,"content":"identityManagement[2:29]","start":2225,"end":9094,"title":"identityManagement[2:29] 05:30:02.225-05:30:09.094 Generate Refresh Token"},{"id":3,"group":3,"content":"identityManagement[3:49]","start":2225,"end":13780,"title":"identityManagement[3:49] 05:30:02.225-05:30:13.780 To find a identity"},{"id":4,"group":4,"content":"identityManagement[4:65]","start":2225,"end":13384,"title":"identityManagement[4:65] 05:30:02.225-05:30:13.384 To find a identity with master id"},{"id":5,"group":5,"content":"identityManagement[5:81]","start":2225,"end":8405,"title":"identityManagement[5:81] 05:30:02.225-05:30:08.405 To save a new identity"},{"id":6,"group":5,"content":"identityManagement[6:92]","start":8418,"end":13818,"title":"identityManagement[6:92] 05:30:08.418-05:30:13.818 Provisioning log api"},{"id":7,"group":2,"content":"identityManagement[7:107]","start":9103,"end":18937,"title":"identityManagement[7:107] 05:30:09.103-05:30:18.937 To Deactivate a identity"},{"id":8,"group":1,"content":"identityManagement[8:131]","start":9155,"end":18945,"title":"identityManagement[8:131] 05:30:09.155-05:30:18.945 To Activate  a identity"}]);
+var container = document.getElementById('visualization');
+var timeline = new vis.Timeline(container);
+timeline.setOptions({ groupOrder: 'content' });
+timeline.setGroups(groups);
+timeline.setItems(items);
+</script>
+  </body>
+</html>

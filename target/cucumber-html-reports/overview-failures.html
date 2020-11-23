@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.tablesorter.min.js"></script>
+<script src="js/Chart.min.js"></script>
+<script src="js/moment.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css"/>
+<link rel="stylesheet" href="css/cucumber.css" type="text/css"/>
+<link rel="stylesheet" href="css/font-awesome.min.css"/>
+<link rel="shortcut icon" href="images/favicon.png"/>
+
+<script>
+$(document).ready(function() {
+    // this will tell tablesorter to try looking for the data-value attribute
+    // if present, it'll sort by that instead
+    // otherwise, it'll sort by the text content of the table cell
+    $("#tablesorter").tablesorter({
+        textAttribute: 'data-value',
+        // ignores the first row of the header, the 'scenario', 'steps', since
+        // sorting those doesn't make sense
+        selectorHeaders: '> thead tr:not(.dont-sort) th',
+        // use a stable sort
+        sortStable: true
+    });
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<title>Cucumber Reports  - Failures Overview</title>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navigation">
+  <div class="container-fluid">
+    <div class="collapse navbar-collapse">
+      <p class="navbar-text navbar-left">Cucumber Report</p>
+      <ul class="nav navbar-nav navbar-right">
+        <li role="presentation" ><a href="overview-features.html">Features</a></li>
+        <li role="presentation" ><a href="overview-tags.html">Tags</a></li>
+        <li role="presentation" ><a href="overview-steps.html">Steps</a></li>
+        <li role="presentation"  class="active" ><a href="overview-failures.html">Failures</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container-fluid">
+  <div class="col-md-5 col-md-offset-1">
+
+<table class="table table-bordered" id="build-info">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="info">
+      <td>features</td>
+      <td>14 Sep 2020, 10:45</td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+  <div class="col-md-3 col-md-offset-2">
+  </div>
+</div>
+
+
+<div id="report-lead" class="container-fluid">
+  <div class="col-md-10 col-md-offset-1">
+    <h2>Failures Overview</h2>
+      <p>The following summary displays scenarios that failed.</p>
+  </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-1 col-md-offset-10">
+      <i class="fa fa-chevron-circle-down fa-2x collapsable-control"
+        onClick="javascript:$('#report .collapsable-details').collapse('show')"></i>
+      <i class="fa fa-chevron-circle-up fa-2x collapsable-control"
+        onClick="javascript:$('#report .collapsable-details').collapse('hide')"></i>
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid" id="report">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+        <div class="elements">
+
+<div class="element">
+    <div class="indention">
+      <b>Feature:</b>
+      <a href="report-feature_4244001020.html">karateTestCases/identityManagement.feature</a>
+    </div>
+
+
+<div class="tags indention">
+    <b>Tags:</b>
+       <a href="report-tag_233058432.html">@regression</a>
+</div>
+
+
+  <span class="lead-duration duration">5.543</span>
+
+
+  <span data-toggle="collapse" class=" collapsable-control" data-target="#element-1">
+
+<div class="brief failed">
+  <span class="keyword indention">Scenario</span>
+  <span class="name">To Deactivate a identity</span>
+
+
+     <i class="chevron fa fa-fw"></i>
+</div>
+
+  </span>
+  <div class="description indention"></div>
+
+  <div id="element-1" class="collapse collapsable-details  in ">
+
+
+
+
+
+<div class="steps inner-level">
+  <div data-toggle="collapse" class=" collapsable-control" data-target="#steps-2">
+
+<div class="brief failed">
+  <span class="keyword indention">Steps</span>
+  <span class="name"></span>
+
+
+     <i class="chevron fa fa-fw"></i>
+</div>
+
+  </div>
+
+  <div id="steps-2" class="inner-level collapse collapsable-details  in ">
+      <div class="step">
+
+
+<div class="brief step-name-Given passed">
+  <span class="keyword indention">Given</span>
+  <span class="name">path 'api/identity/external/save'</span>
+
+  <span class="lead-duration duration">0.004</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">header Authorization = 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-3">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-3" class="collapse collapsable-details">
+        <pre>10:45:08.194 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">request postdata.saveIdentity</span>
+
+  <span class="lead-duration duration">0.004</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-When passed">
+  <span class="keyword indention">When</span>
+  <span class="name">method post</span>
+
+  <span class="lead-duration duration">0.380</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-4">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-4" class="collapse collapsable-details">
+        <pre>10:45:08.202 request:
+1 &gt; POST http://192.168.193.169:60/api/identity/external/save
+1 &gt; Accept-Encoding: gzip,deflate
+1 &gt; Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+1 &gt; Connection: Keep-Alive
+1 &gt; Content-Length: 213
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Host: 192.168.193.169:60
+1 &gt; User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{&quot;identity&quot;:{&quot;firstName&quot;:&quot;Testing&quot;,&quot;lastName&quot;:&quot;User1&quot;,&quot;workerType&quot;:&quot;Permanent&quot;,&quot;employmentStatus&quot;:&quot;ACTIVE&quot;,&quot;masterIdentityId&quot;:&quot;Testing.U&quot;},&quot;requestorId&quot;:&quot;Test&quot;,&quot;requestUuid&quot;:&quot;e97cbf96-4ac9-4f53-8b2d-6a3e755c5055&quot;}
+
+10:45:08.579 response time in milliseconds: 375.84
+1 &lt; 200
+1 &lt; Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 &lt; Connection: keep-alive
+1 &lt; Content-Length: 323
+1 &lt; Content-Type: application/json
+1 &lt; Date: Mon, 14 Sep 2020 05:15:04 GMT
+1 &lt; Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 &lt; Server: nginx/1.17.8
+1 &lt; X-Content-Type-Options: nosniff
+1 &lt; X-Frame-Options: DENY
+1 &lt; X-Permitted-Cross-Domain-Policies: master-only
+1 &lt; X-XSS-Protection: 1; mode=block
+{&quot;success&quot;:true,&quot;data&quot;:{&quot;requestUuid&quot;:&quot;e97cbf96-4ac9-4f53-8b2d-6a3e755c5055&quot;,&quot;masterIdentityId&quot;:&quot;Testing.U&quot;,&quot;apiMessage&quot;:{&quot;messageText&quot;:&quot;Identity saved successfully&quot;,&quot;messageType&quot;:&quot;INFO&quot;,&quot;messageCode&quot;:&quot;INFO1162&quot;,&quot;priority&quot;:0},&quot;isNew&quot;:false},&quot;numberOfElements&quot;:0,&quot;totalPages&quot;:0,&quot;totalElements&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:0}</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Then passed">
+  <span class="keyword indention">Then</span>
+  <span class="name">status 200</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print response.apiMessage.messageText</span>
+
+  <span class="lead-duration duration">0.059</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-5">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-5" class="collapse collapsable-details">
+        <pre>10:45:08.641 [print]</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Given passed">
+  <span class="keyword indention">Given</span>
+  <span class="name">path 'api/identity/external/deactivate'</span>
+
+  <span class="lead-duration duration">0.007</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">header Authorization = 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-6">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-6" class="collapse collapsable-details">
+        <pre>10:45:08.649 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.deactivateIdentity.masterIdentityId = response.data.masterIdentityId</span>
+
+  <span class="lead-duration duration">0.001</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.deactivateIdentity.requestUuid = response.data.requestUuid</span>
+
+  <span class="lead-duration duration">0.001</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">request postdata.deactivateIdentity</span>
+
+  <span class="lead-duration duration">0.003</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-When failed">
+  <span class="keyword indention">When</span>
+  <span class="name">method post</span>
+
+  <span class="lead-duration duration">5.079</span>
+
+</div>
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="message indention">
+      <div data-toggle="collapse" class=" collapsable-control" data-target="#msg-7">
+          <a>com.intuit.karate.exception.KarateException:</a>
+      </div>
+      <div id="msg-7" class="collapse collapsable-details  in ">
+        <pre>com.intuit.karate.exception.KarateException: identityManagement.feature:124 - 
+java.net.SocketTimeoutException: Read timed out</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-8">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-8" class="collapse collapsable-details">
+        <pre>10:45:08.657 request:
+2 &gt; POST http://192.168.193.169:60/api/identity/external/deactivate
+2 &gt; Accept-Encoding: gzip,deflate
+2 &gt; Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+2 &gt; Connection: Keep-Alive
+2 &gt; Content-Length: 102
+2 &gt; Content-Type: application/json; charset=UTF-8
+2 &gt; Host: 192.168.193.169:60
+2 &gt; User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{&quot;masterIdentityId&quot;:&quot;Testing.U&quot;,&quot;requestorId&quot;:&quot;&quot;,&quot;requestUuid&quot;:&quot;e97cbf96-4ac9-4f53-8b2d-6a3e755c5055&quot;}
+
+10:45:13.734 java.net.SocketTimeoutException: Read timed out, http call failed after 5077 milliseconds for URL: http://192.168.193.169:60/api/identity/external/deactivate
+10:45:13.734 http request failed: 
+java.net.SocketTimeoutException: Read timed out</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Then skipped">
+  <span class="keyword indention">Then</span>
+  <span class="name">status 200</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">print response</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+  </div>
+</div>
+
+
+
+
+
+  </div>
+</div>
+
+
+<div class="element">
+    <div class="indention">
+      <b>Feature:</b>
+      <a href="report-feature_4244001020.html">karateTestCases/identityManagement.feature</a>
+    </div>
+
+
+<div class="tags indention">
+    <b>Tags:</b>
+       <a href="report-tag_233058432.html">@regression</a>
+</div>
+
+
+  <span class="lead-duration duration">5.546</span>
+
+
+  <span data-toggle="collapse" class=" collapsable-control" data-target="#element-9">
+
+<div class="brief failed">
+  <span class="keyword indention">Scenario</span>
+  <span class="name">To Activate  a identity</span>
+
+
+     <i class="chevron fa fa-fw"></i>
+</div>
+
+  </span>
+  <div class="description indention"></div>
+
+  <div id="element-9" class="collapse collapsable-details  in ">
+
+
+
+
+
+<div class="steps inner-level">
+  <div data-toggle="collapse" class=" collapsable-control" data-target="#steps-10">
+
+<div class="brief failed">
+  <span class="keyword indention">Steps</span>
+  <span class="name"></span>
+
+
+     <i class="chevron fa fa-fw"></i>
+</div>
+
+  </div>
+
+  <div id="steps-10" class="inner-level collapse collapsable-details  in ">
+      <div class="step">
+
+
+<div class="brief step-name-Given passed">
+  <span class="keyword indention">Given</span>
+  <span class="name">path 'api/identity/external/save'</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">header Authorization = 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.004</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-11">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-11" class="collapse collapsable-details">
+        <pre>10:45:08.193 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">request postdata.saveIdentity</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-When passed">
+  <span class="keyword indention">When</span>
+  <span class="name">method post</span>
+
+  <span class="lead-duration duration">0.396</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-12">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-12" class="collapse collapsable-details">
+        <pre>10:45:08.196 request:
+1 &gt; POST http://192.168.193.169:60/api/identity/external/save
+1 &gt; Accept-Encoding: gzip,deflate
+1 &gt; Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+1 &gt; Connection: Keep-Alive
+1 &gt; Content-Length: 213
+1 &gt; Content-Type: application/json; charset=UTF-8
+1 &gt; Host: 192.168.193.169:60
+1 &gt; User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{&quot;identity&quot;:{&quot;firstName&quot;:&quot;Testing&quot;,&quot;lastName&quot;:&quot;User1&quot;,&quot;workerType&quot;:&quot;Permanent&quot;,&quot;employmentStatus&quot;:&quot;ACTIVE&quot;,&quot;masterIdentityId&quot;:&quot;Testing.U&quot;},&quot;requestorId&quot;:&quot;Test&quot;,&quot;requestUuid&quot;:&quot;e97cbf96-4ac9-4f53-8b2d-6a3e755c5055&quot;}
+
+10:45:08.589 response time in milliseconds: 392.74
+1 &lt; 200
+1 &lt; Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 &lt; Connection: keep-alive
+1 &lt; Content-Length: 323
+1 &lt; Content-Type: application/json
+1 &lt; Date: Mon, 14 Sep 2020 05:15:04 GMT
+1 &lt; Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 &lt; Server: nginx/1.17.8
+1 &lt; X-Content-Type-Options: nosniff
+1 &lt; X-Frame-Options: DENY
+1 &lt; X-Permitted-Cross-Domain-Policies: master-only
+1 &lt; X-XSS-Protection: 1; mode=block
+{&quot;success&quot;:true,&quot;data&quot;:{&quot;requestUuid&quot;:&quot;e97cbf96-4ac9-4f53-8b2d-6a3e755c5055&quot;,&quot;masterIdentityId&quot;:&quot;Testing.U&quot;,&quot;apiMessage&quot;:{&quot;messageText&quot;:&quot;Identity saved successfully&quot;,&quot;messageType&quot;:&quot;INFO&quot;,&quot;messageCode&quot;:&quot;INFO1162&quot;,&quot;priority&quot;:0},&quot;isNew&quot;:false},&quot;numberOfElements&quot;:0,&quot;totalPages&quot;:0,&quot;totalElements&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:0}</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Then passed">
+  <span class="keyword indention">Then</span>
+  <span class="name">status 200</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print response.apiMessage.messageText</span>
+
+  <span class="lead-duration duration">0.039</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-13">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-13" class="collapse collapsable-details">
+        <pre>10:45:08.628 [print]</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">def masterIdentityId = response.data.masterIdentityId</span>
+
+  <span class="lead-duration duration">0.003</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">def requestUuid = response.data.requestUuid</span>
+
+  <span class="lead-duration duration">0.003</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Given passed">
+  <span class="keyword indention">Given</span>
+  <span class="name">path 'api/identity/external/deactivate'</span>
+
+  <span class="lead-duration duration">0.010</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">header Authorization = 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.013</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">print 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-14">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-14" class="collapse collapsable-details">
+        <pre>10:45:08.668 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.deactivateIdentity.masterIdentityId = masterIdentityId</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* passed">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.deactivateIdentity.requestorId = masterIdentityId</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And passed">
+  <span class="keyword indention">And</span>
+  <span class="name">request postdata.deactivateIdentity</span>
+
+  <span class="lead-duration duration">0.003</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-When passed">
+  <span class="keyword indention">When</span>
+  <span class="name">method post</span>
+
+  <span class="lead-duration duration">5.066</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-15">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-15" class="collapse collapsable-details">
+        <pre>10:45:08.676 request:
+2 &gt; POST http://192.168.193.169:60/api/identity/external/deactivate
+2 &gt; Accept-Encoding: gzip,deflate
+2 &gt; Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+2 &gt; Connection: Keep-Alive
+2 &gt; Content-Length: 58
+2 &gt; Content-Type: application/json; charset=UTF-8
+2 &gt; Host: 192.168.193.169:60
+2 &gt; User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{&quot;masterIdentityId&quot;:&quot;Testing.U&quot;,&quot;requestorId&quot;:&quot;Testing.U&quot;}
+
+10:45:13.740 response time in milliseconds: 5063.28
+2 &lt; 500
+2 &lt; Connection: keep-alive
+2 &lt; Content-Length: 1851
+2 &lt; Content-Type: application/json
+2 &lt; Date: Mon, 14 Sep 2020 05:15:05 GMT
+2 &lt; Server: nginx/1.17.8
+{&quot;success&quot;:false,&quot;messages&quot;:[{&quot;messageText&quot;:&quot;java.util.concurrent.CompletionException: java.lang.NullPointerException\r\n\tat java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)\r\n\tat java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1155)\r\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: java.lang.NullPointerException\r\n\tat com.alnt.identitymgmt.service.IdentityServiceImpl.deactivateIdentity(IdentityServiceImpl.java:1119)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.lambda$deactivateIdentity$3(IdentityController.java:48)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1146)\r\n\t... 9 more\r\n&quot;,&quot;messageType&quot;:&quot;ERROR&quot;,&quot;messageCode&quot;:&quot;ERR99999&quot;,&quot;messageDisplayText&quot;:&quot;Oops!!! This is unexpected!!! We are on it ..&quot;,&quot;priority&quot;:0}],&quot;numberOfElements&quot;:0,&quot;totalPages&quot;:0,&quot;totalElements&quot;:0,&quot;pageNumber&quot;:0,&quot;pageSize&quot;:0}</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Then failed">
+  <span class="keyword indention">Then</span>
+  <span class="name">status 200</span>
+
+  <span class="lead-duration duration">0.001</span>
+
+</div>
+
+
+
+
+
+
+  <div class="inner-level">
+    <div class="message indention">
+      <div data-toggle="collapse" class=" collapsable-control" data-target="#msg-16">
+          <a>com.intuit.karate.exception.KarateException:</a>
+      </div>
+      <div id="msg-16" class="collapse collapsable-details  in ">
+        <pre>com.intuit.karate.exception.KarateException: identityManagement.feature:152 - status code was: 500, expected: 200, response time: 5063, url: http://192.168.193.169:60/api/identity/external/deactivate, response: {&quot;pageNumber&quot;:0,&quot;numberOfElements&quot;:0,&quot;success&quot;:false,&quot;totalPages&quot;:0,&quot;messages&quot;:[{&quot;messageDisplayText&quot;:&quot;Oops!!! This is unexpected!!! We are on it ..&quot;,&quot;messageText&quot;:&quot;java.util.concurrent.CompletionException: java.lang.NullPointerException\r\n\tat java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)\r\n\tat java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1155)\r\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: java.lang.NullPointerException\r\n\tat com.alnt.identitymgmt.service.IdentityServiceImpl.deactivateIdentity(IdentityServiceImpl.java:1119)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.lambda$deactivateIdentity$3(IdentityController.java:48)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1146)\r\n\t... 9 more\r\n&quot;,&quot;messageType&quot;:&quot;ERROR&quot;,&quot;messageCode&quot;:&quot;ERR99999&quot;,&quot;priority&quot;:0}],&quot;pageSize&quot;:0,&quot;totalElements&quot;:0}</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="inner-level">
+    <div class="docstring indention">
+      <div data-toggle="collapse" class="collapsable-control" data-target="#msg-17">
+          <a>Doc string</a>
+      </div>
+      <div id="msg-17" class="collapse collapsable-details">
+        <pre>10:45:13.743 status code was: 500, expected: 200, response time: 5063, url: http://192.168.193.169:60/api/identity/external/deactivate, response: {&quot;pageNumber&quot;:0,&quot;numberOfElements&quot;:0,&quot;success&quot;:false,&quot;totalPages&quot;:0,&quot;messages&quot;:[{&quot;messageDisplayText&quot;:&quot;Oops!!! This is unexpected!!! We are on it ..&quot;,&quot;messageText&quot;:&quot;java.util.concurrent.CompletionException: java.lang.NullPointerException\r\n\tat java.base/java.util.concurrent.CompletableFuture.encodeThrowable(CompletableFuture.java:314)\r\n\tat java.base/java.util.concurrent.CompletableFuture.completeThrowable(CompletableFuture.java:319)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1155)\r\n\tat java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:478)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: java.lang.NullPointerException\r\n\tat com.alnt.identitymgmt.service.IdentityServiceImpl.deactivateIdentity(IdentityServiceImpl.java:1119)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.lambda$deactivateIdentity$3(IdentityController.java:48)\r\n\tat java.base/java.util.concurrent.CompletableFuture$UniCompose.tryFire(CompletableFuture.java:1146)\r\n\t... 9 more\r\n&quot;,&quot;messageType&quot;:&quot;ERROR&quot;,&quot;messageCode&quot;:&quot;ERR99999&quot;,&quot;priority&quot;:0}],&quot;pageSize&quot;:0,&quot;totalElements&quot;:0}</pre>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">print response</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Given skipped">
+  <span class="keyword indention">Given</span>
+  <span class="name">path 'api/identity/external/activate'</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">header Authorization = 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">print 'Bearer ' + token</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* skipped">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.activateIdentity.masterIdentityId = masterIdentityId</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-* skipped">
+  <span class="keyword indention">*</span>
+  <span class="name">set postdata.activateIdentity.requestorId = masterIdentityId</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">request postdata.activateIdentity</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-When skipped">
+  <span class="keyword indention">When</span>
+  <span class="name">method post</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-Then skipped">
+  <span class="keyword indention">Then</span>
+  <span class="name">status 200</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+      <div class="step">
+
+
+<div class="brief step-name-And skipped">
+  <span class="keyword indention">And</span>
+  <span class="name">print response</span>
+
+  <span class="lead-duration duration">0.000</span>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+  </div>
+</div>
+
+
+
+
+
+  </div>
+</div>
+
+        </div>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-1 col-md-offset-10">
+      <i class="fa fa-chevron-circle-down fa-2x collapsable-control"
+        onClick="javascript:$('#report .collapsable-details').collapse('show')"></i>
+      <i class="fa fa-chevron-circle-up fa-2x collapsable-control"
+        onClick="javascript:$('#report .collapsable-details').collapse('hide')"></i>
+    </div>
+  </div>
+</div>
+
+<br/>
+
+<nav class="navbar navbar-default" id="footer">
+  <div class="container-fluid">
+    <p class="navbar-text navbar-right">
+        <small>generate Cucumber HTML reports via:&nbsp;</small>
+        <a class="navbar-link" href="https://github.com/jenkinsci/cucumber-reports-plugin">Jenkins Plugin</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/cucumber-reporting">Standalone</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/cucumber-sandwich">Sandwich</a> |
+        <a class="navbar-link" href="https://github.com/damianszczepanik/maven-cucumber-reporting">Maven</a>
+        &nbsp;&nbsp;
+    </p>
+  </div>
+</nav>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+{
+	"findIdentity": {
+		"jsonView": "HEADER",
+		"filterCriteria": [
+			{
+				"fieldName": "intStatus",
+				"operator": "in",
+				"valueList": [
+					0,
+					9
+				]
+			},
+			{
+				"fieldName": "type",
+				"operator": "in",
+				"valueList": [
+					"Permanent"
+				]
+			}
+		],
+		"page": 1,
+		"start": 0,
+		"size": 25
+	},
+	"findidentitybymasterid":{
+    "values":["u1412421437878838383400"],
+    "projections":["id","type","text"]
+
+},
+"provisioninglog":{
+    "filterCriteria": [
+        {
+            "fieldName": "requestUuid",
+            "operator": "in",
+            "valueList": [
+                "e97cbf96-4ac9-4f53-8b2d-6a3e755c5055"
+            ]
+        }
+    ]
+
+},
+"saveIdentity":{
+        "identity": {
+            "firstName": "Testing",
+            "lastName": "User1",
+            "workerType": "Permanent",
+            "employmentStatus": "ACTIVE",
+            "masterIdentityId": "Testing.U"
+        },
+        "requestorId": "Test",
+        "requestUuid": "e97cbf96-4ac9-4f53-8b2d-6a3e755c5055"
+    },
+    "deactivateIdentity": {
+        "masterIdentityId": "",
+        "requestorId": ""
+  
+    },
+    "activateIdentity": {
+        "masterIdentityId": "",
+        "requestorId": ""
+  
+    },
+    "generateAuthToken":{
+    "username":"admin",
+	  		"password":"Alert1234"
+	  		}
+}

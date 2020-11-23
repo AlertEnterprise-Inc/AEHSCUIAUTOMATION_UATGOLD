@@ -1,0 +1,164 @@
+10:44:56.915 karate.env system property was:  
+10:44:56.916 karate.env =  automation 
+10:44:58.438 request:
+1 > POST http://192.168.193.169:60/api/auth/token
+1 > Accept-Encoding: gzip,deflate
+1 > Connection: Keep-Alive
+1 > Content-Length: 43
+1 > Content-Type: application/json; charset=UTF-8
+1 > Host: 192.168.193.169:60
+1 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"username":"admin","password":"Alert1234"}
+
+10:45:01.990 response time in milliseconds: 3543.29
+1 < 200
+1 < Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 < Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTUsInRlbmFudCI6ImFsZXJ0In0.eSahQbxaFOvV4AI_5kT1-PS58tupj-79xiECToU_H5s
+1 < Connection: keep-alive
+1 < Content-Length: 446
+1 < Content-Type: application/json
+1 < Date: Mon, 14 Sep 2020 05:14:57 GMT
+1 < Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 < Server: nginx/1.17.8
+1 < Set-Cookie: PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImNzcmZUb2tlbiI6IjNiYjY0ZjVmMjdlNGYwMmQwNTAxMDlkMGEyODVkNDA2ZjA5NDgxN2UtMTYwMDA2MDQ5NDY4MS1jZWNkMjNlMTJkMGYxYjZjNTU4MGIyMjQifSwibmJmIjoxNjAwMDYwNDk3LCJpYXQiOjE2MDAwNjA0OTd9.vxi8MPzJG26in2SlNGarfOiNz2UR8eSMoodForaMuSE; Path=/; HTTPOnly
+1 < X-Content-Type-Options: nosniff
+1 < X-Frame-Options: DENY
+1 < X-Permitted-Cross-Domain-Policies: master-only
+1 < X-XSS-Protection: 1; mode=block
+{"success":true,"data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTUsInRlbmFudCI6ImFsZXJ0In0.eSahQbxaFOvV4AI_5kT1-PS58tupj-79xiECToU_H5s","logo_config":"{\"binary_resource_id\" : \"\", \"style\": \"\",\"default_logo\": \"../resources/moderndesktop/LogoAE.png\"}"},"numberOfElements":0,"totalPages":0,"totalElements":0,"pageNumber":0,"pageSize":0}
+
+10:45:02.374 request:
+1 > POST http://192.168.193.169:60/api/auth/token?grant_type=password
+1 > Accept-Encoding: gzip,deflate
+1 > Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTUsInRlbmFudCI6ImFsZXJ0In0.eSahQbxaFOvV4AI_5kT1-PS58tupj-79xiECToU_H5s
+1 > Connection: Keep-Alive
+1 > Content-Length: 43
+1 > Content-Type: application/json; charset=UTF-8
+1 > Host: 192.168.193.169:60
+1 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"username":"admin","password":"Alert1234"}
+
+10:45:03.320 response time in milliseconds: 945.10
+1 < 200
+1 < Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 < Connection: keep-alive
+1 < Content-Length: 498
+1 < Content-Type: application/json
+1 < Date: Mon, 14 Sep 2020 05:14:59 GMT
+1 < Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 < Server: nginx/1.17.8
+1 < Set-Cookie: PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImNzcmZUb2tlbiI6IjYwMmY1MWE3NjM3MTc0YTlkODBjY2RkZGMxMzZjM2I1MDdkMjM0MTAtMTYwMDA2MDQ5ODUxMC03NjBhNzczMTc0N2I3M2RiYjZhZDE3NmQifSwibmJmIjoxNjAwMDYwNDk5LCJpYXQiOjE2MDAwNjA0OTl9.q1d2Y13W80c2JqYqdYc04qgihJSNlkjmTGbG4ujEiN4; Path=/; HTTPOnly
+1 < X-Content-Type-Options: nosniff
+1 < X-Frame-Options: DENY
+1 < X-Permitted-Cross-Domain-Policies: master-only
+1 < X-XSS-Protection: 1; mode=block
+{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsInRoaXJkUGFydHlMb2dpbiI6IiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTksInRlbmFudCI6ImFsZXJ0In0.7HO_jDQbie4s3YEYOSXdHQrRcJPxgGH_cH_mnakVnJE","refresh_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDA3ODA0OTksInRlbmFudCI6ImFsZXJ0In0.tDfHTkR_8l_cZqZnbrKDnmpo2GxlrxtBMUXg7fhM_h4","token_type":"Bearer","expires_in":7200}
+
+10:45:03.323 [print] eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDA3ODA0OTksInRlbmFudCI6ImFsZXJ0In0.tDfHTkR_8l_cZqZnbrKDnmpo2GxlrxtBMUXg7fhM_h4
+10:45:03.329 request:
+2 > POST http://192.168.193.169:60/api/auth/token?grant_type=refresh_token&refresh_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDA3ODA0OTksInRlbmFudCI6ImFsZXJ0In0.tDfHTkR_8l_cZqZnbrKDnmpo2GxlrxtBMUXg7fhM_h4
+2 > Accept-Encoding: gzip,deflate
+2 > Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTUsInRlbmFudCI6ImFsZXJ0In0.eSahQbxaFOvV4AI_5kT1-PS58tupj-79xiECToU_H5s
+2 > Connection: Keep-Alive
+2 > Content-Length: 43
+2 > Content-Type: application/json; charset=UTF-8
+2 > Cookie: PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImNzcmZUb2tlbiI6IjYwMmY1MWE3NjM3MTc0YTlkODBjY2RkZGMxMzZjM2I1MDdkMjM0MTAtMTYwMDA2MDQ5ODUxMC03NjBhNzczMTc0N2I3M2RiYjZhZDE3NmQifSwibmJmIjoxNjAwMDYwNDk5LCJpYXQiOjE2MDAwNjA0OTl9.q1d2Y13W80c2JqYqdYc04qgihJSNlkjmTGbG4ujEiN4
+2 > Host: 192.168.193.169:60
+2 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"username":"admin","password":"Alert1234"}
+
+10:45:03.891 response time in milliseconds: 454.52
+2 < 200
+2 < Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+2 < Connection: keep-alive
+2 < Content-Length: 498
+2 < Content-Type: application/json
+2 < Date: Mon, 14 Sep 2020 05:14:59 GMT
+2 < Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+2 < Server: nginx/1.17.8
+2 < X-Content-Type-Options: nosniff
+2 < X-Frame-Options: DENY
+2 < X-Permitted-Cross-Domain-Policies: master-only
+2 < X-XSS-Protection: 1; mode=block
+{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsInRoaXJkUGFydHlMb2dpbiI6IiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTksInRlbmFudCI6ImFsZXJ0In0.7HO_jDQbie4s3YEYOSXdHQrRcJPxgGH_cH_mnakVnJE","refresh_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDA3ODA0OTksInRlbmFudCI6ImFsZXJ0In0.tDfHTkR_8l_cZqZnbrKDnmpo2GxlrxtBMUXg7fhM_h4","token_type":"Bearer","expires_in":7200}
+
+10:45:03.892 [print] {
+  "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsInRoaXJkUGFydHlMb2dpbiI6IiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc2OTksInRlbmFudCI6ImFsZXJ0In0.7HO_jDQbie4s3YEYOSXdHQrRcJPxgGH_cH_mnakVnJE",
+  "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDA3ODA0OTksInRlbmFudCI6ImFsZXJ0In0.tDfHTkR_8l_cZqZnbrKDnmpo2GxlrxtBMUXg7fhM_h4",
+  "token_type": "Bearer",
+  "expires_in": 7200
+}
+
+10:45:03.899 karate.env system property was:  
+10:45:03.900 karate.env =  automation 
+10:45:03.913 request:
+1 > POST http://192.168.193.169:60/api/auth/token
+1 > Accept-Encoding: gzip,deflate
+1 > Connection: Keep-Alive
+1 > Content-Length: 43
+1 > Content-Type: application/json; charset=UTF-8
+1 > Host: 192.168.193.169:60
+1 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"username":"admin","password":"Alert1234"}
+
+10:45:08.182 response time in milliseconds: 4268.37
+1 < 200
+1 < Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 < Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+1 < Connection: keep-alive
+1 < Content-Length: 446
+1 < Content-Type: application/json
+1 < Date: Mon, 14 Sep 2020 05:15:03 GMT
+1 < Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 < Server: nginx/1.17.8
+1 < Set-Cookie: PLAY_SESSION=eyJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7ImNzcmZUb2tlbiI6IjAwNWMwYzc0MDQ1YTYzZTc1ZGQ0NDEyNGQ3NWNlOWM5NzVlNzRmN2ItMTYwMDA2MDUwMDA0Mi1jZmM2NWM5ODVhNmI3MmU0ZGQ0ZjhiNDQifSwibmJmIjoxNjAwMDYwNTAzLCJpYXQiOjE2MDAwNjA1MDN9.98HDnS8gzvaiD59BJ7sPUR9skX8kTsYnGX3igR3Q9QQ; Path=/; HTTPOnly
+1 < X-Content-Type-Options: nosniff
+1 < X-Frame-Options: DENY
+1 < X-Permitted-Cross-Domain-Policies: master-only
+1 < X-XSS-Protection: 1; mode=block
+{"success":true,"data":{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4","logo_config":"{\"binary_resource_id\" : \"\", \"style\": \"\",\"default_logo\": \"../resources/moderndesktop/LogoAE.png\"}"},"numberOfElements":0,"totalPages":0,"totalElements":0,"pageNumber":0,"pageSize":0}
+
+10:45:08.194 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+10:45:08.202 request:
+1 > POST http://192.168.193.169:60/api/identity/external/save
+1 > Accept-Encoding: gzip,deflate
+1 > Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+1 > Connection: Keep-Alive
+1 > Content-Length: 213
+1 > Content-Type: application/json; charset=UTF-8
+1 > Host: 192.168.193.169:60
+1 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"identity":{"firstName":"Testing","lastName":"User1","workerType":"Permanent","employmentStatus":"ACTIVE","masterIdentityId":"Testing.U"},"requestorId":"Test","requestUuid":"e97cbf96-4ac9-4f53-8b2d-6a3e755c5055"}
+
+10:45:08.579 response time in milliseconds: 375.84
+1 < 200
+1 < Access-Control-Allow-Methods: OPTIONS,GET,HEAD,POST,MERGE,PATCH,DELETE,PUT
+1 < Connection: keep-alive
+1 < Content-Length: 323
+1 < Content-Type: application/json
+1 < Date: Mon, 14 Sep 2020 05:15:04 GMT
+1 < Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+1 < Server: nginx/1.17.8
+1 < X-Content-Type-Options: nosniff
+1 < X-Frame-Options: DENY
+1 < X-Permitted-Cross-Domain-Policies: master-only
+1 < X-XSS-Protection: 1; mode=block
+{"success":true,"data":{"requestUuid":"e97cbf96-4ac9-4f53-8b2d-6a3e755c5055","masterIdentityId":"Testing.U","apiMessage":{"messageText":"Identity saved successfully","messageType":"INFO","messageCode":"INFO1162","priority":0},"isNew":false},"numberOfElements":0,"totalPages":0,"totalElements":0,"pageNumber":0,"pageSize":0}
+
+10:45:08.641 [print]
+10:45:08.649 [print] Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+10:45:08.657 request:
+2 > POST http://192.168.193.169:60/api/identity/external/deactivate
+2 > Accept-Encoding: gzip,deflate
+2 > Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJleHAiOjE2MDAwNjc3MDEsInRlbmFudCI6ImFsZXJ0In0.m2x5siEG6F9hOiM5uW_wqIJg9c3979GNZv5aM7dnEV4
+2 > Connection: Keep-Alive
+2 > Content-Length: 102
+2 > Content-Type: application/json; charset=UTF-8
+2 > Host: 192.168.193.169:60
+2 > User-Agent: Apache-HttpClient/4.5.3 (Java/1.8.0_231)
+{"masterIdentityId":"Testing.U","requestorId":"","requestUuid":"e97cbf96-4ac9-4f53-8b2d-6a3e755c5055"}
+
+10:45:13.734 java.net.SocketTimeoutException: Read timed out, http call failed after 5077 milliseconds for URL: http://192.168.193.169:60/api/identity/external/deactivate
+10:45:13.734 http request failed: 
+java.net.SocketTimeoutException: Read timed out
+\n\tat scala.concurrent.impl.Promise$Transformation.run(Promise.scala:453)\r\n\tat akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)\r\n\tat akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)\r\n\tat scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.scala:18)\r\n\tat scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:94)\r\n\tat akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)\r\n\tat akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)\r\n\tat akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)\r\n\tat java.base/java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:290)\r\n\tat java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(ForkJoinPool.java:1016)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1665)\r\n\tat java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1598)\r\n\tat java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:183)\r\nCaused by: com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.util.ArrayList<java.lang.Object>` out of START_OBJECT token\n at [Source: (String)\"{\"values\":[\"10112\"]}\"; line: 1, column: 1]\r\n\tat com.fasterxml.jackson.databind.exc.MismatchedInputException.from(MismatchedInputException.java:59)\r\n\tat com.fasterxml.jackson.databind.DeserializationContext.reportInputMismatch(DeserializationContext.java:1442)\r\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1216)\r\n\tat com.fasterxml.jackson.databind.DeserializationContext.handleUnexpectedToken(DeserializationContext.java:1168)\r\n\tat com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.handleNonArray(CollectionDeserializer.java:332)\r\n\tat com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:265)\r\n\tat com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:245)\r\n\tat com.fasterxml.jackson.databind.deser.std.CollectionDeserializer.deserialize(CollectionDeserializer.java:27)\r\n\tat com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4202)\r\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3205)\r\n\tat com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3173)\r\n\tat com.alnt.identitymgmt.controller.IdentityController.getByMasterIdentityId(IdentityController.java:111)\r\n\tat router.Routes$$anonfun$routes$1.$anonfun$applyOrElse$850(Routes.scala:11347)\r\n\tat play.core.routing.HandlerInvokerFactory$$anon$9.resultCall(HandlerInvoker.scala:152)\r\n\tat play.core.routing.HandlerInvokerFactory$JavaActionInvokerFactory$$anon$3$$anon$4$$anon$5.invocation(HandlerInvoker.scala:113)\r\n\tat play.core.j.JavaAction$$anon$1.call(JavaAction.scala:119)\r\n\tat play.http.DefaultActionCreator$1.call(DefaultActionCreator.java:33)\r\n\tat play.core.j.JavaAction.$anonfun$apply$8(JavaAction.scala:175)\r\n\tat scala.concurrent.Future$.$anonfun$apply$1(Future.scala:661)\r\n\tat scala.concurrent.impl.Promise$Transformation.run(Promise.scala:430)\r\n\tat play.core.j.HttpExecutionContext.$anonfun$execute$1(HttpExecutionContext.scala:64)\r\n\tat play.api.libs.streams.Execution$trampoline$.execute(Execution.scala:70)\r\n\tat play.core.j.HttpExecutionContext.execute(HttpExecutionContext.scala:59)\r\n\tat scala.concurrent.impl.Promise$Transformation.submitWithValue(Promise.scala:392)\r\n\tat scala.concurrent.impl.Promise$DefaultPromise.submitWithValue(Promise.scala:302)\r\n\tat scala.concurrent.impl.Promise$DefaultPromise.dispatchOrAddCallbacks(Promise.scala:276)\r\n\tat scala.concurrent.impl.Promise$DefaultPromise.map(Promise.scala:146)\r\n\tat scala.concurrent.Future$.apply(Future.scala:661)\r\n\tat play.core.j.JavaAction.apply(JavaAction.scala:176)\r\n\tat play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)\r\n\tat scala.concurrent.impl.Promise$Transformation.run(Promise.scala:433)\r\n\t... 12 more\r\n","messageType":"ERROR","messageCode":"ERR99999","priority":0}],"pageSize":0,"totalElements":0}

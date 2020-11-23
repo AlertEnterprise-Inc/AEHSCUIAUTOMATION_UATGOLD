@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test name="Test">
+    <classes>
+      <class name="dci.payroll.TestCases.payroll_Phase_2B"/>
+      <class name="dci.payroll.TestCases.payroll_Phase_2C"/>
+      <class name="dci.payroll.TestCases.payroll_Phase_2D"/>
+      <class name="dci.payroll.TestCases.payroll_Phase_2E"/>
+      <class name="dci.payroll.TestCases.payroll_Phase_2_Imports"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

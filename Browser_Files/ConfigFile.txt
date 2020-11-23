@@ -1,0 +1,15 @@
+browserName = GC
+applicationURL  = http://192.168.194.148:8080/AlertEnterprise/
+
+username = Admin
+password = Alert1234
+
+Airport_Badging_TC001	=	Yes
+GetWeatherDetails	=	Yes
+GetWeatherDetails002	=	No
+queryParameter	=	No
+createEmployee	=	No
+createEmployee002	=	No
+createEmployee003	=	No
+UpdateRecords	=	No
+deleteEmpRecord	=	No
