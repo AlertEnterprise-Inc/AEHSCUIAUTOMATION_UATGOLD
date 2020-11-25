@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Failed suite [Default suite]">
-  <test name="Default test(failed)">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
+  <test name="Test(failed)">
     <classes>
-      <class name="restAssuredTestCases.RestAssuredDemo">
+      <class name="webDriverTestCases.FB_Automation">
         <methods>
+          <include name="quitDriver"/>
+          <include name="FB_Automation_TC003"/>
           <include name="commonPage"/>
-          <include name="Login"/>
           <include name="beforeSuite"/>
-          <include name="GetWeatherDetails002"/>
+          <include name="FB_Automation_TC005"/>
           <include name="afterMethod"/>
         </methods>
-      </class> <!-- restAssuredTestCases.RestAssuredDemo -->
+      </class> <!-- webDriverTestCases.FB_Automation -->
     </classes>
-  </test> <!-- Default test(failed) -->
-</suite> <!-- Failed suite [Default suite] -->
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->

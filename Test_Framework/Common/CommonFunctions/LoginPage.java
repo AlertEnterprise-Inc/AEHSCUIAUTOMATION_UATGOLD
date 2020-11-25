@@ -1,6 +1,7 @@
 package CommonFunctions;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -24,7 +25,66 @@ public class LoginPage extends BrowserSelection
 	* @since   	04-06-2020
 	* @param   	String userName, String passWord
 	* @return  	boolean
+	 * @throws Throwable 
 	**/
+	
+	public static boolean loginAEHSC(String userName, String passWord) throws Throwable
+	{
+			System.out.println("**************************** login **********************************");
+		
+			driver.get(AGlobalComponents.applicationURL);
+			System.out.println("Successfully: open url-"+AGlobalComponents.applicationURL);
+			dynamicwait.WAitUntilPageLoad();
+						
+			boolean flg=true;
+			for (int i=1;i<10 && (flg);i++){
+				if(driver.findElements(By.xpath(LoginObjects.loginUserName)).size()>0){
+					flg=false;
+					System.out.println("Logged In to the Portal");
+					logger.log(LogStatus.PASS, "Logged In to the Portal");
+					break;
+				}
+				else
+					Utility.pause(10);
+			}
+			
+			driver.findElement(By.xpath(LoginObjects.loginUserName)).sendKeys(userName);
+			System.out.println("Enter Username");
+			driver.findElement(By.xpath(LoginObjects.pswdTxt)).sendKeys(passWord);
+			System.out.println("Enter Password");
+			driver.findElement(By.xpath(LoginObjects.loginButtonLnk)).click();
+			System.out.println("Click Sign-in Button");
+			Utility.pause(30);
+			dynamicwait.WAitUntilPageLoad();
+			boolean flag = false;
+			try{
+				
+				for(int j=0;j<12 && (!flag);j++){
+					if(driver.findElement(By.xpath(LoginObjects.loginButtonLnk)).isDisplayed())
+					{
+						System.out.println("Re-Login Required");
+						driver.navigate().refresh();
+						driver.findElement(By.xpath(LoginObjects.loginUserName)).sendKeys(userName);
+						System.out.println("Enter Username");
+						driver.findElement(By.xpath(LoginObjects.pswdTxt)).sendKeys(passWord);
+						System.out.println("Enter Password");
+						driver.findElement(By.xpath(LoginObjects.loginButtonLnk)).click();
+						System.out.println("Click Sign-in Button");
+						Utility.pause(15);
+					}
+					else
+						flag=true;
+				}
+				if(!flag){
+					logger.log(LogStatus.FAIL, "Unable to login to the application");
+				}
+			}
+			catch(Exception e){
+				System.out.println(e);
+			}
+
+		return flag;
+	}
 	
 	public static boolean login(String userName, String passWord) throws Exception
 	{
@@ -85,95 +145,18 @@ public class LoginPage extends BrowserSelection
 	* @param   	none
 	* @return  	boolean
 	**/
-	
 	public static boolean logout() throws Exception
 	{
 			System.out.println("**************************** logout **********************************");
 		
-			driver.findElement(By.xpath(".//*[@id='fabric-template-header-section']//a[@class='sf-with-ul']")).click();
+			driver.findElement(By.xpath("//span[contains(text(),'admin user')]")).click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath(".//*[@id='banner_signout']/a/span[text()='Sign Out']")).click();
+			driver.findElement(By.xpath("//span[contains(text(),'Logout')]")).click();
 			Thread.sleep(3000);
-			Utility.verifyElementPresent(".//*[@id='id7']/ul/li/span[@class='feedbackPanelERROR']", "Logout Message", false, false);
+			logger.log(LogStatus.INFO, "Logout from Appplication");
+			Utility.verifyElementPresent("//div[contains(text(),'Welcome Back')]", "Login Page", false, false);
 
 		return true;
 	}
 
-	
-	/**
-	* <h1>loginSelfService</h1>
-	* This is Method to Login to Self Service Portal
-	* @author  	Jiten Khanna
-	* @modified 
-	* @version 	1.0
-	* @since   	07-09-2020
-	* @param   	String userName, String passWord
-	* @return  	boolean
-	**/
-	
-	public static boolean loginSelfService(String userName, String passWord) throws Exception
-	{
-			System.out.println("**************************** loginSelfService **********************************");
-		
-			driver.get(AGlobalComponents.selfServicePortalURL);
-			System.out.println("Successfully: open url-"+AGlobalComponents.selfServicePortalURL);
-			dynamicwait.WAitUntilPageLoad();
-			Utility.pause(2);
-			driver.findElement(By.xpath(LoginObjects.selfServiceSigninWithOKTABtn)).click();
-			System.out.println("Click Sign-in with OKTA Button");
-			Utility.pause(3);
-			driver.findElement(By.xpath(LoginObjects.selfServiceOKTAUsernameTxt)).sendKeys(userName);
-			System.out.println("Enter Self-Service Username");
-			driver.findElement(By.xpath(LoginObjects.selfServiceOKTAPasswordTxt)).sendKeys(passWord);
-			System.out.println("Enter Self-Service Password");
-			driver.findElement(By.xpath(LoginObjects.selfServiceOKTASigninBtn)).click();
-			System.out.println("Click Sign-in Button");
-			Utility.pause(15);
-			dynamicwait.WAitUntilPageLoad();
-			logger.log(LogStatus.PASS, "Logged In to Self Service Portal");
-			try{
-				if(driver.findElement(By.xpath(LoginObjects.selfServiceOKTASigninBtn)).isDisplayed())
-				{
-					System.out.println("Re-Login Required");
-					driver.findElement(By.xpath(LoginObjects.selfServiceOKTAUsernameTxt)).sendKeys(userName);
-					System.out.println("Enter Self-Service Username");
-					driver.findElement(By.xpath(LoginObjects.selfServiceOKTAPasswordTxt)).sendKeys(passWord);
-					System.out.println("Enter Self-Service Password");
-					driver.findElement(By.xpath(LoginObjects.selfServiceOKTASigninBtn)).click();
-					System.out.println("Click Sign-in Button");
-					Utility.pause(15);
-				}
-			}catch(Exception e){
-				System.out.println("Login Successful");
-			}
-
-		return true;
-	}
-
-	
-	/**
-	* <h1>logoutSelfService</h1>
-	* This is Method to Logout from Self Service Application
-	* @author  	Jiten Khanna
-	* @modified 
-	* @version 	1.0
-	* @since   	07-09-2020
-	* @param   	none
-	* @return  	boolean
-	**/
-	
-	public static boolean logoutSelfService() throws Exception
-	{
-			System.out.println("**************************** logoutSelfService **********************************");
-		
-			driver.findElement(By.xpath(".//button[@class='mat-menu-trigger mat-button mat-button-base ng-star-inserted']")).click();
-			Thread.sleep(2000);
-			driver.findElement(By.xpath(".//button[@class='mat-menu-item ng-star-inserted' and text()='Sign Out']")).click();
-			Thread.sleep(3000);
-			Utility.verifyElementPresent(".//h2[text()='You are successfully logged out from Self Service portal.']", "Logout Message", false, false);
-
-		return true;
-	}
-
-	
 }

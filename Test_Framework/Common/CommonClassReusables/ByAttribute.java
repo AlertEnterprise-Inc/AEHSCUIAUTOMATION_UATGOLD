@@ -1,7 +1,9 @@
 
 package CommonClassReusables;
 
+import java.io.IOException;
 import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -9,14 +11,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.relevantcodes.extentreports.LogStatus;
 
 import ObjectRepository.HomeObjects;
-import ObjectRepository.BadgingObjects;
 
 public class ByAttribute extends BrowserSelection  {
 
@@ -71,7 +71,7 @@ public class ByAttribute extends BrowserSelection  {
 	            	throw new UnsupportedOperationException();
         }
 
-			Jexecutor.highlightElement(element);
+		//	Jexecutor.highlightElement(element);
 			try{
 			element.click();
 		
@@ -290,7 +290,10 @@ public class ByAttribute extends BrowserSelection  {
 	            	throw new UnsupportedOperationException();
 			}
 			
-			Jexecutor.highlightElement(element);
+	//		Jexecutor.highlightElement(element);
+			Thread.sleep(500);
+	//	element.click();
+		element.clear();			
 			try{
 			element.sendKeys(text);
 			}catch(ElementNotVisibleException e1){
@@ -918,9 +921,16 @@ public class ByAttribute extends BrowserSelection  {
 	            	throw new UnsupportedOperationException();
 			}
 			
-			Jexecutor.highlightElement(element);
-			if (!element.isSelected())
+	//		Jexecutor.highlightElement(element);
+			if(driver.findElements(By.xpath(attributevalue)).size()>0){
+			
+				System.out.println("Successfully verify check box ");
+				logger.log(LogStatus.INFO, "Successfully verify check box ");
+				return true;
+			}
+			else{
 				return false;
+			}
 
 		} catch (NoSuchElementException e) {
 			System.out.println("RUNTIME_ERROR : : Not able to  ");
@@ -930,9 +940,7 @@ public class ByAttribute extends BrowserSelection  {
 
 			return false;
 		}
-		System.out.println("Successfully verify check box ");
-		logger.log(LogStatus.INFO, "Successfully verify check box ");
-		return true;
+		
 
 	}
 	
@@ -1011,7 +1019,6 @@ public class ByAttribute extends BrowserSelection  {
 		 try{
 		     driver.findElement(By.xpath(HomeObjects.homeTabLnk)).click();
 		 }catch (Exception e){
-//			 driver.switchTo().defaultContent();
 			 driver.navigate().refresh();
 			 ByAttribute.click("xpath", HomeObjects.homeTabLnk, "click Home Tab");
 	}
@@ -1048,7 +1055,7 @@ public class ByAttribute extends BrowserSelection  {
 
 
 	/**
-	* <h1>clickOnSelfServicePod</h1>
+	* <h1>clickOnPod</h1>
 	* This is a Common Function to Click on Pods based on Text
 	* @author  	Jiten Khanna
 	* @modified 
@@ -1061,6 +1068,7 @@ public class ByAttribute extends BrowserSelection  {
 	public static void clickOnSelfServicePod(String podName){
 		for(int i=0;i<5;i++){
 			try{
+//				Utility.connectToLatestFrame(driver);
 				if(driver.findElement(By.xpath(".//div[@class='custom-pod-title' and text()='"+podName+"']")).isEnabled()){
 					driver.findElement(By.xpath(".//div[@class='custom-pod-title' and text()='"+podName+"']")).click();
 					logger.log(LogStatus.PASS, "Clicked Successfully on Pod { "+podName+" }");
@@ -1073,58 +1081,77 @@ public class ByAttribute extends BrowserSelection  {
 		}
 	}
 
-	
-	/**
-	* <h1>clickRolesPermissionsCheckbox</h1>
-	* This is a Common Function to Click on Roles and Permissions Checkbox
-	* @author  	Jiten Khanna
-	* @modified 
-	* @version 	1.0
-	* @since   	07-16-2020
-	* @param   	String permissionName
-	* @return  	none
-	*/
-	
-	public static void clickRolesPermissionsCheckbox(String permissionName){
-		try{
-			if(driver.findElement(By.xpath(".//span[@class='content' and text()='"+permissionName+"']/parent::td/input[@type='checkbox']")).isEnabled()){
-				driver.findElement(By.xpath(".//span[@class='content' and text()='"+permissionName+"']/parent::td/input[@type='checkbox']")).click();
-				logger.log(LogStatus.PASS, "Clicked Successfully on Checkbox { "+permissionName+" }");
-			}
-		}catch(Exception e){
-			logger.log(LogStatus.FAIL, "Unable to Click on Checkbox { "+permissionName+" }");
+	public static void mouseHover(String attribute, String attributevalue, String actionInfo) {
+		 
+		try {
+//			dynamicwait.WAitUntilPageLoad();
+			
+//			find the object based on attribute
+			switch (attribute.toLowerCase()) {
+	            case "xpath":
+	            	element = driver.findElement(By.xpath(attributevalue));
+	                break;
+	            case "id":
+	            	element = driver.findElement(By.id(attributevalue));
+	                break;
+	            case "name":
+	            	element = driver.findElement(By.name(attributevalue));
+	                break;
+	            case "linktext":
+	            	element = driver.findElement(By.linkText(attributevalue));
+	                break;
+	            case "cssselector":
+	            	element = driver.findElement(By.cssSelector(attributevalue));
+	                break;
+	            case "classname":
+	            	element = driver.findElement(By.className(attributevalue));
+	                break;
+	            default: 
+	            	logger.log(LogStatus.ERROR, "Failed: Attribute Name {" +attribute+"} Not Found " + actionInfo);
+	            	throw new UnsupportedOperationException();
+        }
+
+			Jexecutor.highlightElement(element);
+			try{
+			//element.click();
+				Actions action = new Actions(driver);
+				action.moveToElement(element).build().perform();
+		
+			}catch(ElementNotVisibleException e1){
+				    JavascriptExecutor jss= ((JavascriptExecutor)driver);
+				    jss.executeScript("arguments[0].scrollIntoView(true);", element);
+				    Thread.sleep(1000);
+					jss.executeScript("arguments[0].click();", element);
+				
+			}catch(StaleElementReferenceException e2){
+				int count=0;
+				while(count <4){
+				if(element.isDisplayed()){
+					
+					element.click();
+					break;
+				}
+				Thread.sleep(1500);
+				count++;
+				}
+			}catch(WebDriverException e3){
+			
+				    JavascriptExecutor jss= ((JavascriptExecutor)driver);
+				    jss.executeScript("arguments[0].scrollIntoView(true);", element);
+				    Thread.sleep(1000);
+					jss.executeScript("arguments[0].click();", element);
+				}
+		
+			System.out.println("Successfully: " + actionInfo);
+			logger.log(LogStatus.INFO, "Successfully: " + actionInfo);
+		} catch (Exception e) {
+			System.out.println("RUNTIME_ERROR : : Not able to  : " + actionInfo );
+			throw new java.lang.RuntimeException(
+					"RUNTIME_ERROR : : Not able to  : " + actionInfo + "--------------->" + e);
+
 		}
-	}
 
-	
-	/**
-	* <h1>clickMoreMenuTab</h1>
-	* This is a Common Function to Click on Tab Items in More Menu
-	* @author  	Jiten Khanna
-	* @modified 
-	* @version 	1.0
-	* @since   	07-17-2020
-	* @param   	String menuItem
-	* @return  	none
-	* @throws InterruptedException 
-	*/
-	
-	public static void clickMoreMenuTab(String menuItem) throws InterruptedException{
-		 windowSize= driver.manage().window().getSize();
-		 try{
-		     ByAttribute.click("xpath", ".//span[@class='drop-down' and @title='More']", "Click More Dropdown");
-		     Thread.sleep(1000);
-		     ByAttribute.click("xpath", ".//a[@class='tabmenu_item_setup' and text()='"+menuItem+"']", "Click on Menu Item : "+menuItem);
-		 }catch (Exception e){
-			 driver.switchTo().defaultContent();
-			 driver.navigate().refresh();
-			 ByAttribute.click("xpath", ".//span[@class='drop-down' and @title='More']", "Click More Dropdown");
-		     Thread.sleep(1000);
-		     ByAttribute.click("xpath", ".//a[@class='tabmenu_item_setup' and text()='"+menuItem+"']", "Click on Menu Item : "+menuItem);
 	}
-	
-}
-
 	
 	
 	

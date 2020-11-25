@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -46,9 +47,10 @@ public class ByAttributeAngular extends BrowserSelection  {
 		 
 		try {
 
-			Utility.connectToLatestFrame(driver);
-			WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
-			driver.switchTo().frame(iframe);
+//			Utility.connectToLatestFrame(driver);
+//			WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
+//			WebElement iframe=driver.findElement(By.xpath("//iframe[contains(@id,'baseTextAreaMce')]"));
+//			driver.switchTo().frame(iframe);
 			
 //			find the object based on attribute
 			switch (attribute.toLowerCase()) {
@@ -75,9 +77,12 @@ public class ByAttributeAngular extends BrowserSelection  {
 	            	throw new UnsupportedOperationException();
         }
 
-			Jexecutor.highlightAngularElement(element);
+	//		Jexecutor.highlightAngularElement(element);
 			try{
-				eleWait.until(ExpectedConditions.visibilityOfElementLocated(element)).click();
+	//			eleWait.until(ExpectedConditions.visibilityOfElementLocated(element)).click();
+				WebElement ele= driver.findElement(By.xpath(attributevalue));
+				Actions action = new Actions(driver);
+				action.moveToElement(ele).click().build().perform();
 		
 			}catch(ElementNotVisibleException e1){
 				    JavascriptExecutor jss= ((JavascriptExecutor)driver);
@@ -277,8 +282,9 @@ public class ByAttributeAngular extends BrowserSelection  {
 		try {
 			
 			Utility.connectToLatestFrame(driver);
-			WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
-			driver.switchTo().frame(iframe);
+		//	WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
+		//	WebElement iframe=driver.findElement(By.xpath("//iframe[contains(@id,'baseTextAreaMce')]"));
+		//	driver.switchTo().frame(iframe);
 			
 //			find the object based on attribute
 			switch (attribute.toLowerCase()) {
@@ -305,9 +311,15 @@ public class ByAttributeAngular extends BrowserSelection  {
 	            	throw new UnsupportedOperationException();
 			}
 			
-			Jexecutor.highlightAngularElement(element);
+	//		Jexecutor.highlightAngularElement(element);
 			try{
-				eleWait.until(ExpectedConditions.visibilityOfElementLocated(element)).sendKeys(text);
+	//			eleWait.until(ExpectedConditions.visibilityOfElementLocated(element)).sendKeys(text);
+				WebElement ele= driver.findElement(By.xpath(attributevalue));
+				Actions action = new Actions(driver);
+				action.moveToElement(ele).click().build().perform();
+				action.sendKeys(text).build().perform();
+				
+				
 			}catch(ElementNotVisibleException e1){
 				
 				    JavascriptExecutor jss=((JavascriptExecutor)driver);

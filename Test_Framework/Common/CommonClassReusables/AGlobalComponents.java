@@ -20,21 +20,28 @@ public class AGlobalComponents {
 	public static boolean s3BucketUpload = false;
 	public static String s3BucketScript = System.getProperty("user.dir") + "\\ExtentReport\\";
 	
+	public static String identityCode="";
+	
 	public static String browserName ="GC";
-//	public static String applicationURL  = "https://airportdev.cloud.alertenterprise.com/AlertEnterprise/";
-	public static String applicationURL  = "https://airportmit.cloud.alertenterprise.com/AlertEnterprise/";
-//	public static String applicationURL  = "https://automationtest.cloud.alertenterprise.com/AlertEnterprise/";
-//	public static String selfServicePortalURL  = "https://airportdev.cloud.alertenterprise.com/AlertSelfService/";
+//	public static String applicationURL  = "http://192.168.194.122/";
+	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
+
 	public static String selfServicePortalURL  = "https://airportmit.cloud.alertenterprise.com/AlertSelfService/";
-	public static String username = "David";
+	public static String username = "admin";
 	public static String password = "Alert1234";
+	public static String dbUsername = "AEQA14740";
+	public static String dbPassword = "Alert@1234";
+	public static String dbName = "AEQA14740";
 	public static String timezone = "Calcutta";
-	public static String airportPriviledge = "";
+	public static String dbIP="192.168.192.163";
+	public static String dbUrl = "jdbc:sqlserver://"+ dbIP;
 	public final static String recoveryPassword = password;
-	public static String dbConString ="";	
+	public static String dbConString =dbUrl+";user="+dbUsername+";password="+dbPassword+";database="+dbName;	
 	
 	public static String applicantFirstName = "";
+//	public static String applicantFirstName = "AUTOUJES";
 	public static String applicantSSN = "";
-	public static String applicantOrganization = "BRITISH AIRWAYS-LEO";
+	public static int  RANDOM_DATA_GEN_LEN = 10;
+	public static boolean RANDOM_DATA_GEN_FLAG = true;
 	
 }

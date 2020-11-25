@@ -10,17 +10,27 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
@@ -30,7 +40,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -41,13 +51,23 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
+import com.opencsv.CSVReaderBuilder;
 import com.relevantcodes.extentreports.LogStatus;
 
-public class Utility extends BrowserSelection {
+import ObjectRepository.IdentityObjects;
 
+
+
+
+
+public class Utility extends BrowserSelection {
+	
+	public static String testDataDirectory= "Test_Data/IdentityManagement";
+	private static SecureRandom random = new SecureRandom();
 	
 	/**
 	* <h1>recoveryScenario</h1>
@@ -219,7 +239,7 @@ public class Utility extends BrowserSelection {
 		{
 			System.out.println("Failed: "+fieldName+" is not present.");
 			Utility.takeScreenshot(Utility.UniqueNumber(5));
-			logger.log(LogStatus.FAIL, "Failed: "+fieldName+" is not present. Screenshort of BUGG :" + e + imgeHtmlPath);
+			logger.log(LogStatus.INFO, "Failed: "+fieldName+" is not present. Screenshort of BUGG :" + e + imgeHtmlPath);
 			if(stopExecution)
 			{
 				throw (e);
@@ -921,7 +941,7 @@ public class Utility extends BrowserSelection {
 
     //If it is xlsx file then create object of XSSFWorkbook class
 
-    	autoWorkbook = new XSSFWorkbook(inputStream);
+//    	autoWorkbook = new XSSFWorkbook(inputStream);
 
     }
 
@@ -998,7 +1018,7 @@ public class Utility extends BrowserSelection {
 
         //If it is xlsx file then create object of XSSFWorkbook class
 
-        	autoWorkbook = new XSSFWorkbook(inputStream);
+//        	autoWorkbook = new XSSFWorkbook(inputStream);
 
         }
 
@@ -1130,61 +1150,61 @@ public static void updateGuardianUserEmail(String dbIP,String username,String pa
     
 
 
-	public static String validateApplicantCreatedDB(String firstName,String dbIP,String username,String password,String dbName,String typeRDBMS) throws Exception{
-		
-		String uniqueID = "";
-		try
-		{
-	    	//SQL Select Query to Validate Record Created.
-	    	String query =  "select * from AAXT_IDMUSER_DETAILS where COLUMN4='"+firstName+"' and column5='TEST'";
-	    	Connection con = null;
-	    	if(typeRDBMS.equalsIgnoreCase("SQLSERVER"))
-	    	{
-	    		//Connection URL Syntax: "jdbc:sqlserver://ipaddress"		
-	    	    String dbUrl = "jdbc:sqlserver://"+dbIP;
-	    	    
-	    	    //Load sqlserver jdbc driver
-		    	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-		    	
-		    	//Create Connection to DB
-		    	con = DriverManager.getConnection(dbUrl+";user="+username+";password="+password+";database="+dbName);
-	    	}
-	    	else if(typeRDBMS.equalsIgnoreCase("MYSQL")){
-	    		//Connection URL Syntax: "jdbc:mysql://ipaddress:portnumber/db_name"		
-	    	    String dbUrl = "jdbc:mysql://"+dbIP+":3306/"+dbName;		
-	    	    
-	    	    //Load mysql jdbc driver	
-	    	    Class.forName("com.mysql.jdbc.Driver");			
+public static String validateApplicantCreatedDB(String firstName,String dbIP,String username,String password,String dbName,String typeRDBMS) throws Exception{
 	
-	    		//Create Connection to DB		
-	    		con = DriverManager.getConnection(dbUrl,username,password);
-	    	}
+	String uniqueID = "";
+	try
+	{
+    	//SQL Select Query to Validate Record Created.
+    	String query =  "select * from AAXT_IDMUSER_DETAILS where COLUMN4='"+firstName+"' and column5='TEST'";
+    	Connection con = null;
+    	if(typeRDBMS.equalsIgnoreCase("SQLSERVER"))
+    	{
+    		//Connection URL Syntax: "jdbc:sqlserver://ipaddress"		
+    	    String dbUrl = "jdbc:sqlserver://"+dbIP;
+    	    
+    	    //Load sqlserver jdbc driver
+	    	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 	    	
-	    	Statement stmt = con.createStatement();
-	
-	    	//Executing SQL SELECT query using executeQuery()  method of Statement object.
-	    	ResultSet rs = stmt.executeQuery(query);
-	
-	    	//looping through the number of row/rows retrieved after executing SELECT query3
-	    	while(rs.next()) 
-	    	{
-	    		logger.log(LogStatus.PASS, "**********RECORD CREATED IN DB. APPLICANT IS ACTIVE !!!**********");
-	    		System.out.println(rs.getString("ORG_ID") + "\t");
-		    	logger.log(LogStatus.INFO, "DB UPDATED ORGANIZATION ID : "+rs.getString("ORG_ID"));
-		    	System.out.println(rs.getString("COLUMN1") + "\t" + "\t");
-		    	logger.log(LogStatus.INFO, "DB UPDATED USER ID : "+rs.getString("COLUMN1"));
-		    	uniqueID = rs.getString("COLUMN1");
-	    	}
-	    	con.close();
-		}
-		catch(SQLException e)
-		{
-			System.out.println(e);
-		}
-		return uniqueID.trim();
-		
-		
+	    	//Create Connection to DB
+	    	con = DriverManager.getConnection(dbUrl+";user="+username+";password="+password+";database="+dbName);
+    	}
+    	else if(typeRDBMS.equalsIgnoreCase("MYSQL")){
+    		//Connection URL Syntax: "jdbc:mysql://ipaddress:portnumber/db_name"		
+    	    String dbUrl = "jdbc:mysql://"+dbIP+":3306/"+dbName;		
+    	    
+    	    //Load mysql jdbc driver	
+    	    Class.forName("com.mysql.jdbc.Driver");			
+
+    		//Create Connection to DB		
+    		con = DriverManager.getConnection(dbUrl,username,password);
+    	}
+    	
+    	Statement stmt = con.createStatement();
+
+    	//Executing SQL SELECT query using executeQuery()  method of Statement object.
+    	ResultSet rs = stmt.executeQuery(query);
+
+    	//looping through the number of row/rows retrieved after executing SELECT query3
+    	while(rs.next()) 
+    	{
+    		logger.log(LogStatus.PASS, "**********RECORD CREATED IN DB. APPLICANT IS ACTIVE !!!**********");
+    		System.out.println(rs.getString("ORG_ID") + "\t");
+	    	logger.log(LogStatus.INFO, "DB UPDATED ORGANIZATION ID : "+rs.getString("ORG_ID"));
+	    	System.out.println(rs.getString("COLUMN1") + "\t" + "\t");
+	    	logger.log(LogStatus.INFO, "DB UPDATED USER ID : "+rs.getString("COLUMN1"));
+	    	uniqueID = rs.getString("COLUMN1");
+    	}
+    	con.close();
 	}
+	catch(SQLException e)
+	{
+		System.out.println(e);
+	}
+	return uniqueID.trim();
+	
+	
+}
     
     
 	public static void  testMySQLDB() throws  ClassNotFoundException, SQLException {													
@@ -1222,7 +1242,412 @@ public static void updateGuardianUserEmail(String dbIP,String username,String pa
 			con.close();			
 	}
 
+	public static boolean compareStringValues(String string1, String string2) {
+		boolean matched = false;
+		if(checkIfStringIsNotNull(string1)) {
+			if(checkIfStringIsNotNull(string2)) {
+				if(string1.equalsIgnoreCase(string2)) {
+					matched = true;
+				}
+			}
+		}
+		return matched;
+	}
+	public static boolean checkIfStringIsNotNull(String givenStr) {
+		boolean stringIsNotNull = false;
+		if((givenStr != null)||(givenStr != "")) {
+			stringIsNotNull = true;
+		}
+		return stringIsNotNull;
+	}
+	
+	public static boolean checkIfStringIsNotNullAndNotEmpty(String givenStr) {
+		boolean stringIsNotEmptyOrNull = false;
+		if(givenStr != null && !givenStr.isEmpty()) {
+			stringIsNotEmptyOrNull = true;
+		}
+		return stringIsNotEmptyOrNull;
+	}
+	
+
+	
+	
+
+   
+    
+	public static int getIndex(ArrayList<String> list, String value) {
+		int index = -1;
+		if(checkIfListIsNotNullAndNotEmpty(list)) {
+			if(checkIfStringIsNotNullAndNotEmpty(value)) {
+				index = list.indexOf(value);
+			}
+		}
+		return index;
+	}
+
+	public static boolean checkIfListIsNotNullAndNotEmpty(List<?> list){
+		boolean isNotNullAndNotEmpty = false;
+		if(list != null && !list.isEmpty()){
+			isNotNullAndNotEmpty = true;
+		}
+		return isNotNullAndNotEmpty;
+	}
+	
+	public static boolean checkIfListIsNotNull(List<?> list) {
+		boolean isNotNull = false;
+		if(list != null){
+			isNotNull = true;
+		}return isNotNull;
+	}
+
+    
+    public static String getIndexValue(ArrayList<String> list, int index) {
+		String value = "";
+		if(checkIfListIsNotNullAndNotEmpty(list)) {
+			try {
+				value = list.get(index);
+			}
+			catch(Exception exception) {
+				logger.log(LogStatus.ERROR, exception);
+			}
+		}
+		return value;
+	}
+    
+   
+
+    public static ArrayList<ArrayList<String>> getCSVData(String filePath, int skipLines) {
+		List<String[]> contents = null;
+		String[] rowContents = null;
+		ArrayList<String> row = null;
+		ListIterator<String[]> listIterate = null;
+		ArrayList<ArrayList<String>> csvData = null;
+		try {
+			CSVReaderBuilder csvReader = new CSVReaderBuilder(new FileReader(filePath));
+			if (csvReader != null) {
+				System.out.println("Processing Test Data from => " + filePath);
+			}
+			while (skipLines > 0) {
+				csvReader.build().readNext();
+				skipLines--;
+			}
+			contents = csvReader.build().readAll();
+			csvData = new ArrayList<ArrayList<String>>();
+			listIterate = contents.listIterator();
+			while (listIterate.hasNext()) {
+				rowContents = listIterate.next();
+				row = new ArrayList<String>(Arrays.asList(rowContents));
+				csvData.add(row);
+			}
+			csvReader.build().close();
+		} catch (FileNotFoundException fne) {
+			
+			logger.log(LogStatus.ERROR, fne);
+		} catch (IOException ioe) {
+			
+			logger.log(LogStatus.ERROR, ioe);
+		}
+		return csvData;
+	}
+    
+    public static ArrayList<String> getCSVRow(String filePath, int rowNumber) {
+		String[] rowContents = {};
+		ArrayList<String> row = new ArrayList<String>();
+		int increment = 0;
+		try {
+			CSVReaderBuilder csvReader = new CSVReaderBuilder(new FileReader(filePath));
+			if (rowNumber > 0) {
+				while (rowNumber != increment) {
+					rowContents = csvReader.build().readNext();
+					increment++;
+				}
+//				if(rowContents != null) {
+					row = new ArrayList<String>(Arrays.asList(rowContents));
+//				}
+			}	
+			csvReader.build().close();
+		} catch (FileNotFoundException fne) {
+			
+			logger.log(LogStatus.ERROR, fne);
+		} catch (IOException ioe) {
+			
+			logger.log(LogStatus.ERROR, ioe);
+		}
+		catch(Exception e) {
+			logger.log(LogStatus.ERROR, e);
+		}
+		return row;
+	}
+    
+    public static String getCSVCellValue(String filePath, String columnHeader, int rowNumber){
+		String value = "";
+		if(checkIfStringIsNotNullAndNotEmpty(filePath)){
+			if(checkIfStringIsNotNullAndNotEmpty(columnHeader)){
+				try{
+					ArrayList<String> Columns = getCSVColumnPerHeader(filePath, columnHeader);
+					value = Columns.get(rowNumber-1);
+				}
+				catch(Exception exception){
+					logger.log(LogStatus.ERROR, exception.getMessage());
+					
+				}
+			}
+		}
+		return value;
+	}
+    
+    public static ArrayList<String> getCSVColumnPerHeader(String filePath, String Header) {
+		ArrayList<String> colContents = null;
+		String[] rowContents = null;
+		List<String[]> contents = null;
+		ListIterator<String[]> listIterate = null;
+		String[] headers = null;
+		int colNumber = -1;
+		try {
+			CSVReaderBuilder csvReader = new CSVReaderBuilder(new FileReader(filePath));
+			headers = csvReader.build().readNext();
+			for (int i = 0; i < headers.length; i++) {
+				if (headers[i].equalsIgnoreCase(Header)) {
+					colNumber = i;
+					break;
+				}
+			}
+			if (colNumber != -1) {
+				contents = csvReader.build().readAll();
+				listIterate = contents.listIterator();
+				colContents = new ArrayList<String>();
+				while (listIterate.hasNext()) {
+					rowContents = listIterate.next();
+					colContents.add(rowContents[colNumber]);
+				}
+			}
+			csvReader.build().close();
+		} catch (FileNotFoundException fne) {
+			logger.log(LogStatus.ERROR, fne);
+		} catch (IOException ioe) {
+			logger.log(LogStatus.ERROR, ioe);
+		} catch(Exception e) {
+			logger.log(LogStatus.ERROR, e);
+		}
+		return colContents;
+	}
 
 
+    public static int getRandomNumber(int min, int max) {
+		Random randomGenerator = new Random();
+		int value = randomGenerator.nextInt((max - min) + 1) + min;
+		return value;
+	}
+    
+    public static String getRandomString(int length) {
+		String result = new BigInteger(Long.SIZE * length, random).toString(32);
+		return result.substring(0, length);
+	}
+    
+    public static long getRandomNumber(int numberOfDigits) {
+		Random randomGenerator = new Random();
+		long accumulator = 1 + randomGenerator.nextInt(9);
+		for (int i = 0; i < (numberOfDigits - 1); i++) {
+			accumulator *= 10L;
+			accumulator += randomGenerator.nextInt(10);
+		}
+		return accumulator;
+	}
 
+    public static Properties loadPropertyFile(String path) {
+		Properties _props = new Properties();
+		try {
+			_props.load(new FileInputStream(path));
+		} catch (IOException ioe) {
+			System.err.println(ioe.getMessage());
+			logger.log(LogStatus.ERROR, ioe);
+		}
+		return _props;
+	}
+    
+    public static ArrayList<ArrayList<String>> objectToStringConversion(
+			ArrayList<ArrayList<Object>> objDataLists) {
+		ArrayList<ArrayList<String>> strDataLists = new ArrayList<ArrayList<String>>();
+		if(objDataLists != null){
+			for (ArrayList<Object> objDataList : objDataLists) {
+				ArrayList<String> strDataList = new ArrayList<String>();
+				for (Object objData : objDataList) {
+					if(objData != null){
+						strDataList.add(objData.toString());
+					}
+					else{
+						strDataList.add("");
+					}
+				}
+				strDataLists.add(strDataList);
+			}
+		}
+		return strDataLists;
+	}
+    
+    public static ArrayList<String> getArrayOfRandomString(int lengthOfArray,
+			int lengthOfElements) {
+		ArrayList<String> randomArray = new ArrayList<String>();
+		for (int i = 0; i < lengthOfArray; i++) {
+			randomArray
+					.add(new BigInteger(Long.SIZE * lengthOfElements, random)
+							.toString(32).substring(0, lengthOfElements)
+							.toUpperCase());
+		}
+		return randomArray;
+	}
+    
+    public static boolean checkIfFileExists(String fileName) {
+		boolean exists = false;
+		if(checkIfStringIsNotNullAndNotEmpty(fileName)) {
+			File obj = new File(fileName);
+			if(obj.exists() && !obj.isDirectory()){
+				exists = true;
+			}
+		}
+		return exists;
+	}
+    
+    public static boolean doesPackageExists(String packageName) {
+		if (!(new File("bin/" + packageName.replace('.', '/'))).exists()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+    
+    public static boolean compareListSize(
+			ArrayList<?> list1,
+			ArrayList<?> list2) {
+
+		boolean listSizeMatched = false;
+		if(list1 != null && !list1.isEmpty()){
+			if(list2 != null && !list2.isEmpty()){
+				int list1Length = list1.size();
+				int list2Length = list2.size();
+				if(list1Length == list2Length){
+					listSizeMatched = true;
+				}
+			}
+			else{
+				logger.log(LogStatus.ERROR, "Failed to compare list sizes. Reason : Second list is either null or empty.");
+			}
+		}
+		else{
+			logger.log(LogStatus.ERROR, "Failed to compare list sizes. Reason : First list is either null or empty.");
+		}
+		return listSizeMatched;
+	}
+
+    public static ArrayList<ArrayList<String>> appendColumnDataAtEnd(ArrayList<ArrayList<String>> existingData, ArrayList<String> columnData){
+		ArrayList<ArrayList<String>> appendedData = new ArrayList<ArrayList<String>>();
+		if(checkIfListIsNotNullAndNotEmpty(existingData)) {
+			if(checkIfListIsNotNullAndNotEmpty(columnData)) {
+				if((checkIfListIsNotEmpty(existingData) && compareListSize(existingData, columnData))) {
+					int index = 0;
+					for(ArrayList<String> eachExistingRow : existingData){
+						ArrayList<String> newRow = new ArrayList<String>();
+						newRow.addAll(eachExistingRow);
+						newRow.add(columnData.get(index));
+						appendedData.add(newRow);
+						index++;
+					}
+				}
+				else {
+					logger.log(LogStatus.ERROR, "Failed to append list. Reason : existing data list " + existingData + " and column data list " + columnData + " is null or empty.");
+					logger.log(LogStatus.ERROR, "Failed to append list. Reason : existing data list " + existingData + " and column data list " + columnData + " is null or empty.");
+				}
+			}
+			else {
+				appendedData = existingData;
+			}
+		}
+		else {
+			appendedData = convert1DTo2D(columnData);
+		}
+		return appendedData;
+	}
+    
+    public static boolean checkIfListIsNotEmpty(List<?> list){
+		boolean isNotEmpty = false;
+		if(!list.isEmpty()){
+			isNotEmpty = true;
+		}
+		return isNotEmpty;
+	}
+    
+    public static ArrayList<ArrayList<String>> convert1DTo2D(ArrayList<String> OneDList){
+		ArrayList<ArrayList<String>> twoDList = new ArrayList<ArrayList<String>>();
+		if(checkIfListIsNotNullAndNotEmpty(OneDList)) {
+			for(String cell : OneDList) {
+				ArrayList<String> eachColumn = new ArrayList<String>();
+				if(checkIfStringIsNotNull(cell))
+					eachColumn.add(cell);
+				else
+					eachColumn.add("");
+				twoDList.add(eachColumn);
+			}
+		}
+		return twoDList;
+	}
+    
+    public static boolean checkIfDirectoryExists(String directoryName) {
+		boolean exists = false;
+		if(checkIfStringIsNotNullAndNotEmpty(directoryName)) {
+			File obj = new File(directoryName);
+			if(obj.exists() && obj.isDirectory()){
+				exists = true;
+			}
+		}
+		return exists;
+	}
+    
+    public static String getFileName(String filePath){
+		String fileName = "";
+		int fileSeperatorLastIndex = filePath.lastIndexOf("/");
+		fileName = fileSeperatorLastIndex >= 0?filePath.substring(fileSeperatorLastIndex + 1) : filePath;
+		return fileName;
+	}
+    
+    public static boolean checkIfListContains(ArrayList<String> list,
+			String str) {
+		boolean exist = false;
+		if(list != null && !list.isEmpty()){
+			if(checkIfStringIsNotNullAndNotEmpty(str)){
+				if(list.indexOf(str) != -1){
+					exist = true;
+				}
+			}
+			else{
+				logger.log(LogStatus.ERROR, "Input string is empty.");
+			}
+		}
+		else{
+			logger.log(LogStatus.ERROR, "Input list is null or empty.");
+		}
+		return exist;
+	}
+    
+    public static String getDate(String dateFormat, int difference, String type) {
+		Calendar cal = Calendar.getInstance();
+		try {
+			if (difference != 0) {
+				if (type.equalsIgnoreCase("days")) {
+					cal.add(Calendar.DATE, difference);
+				} else if (type.equalsIgnoreCase("months")) {
+					cal.add(Calendar.MONTH, difference);
+				} else if (type.equalsIgnoreCase("years")) {
+					cal.add(Calendar.YEAR, difference);
+				}
+			}
+			Date updatedDate = cal.getTime();
+			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+			format.setLenient(false);
+			return format.format(updatedDate);
+		} catch (IllegalArgumentException e) {
+			logger.log(LogStatus.ERROR, e);
+			return null;
+		}
+	}
+	
 }

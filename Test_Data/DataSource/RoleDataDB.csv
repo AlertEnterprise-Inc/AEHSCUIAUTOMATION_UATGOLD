@@ -1,0 +1,245 @@
+RoleName,RoleDescription
+CONTRACTOR,Controls the user access
+WEBMAIL,Controls the user access
+SALESWEB,Controls the user access
+ISG-PROD,Controls the user access
+EMPLOYEE,Controls the user access
+WORKPLACE,Controls the user access
+PERFORMANCE MONITOR USERS,Controls the user access
+WINDOWS AUTHORIZATION ACCESS GROUP,Controls the user access
+PERFORMANCE LOG USERS,Controls the user access
+DISTRIBUTED COM USERS,Controls the user access
+PRINT OPERATORS,Controls the user access
+DOMAIN ADMINS,Controls the user access
+ACCOUNT OPERATORS,Controls the user access
+DOMAIN ACCOUNTS,Controls the user access
+GUESTS,Controls the user access
+DOMAIN GUESTS,Controls the user access
+DOMAIN COMPUTERS,Controls the user access
+REPLICATOR,Controls the user access
+DOMAIN CONTROLLERS,Controls the user access
+GROUP POLICY CREATOR OWNERS,Controls the user access
+RAS AND IAS SERVERS,Controls the user access
+USERS,Controls the user access
+REMOTE DESKTOP USERS,Controls the user access
+HP-STORAGE-L3,Controls the user access
+HP-WINTEL-L2,Controls the user access
+HP-PRINT-L3,Controls the user access
+HP-WINTEL-L3,Controls the user access
+SYSTEM - DOMAIN ADMIN,Controls the user access
+SERVICE - DOMAIN ADMIN,Controls the user access
+HP-UAA-L3,Controls the user access
+MSO WEBDIR USER,Controls the user access
+HP-BACKUP-L3,Controls the user access
+HCL WINTEL L3,Controls the user access
+HPSIM,Controls the user access
+US-JBS GR24_R,Controls the user access
+ENTERPRISE $WKSADMIN,Controls the user access
+CA-YKF MFGAPPS,Controls the user access
+US-MCN GRPDATA,Controls the user access
+ENTERPRISE EP MGR,Controls the user access
+ENTERPRISE QCKVIEW5,Controls the user access
+US-ROL MAINT,Controls the user access
+ENTERPRISE $AMFADMIN,Controls the user access
+ENTERPRISE CITRIX_I2,Controls the user access
+ENTERPRISE REMDYPTL,Controls the user access
+US-JBS TRTDOCS,Controls the user access
+SAPADMIN,Controls the user access
+SIEBELADMIN,Controls the user access
+MAINFRMADMIN,Controls the user access
+US-YNG $SERVER,Controls the user access
+DRA-NSR-YNG,Controls the user access
+QUALITY ESCALATION REPORTS_DB3,Controls the user access
+SALES - CHARCOAL - RETAIL OPERATIONS,Controls the user access
+PSTS - ENGINEERING OPERATIONS,Controls the user access
+RETAIL AGREEMENT FORWARDED,Controls the user access
+REMEDY HELP DESK USERS B,Controls the user access
+SALES - CHARCOAL - ACCOUNT HANDLERS,Controls the user access
+NEW VENTURES_DB3A,Controls the user access
+ML WORLD RECORDS,Controls the user access
+MRO INVOICE_DB3,Controls the user access
+OTP PROJECT_DB3,Controls the user access
+MOBILE VC RESERVATIONS,Controls the user access
+NEW ZEALAND ACCOUNTING,Controls the user access
+MOLDING GROUP CREW A,Controls the user access
+ML WIRED FOR OLAP (US-PLANTS),Controls the user access
+OPTIMIZE COE_DB3,Controls the user access
+PDM USER COMMUNITY (FIRST NAMES H - K),Controls the user access
+ML VENEZUELA NEVEX'S PLANT,Controls the user access
+ML SUPPLY CHAIN MANAGERS-PLANNING,Controls the user access
+ML TBS C-D,Controls the user access
+ML TDM_T2,Controls the user access
+ML TCOELT,Controls the user access
+ML TBS T-Z,Controls the user access
+ML TENDER OFFER 1,Controls the user access
+ML T&E EXPENSE REPORTING MGMT,Controls the user access
+ML TEAMSITE USERS,Controls the user access
+ML SUPPLY CHAIN MANAGERS-ALL,Controls the user access
+ML TCOE PMO,Controls the user access
+ML SUPPORT GROUP,Controls the user access
+ML TRADE FUNDS SIMPLIFICATION PROJ,Controls the user access
+ML TBS P-R,Controls the user access
+ML TORONTO,Controls the user access
+ML TMS INTEGRATION TEAM,Controls the user access
+ML TENDER OFFER 2,Controls the user access
+ML TBS E-H,Controls the user access
+ML SUPPLY CHAIN MANAGERS-STRATEGIC,Controls the user access
+ML T&E PILOT,Controls the user access
+ML TBS A-B,Controls the user access
+ML TENDER OFFER 3,Controls the user access
+ML STDS PUBS - FPD,Controls the user access
+ML STDS PUBS - GLAD,Controls the user access
+ML STDS PART ADDS - KFD,Controls the user access
+ML STDS PUBS - HOME CARE,Controls the user access
+ML STDS PUBS - PET CARE,Controls the user access
+ML STDS PART ADDS - HPD,Controls the user access
+ML STDS PUBS - INSECTICIDES,Controls the user access
+ML STORAGE,Controls the user access
+ML STDS PUBS - HS&E,Controls the user access
+ML STDS PART ADDS - FPD,Controls the user access
+ML STDS PUBS - LAUNDRY,Controls the user access
+ML STDS PUBS - HPD (PPD),Controls the user access
+ML STDS PUBS - AUTO CARE,Controls the user access
+ML STDS PUBS - LAUNDRY2,Controls the user access
+PR-SJU_CAGUAS MANUFACTURING,Controls the user access
+PR-SJU_CAGUAS MAINTENANCE,Controls the user access
+PR-SJU_CAGUAS LOGISTICS,Controls the user access
+PR-SJU_LEADERSHIP,Controls the user access
+MX-TLA_PS,Controls the user access
+MY-KUL_MKT,Controls the user access
+PR-SJU_INTERNET RESTRICTED ACCESS,Controls the user access
+PR-SJU_SALES,Controls the user access
+PR-SJU_S&OP,Controls the user access
+PR-SJU_PROJECT EX,Controls the user access
+PR-SJU_CAGUAS MATERIALES,Controls the user access
+ICP MFG PRODUCTS,Controls the user access
+INTERNATIONAL & AQUIST. INTEG. CONTENT OWNER,Controls the user access
+ICP CANADA PAYROLL AND BENEFITS,Controls the user access
+ICP CANADA INVENTORY,Controls the user access
+GLAD ALTERNATIVE PACKAGING_DB3,Controls the user access
+FORECAST MANAGER TEAM,Controls the user access
+HPT COACH_DB4,Controls the user access
+FW 6,Controls the user access
+GROUP - CORPORATE PROCUREMENT_DB4,Controls the user access
+LAUNDRY FUNCTIONAL REVIEW - FMA/SENDAS,Controls the user access
+KINGSFORD PILOT PLANT - FMA/SENDAS,Controls the user access
+LA GENTE DE CLOROX - FMA/SENDAS,Controls the user access
+KINGSFORD FUNCTIONAL REVIEW - FMA/SENDAS,Controls the user access
+JBJOBSHARE - FMA/SENDAS,Controls the user access
+JBS050 - FMA/SENDAS,Controls the user access
+ISHARE ADMIN - FMA/SENDAS,Controls the user access
+ISSUPPORT-COLOMBIA - FMA/SENDAS,Controls the user access
+AMERICAS JOB BANK - FMA/SENDAS,Controls the user access
+KCM FUNCTIONAL REVIEW - FMA/SENDAS,Controls the user access
+E2010-MSO SELF SERVICE - EAS POLICY,Controls the user access
+E2010-MSO SELF SERVICE - EAS USER,Controls the user access
+E2010-MSO SELF SERVICE - DDG MANAGEMENT,Controls the user access
+E2010-MSO SELF SERVICE - MAILBOX PERMISSIONS,Controls the user access
+E2010-MSO SELF SERVICE - MAILBOX SEARCH,Controls the user access
+E2010-MSO SELF SERVICE - EAS WIPE,Controls the user access
+E2010-MSO SELF SERVICE - VO ADMIN,Controls the user access
+E2010-MSO SELF SERVICE - PROTOCOL CONTROL,Controls the user access
+E2010-MSO SELF SERVICE - MESSAGE TRACKING,Controls the user access
+E2010-MSO SELF SERVICE - MAIL TIPS AUTHOR,Controls the user access
+E2010-MSO SELF SERVICE - USER MRM MANAGEMENT,Controls the user access
+E2010-MSO SELF SERVICE - RBA SETTINGS,Controls the user access
+AU-SYD_CATSOFT,Controls the user access
+BIZTALK APPLICATION USERS,Controls the user access
+BIZTALK ISOLATED HOST USERS,Controls the user access
+BIZTALK SERVER ADMINISTRATORS,Controls the user access
+BIZTALK SERVER OPERATORS,Controls the user access
+RTCUNIVERSALGLOBALWRITEGROUP,Controls the user access
+RTCUNIVERSALGLOBALREADONLYGROUP,Controls the user access
+RESPONSYS,Controls the user access
+CN-HKG_HR,Controls the user access
+DO-SDQ_OWS_906644832_ADMIN,Controls the user access
+IPLAN-PROJECT-BASIS,Controls the user access
+DF FINANCE,Controls the user access
+US-JBS AP,Controls the user access
+ABERDEEN CURTAILMENT GROUP - FMA/SENDAS,Controls the user access
+ALI - FMA/SENDAS,Controls the user access
+ALMACEN CHARALLAVE - FMA/SENDAS,Controls the user access
+AUST HELP DESK - FMA/SENDAS,Controls the user access
+AGENTE BACKUP - FMA/SENDAS,Controls the user access
+MAILOUT INTERNATIONAL5,Controls the user access
+ML NE MIXED RDC,Controls the user access
+MIXED NETWORK,Controls the user access
+CONVERTCLICK,Controls the user access
+US-JBS FINANCE2,Controls the user access
+PLANT ENGINEERING CONTACTS,Controls the user access
+MIDLAND R&D GROUP,Controls the user access
+MIDLAND SALES PLANNING GROUP,Controls the user access
+MIDLAND SITE EMPLOYEE GROUP,Controls the user access
+CLOSE STATUS EMAIL DISTRIBUTION,Controls the user access
+CONTABILIDAD ECUADOR - FMA/SENDAS,Controls the user access
+LEGAL CORPORATE SECRETARY - FMA/SENDAS,Controls the user access
+AUTOMATED MESSENGER - FMA/SENDAS,Controls the user access
+OUTLOOK COMMAND CENTER - FMA/SENDAS,Controls the user access
+HFM ADMIN - FMA/SENDAS,Controls the user access
+ML ECUADOR OFFICE USERS,Controls the user access
+P2P-TREASURY - FMA/SENDAS,Controls the user access
+RECEPTION DESK - FMA/SENDAS,Controls the user access
+ALTA PROVEEDORES - FMA/SENDAS,Controls the user access
+COMMUNITY RELATIONS - FMA/SENDAS,Controls the user access
+INBOUND ROANOKE - FMA/SENDAS,Controls the user access
+SALES FINANCE CALENDAR - FMA/SENDAS,Controls the user access
+LATHROP SCHEDULING - FMA/SENDAS,Controls the user access
+BCP APD MANAGER,Controls the user access
+BCP APD STAKEHOLDERS - TIER 1,Controls the user access
+BRITA FUNCTIONAL REVIEW - FMA/SENDAS,Controls the user access
+BRAVO RECOGNITION - FMA/SENDAS,Controls the user access
+BATHWAND FUNCTIONAL REVIEW - FMA/SENDAS,Controls the user access
+BCP ALPHARETTA - FMA/SENDAS,Controls the user access
+BELLE BRIQUETTING - FMA/SENDAS,Controls the user access
+SERVILABOR BOGOTA - FMA/SENDAS,Controls the user access
+BENEFITS2008 - FMA/SENDAS,Controls the user access
+BENTONVILLE LEADERSHIP TEAM GROUP CALENDAR - FMA/SENDAS,Controls the user access
+MANTENIMIENTO BONZI - FMA/SENDAS,Controls the user access
+BENEFITS2007 - FMA/SENDAS,Controls the user access
+BRAND MENTORSHIP PROGRAM - FMA/SENDAS,Controls the user access
+BCP ETHERNET - FMA/SENDAS,Controls the user access
+BRITADRCOORDINATOR - FMA/SENDAS,Controls the user access
+LATAM IT MANAGERS,Controls the user access
+FOREST PARK COMMUNITY - FMA/SENDAS,Controls the user access
+ENACTUS-FMA/SENDAS,Controls the user access
+APLICARE MERIDEN OFFICE,Controls the user access
+EVENTS,Controls the user access
+US-JBS BPSMGMT,Controls the user access
+US-JBS DELTAVACLIST,Controls the user access
+ML IT BSM LT,Controls the user access
+ML IT BSM LT EXTENDED,Controls the user access
+VE-SL_GR_MANTENIMIENTO,Controls the user access
+IT GOVERNANCE-FMA/SENDAS,Controls the user access
+LFC NP AND BASE BRAND MANAGERS,Controls the user access
+RENO TEAM LEADS,Controls the user access
+RENO SUPPORT TEAM,Controls the user access
+YSIINSTALL,Controls the user access
+LFC MARKETING TEAM,Controls the user access
+LFC BASE BRAND MANAGERS,Controls the user access
+US-RNO BUSSUP,Controls the user access
+US-ADMIN-SRA,Controls the user access
+HLKCUSTOMERSVC-FMA/SENDAS,Controls the user access
+AUECOM-MODIFY,Controls the user access
+AUECOM-READ,Controls the user access
+ACCOUNTING PR,Controls the user access
+PICOP,Controls the user access
+PHMARKETING,Controls the user access
+PHEXECUTIVE,Controls the user access
+PHFINANCE,Controls the user access
+PHPLT,Controls the user access
+PHSALES,Controls the user access
+PHPSO,Controls the user access
+PHEVERYONE,Controls the user access
+ESSBASEFINANCIAL-FMA/SENDAS,Controls the user access
+ML BSM LEADERSHIP,Controls the user access
+RENO SCHEDULING TEAM,Controls the user access
+MSO BTS SHARE,Controls the user access
+ML - PSAT - TECH DOC MGMT TEAM,Controls the user access
+ML ATL - FIRST AID GROUP,Controls the user access
+ML AMHERST ACCOUNTING,Controls the user access
+ML ATL - HOLD CORRECTIVE ACTION - MOLD FILL,Controls the user access
+ML 2005 CORE COMP,Controls the user access
+ML AMHERST SALARIED EXEMPT,Controls the user access
+ML APP SVCS EXTENDED,Controls the user access
+ML - RAS-VPN PILOT 2,Controls the user access
+ML - SCHEDULERS,Controls the user access

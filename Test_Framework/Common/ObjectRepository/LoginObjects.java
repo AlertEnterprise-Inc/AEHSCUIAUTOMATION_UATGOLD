@@ -16,6 +16,12 @@ public interface LoginObjects {
 	
 	String loginTimeZoneDdn = ".//*[@class='select-control' and @name='signinpod:tzDropdown']";
 	
+	String loginUserName = "//input[@placeholder='Enter Username']";
+	
+	String pswdTxt = "//input[@placeholder='Enter Password']";
+	
+	String loginButtonLnk = "//span[normalize-space(text())='Login to Alert']";
+	
 	
 	// **********************Self Service Login controls*********************//
 	

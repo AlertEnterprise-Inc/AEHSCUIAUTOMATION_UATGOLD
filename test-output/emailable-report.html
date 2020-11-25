@@ -1,193 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>TestNG:  Unit Test</title>
-<style type="text/css">
-table caption,table.info_table,table.result,table.passed,table.failed {margin-bottom:10px;border:1px solid #000099;border-collapse:collapse;empty-cells:show;}
-table.info_table td,table.info_table th,table.result td,table.result th,table.passed td,table.passed th,table.failed td,table.failed th {
-border:1px solid #000099;padding:.25em .5em .25em .5em
-}
-table.result th {vertical-align:bottom}
-tr.param th {padding-left:1em;padding-right:1em}
-tr.param td {padding-left:.5em;padding-right:2em}
-td.numi,th.numi,td.numi_attn {
-text-align:right
-}
-tr.total td {font-weight:bold}
-table caption {
-text-align:center;font-weight:bold;
-}
-table.passed tr.stripe td,table tr.passedodd td {background-color: #00AA00;}
-table.passed td,table tr.passedeven td {background-color: #33FF33;}
-table.passed tr.stripe td,table tr.skippedodd td {background-color: #cccccc;}
-table.passed td,table tr.skippedodd td {background-color: #dddddd;}
-table.failed tr.stripe td,table tr.failedodd td,table.result td.numi_attn {background-color: #FF3333;}
-table.failed td,table tr.failedeven td,table.result tr.stripe td.numi_attn {background-color: #DD0000;}
-tr.stripe td,tr.stripe th {background-color: #E6EBF9;}
-p.totop {font-size:85%;text-align:center;border-bottom:2px black solid}
-div.shootout {padding:2em;border:3px #4854A8 solid}
-</style>
-</head>
-<body>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr><th>Test</th><th class="numi">Methods<br/>Passed</th><th class="numi">Scenarios<br/>Passed</th><th class="numi"># skipped</th><th class="numi"># failed</th><th class="numi">Total<br/>Time</th><th class="numi">Included<br/>Groups</th><th class="numi">Excluded<br/>Groups</th></tr>
-<tr><td style="text-align:left;padding-right:2em">Default test</td><td class="numi">0</td><td class="numi">0</td><td class="numi">0</td><td class="numi_attn">1</td><td class="numi">4.8 seconds</td><td class="numi"></td><td class="numi"></td></tr>
-</table>
-<table cellspacing="0" cellpadding="0" class="passed" id="summary">
-<tr><th>Class</th><th>Method</th><th># of<br/>Scenarios</th><th>Start</th><th>Time<br/>(ms)</th></tr>
-<tr><th colspan="4">Default test &#8212; failed (configuration methods)</th></tr>
-<tr class="failedodd"><td rowspan="1">restAssuredTestCases.RestAssuredDemo</td><td><a href="#m1"><b>afterMethod</b>  </a></td><td class="numi">1</td><td>1599656852848</td><td class="numi">0</td></tr>
-<tr><th colspan="4">Default test &#8212; failed</th></tr>
-<tr class="failedodd"><td rowspan="1">restAssuredTestCases.RestAssuredDemo</td><td><a href="#m2"><b>GetWeatherDetails002</b>  </a></td><td class="numi">1</td><td>1599656851811</td><td class="numi">1035</td></tr>
-<tr><th colspan="4">Default test &#8212; skipped (configuration methods)</th></tr>
-<tr class="skippedodd"><td rowspan="1">restAssuredTestCases.RestAssuredDemo</td><td><a href="#m3"><b>quitDriver</b>  </a></td><td class="numi">1</td><td>1599656852897</td><td class="numi">0</td></tr>
-</table>
-<h1>Default test</h1>
-<h2 id="m1">restAssuredTestCases.RestAssuredDemo:afterMethod</h2>
-<table cellspacing="0" cellpadding="0" class="result">
-<tr class="param"><th>Parameter #1</th></tr>
-<tr class="param stripe"><td>[TestResult name=GetWeatherDetails002 status=FAILURE method=RestAssuredDemo.GetWeatherDetails002()[pri:0, instance:restAssuredTestCases.RestAssuredDemo@65466a6a] output={null}]</td>
-</tr>
-<tr><td style="padding-left:3em" colspan="1">
-<p>null</p>
-CommonClassReusables.BrowserSelection.afterMethod(BrowserSelection.java:184)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-<br/>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-<br/>at java.lang.reflect.Method.invoke(Method.java:498)
-<br/>at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
-<br/>at org.testng.internal.Invoker.invokeConfigurationMethod(Invoker.java:564)
-<br/>at org.testng.internal.Invoker.invokeConfigurations(Invoker.java:213)
-<br/>at org.testng.internal.Invoker.invokeMethod(Invoker.java:786)
-<br/>at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
-<br/>at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
-<br/>at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
-<br/>at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
-<br/>at org.testng.TestRunner.privateRun(TestRunner.java:767)
-<br/>at org.testng.TestRunner.run(TestRunner.java:617)
-<br/>at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
-<br/>at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
-<br/>at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
-<br/>at org.testng.SuiteRunner.run(SuiteRunner.java:240)
-<br/>at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-<br/>at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-<br/>at org.testng.TestNG.runSuitesSequentially(TestNG.java:1198)
-<br/>at org.testng.TestNG.runSuitesLocally(TestNG.java:1123)
-<br/>at org.testng.TestNG.run(TestNG.java:1031)
-<br/>at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:114)
-<br/>at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-<br/>at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-<br/>1 lines not shown
-</td></tr>
-</table>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m2">restAssuredTestCases.RestAssuredDemo:GetWeatherDetails002</h2>
-<div style="padding-left:3em">
-<p>restapi.demoqa.com</p>
-java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
-<br/>at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:929)
-<br/>at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1324)
-<br/>at java.net.InetAddress.getAllByName0(InetAddress.java:1277)
-<br/>at java.net.InetAddress.getAllByName(InetAddress.java:1193)
-<br/>at java.net.InetAddress.getAllByName(InetAddress.java:1127)
-<br/>at org.apache.http.impl.conn.SystemDefaultDnsResolver.resolve(SystemDefaultDnsResolver.java:45)
-<br/>at org.apache.http.impl.conn.DefaultClientConnectionOperator.resolveHostname(DefaultClientConnectionOperator.java:263)
-<br/>at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:162)
-<br/>at org.apache.http.impl.conn.ManagedClientConnectionImpl.open(ManagedClientConnectionImpl.java:326)
-<br/>at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:610)
-<br/>at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:445)
-<br/>at org.apache.http.impl.client.AbstractHttpClient.doExecute(AbstractHttpClient.java:835)
-<br/>at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
-<br/>at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:56)
-<br/>at org.apache.http.client.HttpClient$execute$0.call(Unknown Source)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:148)
-<br/>at io.restassured.internal.RequestSpecificationImpl$RestAssuredHttpBuilder.doRequest(RequestSpecificationImpl.groovy:2055)
-<br/>at io.restassured.internal.http.HTTPBuilder.doRequest(HTTPBuilder.java:495)
-<br/>at io.restassured.internal.http.HTTPBuilder.request(HTTPBuilder.java:452)
-<br/>at io.restassured.internal.http.HTTPBuilder$request$2.call(Unknown Source)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:166)
-<br/>at io.restassured.internal.RequestSpecificationImpl.sendHttpRequest(RequestSpecificationImpl.groovy:1451)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-<br/>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-<br/>at java.lang.reflect.Method.invoke(Method.java:498)
-<br/>at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
-<br/>at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1262)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1029)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:816)
-<br/>at groovy.lang.GroovyObject.invokeMethod(GroovyObject.java:39)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.call(PogoInterceptableSite.java:45)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.callCurrent(PogoInterceptableSite.java:55)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
-<br/>at io.restassured.internal.RequestSpecificationImpl.sendRequest(RequestSpecificationImpl.groovy:1200)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-<br/>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-<br/>at java.lang.reflect.Method.invoke(Method.java:498)
-<br/>at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
-<br/>at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1262)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1029)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:816)
-<br/>at groovy.lang.GroovyObject.invokeMethod(GroovyObject.java:39)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.call(PogoInterceptableSite.java:45)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:166)
-<br/>at io.restassured.internal.filter.SendRequestFilter.filter(SendRequestFilter.groovy:30)
-<br/>at io.restassured.filter.Filter$filter$0.call(Unknown Source)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at io.restassured.filter.Filter$filter.call(Unknown Source)
-<br/>at io.restassured.internal.filter.FilterContextImpl.next(FilterContextImpl.groovy:72)
-<br/>at io.restassured.filter.time.TimingFilter.filter(TimingFilter.java:56)
-<br/>at io.restassured.filter.Filter$filter.call(Unknown Source)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:157)
-<br/>at io.restassured.internal.filter.FilterContextImpl.next(FilterContextImpl.groovy:72)
-<br/>at io.restassured.filter.FilterContext$next.call(Unknown Source)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCall(CallSiteArray.java:47)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:125)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.call(AbstractCallSite.java:148)
-<br/>at io.restassured.internal.RequestSpecificationImpl.applyPathParamsAndSendRequest(RequestSpecificationImpl.groovy:1655)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-<br/>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-<br/>at java.lang.reflect.Method.invoke(Method.java:498)
-<br/>at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
-<br/>at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1262)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1029)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:816)
-<br/>at groovy.lang.GroovyObject.invokeMethod(GroovyObject.java:39)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.call(PogoInterceptableSite.java:45)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.callCurrent(PogoInterceptableSite.java:55)
-<br/>at org.codehaus.groovy.runtime.callsite.CallSiteArray.defaultCallCurrent(CallSiteArray.java:51)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:171)
-<br/>at org.codehaus.groovy.runtime.callsite.AbstractCallSite.callCurrent(AbstractCallSite.java:203)
-<br/>at io.restassured.internal.RequestSpecificationImpl.request(RequestSpecificationImpl.groovy:295)
-<br/>at io.restassured.internal.RequestSpecificationImpl.request(RequestSpecificationImpl.groovy)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-<br/>at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-<br/>at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-<br/>at java.lang.reflect.Method.invoke(Method.java:498)
-<br/>at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:107)
-<br/>at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:323)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1262)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1029)
-<br/>at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:816)
-<br/>at groovy.lang.GroovyObject.invokeMethod(GroovyObject.java:39)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.call(PogoInterceptableSite.java:45)
-<br/>at org.codehaus.groovy.runtime.callsite.PogoInterceptableSite.callCurrent(PogoInterceptableSite.java:55)
-<br/>31 lines not shown
-</div>
-<p class="totop"><a href="#summary">back to summary</a></p>
-<h2 id="m3">restAssuredTestCases.RestAssuredDemo:quitDriver</h2>
-<p class="totop"><a href="#summary">back to summary</a></p>
-</body></html>
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>TestNG Report</title><style type="text/css">table {margin-bottom:10px;border-collapse:collapse;empty-cells:show}th,td {border:1px solid #009;padding:.25em .5em}th {vertical-align:bottom}td {vertical-align:top}table a {font-weight:bold}.stripe td {background-color: #E6EBF9}.num {text-align:right}.passedodd td {background-color: #3F3}.passedeven td {background-color: #0A0}.skippedodd td {background-color: #DDD}.skippedeven td {background-color: #CCC}.failedodd td,.attn {background-color: #F33}.failedeven td,.stripe .attn {background-color: #D00}.stacktrace {white-space:pre;font-family:monospace}.totop {font-size:85%;text-align:center;border-bottom:2px solid #000}</style></head><body><table><tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr><tr><th colspan="7">Suite</th></tr><tr><td><a href="#t0">Test</a></td><td class="num">3</td><td class="num">0</td><td class="num attn">2</td><td class="num">1,551,441</td><td></td><td></td></tr></table><table><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="2">webDriverTestCases.FB_Automation</td><td><a href="#m0">FB_Automation_TC003</a></td><td rowspan="1">1606307434641</td><td rowspan="1">186538</td></tr><tr class="failedeven"><td><a href="#m1">FB_Automation_TC005</a></td><td rowspan="1">1606307761968</td><td rowspan="1">244780</td></tr><tr><th colspan="4">Test &#8212; passed</th></tr><tr class="passedeven"><td rowspan="3">webDriverTestCases.FB_Automation</td><td><a href="#m2">FB_Automation_TC001</a></td><td rowspan="1">1606306461976</td><td rowspan="1">853145</td></tr><tr class="passedeven"><td><a href="#m3">FB_Automation_TC002</a></td><td rowspan="1">1606307316372</td><td rowspan="1">117211</td></tr><tr class="passedeven"><td><a href="#m4">FB_Automation_TC004</a></td><td rowspan="1">1606307622617</td><td rowspan="1">137921</td></tr></tbody></table><h2>Test</h2><h3 id="m0">webDriverTestCases.FB_Automation#FB_Automation_TC003</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[contains(text(),&apos;admin user&apos;)]&quot;}
+  (Session info: chrome=86.0.4240.198)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.13&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 86.0.4240.198, webStorageEnabled: true}
+Session ID: 71435ce1643cece9fff6aad2f59e70ac
+*** Element info: {Using=xpath, value=//span[contains(text(),&apos;admin user&apos;)]}
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:370)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:472)
+	at org.openqa.selenium.By$ByXPath.findElement(By.java:361)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
+	at CommonFunctions.LoginPage.logout(LoginPage.java:152)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC003(FB_Automation.java:118)
+... Removed 29 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p><h3 id="m1">webDriverTestCases.FB_Automation#FB_Automation_TC005</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[contains(text(),&apos;admin user&apos;)]&quot;}
+  (Session info: chrome=86.0.4240.198)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.13&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 86.0.4240.198, webStorageEnabled: true}
+Session ID: 4eb250c4d61dccd328aee37aa4ace1fb
+*** Element info: {Using=xpath, value=//span[contains(text(),&apos;admin user&apos;)]}
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:370)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:472)
+	at org.openqa.selenium.By$ByXPath.findElement(By.java:361)
+	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
+	at CommonFunctions.LoginPage.logout(LoginPage.java:152)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC005(FB_Automation.java:173)
+... Removed 29 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p><h3 id="m2">webDriverTestCases.FB_Automation#FB_Automation_TC001</h3><table class="result"></table><p class="totop"><a href="#summary">back to summary</a></p><h3 id="m3">webDriverTestCases.FB_Automation#FB_Automation_TC002</h3><table class="result"></table><p class="totop"><a href="#summary">back to summary</a></p><h3 id="m4">webDriverTestCases.FB_Automation#FB_Automation_TC004</h3><table class="result"></table><p class="totop"><a href="#summary">back to summary</a></p></body></html>

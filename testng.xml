@@ -3,10 +3,7 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
     <classes>
-      <class name="karateTestCases.TestRunner"/>
-      <class name="restAssuredTestCases.RestAssuredDemo"/>
-      <class name="CommonClassReusables.Utility"/>
-      <class name="webDriverTestCases.UI_Automation"/>
+       <class name="webDriverTestCases.FB_Automation"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
