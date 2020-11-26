@@ -3,11 +3,7 @@
 <suite name="Suite">
   <test name="Test">
     <classes>
-      <class name="dci.payroll.TestCases.payroll_Phase_2B"/>
-      <class name="dci.payroll.TestCases.payroll_Phase_2C"/>
-      <class name="dci.payroll.TestCases.payroll_Phase_2D"/>
-      <class name="dci.payroll.TestCases.payroll_Phase_2E"/>
-      <class name="dci.payroll.TestCases.payroll_Phase_2_Imports"/>
+      
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
