@@ -118,9 +118,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		action.moveToElement(filterValue).click().sendKeys(entityType).build().perform();
 		action.sendKeys(Keys.ENTER).build().perform();
 		Utility.pause(2);
-		
+				
 		//checking if recon job is registered in recon monitor screen or not
 		
+		WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconMonitor));
+		searchBar.click();
+		ByAttribute.setText("xpath", ReconObjects.searchInReconMonitor, jobName, "Searching recon job on recon monitor screen");
 		String jobNameLocator = "//div[text()='"+jobName+"']";
 		boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
 		while(!jobPresent){
@@ -322,24 +325,24 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			try
 			{
 				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(5);
+					Utility.pause(3);
 				
 				ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
-				Utility.pause(10);
+				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				Utility.pause(8);
 				ByAttribute.click("xpath", IdentityObjects.createIdentityLnk, "click on create  icon to create new identity");
-				Utility.pause(20);
+				Utility.pause(8);
 				
 				fillProfileInfo();
 				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
-				Utility.pause(10);
+				Utility.pause(2);
 				fillAccessesInfo();
 				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
-				Utility.pause(10);
+				Utility.pause(2);
 				fillSystemsInfo();	
 				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
-				Utility.pause(10);
+				Utility.pause(2);
 				fillAssetsInfo();
 				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
 				Utility.pause(10);
@@ -937,11 +940,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			e.printStackTrace();
 		}
 		
+		ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
+		Utility.pause(2);
 		ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
 		Utility.pause(2);
 		ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
 		Utility.pause(2);
 		ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 		Utility.pause(2);
@@ -1156,7 +1159,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		Actions action = new Actions(driver);		
 		action.sendKeys(accessName);
         action.build().perform();
-        Utility.pause(10);
+        Utility.pause(5);
         WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Admin User Role')]"));
         action.moveToElement(accessValue).click();
         action.build().perform();
@@ -1236,7 +1239,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.ERROR, e);
 		}
 		ByAttribute.click("xpath",  IdentityObjects.addRecordsIconSystemsTab, "click on add icon to insert new System");
-		Utility.pause(10);
+		Utility.pause(5);
 		
 		Actions action = new Actions(driver);
 		
@@ -1247,7 +1250,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
         action.moveToElement(systemValue).click();
         action.build().perform();
         logger.log(LogStatus.INFO, "System Name selected");
-		Utility.pause(10);
+		Utility.pause(5);
 		
 		WebElement sourceId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
 		action.moveToElement(sourceId).click();

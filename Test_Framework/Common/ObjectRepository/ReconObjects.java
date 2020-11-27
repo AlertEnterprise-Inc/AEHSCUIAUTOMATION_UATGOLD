@@ -17,6 +17,8 @@ package ObjectRepository;
 		
 		String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
 		
+		String searchInReconMonitor = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
+		
 		String enterFieldName1ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
 		
 		String addIconToAddFilter = "//span[contains(@class,'x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd ')]";
