@@ -19,6 +19,8 @@ package ObjectRepository;
 		
 		String searchInReconMonitor = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
 		
+		String checkboxLnkOfReconJob = "//td[contains(@class,' x-selmodel-checkbox x-grid-cell-special x-selmodel-column x-grid-cell-first') and contains(@aria-describedby,'cell-description-selected')]";
+		
 		String enterFieldName1ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
 		
 		String addIconToAddFilter = "//span[contains(@class,'x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd ')]";

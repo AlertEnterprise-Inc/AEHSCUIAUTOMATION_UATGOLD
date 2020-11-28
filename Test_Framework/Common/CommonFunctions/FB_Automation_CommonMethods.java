@@ -30,6 +30,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static String identityCode = null;
 	private static String entityType= null;
 	private static String jobName="testRecon"+ Utility.UniqueNumber(2);
+	private static String activeRoleReconRecords = null;
 //	private static String jobName="testRecon"+ Utility.getCurrentDateTime("d/m/yy hh:mm:ss");
 	
 	
@@ -124,17 +125,25 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconMonitor));
 		searchBar.click();
 		ByAttribute.setText("xpath", ReconObjects.searchInReconMonitor, jobName, "Searching recon job on recon monitor screen");
+		action.sendKeys(Keys.ENTER).build().perform();
 		String jobNameLocator = "//div[text()='"+jobName+"']";
-		boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
-		while(!jobPresent){
-			System.out.println("job not registered in recon monitor , refreshing the page");
-			logger.log(LogStatus.INFO, "waiting for job to get registered in recon monitor");
-			WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
-			refreshIcon.click();
-			Utility.pause(5);
+		
+		if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob) && Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false)){
+			logger.log(LogStatus.INFO,"Recon job found");
 			
-			jobNameLocator = "//div[text()='"+jobName+"']";
-			jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
+		}
+		else{
+			boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
+			while(!jobPresent){
+				System.out.println("job not registered in recon monitor , refreshing the page");
+				logger.log(LogStatus.INFO, "waiting for job to get registered in recon monitor");
+				WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
+				refreshIcon.click();
+				Utility.pause(5);
+			
+				jobNameLocator = "//div[text()='"+jobName+"']";
+				jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
+			}
 		}
 	
 	
@@ -167,6 +176,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
 			WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
+			activeRoleReconRecords = activeRecords.getText();
 			if(activeRecords.getText()!="0" ){
 				logger.log(LogStatus.INFO, "Total number of active records are : " +activeRecords.getText());
 				activeRecords.click();
@@ -1566,6 +1576,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("data obtained from db : " + rs.get(i));
 	//		logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(i));
 		}
+		logger.log(LogStatus.PASS, "total number of active records after role recon was completed were: " +activeRoleReconRecords);
 		logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(0));
 		
 	}
