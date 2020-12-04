@@ -11,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.relevantcodes.extentreports.LogStatus;
 
+import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
 import CommonClassReusables.MsSql;
@@ -29,9 +30,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static boolean dupIdentity=false;
 	private static String identityCode = null;
 	private static String entityType= null;
-	private static String jobName="testRecon"+ Utility.UniqueNumber(2);
+//	private static String jobName="testRecon"+ Utility.UniqueNumber(2);
 	private static String activeRoleReconRecords = null;
-//	private static String jobName="testRecon"+ Utility.getCurrentDateTime("d/m/yy hh:mm:ss");
+	
+	
 	
 	
 	/**
@@ -51,7 +53,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			try
 			{
 				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
-				Utility.pause(10);
+				Utility.pause(2);
 				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
 						
 				Utility.pause(40);
@@ -92,229 +94,236 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * 
 	 **/
 	public static void checkJobInReconMonitor() throws Throwable {
-	try{
-		/*
-		 * Checking job status in recon Monitor
-		 */
-		ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
-		Utility.pause(3);
-		ByAttribute.click("xpath", ReconObjects.reconMonitorLnk,"click on Recon Monitor");
-		Utility.pause(20);
+	if(unhandledException==false)
+	{
+			
+		System.out.println("******************Checking Recon job in recon monitor************************");	
+		try{
+			
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.reconMonitorLnk,"click on Recon Monitor");
+			Utility.pause(20);
 
-		/*
-		 * Filter the records in Recon monitor on basis of entity type
-		 */
-		ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
-		Utility.pause(3);
-		ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
-		Utility.pause(2);
-		ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
-		Utility.pause(2);
-		WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
-		Actions action = new Actions (driver);
-		action.moveToElement(filterValue).click().sendKeys(entityType).build().perform();
-		action.sendKeys(Keys.ENTER).build().perform();
-		Utility.pause(2);
+			/*
+			 * Filter the records in Recon monitor on basis of entity type
+			 */
+			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+			Utility.pause(2);
+			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+			Actions action = new Actions (driver);
+			action.moveToElement(filterValue).click().sendKeys(entityType).build().perform();
+			action.sendKeys(Keys.ENTER).build().perform();
+			Utility.pause(2);
 				
-		//checking if recon job is registered in recon monitor screen or not
+			//checking if recon job is registered in recon monitor screen or not
 		
-		WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconMonitor));
-		searchBar.click();
-		ByAttribute.setText("xpath", ReconObjects.searchInReconMonitor, jobName, "Searching recon job on recon monitor screen");
-		action.sendKeys(Keys.ENTER).build().perform();
-		String jobNameLocator = "//div[text()='"+jobName+"']";
+			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
+			searchBar.click();
+			Utility.pause(5);
+			ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon monitor screen");
+			//	ByAttribute.click("xpath", ReconObjects.ListValueAfterSearch, "clicking on search result");
+			action.sendKeys(Keys.ENTER).build().perform();
+			String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 		
-		if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob) && Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false)){
-			logger.log(LogStatus.INFO,"Recon job found");
+			if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob) && Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false)){
+				logger.log(LogStatus.INFO,"Recon job found");
 			
-		}
-		else{
-			boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
-			while(!jobPresent){
-				System.out.println("job not registered in recon monitor , refreshing the page");
-				logger.log(LogStatus.INFO, "waiting for job to get registered in recon monitor");
-				WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
-				refreshIcon.click();
-				Utility.pause(5);
-			
-				jobNameLocator = "//div[text()='"+jobName+"']";
-				jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, jobName, true, false);
 			}
-		}
+			else{
+				boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false);
+				while(!jobPresent){
+					System.out.println("job not registered in recon monitor , refreshing the page");
+					logger.log(LogStatus.INFO, "waiting for job to get registered in recon monitor");
+					WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
+					refreshIcon.click();
+					Utility.pause(5);
+					
+					jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
+					jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false);
+				}
+			}
 	
 	
-		//job is present in Recon monitor screen , Checking the status of the job
+			//job is present in Recon monitor screen , Checking the status of the job
 		
-		WebElement status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-		if(Utility.compareStringValues(status.getText(), "STARTED")){
-			logger.log(LogStatus.INFO, "Recon Job has been started");
-			boolean flag= true,loginFlag;
-			for(int i=1;i<5 && flag;i++){
-				while(!Utility.compareStringValues(status.getText(), "COMPLETED") && flag){
-					int count =0;
-					while((Utility.verifyElementPresentReturn(jobNameLocator, jobName, false, false)) && (Utility.compareStringValues(status.getText(), "STARTED"))){
-						WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
-						refreshIcon.click();
-						Utility.pause(5);
-						
+			WebElement status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
+			if(Utility.compareStringValues(status.getText(), "STARTED")){
+				logger.log(LogStatus.INFO, "Recon Job has been started");
+				boolean flag= true;
+				for(int i=1;i<10 && flag;i++){
+					while(!Utility.compareStringValues(status.getText(), "COMPLETED") && flag){
+						int count =0;
+						while((Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, false, false)) && (Utility.compareStringValues(status.getText(), "STARTED"))){
+							WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
+							refreshIcon.click();
+							Utility.pause(10);
+							status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
+							logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
+							count++;
+						}
+						System.out.println("Waiting for the recon job to get completed");
 						status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-						logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
-						count++;
-					}
-					System.out.println("Waiting for the recon job to get completed");
-					status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-					if(Utility.compareStringValues(status.getText(), "COMPLETED")){
-						flag=false;
+						if(Utility.compareStringValues(status.getText(), "COMPLETED")){
+							flag=false;
+						}
 					}
 				}
-			}
 
 			
-			WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
-			WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
-			activeRoleReconRecords = activeRecords.getText();
-			if(activeRecords.getText()!="0" ){
-				logger.log(LogStatus.INFO, "Total number of active records are : " +activeRecords.getText());
-				activeRecords.click();
-				Utility.pause(10);
+				WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
+				WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
+				activeRoleReconRecords = activeRecords.getText();
+				if(activeRecords.getText()!="0" ){
+					logger.log(LogStatus.INFO, "Total number of active records are : " +activeRecords.getText());
+					activeRecords.click();
+					Utility.pause(10);
 				
-				try {
-					verifyReconData();
-				} catch (Throwable e) {
-					e.printStackTrace();
+					try {
+						verifyReconData();
+					} catch (Throwable e) {
+						logger.log(LogStatus.ERROR, e);
+					}
+				} 
+				else if(errorRecords.getText()!="0"){
+					logger.log(LogStatus.INFO, "There are Error records ");
 				}
-			} 
-			else if(errorRecords.getText()!="0"){
-				logger.log(LogStatus.INFO, "There are Error records ");
-			}
-			else if ((driver.findElements(By.xpath(ReconObjects.errorMessage)).size()>0)){
-				WebElement errorMessage = driver.findElement(By.xpath(ReconObjects.errorMessage));
-				String message = errorMessage.getText();
-				logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
-			}
+				else if ((driver.findElements(By.xpath(ReconObjects.errorMessage)).size()>0)){
+					WebElement errorMessage = driver.findElement(By.xpath(ReconObjects.errorMessage));
+					String message = errorMessage.getText();
+					logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
+				}
 			
-		}
+			}
 		
-		else if(Utility.compareStringValues(status.getText(), "FAILED")){
-			logger.log(LogStatus.INFO, "Recon Job failed");
+			else if(Utility.compareStringValues(status.getText(), "FAILED")){
+				logger.log(LogStatus.INFO, "Recon Job failed");
 			
+			}
+		}
+		catch(Exception e){
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
 		}
 	}
-	catch(Exception e){
-		e.printStackTrace();
-		logger.log(LogStatus.FAIL, e);
-	}
-	}
+}
 
 	/**
 	 * 
 	 * Initiate recon job by providing description , connector value and entity
 	 *  
 	 * Author : Monika Mehta
+	 * @throws Throwable 
 	 * 
 	 * 
 	 **/
-	public static void initiateReconJob() {
+	public static void initiateReconJob() throws Throwable {
+	if(unhandledException==false)
+	{
+		System.out.println("******************Initiate recon job********************");
+		try{	
 		
-	    String reconDataFile = reconTestDataDirectory + "/Recon.csv";
-	    		
-		ArrayList<String> headers = Utility.getCSVRow(reconDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(reconDataFile, 0);
-		int len = headers.size();
+			String reconDataFile = reconTestDataDirectory + "/Recon.csv";
+			AGlobalComponents.jobName="testRecon"+ Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");		
+			ArrayList<String> headers = Utility.getCSVRow(reconDataFile, 1);
+			ArrayList<ArrayList<String>> usersData = Utility.getCSVData(reconDataFile, 0);
+			int len = headers.size();
 		
-		String connectorName= null,scheduleType= null,header;
+			String connectorName= null,scheduleType= null,header;
 			
-		try{		
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
-				
-				switch (header.toLowerCase()) {
-	            case "connectorname":
-	            	connectorName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "entitytype":
-	            	entityType = Utility.getIndexValue(userData, index);
-	                break;
-	            case "scheduletype":
-	            	scheduleType=Utility.getIndexValue(userData, index);
-	            	break;
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
+			for (int i=0;i<len;i++){
+				header= headers.get(i);
+				System.out.println("heading "+ (i+1) +" "+ header);
+				int index = Utility.getIndex(headers,header);
+				for(ArrayList<String> userData : usersData) {
+					
+					switch (header.toLowerCase()) {
+					case "connectorname":
+						connectorName = Utility.getIndexValue(userData, index);
+						break;
+					case "entitytype":
+						entityType = Utility.getIndexValue(userData, index);
+						break;
+					case "scheduletype":
+						scheduleType=Utility.getIndexValue(userData, index);
+						break;
+					default: 
+						logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+						throw new UnsupportedOperationException();
+					}	
 				}
-				
 			}
-			
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 		
-		Actions action = new Actions(driver);
-				
-		WebElement elementConnector=driver.findElement(By.xpath(ReconObjects.elementConnector));
-		action.moveToElement(elementConnector).click();
-		action.sendKeys(connectorName);
-        action.build().perform();
-        WebElement connectorValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+connectorName+"')]"));
-        action.moveToElement(connectorValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Connector Value selected");
-		Utility.pause(5);
 		
-		WebElement elementDesc=driver.findElement(By.xpath(ReconObjects.elementDesc));
-		action.moveToElement(elementDesc).click();
-        action.sendKeys(jobName);
-        action.build().perform();
+			Actions action = new Actions(driver);
+			WebElement elementConnector=driver.findElement(By.xpath(ReconObjects.elementConnector));
+			action.moveToElement(elementConnector).click();
+			action.sendKeys(connectorName);
+			action.build().perform();
+			WebElement connectorValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+connectorName+"')]"));
+			action.moveToElement(connectorValue).click();
+			action.build().perform();
+			logger.log(LogStatus.INFO, "Connector Value selected");
+			Utility.pause(5);
+		
+			WebElement elementDesc=driver.findElement(By.xpath(ReconObjects.elementDesc));
+			action.moveToElement(elementDesc).click();
+			action.sendKeys(AGlobalComponents.jobName);
+			action.build().perform();
 	        
-        WebElement elementDescr=driver.findElement(By.xpath(ReconObjects.elementDesc));
-		action.moveToElement(elementDescr).click();
-        action.sendKeys(jobName);
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Entered the Description Value");
+			WebElement elementDescr=driver.findElement(By.xpath(ReconObjects.elementDesc));
+			action.moveToElement(elementDescr).click();
+			action.sendKeys(AGlobalComponents.jobName);
+			action.build().perform();
+			logger.log(LogStatus.INFO, "Entered the Description Value");
         	        									
-        WebElement elementEntity=driver.findElement(By.xpath(ReconObjects.elementEntity));
-        action.moveToElement(elementEntity).click();
-		action.sendKeys(entityType);
-        action.build().perform();
-        WebElement entityValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+entityType+"')]"));
-        action.moveToElement(entityValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Entity Type selected");
-		Utility.pause(5);
+			WebElement elementEntity=driver.findElement(By.xpath(ReconObjects.elementEntity));
+			action.moveToElement(elementEntity).click();
+			action.sendKeys(entityType);
+			action.build().perform();
+			WebElement entityValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+entityType+"')]"));
+			action.moveToElement(entityValue).click();
+			action.build().perform();
+			logger.log(LogStatus.INFO, "Entity Type selected");
+			Utility.pause(5);
 		
-		WebElement elementScheduler=driver.findElement(By.xpath(ReconObjects.elementScheduler));
-		action.moveToElement(elementScheduler).click();
-        action.build().perform();
+			WebElement elementScheduler=driver.findElement(By.xpath(ReconObjects.elementScheduler));
+			action.moveToElement(elementScheduler).click();
+			action.build().perform();
         
-        WebElement elementSchedulr=driver.findElement(By.xpath(ReconObjects.elementScheduler));
-		action.moveToElement(elementSchedulr).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Clicked On Scheduler");
-      	Utility.pause(10);
+			WebElement elementSchedulr=driver.findElement(By.xpath(ReconObjects.elementScheduler));
+			action.moveToElement(elementSchedulr).click();
+			action.build().perform();
+			logger.log(LogStatus.INFO, "Clicked On Scheduler");
+			Utility.pause(10);
       	
-		ByAttribute.setText("xpath", ReconObjects.scheduleTypeLnk,scheduleType, "Select Scheduler Type");
-		Utility.pause(2);
-		ByAttribute.click("xpath", ReconObjects.confirmButtonLnk,"Click confirm button after scheduling recon job");
-		WebElement confirmButton = driver.findElement(By.xpath(ReconObjects.confirmButton));
-		action.moveToElement(confirmButton).click();
-        action.build().perform();
-		Utility.pause(2);
-		ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the recon request");
-		Utility.pause(5);
-		ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
-		Utility.pause(10);
-		logger.log(LogStatus.PASS, "Recon Job saved successfully");
+			ByAttribute.setText("xpath", ReconObjects.scheduleTypeLnk,scheduleType, "Select Scheduler Type");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.confirmButtonLnk,"Click confirm button after scheduling recon job");
+			WebElement confirmButton = driver.findElement(By.xpath(ReconObjects.confirmButton));
+			action.moveToElement(confirmButton).click();
+			action.build().perform();
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the recon request");
+			Utility.pause(5);
+			ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
+			Utility.pause(10);
+			logger.log(LogStatus.PASS, "Recon Job saved successfully");
 		
+		}
+		catch( Exception e){
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+		}
+	}	
 	}
 	
 	/**
@@ -433,9 +442,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					
 				}
 				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
+				catch(Exception e){
+					
 				}
 				
 				ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
@@ -688,7 +696,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		String iCode;
 		if(unhandledException==false)
 		{
-			int identityCount = 5;
+			
 			System.out.println("***************************** delete single identity *********************************");
 			try
 			{
@@ -701,9 +709,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO, "Identity Created: "+ iCode);
 								
 				deleteSingleIdentity(iCode);
-				
-				
-				
 			}
 			catch(Exception e)
 			{		
@@ -714,950 +719,1025 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 
-
+	public static void deleteMultipleIdentities() throws Throwable  {
 	
-	public static void deleteMultipleIdentities()  {
+		if(unhandledException==false){
+			
+			System.out.println("*******************Delete multiple identitis************************");
+			try{	
 		
-	try{	
-		
-		for (int i=0;i<identityCodes.size();i++){
-			String idcode = identityCodes.get(i);
-			WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+idcode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
-			Actions action = new Actions(driver);
-			action.click(idCheckbox).build().perform();
-			Utility.pause(5);
-			if(driver.findElements(By.xpath("//div[text()='"+idcode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
-				System.out.println("identity " +identityCodes.get(i) +"  selected for deletion");
-			}
-			else{
-				System.out.println("identity " +identityCodes.get(i) +"  not selected for deletion");
-				logger.log(LogStatus.ERROR, "Identity checkbox not selected");
-			}
-		}
-			
-		ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
-		
-		ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
-		
-		Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
-		logger.log(LogStatus.INFO, "deleted the selected identities");
-	}
-	catch(Exception e){
-		logger.log(LogStatus.ERROR, e);
-	}
-		
-	}
-
-	
-	public static void deleteSingleIdentity(String identityCode)  {
-		
-		try{
-		
-		ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
-		Utility.pause(5);
-		ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
-		Utility.pause(20);
-		
-		Actions action = new Actions(driver);
-		WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
-		action.click(idCheckbox).build().perform();
-		Utility.pause(5);
-		
-		if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
-			System.out.println("identity " +identityCode+"  selected for deletion");
-			ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
-			
-			ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
-			
-			Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
-			logger.log(LogStatus.INFO, "deleted the selected identity");
-		}
-		else{
-			System.out.println("Checkbox not selected for deletion");
-			logger.log(LogStatus.ERROR, "Checkbox not selected for deletion");
-		}
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);
-		}
-		
-		
-	}
-	
-	public static void verifyCancelAndCloseButtonInDeletedItems() {
-		try{
-			
-			System.out.println("Click on icon to display the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
-			Utility.pause(1);
-			
-			System.out.println("Click on Deleted Items link from the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
-			Utility.pause(5);
-			
-			if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
-				Utility.pause(2);
-			}
-			Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
-			logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
-			System.out.println("Deleted identities pop up appeared");
-			ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsLnk, "Clicked on close icon in the pop up box");
-			Utility.pause(5);
-			Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", true, false);
-			logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
-			System.out.println("Deleted identities pop up box closed afte clicking close icon, we are back on manage identity screen");
-			
-			/*
-			 * Verifying Cancel button functionality on Deleted Identity Documents pop up
-			 */
-			System.out.println("Click on icon to display the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
-			Utility.pause(1);
-			
-			System.out.println("Click on Deleted Items link from the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
-			Utility.pause(5);
-			
-			if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
-				Utility.pause(2);
-			}
-			Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
-			logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
-			System.out.println("Deleted identities pop up appeared");
-			ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsLnk, "Clicked on cancel button in the pop up box");
-			Utility.pause(5);
-			Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header", true, false);
-			logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
-			System.out.println("Deleted identities pop up box closed afte clicking cancel button, we are back on manage identity screen");
-			
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);
-		}
-		
-	}
-	
-	public static void recoverDeletedItems()  {
-		
-		try{
-			
-			System.out.println("Click on icon to display the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
-			Utility.pause(1);
-			
-			System.out.println("Click on Deleted Items link from the menu");
-			ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
-			Utility.pause(5);
-			
-			if(!(driver.findElements(By.xpath("//div[contains(@id,'MainPanelTrashCanPopup') and text()='Deleted identity Documents']")).size()>0)){
-				Utility.pause(2);
-			}
-			
-			SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
-		    String strDate = f.format(new Date());
-			ByAttribute.click("xpath", IdentityObjects.deletedSinceDateValue, "Select Deleted Since date value");
-			ByAttribute.setText("xpath", IdentityObjects.deletedSinceDateValue,strDate, "Select Deleted Since date value");
-			Utility.pause(5);
-			
-			String idCode = driver.findElement(By.xpath(("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div"))).getText();
-			
-			if(Utility.checkIfStringIsNotNull(idCode)){
-				if(Utility.compareStringValues(idCode, identityCode)){
-					System.out.println("Deleted identity is present in recently deleted items");
+				for (int i=0;i<identityCodes.size();i++){
+					String idcode = identityCodes.get(i);
+					WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+idcode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
 					Actions action = new Actions(driver);
-					WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
 					action.click(idCheckbox).build().perform();
 					Utility.pause(5);
-					
-					if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
-						System.out.println("identity " +identityCode+"  selected for restoration");
-						ByAttribute.click("xpath", IdentityObjects.restoreButtonInDeletedItemsLnk, "Restore selected identity");
-						Utility.pause(10);
+					if(driver.findElements(By.xpath("//div[text()='"+idcode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
+						System.out.println("identity " +identityCodes.get(i) +"  selected for deletion");
 					}
 					else{
-						logger.log(LogStatus.ERROR, "Checkbox of id not selected for restoration");
-						System.out.println("checkbox not selected for restoration");
+						System.out.println("identity " +identityCodes.get(i) +"  not selected for deletion");
+						logger.log(LogStatus.ERROR, "Identity checkbox not selected");
 					}
+				}
+				ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
+				ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
+				Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
+				logger.log(LogStatus.INFO, "deleted the selected identities");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	
+	public static void deleteSingleIdentity(String identityCode) throws Throwable  {
+		if(unhandledException==false)
+		{
+			
+			System.out.println("***************Delete single identity*********************");
+
+			try{
+		
+				ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
+				Utility.pause(20);
+				
+				Actions action = new Actions(driver);
+				WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
+				action.click(idCheckbox).build().perform();
+				Utility.pause(5);
+				
+				if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
+					System.out.println("identity " +identityCode+"  selected for deletion");
+					ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
+					ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
+					Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
+					logger.log(LogStatus.INFO, "deleted the selected identity");
 				}
 				else{
-					logger.log(LogStatus.ERROR, "Identity  present does not match with the identity to be restored");
-					System.out.println("Identity  present does not match with the identity to be restored");
+					System.out.println("Checkbox not selected for deletion");
+					logger.log(LogStatus.ERROR, "Checkbox not selected for deletion");
 				}
-				
 			}
-		
-			Utility.verifyElementPresent("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div[text()='"+identityCode+"']", identityCode, true, false);
-			logger.log(LogStatus.PASS,"Deleted identity has been restored");
-			
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
 		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);
+	}
+	
+	public static void verifyCancelAndCloseButtonInDeletedItems() throws Throwable {
+		if(unhandledException==false)
+		{
+			
+			System.out.println("***********verify Cancel And Close Button In Deleted Items**********");
+
+			try{
+			
+				System.out.println("Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				Utility.pause(1);
+			
+				System.out.println("Click on Deleted Items link from the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
+				Utility.pause(5);
+			
+				if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
+					Utility.pause(2);
+				}
+				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
+				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
+				System.out.println("Deleted identities pop up appeared");
+				ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsLnk, "Clicked on close icon in the pop up box");
+				Utility.pause(5);
+				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", true, false);
+				logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
+				System.out.println("Deleted identities pop up box closed afte clicking close icon, we are back on manage identity screen");
+			
+				/*
+				 * Verifying Cancel button functionality on Deleted Identity Documents pop up
+				 */
+				System.out.println("Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				Utility.pause(1);
+			
+				System.out.println("Click on Deleted Items link from the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
+				Utility.pause(5);
+			
+				if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
+					Utility.pause(2);
+				}
+				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
+				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
+				System.out.println("Deleted identities pop up appeared");
+				ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsLnk, "Clicked on cancel button in the pop up box");
+				Utility.pause(5);
+				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header", true, false);
+				logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
+				System.out.println("Deleted identities pop up box closed afte clicking cancel button, we are back on manage identity screen");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void recoverDeletedItems() throws Throwable  {
+		if(unhandledException==false)
+		{
+			
+			System.out.println("**************Recover Deleted Items****************");
+		
+			try{
+			
+				System.out.println("Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				Utility.pause(1);
+			
+				System.out.println("Click on Deleted Items link from the menu");
+				ByAttribute.click("xpath", IdentityObjects.deletedItemsLnk, "Open Deleted Items");
+				Utility.pause(5);
+			
+				if(!(driver.findElements(By.xpath("//div[contains(@id,'MainPanelTrashCanPopup') and text()='Deleted identity Documents']")).size()>0)){
+					Utility.pause(2);
+				}
+			
+				SimpleDateFormat f = new SimpleDateFormat("MM/dd/yy");
+				String strDate = f.format(new Date());
+				ByAttribute.click("xpath", IdentityObjects.deletedSinceDateValue, "Select Deleted Since date value");
+				ByAttribute.setText("xpath", IdentityObjects.deletedSinceDateValue,strDate, "Select Deleted Since date value");
+				Utility.pause(5);
+			
+				String idCode = driver.findElement(By.xpath(("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div"))).getText();
+			
+				if(Utility.checkIfStringIsNotNull(idCode)){
+					if(Utility.compareStringValues(idCode, identityCode)){
+						System.out.println("Deleted identity is present in recently deleted items");
+						Actions action = new Actions(driver);
+						WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
+						action.click(idCheckbox).build().perform();
+						Utility.pause(5);
+						if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
+							System.out.println("identity " +identityCode+"  selected for restoration");
+							ByAttribute.click("xpath", IdentityObjects.restoreButtonInDeletedItemsLnk, "Restore selected identity");
+							Utility.pause(10);
+						}
+						else{
+							logger.log(LogStatus.ERROR, "Checkbox of id not selected for restoration");
+							System.out.println("checkbox not selected for restoration");
+						}
+					}
+					else{
+						logger.log(LogStatus.ERROR, "Identity  present does not match with the identity to be restored");
+						System.out.println("Identity  present does not match with the identity to be restored");
+					}
+				}
+				Utility.verifyElementPresent("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div[text()='"+identityCode+"']", identityCode, true, false);
+				logger.log(LogStatus.PASS,"Deleted identity has been restored");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
 		}
 	}
 
-	public static void fillProfileInfo() 
+	public static void fillProfileInfo() throws Throwable 
 	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("********************Fill Profile Info********************");
+			try{
+				String EmployeeCreationTemplateFile = testDataDirectory + "/CreateIdentity_Template.csv";
+				String EmployeeCreationDataFile=testDataDirectory+ "/CreateIdentity.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
 		
-	    
-	    String EmployeeCreationTemplateFile = testDataDirectory + "/CreateIdentity_Template.csv";
-	    String EmployeeCreationDataFile=testDataDirectory+ "/CreateIdentity.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
-		int len = headers.size();
-		
-		String firstName= null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header,headerValue,temp=null;
-		Date date;
-		
-		try{		
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
+				int len = headers.size();
+				String firstName= null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header;
 				
-				switch (header.toLowerCase()) {
-	            case "firstname":
-	            	firstName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "lastname":
-	            	lastName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "validfrom":
-	            	validFrom=Utility.getIndexValue(userData, index);
-	            	break;
-	            case "validto":
-	            	validTo=Utility.getIndexValue(userData, index);
-	            	break;
-	            case "employeetype":
-	            	empType = Utility.getIndexValue(userData, index);
-	                break;
-	            case "email":
-	            	emailId = Utility.getIndexValue(userData, index);
-	                break;
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+				
+						switch (header.toLowerCase()) {
+						case "firstname":
+							firstName = Utility.getIndexValue(userData, index);
+							break;
+						case "lastname":
+							lastName = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							validFrom=Utility.getIndexValue(userData, index);
+							break;
+						case "validto":
+							validTo=Utility.getIndexValue(userData, index);
+							break;
+						case "employeetype":
+							empType = Utility.getIndexValue(userData, index);
+							break;
+						case "email":
+							emailId = Utility.getIndexValue(userData, index);
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
 				}
 				
-			}
-			
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.emailIdLnk, emailId, "Enter email Id");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
-		
-	}
-	
-	
-	public static void editProfileInfo() 
-	{
-		
-	    
-	    String EmployeeCreationTemplateFile = testDataDirectory + "/EditIdentity_Template.csv";
-	    String EmployeeCreationDataFile=testDataDirectory+ "/EditIdentity.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
-		int len = headers.size();
-		
-		String jobTitle= null,header;
-		Date date;
-		
-		try{		
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
-				
-				switch (header.toLowerCase()) {
-	            case "jobtitle":
-	            	jobTitle = Utility.getIndexValue(userData, index);
-	                break;
-	            
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
-				}
-				
-			}
-			
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		
-		ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-		Utility.pause(2);
-		String existingJobtitle = ByAttribute.getText("xpath", IdentityObjects.jobTitleLnk, "Get Job Title Value");
-		if((existingJobtitle==null)||(existingJobtitle=="")) {
-			System.out.println("No job title is assigned to the identity");
-			logger.log(LogStatus.INFO, "No job title is assigned to the identity");
-		}
-		ByAttribute.setText("xpath", IdentityObjects.jobTitleLnk, jobTitle, "Enter job Title");
-		
-		ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
-		Utility.pause(20);
-		
-		ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
-		Utility.pause(5);
-		ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
-		Utility.pause(20);
-		
-		WebElement finalJobTitle = driver.findElement(By.xpath("(//div[@class='x-grid-cell-inner '])[7]"));
-		String jbTitle = finalJobTitle.getText();
-		if(Utility.compareStringValues(jbTitle, jobTitle)){
-			System.out.println("job title is successfully updated");
-			logger.log(LogStatus.INFO, "job title is successfully updated");
-		}
-		
-		
-	}
-	
-	public static void fillDuplicateProfileInfo() 
-	{
-			    
-	    String EmployeeCreationTemplateFile = testDataDirectory + "/CreateDuplicateIdentity_Template.csv";
-	    String EmployeeCreationDataFile=testDataDirectory+ "/CreateDuplicateIdentity.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
-		int len = headers.size();
-		
-		String firstName= null,lastName= null,empType= null,header;
-			
-		try{		
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
-				
-				switch (header.toLowerCase()) {
-	            case "firstname":
-	            	firstName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "lastname":
-	            	lastName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "employeetype":
-	            	empType = Utility.getIndexValue(userData, index);
-	                break;
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
-				}
-				
-			}
-			
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		
-		//just temp fix till bug gets resolved
-				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.emailIdLnk, emailId, "Enter email Id");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
+				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
+			}
+			catch(Exception e)
+			{
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	
+	public static void editProfileInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("********************Edit Profile Info*******************");
+			try
+			{
+				String EmployeeCreationTemplateFile = testDataDirectory + "/EditIdentity_Template.csv";
+				String EmployeeCreationDataFile=testDataDirectory+ "/EditIdentity.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
+				int len = headers.size();
+				String jobTitle= null,header;
+	                
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+	        		
+						switch (header.toLowerCase()) {
+						case "jobtitle":
+							jobTitle = Utility.getIndexValue(userData, index);
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+			
+				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
+				Utility.pause(2);
+				String existingJobtitle = ByAttribute.getText("xpath", IdentityObjects.jobTitleLnk, "Get Job Title Value");
+				if((existingJobtitle==null)||(existingJobtitle=="")) {
+					System.out.println("No job title is assigned to the identity");
+					logger.log(LogStatus.INFO, "No job title is assigned to the identity");
+				}
+				ByAttribute.setText("xpath", IdentityObjects.jobTitleLnk, jobTitle, "Enter job Title");
+				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
+				Utility.pause(20);
+		
+				ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
+				Utility.pause(20);
+				
+				WebElement finalJobTitle = driver.findElement(By.xpath("(//div[@class='x-grid-cell-inner '])[7]"));
+				String jbTitle = finalJobTitle.getText();
+				if(Utility.compareStringValues(jbTitle, jobTitle)){
+					System.out.println("job title is successfully updated");
+					logger.log(LogStatus.INFO, "job title is successfully updated");
+				}
+			}
+			catch(Exception e)
+			{
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void fillDuplicateProfileInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("**************Fill Duplicate profile Info*****************");
+			try{
+			
+				String EmployeeCreationTemplateFile = testDataDirectory + "/CreateDuplicateIdentity_Template.csv";
+				String EmployeeCreationDataFile=testDataDirectory+ "/CreateDuplicateIdentity.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
+				int len = headers.size();
+				String firstName= null,lastName= null,empType= null,header;
+			
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+						
+						switch (header.toLowerCase()) {
+						case "firstname":
+							firstName = Utility.getIndexValue(userData, index);
+							break;
+						case "lastname":
+							lastName = Utility.getIndexValue(userData, index);
+							break;
+						case "employeetype":
+							empType = Utility.getIndexValue(userData, index);
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+			
+				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
+			}
+			catch(Exception e)
+			{
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	
+	public static void fillAccessesInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("****************Fill Access Info******************");
+			try{
+				String accessName= null,validFrom= null,validTo = null,header,temp;
+				Date date;
+		
+				String EmployeeCreationAccessTemplateFile = testDataDirectory + "/Accesses_Template.csv";
+				String EmployeeCreationAccessDataFile=testDataDirectory+ "/Accesses.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAccessTemplateFile, EmployeeCreationAccessDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAccessDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAccessDataFile, 0);
+				int len = headers.size();
+		
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+				
+						switch (header.toLowerCase()) {
+						case "accessname":
+							accessName = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
+							}
+							break;
+						case "validto":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
+							}
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+		
+				ByAttribute.click("xpath", IdentityObjects.addRecordsIconAccessTab, "click on add icon to insert new access");
+				Utility.pause(5);
+		
+				Actions action = new Actions(driver);		
+				action.sendKeys(accessName);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Admin User Role')]"));
+				action.moveToElement(accessValue).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Access Value selected");
+				Utility.pause(2);
+		
+				WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+				ele.click();
+		
+				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
+				action.moveToElement(validFromDate).click();
+				action.build().perform();
+				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[2]";
+				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid from");
+		
+				WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[2]"));
+				action.moveToElement(validToDate).click();
+				action.build().perform();
+				String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[2]";
+				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid to");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void fillSystemsInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			System.out.println("*************Fill systems info**********");
+			try{
+				String systemName= null,srcId= null,validTo = null,validFrom = null,header,temp;
+				Date date;
+		
+				String EmployeeCreationSystemTemplateFile = testDataDirectory + "/Systems_Template.csv";
+				String EmployeeCreationSystemDataFile=testDataDirectory+ "/Systems.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationSystemTemplateFile, EmployeeCreationSystemDataFile);
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationSystemDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationSystemDataFile, 0);
+				int len = headers.size();
+		
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+			
+						switch (header.toLowerCase()) {
+						case "systemname":
+							systemName = Utility.getIndexValue(userData, index);
+							break;
+						case "sourceid":
+							srcId = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
+							}
+							break;
+						case "validto":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
+							}
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+				ByAttribute.click("xpath",  IdentityObjects.addRecordsIconSystemsTab, "click on add icon to insert new System");
+				Utility.pause(5);
+		
+				Actions action = new Actions(driver);
+				action.sendKeys(systemName);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement systemValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'CCURE 9000')]"));
+				action.moveToElement(systemValue).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "System Name selected");
+				Utility.pause(5);
+		
+				WebElement sourceId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
+				action.moveToElement(sourceId).click();
+				action.sendKeys("123");
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Entered the sourceId");
+        
+				WebElement sourcId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
+				action.moveToElement(sourcId).click();
+				action.sendKeys(srcId);
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Entered the sourceId");
+        
+				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[3]"));
+				action.moveToElement(validFromDate).click();
+				action.build().perform();
+				String validFromDt="(//input[@placeholder='Select Valid From'])[2]";
+				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid from");
+		
+				WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[4]"));
+				action.moveToElement(validToDate).click();
+				action.build().perform();
+				String validToDt =	"(//input[@placeholder='Select Valid To'])[2]";
+				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid to");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void fillAssetsInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("*****************Fill Assets Info*****************");
+			try{
+				String assetCode= null,validTo = null,validFrom = null,header,temp;
+				Date date;
+		
+				String EmployeeCreationAssetTemplateFile = testDataDirectory + "/Assets_Template.csv";
+				String EmployeeCreationAssetDataFile=testDataDirectory+ "/Assets.csv";
+				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAssetTemplateFile, EmployeeCreationAssetDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAssetDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAssetDataFile, 0);
+				int len = headers.size();
+		
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+				
+						switch (header.toLowerCase()) {
+						case "assetcode":
+							assetCode = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validFrom = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
+							}
+							break;
+						case "validto":
+							temp=Utility.getIndexValue(userData, index);
+							if(!Utility.compareStringValues(temp, header)){
+								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+								validTo = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
+							}
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+		
+				/*
+				 * Verify Cancel button on Assets screen
+				 */
+		
+				String newRadioButton = "(//label[text()='New']//preceding::span[contains(@class,'x-form-radio x-form-radio-default')]//input[@class='x-form-cb-input'])[1]";
+				ByAttribute.click("xpath", newRadioButton, "click on New radio button");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "By Clicking on Cancel button , we will be navigated to Existing asset screen");
+				ByAttribute.click("xpath", IdentityObjects.cancelAssetButtonLnk, "click on cancel button");
+				logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
+				Utility.verifyElementPresent("//div[contains(@class,'x-column-header-text')]//span[text()='Asset']", "Existing asset screen", true, false);
+		
+				/*
+				 * verify Reset button on New asset screen
+				 */
+				ByAttribute.click("xpath", newRadioButton, "click on New radio button");
+				Utility.pause(2);
+				String dropdownArrow="(//span[text()='Asset Code']//ancestor::label//following::div[contains(@class,' x-form-trigger-default x-form-arrow-trigger')])[1]";
+				ByAttribute.click("xpath", dropdownArrow, "click on dropdown to select asset code");
+				Utility.pause(40);
+		
+				for(int i=0;i<10;i++){
+					if(driver.findElements(By.xpath("//div[text()='"+assetCode+"']")).size()>0){
+						break;
+					}
+					else
+						Utility.pause(10);
+				}
+				String asstCode="//div[text()='"+assetCode+"']";
+				ByAttribute.click("xpath", asstCode, " select asset code");
+				Utility.pause(2);
+				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
+				System.out.println("Asset Code is filled");
+			
+				ByAttribute.click("xpath", IdentityObjects.resetButtonAssetScreen, " Click on Reset button on add new asset screen");
+				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
+				logger.log(LogStatus.PASS , "Fields are cleared after clicking reset button");
+			
+				/*
+				 * navigating to new asset screen to add new asset
+				 */
+				ByAttribute.click("xpath", dropdownArrow, "click on dropdown to select asset code");
+				Utility.pause(20);
+		
+				for(int i=0;i<10;i++){
+					if(driver.findElements(By.xpath("//div[text()='"+assetCode+"']")).size()>0){
+						break;
+					}
+					else
+						Utility.pause(10);
+				}
+				ByAttribute.click("xpath", asstCode, " select asset code");
+				Utility.pause(2);
+		
+				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[2]";
+				String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[2]";	
+				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
+				Utility.pause(2);
+			
+				/*
+				 * Add notes while adding new asset
+				 */
+	//			String notes = "//span[contains(@id,'button') and text()='Notes']";
+//				String comments = "New Asset assignment";
+//				ByAttribute.click("xpath",notes, " Click notes button");
+//				Utility.pause(2);
+//				if(driver.findElements(By.xpath("//div[contains(@id,'header-title-textEl') and text()='Add Comment']")).size()>0){
+//					ByAttributeAngular.setText("xpath", "//body[contains(@class,'mce-content-body ')]//p",comments , "Adding comments while assigning new asset");
+//					ByAttributeAngular.click("xpath", IdentityObjects.addCommentsButtonLnk, "Click on Add Comments button");
+//					ByAttributeAngular.click("xpath", IdentityObjects.closeNotesWindowLnk, "close notes window");
+//				}
+//				else{
+//					logger.log(LogStatus.INFO,"window not opened to add notes");
+//				}
+			
+				
+				ByAttribute.click("xpath", IdentityObjects.confirmButton, " Click confirm ");
+				Utility.pause(5);
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void fillPrerequisitesInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			
+			System.out.println("**************Fill prerequisite info***********");
+			try{
+				String type= null,prerequisite=null,validFrom= null,validTo = null,header;
+		
+				String prerequisiteTemplateFile = testDataDirectory + "/Prerequisite_Template.csv";
+				String prerequisiteDataFile=testDataDirectory+ "/Prerequisite.csv";
+				TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(prerequisiteDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(prerequisiteDataFile, 0);
+				int len = headers.size();
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+				
+						switch (header.toLowerCase()) {
+						case "type":
+							type = Utility.getIndexValue(userData, index);
+							break;
+						case "prerequisite":
+							prerequisite = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							validFrom=Utility.getIndexValue(userData, index);
+							break;
+						case "validto":
+							validTo=Utility.getIndexValue(userData, index);
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+		
+//				ByAttribute.click("xpath", IdentityObjects.addRecordsIconPrerequisiteTab, "click on add icon to insert prerequisite");
+//				Utility.pause(5);
+		
+				Actions action = new Actions(driver);
+				WebElement addIcon = driver.findElement(By.xpath(IdentityObjects.addRecordsIconPrerequisiteTab));
+				action.moveToElement(addIcon).click();
+				action.sendKeys(type);
+				action.build().perform();
 				Utility.pause(10);
-				
-				// temp fix ends here . uncommnet below two lines also after the fix
+				WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+type+"']"));
+				action.moveToElement(typeValue).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "prerequisite type Value selected");
+				Utility.pause(2);
 		
-		ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-		Utility.pause(2);
-	//	ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
-		
-		
-	}
-	
-	
-	public static void fillAccessesInfo() 
-	{
-		
-		String accessName= null,validFrom= null,validTo = null,header,headerValue,temp;
-		Date date;
-		
-		
-		String EmployeeCreationAccessTemplateFile = testDataDirectory + "/Accesses_Template.csv";
-	    String EmployeeCreationAccessDataFile=testDataDirectory+ "/Accesses.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAccessTemplateFile, EmployeeCreationAccessDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAccessDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAccessDataFile, 0);
-		int len = headers.size();
-		
-		try{
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
-				
-				switch (header.toLowerCase()) {
-	            case "accessname":
-	            	accessName = Utility.getIndexValue(userData, index);
-	                break;
-	            case "validfrom":
-	            	temp=Utility.getIndexValue(userData, index);
-	            	if(!Utility.compareStringValues(temp, header)){
-	            		date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-	            		validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-	            	}
-	            	break;
-	            case "validto":
-	            	temp=Utility.getIndexValue(userData, index);
-	            	if(!Utility.compareStringValues(temp, header)){
-	            		date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-	            		validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-	            	}
-	                break;
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
-				}
-				
-			}
-			
-		}
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);
-		}
-		ByAttribute.click("xpath", IdentityObjects.addRecordsIconAccessTab, "click on add icon to insert new access");
-		Utility.pause(5);
-		
-		Actions action = new Actions(driver);		
-		action.sendKeys(accessName);
-        action.build().perform();
-        Utility.pause(5);
-        WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Admin User Role')]"));
-        action.moveToElement(accessValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Access Value selected");
-		Utility.pause(2);
-		
-		WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
-		ele.click();
-		
-		WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
-		action.moveToElement(validFromDate).click();
-        action.build().perform();
-		String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[2]";
-		ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-		Utility.pause(2);
-		logger.log(LogStatus.INFO, "Entered valid from");
-		
-		WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[2]"));
-		action.moveToElement(validToDate).click();
-        action.build().perform();
-		String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[2]";
-		ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-		Utility.pause(2);
-		logger.log(LogStatus.INFO, "Entered valid to");
-	
-	}
-	
-	public static void fillSystemsInfo() 
-	{
-		
-		String systemName= null,srcId= null,validTo = null,validFrom = null,header,headerValue,temp;
-		Date date;
-		
-		String EmployeeCreationSystemTemplateFile = testDataDirectory + "/Systems_Template.csv";
-	    String EmployeeCreationSystemDataFile=testDataDirectory+ "/Systems.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationSystemTemplateFile, EmployeeCreationSystemDataFile);
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationSystemDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationSystemDataFile, 0);
-		int len = headers.size();
-		
-		try{
-			for (int i=0;i<len;i++){
-				header= headers.get(i);
-				System.out.println("heading "+ (i+1) +" "+ header);
-				int index = Utility.getIndex(headers,header);
-				for(ArrayList<String> userData : usersData) {
-				
-					switch (header.toLowerCase()) {
-					case "systemname":
-						systemName = Utility.getIndexValue(userData, index);
-						break;
-					case "sourceid":
-						srcId = Utility.getIndexValue(userData, index);
-						break;
-					case "validfrom":
-						temp=Utility.getIndexValue(userData, index);
-						if(!Utility.compareStringValues(temp, header)){
-							date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-							validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-						}
-						break;
-					case "validto":
-						temp=Utility.getIndexValue(userData, index);
-						if(!Utility.compareStringValues(temp, header)){
-							date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-							validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-						}
-						break;
-					default: 
-						logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-						throw new UnsupportedOperationException();
-					}
-				}
-			}
-		}
-		catch(Exception e ){
-			logger.log(LogStatus.ERROR, e);
-		}
-		ByAttribute.click("xpath",  IdentityObjects.addRecordsIconSystemsTab, "click on add icon to insert new System");
-		Utility.pause(5);
-		
-		Actions action = new Actions(driver);
-		
-		action.sendKeys(systemName);
-        action.build().perform();
-        Utility.pause(5);
-        WebElement systemValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'CCURE 9000')]"));
-        action.moveToElement(systemValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "System Name selected");
-		Utility.pause(5);
-		
-		WebElement sourceId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
-		action.moveToElement(sourceId).click();
-        action.sendKeys("123");
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Entered the sourceId");
-        
-        WebElement sourcId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
-		action.moveToElement(sourcId).click();
-        action.sendKeys(srcId);
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Entered the sourceId");
-        
-        WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[3]"));
-		action.moveToElement(validFromDate).click();
-        action.build().perform();
-        String validFromDt="(//input[@placeholder='Select Valid From'])[2]";
-		ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-		Utility.pause(2);
-		logger.log(LogStatus.INFO, "Entered valid from");
-		
-		WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[4]"));
-		action.moveToElement(validToDate).click();
-        action.build().perform();
-		String validToDt =	"(//input[@placeholder='Select Valid To'])[2]";
-		ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-		Utility.pause(2);
-		logger.log(LogStatus.INFO, "Entered valid to");
-        
-		
-	}
-	
-	public static void fillAssetsInfo() 
-	{
-		
-		String assetCode= null,validTo = null,validFrom = null,header,headerValue,temp;
-		Date date;
-		
-		String EmployeeCreationAssetTemplateFile = testDataDirectory + "/Assets_Template.csv";
-	    String EmployeeCreationAssetDataFile=testDataDirectory+ "/Assets.csv";
-		TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAssetTemplateFile, EmployeeCreationAssetDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAssetDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAssetDataFile, 0);
-		int len = headers.size();
-		
-		try{
-			for (int i=0;i<len;i++){
-				header= headers.get(i);
-				System.out.println("heading "+ (i+1) +" "+ header);
-				int index = Utility.getIndex(headers,header);
-				for(ArrayList<String> userData : usersData) {
-				
-					switch (header.toLowerCase()) {
-					case "assetcode":
-						assetCode = Utility.getIndexValue(userData, index);
-						break;
-	                case "validfrom":
-	                	temp=Utility.getIndexValue(userData, index);
-		            	if(!Utility.compareStringValues(temp, header)){
-		            		date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-		            		validFrom = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
-		            	}
-	                	break;
-	                case "validto":
-	                	temp=Utility.getIndexValue(userData, index);
-		            	if(!Utility.compareStringValues(temp, header)){
-		            		date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-		            		validTo = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
-		            	}
-	                	break;
-	                default: 
-	                	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	                	throw new UnsupportedOperationException();
-					}
-				}
-			}
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);  
-		}
-		
-		/*
-		 * Verify Cancel button on Assets screen
-		 */
-		try{
-			String newRadioButton = "(//label[text()='New']//preceding::span[contains(@class,'x-form-radio x-form-radio-default')]//input[@class='x-form-cb-input'])[1]";
-			ByAttribute.click("xpath", newRadioButton, "click on New radio button");
-			Utility.pause(2);
-			logger.log(LogStatus.INFO, "By Clicking on Cancel button , we will be navigated to Existing asset screen");
-			ByAttribute.click("xpath", IdentityObjects.cancelAssetButtonLnk, "click on cancel button");
-			logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
-			Utility.verifyElementPresent("//div[contains(@class,'x-column-header-text')]//span[text()='Asset']", "Existing asset screen", true, false);
-		
-			/*
-			 * verify Reset button on New asset screen
-			 */
-			ByAttribute.click("xpath", newRadioButton, "click on New radio button");
-			Utility.pause(2);
-			String dropdownArrow="(//span[text()='Asset Code']//ancestor::label//following::div[contains(@class,' x-form-trigger-default x-form-arrow-trigger')])[1]";
-			ByAttribute.click("xpath", dropdownArrow, "click on dropdown to select asset code");
-			Utility.pause(40);
-		
-			for(int i=0;i<10;i++){
-				if(driver.findElements(By.xpath("//div[text()='"+assetCode+"']")).size()>0){
-					break;
-				}
-				else
-					Utility.pause(10);
-			}
-			String asstCode="//div[text()='"+assetCode+"']";
-			ByAttribute.click("xpath", asstCode, " select asset code");
-			Utility.pause(2);
-			Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
-			System.out.println("Asset Code is filled");
-			
-			ByAttribute.click("xpath", IdentityObjects.resetButtonAssetScreen, " Click on Reset button on add new asset screen");
-			Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
-			logger.log(LogStatus.PASS , "Fields are cleared after clicking reset button");
-			
-			/*
-			 * navigating to new asset screen to add new asset
-			 */
-			ByAttribute.click("xpath", dropdownArrow, "click on dropdown to select asset code");
-			Utility.pause(20);
-		
-			for(int i=0;i<10;i++){
-				if(driver.findElements(By.xpath("//div[text()='"+assetCode+"']")).size()>0){
-					break;
-				}
-				else
-					Utility.pause(10);
-			}
-			ByAttribute.click("xpath", asstCode, " select asset code");
-			Utility.pause(2);
-		
-			String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[2]";
-			String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[2]";	
-			ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-			Utility.pause(2);
-			ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-			Utility.pause(2);
-			
-			/*
-			 * Add notes while adding new asset
-			 */
-//			String notes = "//span[contains(@id,'button') and text()='Notes']";
-//			String comments = "New Asset assignment";
-//			ByAttribute.click("xpath",notes, " Click notes button");
-//			Utility.pause(2);
-//			if(driver.findElements(By.xpath("//div[contains(@id,'header-title-textEl') and text()='Add Comment']")).size()>0){
-//				ByAttributeAngular.setText("xpath", "//body[contains(@class,'mce-content-body ')]//p",comments , "Adding comments while assigning new asset");
-//				ByAttributeAngular.click("xpath", IdentityObjects.addCommentsButtonLnk, "Click on Add Comments button");
-//				ByAttributeAngular.click("xpath", IdentityObjects.closeNotesWindowLnk, "close notes window");
-//			}
-//			else{
-//				logger.log(LogStatus.INFO,"window not opened to add notes");
-//			}
-			
-				
-			ByAttribute.click("xpath", IdentityObjects.confirmButton, " Click confirm ");
-			Utility.pause(5);
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR,e);
-		}
-
-	}
-	
-	public static void fillPrerequisitesInfo() 
-	{
-		
-		String type= null,prerequisite=null,validFrom= null,validTo = null,header,headerValue,temp;
-		Date date;
-		
-		
-		String prerequisiteTemplateFile = testDataDirectory + "/Prerequisite_Template.csv";
-	    String prerequisiteDataFile=testDataDirectory+ "/Prerequisite.csv";
-		TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
-		
-		ArrayList<String> headers = Utility.getCSVRow(prerequisiteDataFile, 1);
-		ArrayList<ArrayList<String>> usersData = Utility.getCSVData(prerequisiteDataFile, 0);
-		int len = headers.size();
-		
-		try{
-		for (int i=0;i<len;i++){
-			header= headers.get(i);
-			System.out.println("heading "+ (i+1) +" "+ header);
-			int index = Utility.getIndex(headers,header);
-			for(ArrayList<String> userData : usersData) {
-				
-				switch (header.toLowerCase()) {
-	            case "type":
-	            	type = Utility.getIndexValue(userData, index);
-	                break;
-	            case "prerequisite":
-	            	prerequisite = Utility.getIndexValue(userData, index);
-	                break;
-	            case "validfrom":
-	            	validFrom=Utility.getIndexValue(userData, index);
-	            	break;
-	            case "validto":
-	            	validTo=Utility.getIndexValue(userData, index);
-				    break;
-	            default: 
-	            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-	            	throw new UnsupportedOperationException();
-				}
-				
-			}
-			
-		}
-		}
-		catch(Exception e){
-			logger.log(LogStatus.ERROR, e);
-		}
-//		ByAttribute.click("xpath", IdentityObjects.addRecordsIconPrerequisiteTab, "click on add icon to insert prerequisite");
-//		Utility.pause(5);
-		
-		Actions action = new Actions(driver);
-		WebElement addIcon = driver.findElement(By.xpath(IdentityObjects.addRecordsIconPrerequisiteTab));
-		action.moveToElement(addIcon).click();
-		action.sendKeys(type);
-        action.build().perform();
-        Utility.pause(10);
-       	WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+type+"']"));
-        action.moveToElement(typeValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "prerequisite type Value selected");
-		Utility.pause(2);
-		
-		WebElement prerequisiteType=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
-		action.moveToElement(prerequisiteType).click();
-        action.sendKeys(prerequisite);
-        action.build().perform();
+				WebElement prerequisiteType=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
+				action.moveToElement(prerequisiteType).click();
+				action.sendKeys(prerequisite);
+				action.build().perform();
                
-        WebElement prerequisiteTyp=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
-		action.moveToElement(prerequisiteTyp).click();
-        action.sendKeys(prerequisite);
-        action.build().perform();
-        Utility.pause(5);
-        WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisite+"']"));
-        action.moveToElement(prerequisiteValue).click();
-        action.build().perform();
-        logger.log(LogStatus.INFO, "Entered the Prerequisite");
+				WebElement prerequisiteTyp=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
+				action.moveToElement(prerequisiteTyp).click();
+				action.sendKeys(prerequisite);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisite+"']"));
+				action.moveToElement(prerequisiteValue).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Entered the Prerequisite");
 		
-        WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
-		action.moveToElement(validFromDate).click();
-		action.build().perform();
+				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
+				action.moveToElement(validFromDate).click();
+				action.build().perform();
         
-		String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[3]";
-		ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-		Utility.pause(2);
-		logger.log(LogStatus.INFO, "Entered valid from");
+				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[3]";
+				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid from");
 		
 		
-//		WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[2]"));
-//		action.moveToElement(validToDate).click();
-//        action.build().perform();
-//		String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[3]";
+//				WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[2]"));
+//				action.moveToElement(validToDate).click();
+//        		action.build().perform();
+//				String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[3]";
 		
-//		action.sendKeys(Keys.TAB).build().perform();
-//		String validToDt = "//div[contains(@class,'x-form-trigger-default x-form-date-trigger x-form-date-trigger-default  x-form-trigger-focus x-form-trigger-over')]/preceding-sibling::div//input";
-//		ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-//		Utility.pause(2);
-//		logger.log(LogStatus.INFO, "Entered valid to");
-
+//				action.sendKeys(Keys.TAB).build().perform();
+//				String validToDt = "//div[contains(@class,'x-form-trigger-default x-form-date-trigger x-form-date-trigger-default  x-form-trigger-focus x-form-trigger-over')]/preceding-sibling::div//input";
+//				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
+//				Utility.pause(2);
+//				logger.log(LogStatus.INFO, "Entered valid to");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
 	}
 
 
 	private static void verifyReconData() throws Throwable{
-		
-		System.out.println("***************************** Verify Data Fetched From Recon *********************************");
-		try
+		if(unhandledException==false)
 		{
-		logger.log(LogStatus.INFO , "Recon remediation screen loaded with role recon data");
-		System.out.println("Recon remediation screen loaded with role recon data");
+			System.out.println("***************************** Verify Data Fetched From Recon *********************************");
+			try
+			{
+				logger.log(LogStatus.INFO , "Recon remediation screen loaded with role recon data");
+				System.out.println("Recon remediation screen loaded with role recon data");
 		
-		/*
-		 * Select the view for role recon data
-		 */
-		logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
-		WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-		settingsIcon.click();
-	    ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-	    ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-	    Utility.pause(10);
+				/*
+				 * Select the view for role recon data
+				 */
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+				Utility.pause(10);
 	    
-		WebElement desc = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[11]//div"));
-		String description = desc.getText();
+				WebElement desc = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[11]//div"));
+				String description = desc.getText();
 			
-		logger.log(LogStatus.INFO, "Navigating to Access tab to verify recon data on UI");
-		verifyReconDataFromUI(description);
+				logger.log(LogStatus.INFO, "Navigating to Access tab to verify recon data on UI");
+				verifyReconDataFromUI(description);
 		
-		logger.log(LogStatus.INFO, "verify recon data from DB");
-		verifyReconDataFromDB(description);
-			
+				logger.log(LogStatus.INFO, "verify recon data from DB");
+				verifyReconDataFromDB(description);
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
 	}
-	catch(Exception e)
-	{		
-		String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-		Utility.recoveryScenario(nameofCurrMethod, e);
-	}	
-}
 
 	public static void verifyReconDataFromDB(String description) throws Throwable {
-	try{
-	//	String query = "select * from aehsc.stg_role_data where description='"+description+"' and int_status='0';";
-		String query = "select count(*) from aehsc.stg_role_data where int_status = '0'";
-		ArrayList<ArrayList<Object>> rs = MsSql.getResultsFromDatabase(query);
-		for (int i=0 ; i < rs.size();i++){
-		
-			System.out.println("data obtained from db : " + rs.get(i));
-	//		logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(i));
+		if(unhandledException==false)
+		{
+			
+			System.out.println("**********Verify Recon Data from DB*********");
+			try{
+					String query = "select count(*) from aehsc.stg_role_data where int_status = '0'";
+					ArrayList<ArrayList<Object>> rs = MsSql.getResultsFromDatabase(query);
+					for (int i=0 ; i < rs.size();i++){
+						System.out.println("data obtained from db : " + rs.get(i));
+					}
+					logger.log(LogStatus.PASS, "total number of active records after role recon was completed were: " +activeRoleReconRecords);
+					logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(0));
+				}
+				catch(Exception e)	{
+					String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+					Utility.recoveryScenario(nameofCurrMethod, e);
+				}
 		}
-		logger.log(LogStatus.PASS, "total number of active records after role recon was completed were: " +activeRoleReconRecords);
-		logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(0));
-		
-	}
-	catch(Exception e)	{
-		String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-		Utility.recoveryScenario(nameofCurrMethod, e);
-	}
 	}
 
 	public static void verifyReconDataFromUI(String description) throws Throwable {
-	try{
-		ByAttribute.mouseHover("xpath", AccessObjects.accessTabLnk, "Mouse Hover on Access tab");
-		Utility.pause(5);
-		ByAttribute.click("xpath", AccessObjects.manageAccessLnk, "Click on Manage Access ");
-		Utility.pause(10);
+		if(unhandledException==false)
+		{
+			System.out.println("************Verify Recon Data from UI**********");
+			try{
+					ByAttribute.mouseHover("xpath", AccessObjects.accessTabLnk, "Mouse Hover on Access tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", AccessObjects.manageAccessLnk, "Click on Manage Access ");
+					Utility.pause(10);
 		
-		WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-		settingsIcon.click();
-	    ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-	    ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-	    Utility.pause(10);
+					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+					settingsIcon.click();
+					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+					Utility.pause(10);
 	    
-		ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
-		Utility.pause(3);
-		ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-		Utility.pause(2);
-		ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,description, "Enter the first field value for Filtering");
-		Utility.pause(2);
-		
-		Actions action = new Actions(driver);
-		action.sendKeys(Keys.ENTER);
-		action.build().perform();
-		Utility.pause(5);
-		
-		if(driver.findElements(By.xpath("//div[text()='"+description+"']")).size()>0){
-			int size = driver.findElements(By.xpath("//div[text()='"+description+"']")).size();
-			boolean flag = false;
-			for (int i=0;i<size/2 && (!flag) ;i++){
-				WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
-				String srcId = sourceId.getText();
-				
-				if(Utility.checkIfStringIsNotNull(srcId)){
-					
+					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
+					Utility.pause(3);
 					ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
 					Utility.pause(2);
 					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
 					Utility.pause(2);
-					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
+					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
 					Utility.pause(2);
-					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter the value");
+					ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
 					Utility.pause(2);
-					ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
+					ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,description, "Enter the first field value for Filtering");
 					Utility.pause(2);
-					
-					action = new Actions(driver);
+		
+					Actions action = new Actions(driver);
 					action.sendKeys(Keys.ENTER);
 					action.build().perform();
-					Utility.pause(2);
-					flag = true;
-					logger.log(LogStatus.PASS, "Recon data is present on UI");
-					Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
-					System.out.println("Recon data is present on UI");
-				}
+					Utility.pause(5);
+		
+					if(driver.findElements(By.xpath("//div[text()='"+description+"']")).size()>0){
+						int size = driver.findElements(By.xpath("//div[text()='"+description+"']")).size();
+						boolean flag = false;
+						for (int i=0;i<size/2 && (!flag) ;i++){
+							WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
+							String srcId = sourceId.getText();
+							if(Utility.checkIfStringIsNotNull(srcId)){
+								ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+								Utility.pause(2);
+								ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+								Utility.pause(2);
+								ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
+								Utility.pause(2);
+								ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter the value");
+								Utility.pause(2);
+								ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
+								Utility.pause(2);
+								
+								action = new Actions(driver);
+								action.sendKeys(Keys.ENTER);
+								action.build().perform();
+								Utility.pause(2);
+								flag = true;
+								logger.log(LogStatus.PASS, "Recon data is present on UI");
+								Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
+								System.out.println("Recon data is present on UI");
+							}
+						}
+					}
+					else{
+						logger.log(LogStatus.FAIL, "Recon data not present on UI");
+					}
 			}
-		}
-		else{
-			logger.log(LogStatus.FAIL, "Recon data not present on UI");
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
 		}
 	}
-	catch(Exception e)
-	{		
-		String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-		Utility.recoveryScenario(nameofCurrMethod, e);
-	}	
-}
 
+	public static void deleteReconRecord() throws Throwable {
+		if(unhandledException==false)
+		{
+			System.out.println("*******************Delete recon record************************");
+			try{
+				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
+				Utility.pause(40);
+			
+				logger.log(LogStatus.INFO,"Selecting the appropriate view on recon setup screen");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				ByAttribute.click("xpath",ReconObjects.ReconViewLnk, "click on recon view");
+				Utility.pause(20);
+		    
+				/*
+				 * Filter the records in Recon set up on basis of entity type
+				 */
+				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+//				ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType, "Enter the field name for Filtering");
+//				Utility.pause(2);
+				WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+				Actions action = new Actions (driver);
+				action.moveToElement(filterValue).click().build().perform();;
+				action.sendKeys("Role Data").build().perform();
+				Utility.pause(5);
+		//		action.sendKeys(Keys.ENTER).build().perform();
+				
+					
+			//	searching for recon job to be deleted
+			
+				WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
+				searchBar.click();
+				Utility.pause(20);
+				ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon set up screen to delete ");
+		//		Actions action = new Actions (driver);
+				action.sendKeys(Keys.ENTER).build().perform();
+				String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
+			
+				if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false) && ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob)){
+					logger.log(LogStatus.INFO,"Recon job found for deletion");
+					ByAttribute.click("xpath", ReconObjects.deleteIconReconSetup, "click on minus icon to delete the record");
+					ByAttribute.click("xpath", ReconObjects.submitButtonLnk, "Click submit after deleting the record");
+					Utility.pause(5);
+					ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
+					Utility.pause(10);
+					if(!(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false))){
+						logger.log(LogStatus.PASS,"Record deleted");
+					}
+					else{
+						logger.log(LogStatus.FAIL,"Unable to delete the record");
+					}
+				}
+				else{
+					logger.log(LogStatus.INFO,"Recon job not found for deletion");
+				}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+	}
 				
 }

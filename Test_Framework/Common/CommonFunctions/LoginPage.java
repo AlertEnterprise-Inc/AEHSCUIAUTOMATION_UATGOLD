@@ -60,7 +60,7 @@ public class LoginPage extends BrowserSelection
 			try{
 				
 				for(int j=0;j<12 && (!flag);j++){
-					if(driver.findElement(By.xpath(LoginObjects.loginButtonLnk)).isDisplayed())
+					if(driver.findElements(By.xpath(LoginObjects.loginButtonLnk)).size()>0)
 					{
 						System.out.println("Re-Login Required");
 						driver.navigate().refresh();
@@ -80,7 +80,7 @@ public class LoginPage extends BrowserSelection
 				}
 			}
 			catch(Exception e){
-				System.out.println(e);
+				System.out.println("login successful");
 			}
 
 		return flag;

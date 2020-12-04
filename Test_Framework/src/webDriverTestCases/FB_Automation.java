@@ -6,7 +6,9 @@ import org.testng.annotations.Test;
 
 import com.relevantcodes.extentreports.LogStatus;
 
+import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
+import CommonClassReusables.Utility;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonFunctions.LoginPage;
 
@@ -32,14 +34,14 @@ public class FB_Automation extends BrowserSelection {
 	}
 			
 	/*
-	 * TC001 : Recon Job Execution
+	 * TC001 : Recon Job Execution.Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality
 	 */
 	
 	@Test(priority=1)
 	public void FB_Automation_TC001() throws Throwable 
 	{
-
-		logger =report.startTest("FB_Automation_TC001","Recon Job Execution");
+		
+		logger =report.startTest("FB_Automation_TC001","Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality");
 		System.out.println("[INFO]--> FB_Automation_TC001 - TestCase Execution Begins");
 		
 		/* Login as AS User */
@@ -51,6 +53,8 @@ public class FB_Automation extends BrowserSelection {
 			
 		/* Create Recon Job */
 		FB_Automation_CommonMethods.setUpReconJob();
+		
+		FB_Automation_CommonMethods.deleteReconRecord();
 		
 			
 		/* Logout from Application */

@@ -1,8 +1,8 @@
 package ObjectRepository;
 
+import CommonClassReusables.AGlobalComponents;
 
-
-	public interface ReconObjects {
+public interface ReconObjects {
 
 		/** Recon **/
 		String reconTabLnk ="//span[contains(@class,'x-btn-inner-aeTopMenuButton-small') and contains(text(),'Recon')]";
@@ -17,9 +17,11 @@ package ObjectRepository;
 		
 		String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
 		
-		String searchInReconMonitor = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
+		String searchBarInRecon = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default')]";
 		
-		String checkboxLnkOfReconJob = "//td[contains(@class,' x-selmodel-checkbox x-grid-cell-special x-selmodel-column x-grid-cell-first') and contains(@aria-describedby,'cell-description-selected')]";
+		String ListValueAfterSearch = "//li[@class='x-boundlist-item' and text()='"+AGlobalComponents.jobName+"']";
+		
+		String checkboxLnkOfReconJob = "//div[text()='"+AGlobalComponents.jobName+"']/parent::td/preceding-sibling::td[contains(@class,' x-selmodel-checkbox') and contains(@aria-describedby,'cell-description-selected')]";
 		
 		String enterFieldName1ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
 		
@@ -28,7 +30,7 @@ package ObjectRepository;
 		String clickFieldValue1 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
 		
 		String enterFieldValue1 = "//label[contains(@class,'x-placeholder-label x-placeholder-label-default x-form-empty-field x-form-empty-field-default')]";
-		
+		                                                  		
 		String clickFieldValue2 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
 		
 		String enterFieldValue2 = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
@@ -77,5 +79,9 @@ package ObjectRepository;
 		
 		String roleReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Role Recon View']";
 		
+		String ReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Recon View']";
+		
 		String refreshIconLnk = "//a[contains(@data-qtip,'Reload')]//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aetextlink-medium  ')]";
+		
+		String deleteIconReconSetup = "//div[text()='"+AGlobalComponents.jobName+"']/parent::td/preceding-sibling::td//div[contains(@class,'aegrid-rowMinus')]";
 }
