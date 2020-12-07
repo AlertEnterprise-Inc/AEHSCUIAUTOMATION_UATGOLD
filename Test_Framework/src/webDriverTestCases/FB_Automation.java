@@ -178,5 +178,31 @@ public class FB_Automation extends BrowserSelection {
 		
 	}
 	
+	
+	/*
+	 * TC006 : Executing Trial recon job
+	 */
+	
+	@Test(priority=6)
+	public void FB_Automation_TC006() throws Throwable 
+	{
+		
+		logger =report.startTest("FB_Automation_TC006","Executing Trial recon job");
+		System.out.println("[INFO]--> FB_Automation_TC006 - TestCase Execution Begins");
+	
+		/* Login as AS User */
+		boolean login =LoginPage.loginAEHSC("admin", "Alert1234");
+
+		if(login)
+			logger.log(LogStatus.PASS, "Login Successful");
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
+			
+		FB_Automation_CommonMethods.executeTrialReconjob();
+		
+		/* Logout from Application */
+		LoginPage.logout();
+		
+	}
 		
 }

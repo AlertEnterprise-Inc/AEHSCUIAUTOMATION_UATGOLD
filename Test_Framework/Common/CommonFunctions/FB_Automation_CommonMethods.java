@@ -1,7 +1,10 @@
 package CommonFunctions;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.openqa.selenium.By;
@@ -56,7 +59,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
 						
-				Utility.pause(40);
+				Utility.pause(60);
 				
 				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
 				Utility.pause(20);
@@ -312,11 +315,28 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			action.moveToElement(confirmButton).click();
 			action.build().perform();
 			Utility.pause(2);
-			ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the recon request");
-			Utility.pause(5);
-			ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
-			Utility.pause(10);
-			logger.log(LogStatus.PASS, "Recon Job saved successfully");
+			
+			if(AGlobalComponents.trialReconJob){
+				logger.log(LogStatus.INFO, "Executing trial job");
+				ByAttribute.click("xpath", ReconObjects.trialButtonLnk, "Click on trial Job Icon");
+				Utility.pause(2);
+				
+				String currentDate = Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");
+	//			String endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(dateFormat);
+				String endDate = "12/5/20 6:00 pm";
+				ByAttribute.click("xpath", ReconObjects.endDateForTrialJob, "Click to enter end date");
+				ByAttribute.setText("xpath", ReconObjects.endDateForTrialJob, endDate, "Enter end date to run trial job");
+				action.moveToElement(confirmButton).click();
+				action.build().perform();
+				Utility.pause(5);
+			}
+			else{
+				ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the recon request");
+				Utility.pause(5);
+				ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
+				Utility.pause(10);
+				logger.log(LogStatus.PASS, "Recon Job saved successfully");
+			}
 		
 		}
 		catch( Exception e){
@@ -1739,5 +1759,45 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			}	
 		}
 	}
+
+	public static void executeTrialReconjob() throws Throwable {
+		if(unhandledException==false)
+		{
+			System.out.println("***************************** Set up Trial Recon Job *********************************");
+			try
+			{
+				AGlobalComponents.trialReconJob = true;
+				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
+						
+				Utility.pause(40);
 				
+				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+				Utility.pause(20);
+				while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
+					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+					Utility.pause(10);
+				}
+						
+				if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
+				{
+					initiateReconJob();
+					checkJobInReconMonitor();		
+				}
+				else{
+					logger.log(LogStatus.FAIL, "Checkbox not visible ");
+				}
+				
+				
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}	
+		
+	}
+
 }

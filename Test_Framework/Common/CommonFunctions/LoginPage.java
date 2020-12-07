@@ -37,7 +37,7 @@ public class LoginPage extends BrowserSelection
 			dynamicwait.WAitUntilPageLoad();
 						
 			boolean flg=true;
-			for (int i=1;i<10 && (flg);i++){
+			while(!(driver.findElements(By.xpath(LoginObjects.loginUserName)).size()>0)&& flg){
 				if(driver.findElements(By.xpath(LoginObjects.loginUserName)).size()>0){
 					flg=false;
 					System.out.println("Logged In to the Portal");
@@ -59,7 +59,7 @@ public class LoginPage extends BrowserSelection
 			boolean flag = false;
 			try{
 				
-				for(int j=0;j<12 && (!flag);j++){
+				for(int j=0;j<5 && (!flag);j++){
 					if(driver.findElements(By.xpath(LoginObjects.loginButtonLnk)).size()>0)
 					{
 						System.out.println("Re-Login Required");
