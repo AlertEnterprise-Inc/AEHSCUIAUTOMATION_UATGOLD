@@ -21,6 +21,7 @@ public class AGlobalComponents {
 	public static String s3BucketScript = System.getProperty("user.dir") + "\\ExtentReport\\";
 	
 	public static String identityCode="";
+	public static String jobName="";
 	
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://192.168.194.122/";
