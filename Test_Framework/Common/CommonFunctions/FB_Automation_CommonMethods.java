@@ -30,6 +30,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	public static String testDataDirectory= "Test_Data/IdentityManagement";
 	public static String reconTestDataDirectory= "Test_Data/Recon";
 	public static ArrayList<String> identityCodes = new ArrayList<String>();
+	public static ArrayList<String> jobNames = new ArrayList<String>();
 	private static boolean dupIdentity=false;
 	private static String identityCode = null;
 	private static String entityType= null;
@@ -321,14 +322,26 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", ReconObjects.trialButtonLnk, "Click on trial Job Icon");
 				Utility.pause(2);
 				
-				String currentDate = Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");
-	//			String endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(dateFormat);
-				String endDate = "12/5/20 6:00 pm";
+				Calendar c = Calendar.getInstance();
+				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy");
+				Date date = new Date();
+				String currentDate= dateFormat.format(date);
+				c.setTime(dateFormat.parse(currentDate));
+				//Number of Days to minus
+				c.add(Calendar.DAY_OF_MONTH, -2);  
+				//Date after subtracting the days to the given date
+				String temp = dateFormat.format(c.getTime());  
+				
+				date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+				String	endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(date); 
+					
 				ByAttribute.click("xpath", ReconObjects.endDateForTrialJob, "Click to enter end date");
 				ByAttribute.setText("xpath", ReconObjects.endDateForTrialJob, endDate, "Enter end date to run trial job");
+				confirmButton = driver.findElement(By.xpath(ReconObjects.confirmButton));
 				action.moveToElement(confirmButton).click();
 				action.build().perform();
 				Utility.pause(5);
+				logger.log(LogStatus.PASS, "Trial recon job saved successfully");
 			}
 			else{
 				ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the recon request");
@@ -1714,23 +1727,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
 				Utility.pause(2);
-//				ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType, "Enter the field name for Filtering");
-//				Utility.pause(2);
 				WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
 				Actions action = new Actions (driver);
 				action.moveToElement(filterValue).click().build().perform();;
 				action.sendKeys("Role Data").build().perform();
 				Utility.pause(5);
-		//		action.sendKeys(Keys.ENTER).build().perform();
-				
-					
+							
 			//	searching for recon job to be deleted
 			
 				WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
 				searchBar.click();
 				Utility.pause(20);
 				ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon set up screen to delete ");
-		//		Actions action = new Actions (driver);
 				action.sendKeys(Keys.ENTER).build().perform();
 				String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 			
@@ -1797,6 +1805,73 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}	
 		}	
+		
+	}
+
+	public static void deleteMultipleReconRecords() throws Throwable {
+		if(unhandledException==false)
+		{
+			System.out.println("***************************Deleting multiple recon jobs *********************************");
+			try
+			{
+				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
+						
+				Utility.pause(40);
+				for (int i=0 ; i<2 ; i++){
+					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+					Utility.pause(20);
+					while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
+						ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+						Utility.pause(10);
+					}
+						
+					if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
+					{
+						initiateReconJob();
+						jobNames.add(i, AGlobalComponents.jobName);
+					}
+					else{
+						logger.log(LogStatus.FAIL, "Checkbox not visible ");
+					}
+				}
+				deleteMultipleRecords(jobNames);
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}	
+		
+	}
+
+	public static void deleteMultipleRecords(ArrayList<String> jobNames) throws Throwable {
+		if(unhandledException==false){
+			
+			System.out.println("*******************Delete multiple recon records************************");
+			try{	
+		
+				for (int i=0;i<jobNames.size();i++){
+					String jbName = jobNames.get(i);
+					WebElement minusIcon = driver.findElement(By.xpath("//div[text()='"+jbName+"']/parent::td/preceding-sibling::td//div[contains(@class,'aegrid-rowMinus')]"));
+					Actions action = new Actions(driver);
+					action.click(minusIcon).build().perform();
+					Utility.pause(2);
+					
+				}
+				ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the request");
+				Utility.pause(5);
+				ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
+				Utility.pause(10);
+				logger.log(LogStatus.PASS, "deleted the selected identities");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
 		
 	}
 

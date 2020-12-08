@@ -15,8 +15,8 @@ public interface ReconObjects {
 		
 		String trialButtonLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-trial ')]";
 		
-		String endDateForTrialJob = "//input[contains(@class,' x-form-invalid-field-default') and contains(@id,'baseDateTime')]";
-		
+		String endDateForTrialJob = "//input[contains(@id,'baseDateTime')]";
+		                             
 		String addReconRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[1]";
 		
 		String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
