@@ -1485,6 +1485,8 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		return strDataLists;
 	}
     
+ 
+    
     public static ArrayList<String> getArrayOfRandomString(int lengthOfArray,
 			int lengthOfElements) {
 		ArrayList<String> randomArray = new ArrayList<String>();

@@ -34,7 +34,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static boolean dupIdentity=false;
 	private static String identityCode = null;
 	private static String entityType= null;
-//	private static String jobName="testRecon"+ Utility.UniqueNumber(2);
 	private static String activeRoleReconRecords = null;
 	
 	
@@ -134,8 +133,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			searchBar.click();
 			Utility.pause(5);
 			ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon monitor screen");
-			//	ByAttribute.click("xpath", ReconObjects.ListValueAfterSearch, "clicking on search result");
+			Utility.pause(5);
 			action.sendKeys(Keys.ENTER).build().perform();
+			Utility.pause(2);
 			String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 		
 			if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob) && Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false)){
@@ -990,6 +990,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				}
 				
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.firstNameLnk, "Enter first Name");
 				Utility.pause(2);
 				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
 				Utility.pause(2);
@@ -1749,16 +1751,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 					ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
 					Utility.pause(10);
-					if(!(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false))){
-						logger.log(LogStatus.PASS,"Record deleted");
-					}
-					else{
-						logger.log(LogStatus.FAIL,"Unable to delete the record");
-					}
+					logger.log(LogStatus.INFO,"Record deleted");
 				}
 				else{
 					logger.log(LogStatus.INFO,"Recon job not found for deletion");
 				}
+				verifyDeletedReconDataFromDB(AGlobalComponents.jobName);	
+				
 			}
 			catch(Exception e)
 			{		
@@ -1768,6 +1767,27 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
+	public static void verifyDeletedReconDataFromDB(String jobName) throws Throwable {
+		if(unhandledException==false)
+		{
+			
+			System.out.println("**********Verify deleted Recon Data from DB*********");
+			try{
+					String query = "select int_status from aehsc.recon_config where description = '"+jobName+"'";
+					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+					String status = rs.get(0).get(0);
+					logger.log(LogStatus.INFO, "Int status in db for job : "+jobName+ " is : " +status);
+					if(Utility.compareStringValues(status, "3")){
+						logger.log(LogStatus.PASS, "int status obtained fron DB is 3 , which means job " +jobName + " is deleted.");
+					}
+					
+				}
+				catch(Exception e)	{
+					String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+					Utility.recoveryScenario(nameofCurrMethod, e);
+				}
+		}
+	}
 	public static void executeTrialReconjob() throws Throwable {
 		if(unhandledException==false)
 		{
@@ -1837,6 +1857,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 				}
 				deleteMultipleRecords(jobNames);
+				
 			}
 			catch(Exception e)
 			{		
@@ -1860,12 +1881,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					action.click(minusIcon).build().perform();
 					Utility.pause(2);
 					
+					
 				}
 				ByAttribute.click("xpath", ReconObjects.submitButtonLnk,"submit the request");
 				Utility.pause(5);
 				ByAttribute.click("xpath", ReconObjects.confirmPopUpLnk,"click confirm button on popup");
 				Utility.pause(10);
-				logger.log(LogStatus.PASS, "deleted the selected identities");
+				logger.log(LogStatus.PASS, "deleted the selected records from UI");
+				for (int i=0;i<jobNames.size();i++){
+					String jbName = jobNames.get(i);
+					verifyDeletedReconDataFromDB(jbName)	;
+					
+				}
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 

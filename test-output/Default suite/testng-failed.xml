@@ -7,8 +7,8 @@
         <methods>
           <include name="quitDriver"/>
           <include name="commonPage"/>
-          <include name="FB_Automation_TC006"/>
           <include name="beforeSuite"/>
+          <include name="FB_Automation_TC005"/>
           <include name="afterMethod"/>
         </methods>
       </class> <!-- webDriverTestCases.FB_Automation -->
