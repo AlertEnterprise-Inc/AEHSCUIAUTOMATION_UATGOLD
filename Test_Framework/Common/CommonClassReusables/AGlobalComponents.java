@@ -31,11 +31,11 @@ public class AGlobalComponents {
 	public static String selfServicePortalURL  = "https://airportmit.cloud.alertenterprise.com/AlertSelfService/";
 	public static String username = "admin";
 	public static String password = "Alert1234";
-	public static String dbUsername = "AEQA14740";
-	public static String dbPassword = "Alert@1234";
-	public static String dbName = "AEQA14740";
+	public static String dbUsername = "AEQA15191";
+	public static String dbPassword = "Alert#1234";
+	public static String dbName = "AEQA15191";
 	public static String timezone = "Calcutta";
-	public static String dbIP="192.168.192.163";
+	public static String dbIP="192.168.194.124";
 	public static String dbUrl = "jdbc:sqlserver://"+ dbIP;
 	public final static String recoveryPassword = password;
 	public static String dbConString =dbUrl+";user="+dbUsername+";password="+dbPassword+";database="+dbName;	

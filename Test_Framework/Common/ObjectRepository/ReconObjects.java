@@ -21,6 +21,8 @@ public interface ReconObjects {
 		
 		String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
 		
+		String MinusIconToRemoveExistingFilter = "//span[contains(@class,'aegrid-rowMinus ')]" ; 
+		
 		String searchBarInRecon = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default')]";
 		
 		String ListValueAfterSearch = "//li[@class='x-boundlist-item' and text()='"+AGlobalComponents.jobName+"']";
@@ -69,13 +71,13 @@ public interface ReconObjects {
 		
 		String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
 		
-		String reconJobStatus = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[3]";
+		String reconJobStatus = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[2]";
 		
-		String activeRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[8]//a";
+		String activeRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[7]//a";
 		
-		String errorRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[9]" ; 
+		String errorRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[8]" ; 
 		
-		String errorMessage = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[7]";
+		String errorMessage = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[6]";
 		
 		String settingsIcon = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-setting ')]";
 		
@@ -87,5 +89,32 @@ public interface ReconObjects {
 		
 		String refreshIconLnk = "//a[contains(@data-qtip,'Reload')]//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aetextlink-medium  ')]";
 		
+		String downloadLink = "//span[contains(@class,' x-btn-icon-el-aetextlink-medium aegrid-download')]";
+		
+		String reconMonitorElements = "//label[contains(@class,'x-component x-box-item x-toolbar')]";
+		
+		String cancelInSettingsView = "(//span[contains(@id,'button') and text()='Cancel'])[2]";
+		
+		String closeInSettingsView = "//div[contains(@class,'x-tool-tool-el x-tool-img x-tool-close')]";
+		
+		String sharedLabelInSettingsVew = "//label[contains(text(),'Shared')]";
+		
+		String preferredLableInSettingsView =  "//label[contains(text(),'Preferred')]";
+		
+		String nameInSettingsView = "//span[contains(text(),'Name')]";
+		
+		String createNewView = "//span[text()='Create New View']";
+		
+		String saveLayout = "//div[contains(text(),'Save Current Layout')]";
+		
+		String nameInput = "(//input[contains(@id,'input') and contains(@class,'x-form-field x-form-required-field')])[2]";
+		
+		String confirmInSettingsView = "(//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')])[2]";
+		
 		String deleteIconReconSetup = "//div[text()='"+AGlobalComponents.jobName+"']/parent::td/preceding-sibling::td//div[contains(@class,'aegrid-rowMinus')]";
+		
+		String searchInReconMonitor = "//input[contains(@class,'x-form-empty-field-default x-form-text x-form-text-default')]";
+		
+		String filterExpand = "//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus')]";
+		
 }

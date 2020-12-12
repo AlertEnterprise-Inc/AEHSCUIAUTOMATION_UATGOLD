@@ -65,11 +65,22 @@
 <!--     <version>3.13.0</version> -->
 <!-- </dependency> -->
 
-   <dependency>
+ <!--   <dependency>
     <groupId>org.apache.poi</groupId>
     <artifactId>poi</artifactId>
     <version>3.17</version>
-   </dependency>
+   </dependency>  -->
+   
+   <dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>3.13</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>3.13</version>
+</dependency>
    
 	<dependency>
 	    <groupId>com.intuit.karate</groupId>
@@ -129,11 +140,12 @@
     <version>5.1.39</version>
 </dependency>
 
+<!-- 
 <dependency>
 	<groupId>org.apache.poi</groupId>
 	<artifactId>poi</artifactId>
 	<version>4.1.1</version>
-</dependency>
+</dependency>   -->
 
 <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
 <dependency>

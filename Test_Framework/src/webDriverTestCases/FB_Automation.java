@@ -14,6 +14,7 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.BrowserSelection;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonFunctions.LoginPage;
+import CommonClassReusables.Utility;
 
 
 public class FB_Automation extends BrowserSelection {
@@ -57,6 +58,7 @@ public class FB_Automation extends BrowserSelection {
 		/* Create Recon Job */
 		FB_Automation_CommonMethods.setUpReconJob();
 		
+		logger.log(LogStatus.INFO ,  "Deleting the created recon record");
 		FB_Automation_CommonMethods.deleteReconRecord();
 		
 			
@@ -100,7 +102,7 @@ public class FB_Automation extends BrowserSelection {
 	{
 		
 		logger =report.startTest("FB_Automation_TC003","Create Identity,search Identity ,edit Identity ,Duplicate check identity");
-		System.out.println("[INFO]--> FB_Automation_TC002 - TestCase Execution Begins");
+		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
 	
 		/* Login as AS User */
 		LoginPage.loginAEHSC("admin", "Alert1234");
@@ -233,5 +235,39 @@ public class FB_Automation extends BrowserSelection {
 		LoginPage.logout();
 		
 	}
+	
+	/*
+	 * TC008 : Search Invalid term, validate download icon, download icon functionality, Settings icon functionality	 
+	 */
+	@Test(priority=8)
+	public void FB_Automation_TC008() throws Throwable 
+	{
+
+	logger =report.startTest("FB_Automation_TC008","Search Invalid term, valdate download icon, download icon functionality, Settings functionality");
+	System.out.println("[INFO]--> FB_Automation_TC008 - TestCase Execution Begins");
+
+	/* Login as AS User */
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+
+	if(loginStatus){
+		logger.log(LogStatus.PASS, "Login Successful");
+	}	
+		
+	/* Search Invalid term */
+	FB_Automation_CommonMethods.searchInvalidTermOnReconMonitor("Invalid");
+	Utility.pause(1);
+	
+	/*Validate download icon and its functionality */
+	FB_Automation_CommonMethods.validateDownloadFunctionality();
+	
+	/*Validate settings icon functionality*/
+	
+	 FB_Automation_CommonMethods.validateSettingsFunctionality();
+	 Utility.pause(1);
+	 
+	/* Logout from Application */
+	LoginPage.logout();
+	
+}
 		
 }

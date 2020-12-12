@@ -1,2 +1,2 @@
-ConnectorEntity,Entity,Schedule Tpe
-CCURE 9000,Role Data,Immediate
+AssetCode,ValidFrom,ValidTo
+PermanentBadgeAsset9485,AUTO|ValidFrom|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidTo:1

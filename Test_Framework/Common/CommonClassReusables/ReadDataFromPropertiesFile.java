@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -23,8 +26,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.opencsv.CSVReader;
-
-import CommonClassReusables.ReadDataFromPropertiesFile;
 
 public class ReadDataFromPropertiesFile {
 
@@ -429,6 +430,109 @@ public class ReadDataFromPropertiesFile {
 			throw  new RuntimeException(e);
 		}
 		
+	}
+	
+	
+	/**
+	* <h1>clearExistingDownloadFiles</h1>
+	* This is a Method to clear already downloaded files
+	* @author  	Vishal Gupta
+	* @modified 
+	* @version 	1.0
+	* @since   	03-12-2020
+	* @param   	String partialName
+	* @return  	none
+	*/
+	public static void clearExistingDownloadFiles(String partialName) throws Throwable {
+		try {
+		 String folderName = System.getProperty("user.dir")+ "\\csv Download\\";
+		 File[] listFiles = new File(folderName).listFiles();
+		 for (int i = 0; i < listFiles.length; i++) {
+
+		     if (listFiles[i].isFile()) {
+		         String fileName = listFiles[i].getName();
+		         if (fileName.startsWith(partialName)
+		                 && fileName.endsWith(".xlsx")) {
+		        	 listFiles[i].delete();
+		             System.out.println("deleted existing files");
+		             
+		         }
+		     }
+		 }
+		
+		}
+		
+		catch(Throwable e){
+			throw  new RuntimeException(e);
+		}
+	}
+	
+	
+	/**
+	* <h1>checkWhetherFileIsDownloaded</h1>
+	* This is a Method to check whether a particular file is downloaded
+	* @author  	Vishal Gupta
+	* @modified 
+	* @version 	1.0
+	* @since   	03-12-2020
+	* @param   	String partialName
+	* @return  	boolean
+	*/
+	public static boolean checkWhetherFileIsDownloaded(String partialName) throws Throwable{
+		try {
+		 String folderName = System.getProperty("user.dir")+ "\\csv Download\\";
+		 File[] listFiles = new File(folderName).listFiles();
+		 boolean flag = false;
+		 String fileName = "None";
+
+		 for (int i = 0; i < listFiles.length; i++) {
+
+		     if (listFiles[i].isFile()) {
+		         fileName = listFiles[i].getName();
+		         if (fileName.startsWith(partialName)
+		                 && fileName.endsWith(".xlsx")) {
+		             System.out.println("found file" + " " + fileName);
+		             flag =  true;
+		         }
+		     }
+		 }
+		return flag;
+	}
+		
+	catch(Throwable e){
+		throw  new RuntimeException(e);
+	}
+}
+	
+	
+	/**
+	* <h1>countLine</h1>
+	* This is a Method to count the total number of lines in xlsx file
+	* @author  	Vishal Gupta
+	* @modified 
+	* @version 	1.0
+	* @since   	04-12-2020
+	* @param   	String path
+	* @return  	integer
+	*/
+	public static int countLine(String path) throws Throwable {
+
+		try {
+		FileInputStream ExcelFile = new FileInputStream(path); 
+		  
+		// Access the required test data sheet 
+		  
+		XSSFWorkbook ExcelWBook = new XSSFWorkbook(ExcelFile); 
+		  
+		XSSFSheet ExcelWSheet = ExcelWBook.getSheet("Sheet1"); 
+		  
+		int totalRows = ExcelWSheet.getPhysicalNumberOfRows() - 1; 
+		  
+		System.out.println("Total number of Rows :::"+totalRows); 
+		return totalRows;
+		}	catch(Throwable e){
+			throw  new RuntimeException(e);
+		}
 	}
 
 }

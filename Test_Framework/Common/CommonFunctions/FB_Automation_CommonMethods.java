@@ -1,8 +1,10 @@
 package CommonFunctions;
 
+import static org.testng.Assert.assertEquals;
+
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +13,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -18,6 +22,7 @@ import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
 import CommonClassReusables.MsSql;
+import CommonClassReusables.ReadDataFromPropertiesFile;
 import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import ObjectRepository.AccessObjects;
@@ -111,8 +116,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			/*
 			 * Filter the records in Recon monitor on basis of entity type
 			 */
-			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
-			Utility.pause(3);
+//			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+//			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
+			Utility.pause(2);
 			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
 			Utility.pause(2);
 			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
@@ -121,12 +128,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			Utility.pause(2);
 			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
 			Utility.pause(2);
+//			ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType ,"enter the value");
+			
 			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
 			Actions action = new Actions (driver);
-			action.moveToElement(filterValue).click().sendKeys(entityType).build().perform();
-			action.sendKeys(Keys.ENTER).build().perform();
-			Utility.pause(2);
-				
+			action.moveToElement(filterValue).click();
+			action.build().perform();
+			action.sendKeys(entityType).build().perform();
+			Utility.pause(1);
+							
 			//checking if recon job is registered in recon monitor screen or not
 		
 			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
@@ -135,10 +145,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon monitor screen");
 			Utility.pause(5);
 			action.sendKeys(Keys.ENTER).build().perform();
-			Utility.pause(2);
+			Utility.pause(5);
 			String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 		
-			if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob) && Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false)){
+			if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false)){
 				logger.log(LogStatus.INFO,"Recon job found");
 			
 			}
@@ -169,7 +179,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						while((Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, false, false)) && (Utility.compareStringValues(status.getText(), "STARTED"))){
 							WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
 							refreshIcon.click();
-							Utility.pause(10);
+							Utility.pause(20);
 							status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
 							logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
 							count++;
@@ -191,11 +201,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					activeRecords.click();
 					Utility.pause(10);
 				
-					try {
-						verifyReconData();
-					} catch (Throwable e) {
-						logger.log(LogStatus.ERROR, e);
+					if(AGlobalComponents.trialReconJob){
+						verifyReconDataFromDB(AGlobalComponents.jobName);
 					}
+					else{
+						verifyReconData();
+					} 
 				} 
 				else if(errorRecords.getText()!="0"){
 					logger.log(LogStatus.INFO, "There are Error records ");
@@ -392,7 +403,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				fillAccessesInfo();
 				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
 				Utility.pause(2);
-				fillSystemsInfo();	
+				fillSystemsInfo();
 				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
 				Utility.pause(2);
 				fillAssetsInfo();
@@ -1525,12 +1536,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO, "prerequisite type Value selected");
 				Utility.pause(2);
 		
-				WebElement prerequisiteType=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
+				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(prerequisiteType).click();
 				action.sendKeys(prerequisite);
 				action.build().perform();
                
-				WebElement prerequisiteTyp=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseComboColumn')])[2]//div"));
+				WebElement prerequisiteTyp=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(prerequisiteTyp).click();
 				action.sendKeys(prerequisite);
 				action.build().perform();
@@ -1540,26 +1551,28 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Entered the Prerequisite");
 		
-				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
+				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(validFromDate).click();
+				action.sendKeys(validFrom);
 				action.build().perform();
         
-				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[3]";
-				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-				Utility.pause(2);
+//				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[3]";
+//				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
+//				Utility.pause(2);
 				logger.log(LogStatus.INFO, "Entered valid from");
 		
 		
-//				WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[2]"));
-//				action.moveToElement(validToDate).click();
-//        		action.build().perform();
+				WebElement validToDate=driver.findElement(By.xpath("//td[5]/div[@class='x-grid-cell-inner ']"));
+				action.moveToElement(validToDate).click();
+				action.sendKeys(validTo);
+        		action.build().perform();
 //				String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[3]";
-		
+//		
 //				action.sendKeys(Keys.TAB).build().perform();
 //				String validToDt = "//div[contains(@class,'x-form-trigger-default x-form-date-trigger x-form-date-trigger-default  x-form-trigger-focus x-form-trigger-over')]/preceding-sibling::div//input";
 //				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
 //				Utility.pause(2);
-//				logger.log(LogStatus.INFO, "Entered valid to");
+				logger.log(LogStatus.INFO, "Entered valid to");
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -1611,13 +1624,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("**********Verify Recon Data from DB*********");
 			try{
-					String query = "select count(*) from aehsc.stg_role_data where int_status = '0'";
-					ArrayList<ArrayList<Object>> rs = MsSql.getResultsFromDatabase(query);
-					for (int i=0 ; i < rs.size();i++){
-						System.out.println("data obtained from db : " + rs.get(i));
+					String query = "select count(*) from aehscnew.stg_role_data where int_status = '0'";
+					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+					String dbRecords = rs.get(0).get(0);
+					logger.log(LogStatus.INFO, "total no. of records in staging table after trial job are : " +dbRecords);
+					if(Utility.compareStringValues(dbRecords, activeRoleReconRecords)){
+						logger.log(LogStatus.PASS, "total no. of active records are equivalent to data stored in staging table :" + dbRecords);
 					}
-					logger.log(LogStatus.PASS, "total number of active records after role recon was completed were: " +activeRoleReconRecords);
-					logger.log(LogStatus.PASS, "total number of records fetched from DB are: " + rs.get(0));
+					else{
+						logger.log(LogStatus.FAIL, "db validation after trail job execution failed");
+					}
 				}
 				catch(Exception e)	{
 					String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -1644,8 +1660,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
-					ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-					Utility.pause(2);
+			//		ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+			//		Utility.pause(2);
 					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
 					Utility.pause(2);
 					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
@@ -1744,7 +1760,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.sendKeys(Keys.ENTER).build().perform();
 				String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 			
-				if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false) && ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnkOfReconJob)){
+				if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false) ){
 					logger.log(LogStatus.INFO,"Recon job found for deletion");
 					ByAttribute.click("xpath", ReconObjects.deleteIconReconSetup, "click on minus icon to delete the record");
 					ByAttribute.click("xpath", ReconObjects.submitButtonLnk, "Click submit after deleting the record");
@@ -1773,12 +1789,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("**********Verify deleted Recon Data from DB*********");
 			try{
-					String query = "select int_status from aehsc.recon_config where description = '"+jobName+"'";
+					String query = "select int_status from aehscnew.recon_config where description = '"+jobName+"'";
 					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
 					String status = rs.get(0).get(0);
 					logger.log(LogStatus.INFO, "Int status in db for job : "+jobName+ " is : " +status);
 					if(Utility.compareStringValues(status, "3")){
 						logger.log(LogStatus.PASS, "int status obtained fron DB is 3 , which means job " +jobName + " is deleted.");
+					}
+					else{
+						logger.log(LogStatus.FAIL, "unable to get the int status of job " +jobName + " from db");
 					}
 					
 				}
@@ -1828,6 +1847,34 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 
+	
+	public static void searchInvalidTermOnReconMonitor(String invalidTerm) throws Throwable {
+		try{
+			
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.reconMonitorLnk,"click on Recon Monitor");
+			Utility.pause(20);
+			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconMonitor));
+			searchBar.click();
+			ByAttribute.setText("xpath", ReconObjects.searchInReconMonitor, invalidTerm, "Searching invalid term on recon monitor screen");
+			Actions action = new Actions (driver);
+			action.sendKeys(Keys.ENTER).build().perform();
+			if(driver.findElements(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).size()!=0) {
+				if(!driver.findElement(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).isSelected()) {
+				logger.log(LogStatus.PASS, "No element is selected");
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{		
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+		}
+		}
+	
+	
 	public static void deleteMultipleReconRecords() throws Throwable {
 		if(unhandledException==false)
 		{
@@ -1868,6 +1915,107 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 
+	
+	public static void validateDownloadFunctionality() throws Throwable {
+		if(unhandledException==false) {
+			try {
+			if(Utility.verifyElementPresentReturn(ReconObjects.downloadLink, "Recon Monitor download Link", true, false)) {
+				System.out.println("download icon is present");
+				logger.log(LogStatus.INFO,"Download icon is present in Recon Monitor");
+				ByAttribute.click("xpath", ReconObjects.filterExpand, "Removing applied filter");
+				WebDriverWait wait = new WebDriverWait(driver, 20, 500);
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@id,'loadmask') and contains(@class,'x-mask-msg-text')]")));
+				ReadDataFromPropertiesFile.clearExistingDownloadFiles("Recon Monitor");
+				ByAttribute.click("xpath", ReconObjects.downloadLink, "clicking on download link");
+				Utility.pause(30);
+				if (ReadDataFromPropertiesFile.checkWhetherFileIsDownloaded("Recon Monitor")) {
+					logger.log(LogStatus.PASS, "Download functionaity verified");
+				}
+				else {
+					logger.log(LogStatus.FAIL, "Unable to download file");
+				}
+				validateDownloadedData();
+				}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+			}
+		}
+	
+	public static void validateDownloadedData() throws Throwable {
+		if(unhandledException==false) {
+			try {
+			String elementsNumber = ByAttribute.getText("xpath", ReconObjects.reconMonitorElements, "getting Recon Monitor Grid data");
+			String number=elementsNumber.split(":")[1].trim();
+			System.out.println(number);
+			 String folderName = System.getProperty("user.dir")+ "\\csv Download\\";
+			 File[] listFiles = new File(folderName).listFiles();
+			 String fileOrg = "None";
+			 for (int i = 0; i < listFiles.length; i++) {
+	
+			     if (listFiles[i].isFile()) {
+			         String fileName = listFiles[i].getName();
+			         if (fileName.startsWith("Recon Monitor")
+			                 && fileName.endsWith(".xlsx")) {
+			             System.out.println("found file" + " " + fileName);
+			             fileOrg = fileName;
+			             break;
+			         }
+			     }
+			 }
+	
+			int numbercsv = ReadDataFromPropertiesFile.countLine(System.getProperty("user.dir")+ "\\csv Download\\"+fileOrg);
+			 String str1 = Integer.toString(numbercsv); 
+			 assertEquals(str1,number);
+			 logger.log(LogStatus.PASS, "Download data verified");
+			
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void validateSettingsFunctionality() throws Throwable {
+		if(unhandledException==false) {
+			try {
+			
+			ByAttribute.click("xpath", ReconObjects.settingsIcon, "clicking on settings icon of recon monitor");
+			Utility.verifyElementPresent(ReconObjects.selectViewLnk, "Select View", true, false); 
+			Utility.verifyElementPresent(ReconObjects.createNewView, "Create New View", false, false); 
+		
+			ByAttribute.click("xpath",ReconObjects.createNewView,"clicking on create new view option of Settings icon");
+			Utility.verifyElementPresent(ReconObjects.saveLayout, "Save Current Layout Label ", false, false); 
+			Utility.verifyElementPresent(ReconObjects.nameInSettingsView, "Name field Verified", false, false); 
+			Utility.verifyElementPresent(ReconObjects.preferredLableInSettingsView, "Preferred checkbox", false, false); 
+			Utility.verifyElementPresent(ReconObjects.sharedLabelInSettingsVew, "Shared checkbox ", false, false); 
+			Utility.verifyElementPresent(ReconObjects.closeInSettingsView, "Close button", false, false); 
+			Utility.verifyElementPresent(ReconObjects.cancelInSettingsView, "Cancel button", false, false);
+			Utility.verifyElementPresent(ReconObjects.confirmButton, "Confirm button", false, false); 
+				
+			ByAttribute.click("xpath",ReconObjects.closeInSettingsView , "Clicking on close icon of settings view");
+			Utility.verifyElementNotPresent(ReconObjects.saveLayout, "save layout on create new view", false);
+	
+			ByAttribute.click("xpath", ReconObjects.settingsIcon, "clicking on settings icon of recon monitor");
+			ByAttribute.click("xpath",ReconObjects.createNewView,"clicking on create new view option of Settings icon");
+			ByAttribute.click("xpath",ReconObjects.cancelInSettingsView , "Clicking on cancel button of settings view");
+			}
+
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
+		
+	}
+	
+	
 	public static void deleteMultipleRecords(ArrayList<String> jobNames) throws Throwable {
 		if(unhandledException==false){
 			
