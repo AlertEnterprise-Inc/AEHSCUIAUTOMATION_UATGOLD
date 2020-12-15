@@ -54,9 +54,7 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+		
 		/* Create Recon Job */
 		FB_Automation_CommonMethods.setUpReconJob();
 		
@@ -86,9 +84,7 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+					
 		/* Mandatory fields check while Create Identity */
 				
 		FB_Automation_CommonMethods.mandatoryFieldsCheck();
@@ -116,9 +112,7 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+					
 		/* Identity Management */
 		
 		logger.log(LogStatus.PASS, "Create new Identity");
@@ -162,9 +156,7 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+		
 		FB_Automation_CommonMethods.cancelCreateIdentity();
 		
 		FB_Automation_CommonMethods.showHideFilterWidget();
@@ -192,9 +184,7 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+		
 		logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
 		FB_Automation_CommonMethods.deleteIdentity();
 		
@@ -227,9 +217,7 @@ public class FB_Automation extends BrowserSelection {
 
 		if(login)
 			logger.log(LogStatus.PASS, "Login Successful");
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+		
 		FB_Automation_CommonMethods.executeTrialReconjob();
 		
 		/* Logout from Application */
@@ -253,9 +241,7 @@ public class FB_Automation extends BrowserSelection {
 
 		if(login)
 			logger.log(LogStatus.PASS, "Login Successful");
-		else
-			logger.log(LogStatus.FAIL, "Login fail");
-			
+					
 		FB_Automation_CommonMethods.deleteMultipleReconRecords();
 		
 		/* Logout from Application */

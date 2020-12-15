@@ -1,2 +1,2 @@
 FirstName,LastName,ValidFrom,ValidTo,EmployeeType,Email
-UDS|FirstName|String|10,UDS|LastName|String|10,AUTO|Date|Date,AUTO|Date|Date,Permanent,autouser2@aeqaind.corp
+UDS|FirstName|String|10,UDS|LastName|String|10,AUTO|Date|Date,AUTO|Date|Date,permanent,autouser2@aeqaind.corp

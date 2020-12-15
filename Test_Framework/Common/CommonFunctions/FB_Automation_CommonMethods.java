@@ -118,24 +118,25 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			 */
 //			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
 //			Utility.pause(3);
+			Actions action = new Actions (driver);
 			ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
 			Utility.pause(2);
-			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
-			Utility.pause(2);
-			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-			Utility.pause(2);
-			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
-			Utility.pause(2);
-			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
-			Utility.pause(2);
-//			ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType ,"enter the value");
-			
-			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
-			Actions action = new Actions (driver);
-			action.moveToElement(filterValue).click();
-			action.build().perform();
-			action.sendKeys(entityType).build().perform();
-			Utility.pause(1);
+//			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
+//			Utility.pause(2);
+//			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+//			Utility.pause(2);
+//			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+//			Utility.pause(2);
+////			ByAttribute.click("xpath", ReconObjects.clickFieldValue2, "click to enter the value");
+//			Utility.pause(2);
+////			ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType ,"enter the value");
+//			
+//			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.clickFieldValue2));
+//			
+//			action.moveToElement(filterValue).click();
+//			action.build().perform();
+//			action.sendKeys(entityType).build().perform();
+//			Utility.pause(3);
 							
 			//checking if recon job is registered in recon monitor screen or not
 		
@@ -1546,8 +1547,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.sendKeys(validFrom);
 				action.build().perform();
 		
-				WebElement prerequisiteTyp=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(prerequisiteTyp).click();
+			
+				
+				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
+				action.moveToElement(prerequisiteType).click();
 				action.sendKeys(prerequisite);
 				action.build().perform();
 				Utility.pause(5);
@@ -1674,30 +1677,33 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(driver.findElements(By.xpath("//div[text()='"+description+"']")).size()>0){
 						int size = driver.findElements(By.xpath("//div[text()='"+description+"']")).size();
 						boolean flag = false;
-						for (int i=0;i<size/2 && (!flag) ;i++){
-							WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
-							String srcId = sourceId.getText();
-							if(Utility.checkIfStringIsNotNull(srcId)){
-								ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-								Utility.pause(2);
-								ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
-								Utility.pause(2);
-								ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
-								Utility.pause(2);
-								ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter the value");
-								Utility.pause(2);
-								ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
-								Utility.pause(2);
+						if(size>2){
+							for (int i=0;i<size/2 && (!flag) ;i++){
+								WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
+								String srcId = sourceId.getText();
+								if(Utility.checkIfStringIsNotNull(srcId)){
+									ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+									Utility.pause(2);
+									ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+									Utility.pause(2);
+									ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
+									Utility.pause(2);
+									ByAttribute.click("xpath", AccessObjects.enterFieldValue1, "click to enter the value");
+									Utility.pause(2);
+									ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
+									Utility.pause(2);
 								
-								action = new Actions(driver);
-								action.sendKeys(Keys.ENTER);
-								action.build().perform();
-								Utility.pause(2);
-								flag = true;
-								logger.log(LogStatus.PASS, "Recon data is present on UI");
-								Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
-								System.out.println("Recon data is present on UI");
+									action = new Actions(driver);
+									action.sendKeys(Keys.ENTER);
+									action.build().perform();
+									Utility.pause(2);
+									flag = true;
+								}
+								
 							}
+							logger.log(LogStatus.PASS, "Recon data is present on UI");
+							Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
+							System.out.println("Recon data is present on UI");
 						}
 					}
 					else{

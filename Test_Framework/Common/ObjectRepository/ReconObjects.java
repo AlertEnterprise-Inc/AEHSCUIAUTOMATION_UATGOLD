@@ -37,9 +37,11 @@ public interface ReconObjects {
 		
 		String enterFieldValue1 = "//label[contains(@class,'x-placeholder-label x-placeholder-label-default x-form-empty-field x-form-empty-field-default')]";
 		                                                  		
-		String clickFieldValue2 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
+		String clickFieldValue2 = "//input[contains(@class,'x-tagfield-input-field x-form-empty-field x-form-empty-field-default')]";
 		
 		String enterFieldValue2 = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
+		
+		String FilterValueLnk = "//label[contains(@class,'x-placeholder-label x-placeholder-label-default x-form-empty-field x-form-empty-field-default')]";
 		
 		String descriptionLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[5]";
 		
