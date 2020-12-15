@@ -54,6 +54,8 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 		}	
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
 			
 		/* Create Recon Job */
 		FB_Automation_CommonMethods.setUpReconJob();
@@ -79,9 +81,13 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC005 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-		logger.log(LogStatus.PASS, "Login Successful");
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
 			
 		/* Mandatory fields check while Create Identity */
 				
@@ -105,22 +111,32 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-		logger.log(LogStatus.PASS, "Login Successful");
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
 			
 		/* Identity Management */
-				
+		
+		logger.log(LogStatus.PASS, "Create new Identity");
 		FB_Automation_CommonMethods.createIdentity();
 		
+		logger.log(LogStatus.PASS, "Search the above created Identity");
 		FB_Automation_CommonMethods.searchIdentity();
 		
+		logger.log(LogStatus.PASS, "edit the job title of created identity");
 		FB_Automation_CommonMethods.editIdentity();
 		
+		logger.log(LogStatus.PASS, "Create duplicate Identity");
 		FB_Automation_CommonMethods.createDuplicateIdentity();
 		
+		logger.log(LogStatus.PASS, "Again searching the identity");
 		FB_Automation_CommonMethods.searchIdentity();
 		
+		logger.log(LogStatus.PASS, "deleting the mutiple identities");
 		FB_Automation_CommonMethods.deleteMultipleIdentities();
 			
 		/* Logout from Application */
@@ -141,9 +157,13 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC004 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-		logger.log(LogStatus.PASS, "Login Successful");
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
 			
 		FB_Automation_CommonMethods.cancelCreateIdentity();
 		
@@ -167,14 +187,21 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC005 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-		logger.log(LogStatus.PASS, "Login Successful");
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login fail");
 			
+		logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
 		FB_Automation_CommonMethods.deleteIdentity();
 		
+		logger.log(LogStatus.INFO, "check the deleted identity in deleted items");
 		FB_Automation_CommonMethods.verifyCancelAndCloseButtonInDeletedItems();
 		
+		logger.log(LogStatus.INFO, "recover the above deleted identity");
 		FB_Automation_CommonMethods.recoverDeletedItems();
 		
 			

@@ -412,6 +412,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				fillPrerequisitesInfo();
 				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
 				Utility.pause(20);
+				logger.log(LogStatus.PASS, "identity created");
 				
 			}
 			catch(Exception e)
@@ -501,34 +502,35 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 //					ByAttribute.click("xpath", employeeType, "Click on employee type ");
 //					Utility.pause(5);
 //				}
-				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
-				Utility.pause(3);
-				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,fieldName1, "Enter the field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,fieldValue1, "Enter the first field value for Filtering");
-				Utility.pause(2);
-				
-				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.enterFieldName2ToFilter, "click to enter field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldName2ToFilter,fieldName2, "Enter the field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.clickFieldValue2, "click to enter the second value");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,fieldValue2, "Enter the second field value for Filtering");
-				
-				Actions action = new Actions(driver);
-				action.sendKeys(Keys.ENTER).build().perform();
-				Utility.pause(20);
-				
 				if(!dupIdentity){
+					ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
+					Utility.pause(3);
+					ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,fieldName1, "Enter the field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,fieldValue1, "Enter the first field value for Filtering");
+					Utility.pause(2);
+				
+					ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.enterFieldName2ToFilter, "click to enter field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", IdentityObjects.enterFieldName2ToFilter,fieldName2, "Enter the field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.clickFieldValue2, "click to enter the second value");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,fieldValue2, "Enter the second field value for Filtering");
+				
+					Actions action = new Actions(driver);
+					action.sendKeys(Keys.ENTER).build().perform();
+					Utility.pause(20);
+				
+				
 					if(driver.findElements(By.xpath("((//div[text()='"+fieldValue1+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
 						WebElement record=driver.findElement(By.xpath("((//div[text()='"+fieldValue1+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 						identityCode=record.getText();	
@@ -538,6 +540,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						if(Utility.verifyElementPresentReturn(searchResult,fieldValue1,true,false)){
 							logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 						}
+						logger.log(LogStatus.PASS, "Search Identity successful");
 					}
 					else{
 						logger.log(LogStatus.FAIL ,"Failed to search the record");
@@ -553,7 +556,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						idCode1=identityCodes.get(0);
 						idCode2=identityCodes.get(1);
 						if(!Utility.compareStringValues(idCode1, idCode2)){
-							logger.log(LogStatus.PASS ,"Duplicate identity is created with different identity code");
+							logger.log(LogStatus.PASS ,"Duplicate identity is created with different identity code : " + idCode1+ ","+idCode2);
 						}
 				}
 			
@@ -616,6 +619,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
 				Utility.pause(15);
 				dupIdentity=true;
+				
 			}
 			catch(Exception e)
 			{		
@@ -748,6 +752,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 				
 				createIdentity();
+				logger.log(LogStatus.INFO, "Search above created identity");
 				iCode=searchIdentity();
 				System.out.println("Identity Created: "+ iCode);
 				logger.log(LogStatus.INFO, "Identity Created: "+ iCode);
@@ -787,7 +792,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
 				ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
 				Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
-				logger.log(LogStatus.INFO, "deleted the selected identities");
+				logger.log(LogStatus.PASS, "deleted the selected identities");
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -820,7 +825,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
 					ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
 					Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
-					logger.log(LogStatus.INFO, "deleted the selected identity");
+					logger.log(LogStatus.PASS, "deleted the selected identity");
 				}
 				else{
 					System.out.println("Checkbox not selected for deletion");
@@ -859,7 +864,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsLnk, "Clicked on close icon in the pop up box");
 				Utility.pause(5);
 				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", true, false);
-				logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
+				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking close icon, we are back on manage identity screen");
 				System.out.println("Deleted identities pop up box closed afte clicking close icon, we are back on manage identity screen");
 			
 				/*
@@ -882,7 +887,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsLnk, "Clicked on cancel button in the pop up box");
 				Utility.pause(5);
 				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header", true, false);
-				logger.log(LogStatus.INFO, "Deleted identities pop up box closed , we are back on manage identity screen");
+				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking cancel button, we are back on manage identity screen");
 				System.out.println("Deleted identities pop up box closed afte clicking cancel button, we are back on manage identity screen");
 			}
 			catch(Exception e){
@@ -1085,7 +1090,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String jbTitle = finalJobTitle.getText();
 				if(Utility.compareStringValues(jbTitle, jobTitle)){
 					System.out.println("job title is successfully updated");
-					logger.log(LogStatus.INFO, "job title is successfully updated");
+					logger.log(LogStatus.PASS, "job title is successfully updated");
 				}
 			}
 			catch(Exception e)
@@ -1535,12 +1540,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.build().perform();
 				logger.log(LogStatus.INFO, "prerequisite type Value selected");
 				Utility.pause(2);
-		
-				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(prerequisiteType).click();
-				action.sendKeys(prerequisite);
+				
+				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
+				action.moveToElement(validFromDate).click();
+				action.sendKeys(validFrom);
 				action.build().perform();
-               
+		
 				WebElement prerequisiteTyp=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(prerequisiteTyp).click();
 				action.sendKeys(prerequisite);
@@ -1551,14 +1556,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Entered the Prerequisite");
 		
-				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
+				validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(validFromDate).click();
 				action.sendKeys(validFrom);
 				action.build().perform();
-        
-//				String validFromDt="(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid From'])[3]";
-//				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-//				Utility.pause(2);
 				logger.log(LogStatus.INFO, "Entered valid from");
 		
 		
@@ -1566,13 +1567,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.moveToElement(validToDate).click();
 				action.sendKeys(validTo);
         		action.build().perform();
-//				String validToDt =	"(//div[contains(@id,'baseDateTime')]//input[@placeholder='Select Valid To'])[3]";
-//		
-//				action.sendKeys(Keys.TAB).build().perform();
-//				String validToDt = "//div[contains(@class,'x-form-trigger-default x-form-date-trigger x-form-date-trigger-default  x-form-trigger-focus x-form-trigger-over')]/preceding-sibling::div//input";
-//				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-//				Utility.pause(2);
-				logger.log(LogStatus.INFO, "Entered valid to");
+        		logger.log(LogStatus.INFO, "Entered valid to");
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
