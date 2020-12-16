@@ -1,2 +1,3 @@
 ConnectorName,EntityType,ScheduleType
 CCURE 9000,Role Data,Immediate
+Database Connector,User Data,Immediate

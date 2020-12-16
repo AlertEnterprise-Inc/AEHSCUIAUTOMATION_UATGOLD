@@ -23,6 +23,7 @@ import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
 import CommonClassReusables.MsSql;
 import CommonClassReusables.ReadDataFromPropertiesFile;
+import CommonClassReusables.TestDataEngine;
 import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import ObjectRepository.AccessObjects;
@@ -75,9 +76,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 				if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
 				{
-					initiateReconJob();
+					String reconDataFile = reconTestDataDirectory + "/Recon.csv";
+					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
 					
-					checkJobInReconMonitor();		
+					for(int i=0;i<connectorNames.size();i++) {	
+						initiateReconJob(connectorNames.get(i),entityTypes.get(i),scheduleTypes.get(i));
+						checkJobInReconMonitor();		
+					}	
 				}
 				else{
 					logger.log(LogStatus.FAIL, "Checkbox not visible ");
@@ -237,47 +244,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * Initiate recon job by providing description , connector value and entity
 	 *  
 	 * Author : Monika Mehta
+	 * @param string
+	 * @param string 
+	 * @param string 
 	 * @throws Throwable 
 	 * 
 	 * 
 	 **/
-	public static void initiateReconJob() throws Throwable {
+	public static void initiateReconJob(String connectorName, String entityType, String scheduleType) throws Throwable {
 	if(unhandledException==false)
 	{
 		System.out.println("******************Initiate recon job********************");
 		try{	
-		
-			String reconDataFile = reconTestDataDirectory + "/Recon.csv";
 			AGlobalComponents.jobName="testRecon"+ Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");		
-			ArrayList<String> headers = Utility.getCSVRow(reconDataFile, 1);
-			ArrayList<ArrayList<String>> usersData = Utility.getCSVData(reconDataFile, 0);
-			int len = headers.size();
-		
-			String connectorName= null,scheduleType= null,header;
-			
-			for (int i=0;i<len;i++){
-				header= headers.get(i);
-				System.out.println("heading "+ (i+1) +" "+ header);
-				int index = Utility.getIndex(headers,header);
-				for(ArrayList<String> userData : usersData) {
-					
-					switch (header.toLowerCase()) {
-					case "connectorname":
-						connectorName = Utility.getIndexValue(userData, index);
-						break;
-					case "entitytype":
-						entityType = Utility.getIndexValue(userData, index);
-						break;
-					case "scheduletype":
-						scheduleType=Utility.getIndexValue(userData, index);
-						break;
-					default: 
-						logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-						throw new UnsupportedOperationException();
-					}	
-				}
-			}
-		
 		
 			Actions action = new Actions(driver);
 			WebElement elementConnector=driver.findElement(By.xpath(ReconObjects.elementConnector));
@@ -399,15 +378,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(8);
 				
 				fillProfileInfo();
-				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
-				Utility.pause(2);
-				fillAccessesInfo();
-				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
-				Utility.pause(2);
-				fillSystemsInfo();
-				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
-				Utility.pause(2);
-				fillAssetsInfo();
+//				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
+//				Utility.pause(2);
+//				fillAccessesInfo();
+//				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+//				Utility.pause(2);
+//				fillSystemsInfo();
+//				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+//				Utility.pause(2);
+//				fillAssetsInfo();
 				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
 				Utility.pause(10);
 				fillPrerequisitesInfo();
@@ -495,7 +474,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
 				Utility.pause(5);
 				ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				Utility.pause(30);
 				
 				//narrowing down the search by selecting Employee Type 
 //				if(!dupIdentity){
@@ -1542,13 +1521,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO, "prerequisite type Value selected");
 				Utility.pause(2);
 				
+				
+		
+				WebElement prerequisiteTyp=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
+				action.moveToElement(prerequisiteTyp).click();
+				action.build().perform();
+				Utility.pause(2);
+				
 				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(validFromDate).click();
 				action.sendKeys(validFrom);
 				action.build().perform();
-		
+				Utility.pause(2);
+				logger.log(LogStatus.INFO, "Entered valid from");
 			
-				
 				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(prerequisiteType).click();
 				action.sendKeys(prerequisite);
@@ -1558,14 +1544,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.moveToElement(prerequisiteValue).click();
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Entered the Prerequisite");
-		
-				validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(validFromDate).click();
-				action.sendKeys(validFrom);
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered valid from");
-		
-		
+				
 				WebElement validToDate=driver.findElement(By.xpath("//td[5]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(validToDate).click();
 				action.sendKeys(validTo);
@@ -1701,10 +1680,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 								}
 								
 							}
-							logger.log(LogStatus.PASS, "Recon data is present on UI");
-							Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
-							System.out.println("Recon data is present on UI");
 						}
+						logger.log(LogStatus.PASS, "Recon data is present on UI");
+						Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
+						System.out.println("Recon data is present on UI");
+						
 					}
 					else{
 						logger.log(LogStatus.FAIL, "Recon data not present on UI");
@@ -1750,7 +1730,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Actions action = new Actions (driver);
 				action.moveToElement(filterValue).click().build().perform();;
 				action.sendKeys("Role Data").build().perform();
-				Utility.pause(5);
+				Utility.pause(20);
 							
 			//	searching for recon job to be deleted
 			
@@ -1759,6 +1739,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(20);
 				ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon set up screen to delete ");
 				action.sendKeys(Keys.ENTER).build().perform();
+				Utility.pause(4);
 				String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 			
 				if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false) ){
@@ -1830,8 +1811,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 				if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
 				{
-					initiateReconJob();
-					checkJobInReconMonitor();		
+					String reconDataFile = reconTestDataDirectory + "/Recon.csv";
+					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+					
+					for(int i=0;i<connectorNames.size();i++) {
+						initiateReconJob(connectorNames.get(i),entityTypes.get(i),scheduleTypes.get(i));
+						checkJobInReconMonitor();
+					}
 				}
 				else{
 					logger.log(LogStatus.FAIL, "Checkbox not visible ");
@@ -1897,8 +1885,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 					if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
 					{
-						initiateReconJob();
-						jobNames.add(i, AGlobalComponents.jobName);
+						String reconDataFile = reconTestDataDirectory + "/DelMultiReconRecords.csv";
+						ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+						ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+						ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+						
+						for(int j=0;j<connectorNames.size();j++) {
+							initiateReconJob(connectorNames.get(j),entityTypes.get(j),scheduleTypes.get(j));
+							jobNames.add(i, AGlobalComponents.jobName);
+						}
 					}
 					else{
 						logger.log(LogStatus.FAIL, "Checkbox not visible ");
@@ -2047,6 +2042,34 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
+		}
+		
+	}
+	
+	public static void searchInvalidTermOnReconSetup(String invalidTerm) throws Throwable {
+
+		try{
+			
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.reconSetUpLnk,"click on Recon Monitor");
+			Utility.pause(20);
+			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconSetup));
+			searchBar.click();
+			ByAttribute.setText("xpath", ReconObjects.searchInReconSetup, invalidTerm, "Searching invalid term on recon monitor screen");
+			Actions action = new Actions (driver);
+			action.sendKeys(Keys.ENTER).build().perform();
+			if(driver.findElements(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).size()!=0) {
+				if(!driver.findElement(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).isSelected()) {
+				logger.log(LogStatus.PASS, "No element is selected");
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{		
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
 		}
 		
 	}

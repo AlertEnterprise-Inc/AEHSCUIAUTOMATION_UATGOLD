@@ -38,7 +38,7 @@ public class FB_Automation extends BrowserSelection {
 	}
 			
 	/*
-	 * TC001 : Recon Job Execution.Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality
+	 * TC001 : Role Recon Job Execution.Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality
 	 */
 	
 	@Test(priority=1)
@@ -53,17 +53,20 @@ public class FB_Automation extends BrowserSelection {
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
-		}	
-		
-		/* Create Recon Job */
-		FB_Automation_CommonMethods.setUpReconJob();
-		
-		logger.log(LogStatus.INFO ,  "Deleting the created recon record");
-		FB_Automation_CommonMethods.deleteReconRecord();
-		
 			
-		/* Logout from Application */
-		LoginPage.logout();
+			/* Create Recon Job */
+			FB_Automation_CommonMethods.setUpReconJob();
+			
+			logger.log(LogStatus.INFO ,  "Deleting the created recon record");
+			FB_Automation_CommonMethods.deleteReconRecord();
+			
+				
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login failed");
+		
 		
 	}
 	
@@ -83,16 +86,19 @@ public class FB_Automation extends BrowserSelection {
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
-		}	
-					
-		/* Mandatory fields check while Create Identity */
-				
-		FB_Automation_CommonMethods.mandatoryFieldsCheck();
-		
 			
-		/* Logout from Application */
-		LoginPage.logout();
-		
+			/* Mandatory fields check while Create Identity */
+			
+			FB_Automation_CommonMethods.mandatoryFieldsCheck();
+			
+				
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login Failed");
+					
+	
 	}
 	
 	/*
@@ -111,30 +117,32 @@ public class FB_Automation extends BrowserSelection {
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
-		}	
-					
-		/* Identity Management */
-		
-		logger.log(LogStatus.PASS, "Create new Identity");
-		FB_Automation_CommonMethods.createIdentity();
-		
-		logger.log(LogStatus.PASS, "Search the above created Identity");
-		FB_Automation_CommonMethods.searchIdentity();
-		
-		logger.log(LogStatus.PASS, "edit the job title of created identity");
-		FB_Automation_CommonMethods.editIdentity();
-		
-		logger.log(LogStatus.PASS, "Create duplicate Identity");
-		FB_Automation_CommonMethods.createDuplicateIdentity();
-		
-		logger.log(LogStatus.PASS, "Again searching the identity");
-		FB_Automation_CommonMethods.searchIdentity();
-		
-		logger.log(LogStatus.PASS, "deleting the mutiple identities");
-		FB_Automation_CommonMethods.deleteMultipleIdentities();
 			
-		/* Logout from Application */
-		LoginPage.logout();
+			/* Identity Management */
+			
+			logger.log(LogStatus.PASS, "Create new Identity");
+			FB_Automation_CommonMethods.createIdentity();
+			
+			logger.log(LogStatus.PASS, "Search the above created Identity");
+			FB_Automation_CommonMethods.searchIdentity();
+			
+			logger.log(LogStatus.PASS, "edit the job title of created identity");
+			FB_Automation_CommonMethods.editIdentity();
+			
+			logger.log(LogStatus.PASS, "Create duplicate Identity");
+			FB_Automation_CommonMethods.createDuplicateIdentity();
+			
+			logger.log(LogStatus.PASS, "Again searching the identity");
+			FB_Automation_CommonMethods.searchIdentity();
+			
+			logger.log(LogStatus.PASS, "deleting the mutiple identities");
+			FB_Automation_CommonMethods.deleteMultipleIdentities();
+				
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else			
+			logger.log(LogStatus.FAIL, "Login Failed");
 		
 	}
 	
@@ -155,15 +163,18 @@ public class FB_Automation extends BrowserSelection {
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
-		}	
-		
-		FB_Automation_CommonMethods.cancelCreateIdentity();
-		
-		FB_Automation_CommonMethods.showHideFilterWidget();
-		
 			
-		/* Logout from Application */
-		LoginPage.logout();
+			FB_Automation_CommonMethods.cancelCreateIdentity();
+			
+			FB_Automation_CommonMethods.showHideFilterWidget();
+			
+				
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login Failed");
+		
 		
 	}
 	
@@ -183,20 +194,23 @@ public class FB_Automation extends BrowserSelection {
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
-		}	
-		
-		logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
-		FB_Automation_CommonMethods.deleteIdentity();
-		
-		logger.log(LogStatus.INFO, "check the deleted identity in deleted items");
-		FB_Automation_CommonMethods.verifyCancelAndCloseButtonInDeletedItems();
-		
-		logger.log(LogStatus.INFO, "recover the above deleted identity");
-		FB_Automation_CommonMethods.recoverDeletedItems();
-		
 			
-		/* Logout from Application */
-		LoginPage.logout();
+			logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
+			FB_Automation_CommonMethods.deleteIdentity();
+			
+			logger.log(LogStatus.INFO, "check the deleted identity in deleted items");
+			FB_Automation_CommonMethods.verifyCancelAndCloseButtonInDeletedItems();
+			
+			logger.log(LogStatus.INFO, "recover the above deleted identity");
+			FB_Automation_CommonMethods.recoverDeletedItems();
+			
+				
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login failed");
+		
 		
 	}
 	
@@ -216,12 +230,16 @@ public class FB_Automation extends BrowserSelection {
 		boolean login =LoginPage.loginAEHSC("admin", "Alert1234");
 
 		if(login)
+		{
 			logger.log(LogStatus.PASS, "Login Successful");
 		
-		FB_Automation_CommonMethods.executeTrialReconjob();
+			FB_Automation_CommonMethods.executeTrialReconjob();
 		
-		/* Logout from Application */
-		LoginPage.logout();
+			/* Logout from Application */
+			LoginPage.logout();
+		}
+		else
+			logger.log(LogStatus.FAIL, "Login Failed");
 		
 	}
 	
@@ -240,13 +258,16 @@ public class FB_Automation extends BrowserSelection {
 		boolean login =LoginPage.loginAEHSC("admin", "Alert1234");
 
 		if(login)
+		{
 			logger.log(LogStatus.PASS, "Login Successful");
 					
-		FB_Automation_CommonMethods.deleteMultipleReconRecords();
+			FB_Automation_CommonMethods.deleteMultipleReconRecords();
 		
-		/* Logout from Application */
-		LoginPage.logout();
-		
+			/* Logout from Application */
+			LoginPage.logout();
+		}
+		else
+			logger.log(LogStatus.FAIL, "Login Failed");
 	}
 	
 	/*
@@ -256,31 +277,37 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC008() throws Throwable 
 	{
 
-	logger =report.startTest("FB_Automation_TC008","Search Invalid term, valdate download icon, download icon functionality, Settings functionality");
-	System.out.println("[INFO]--> FB_Automation_TC008 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC008","Search Invalid term, valdate download icon, download icon functionality, Settings functionality");
+		System.out.println("[INFO]--> FB_Automation_TC008 - TestCase Execution Begins");
 
-	/* Login as AS User */
-	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		/* Login as AS User */	
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-	if(loginStatus){
-		logger.log(LogStatus.PASS, "Login Successful");
-	}	
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
 		
-	/* Search Invalid term */
-	FB_Automation_CommonMethods.searchInvalidTermOnReconMonitor("Invalid");
-	Utility.pause(1);
-	
-	/*Validate download icon and its functionality */
-	FB_Automation_CommonMethods.validateDownloadFunctionality();
-	
-	/*Validate settings icon functionality*/
-	
-	 FB_Automation_CommonMethods.validateSettingsFunctionality();
-	 Utility.pause(1);
-	 
-	/* Logout from Application */
-	LoginPage.logout();
-	
-}
+			/* Search Invalid term on recon setup */
+			FB_Automation_CommonMethods.searchInvalidTermOnReconSetup("Invalid");
+			Utility.pause(1);
+				
+			/* Search Invalid term on recon monitor */
+			FB_Automation_CommonMethods.searchInvalidTermOnReconMonitor("Invalid");
+			Utility.pause(1);
 		
+			/*Validate download icon and its functionality */
+			FB_Automation_CommonMethods.validateDownloadFunctionality();
+		
+			/*Validate settings icon functionality*/
+		
+			FB_Automation_CommonMethods.validateSettingsFunctionality();
+			Utility.pause(1);
+		 
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "login failed");
+	
+	}
+	
 }
