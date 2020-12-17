@@ -61,42 +61,22 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Execute Recon Job *********************************");
 			try
 			{
-				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
-				Utility.pause(2);
-				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
-						
-				Utility.pause(60);
-				
-				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-				Utility.pause(20);
-				while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
-					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-					Utility.pause(10);
-				}
-						
-				if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
-				{
 					String reconDataFile = reconTestDataDirectory + "/Recon.csv";
 					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
 					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
 					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
 					
 					for(int i=0;i<connectorNames.size();i++) {	
-						initiateReconJob(connectorNames.get(i),entityTypes.get(i),scheduleTypes.get(i));
+						entityType=entityTypes.get(i);
+						initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
 						checkJobInReconMonitor();		
 					}	
-				}
-				else{
-					logger.log(LogStatus.FAIL, "Checkbox not visible ");
-				}
-				
-				
 			}
 			catch(Exception e)
 			{		
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
 				Utility.recoveryScenario(nameofCurrMethod, e);
-			}	
+			}		
 		}		
 	}
 	
@@ -119,6 +99,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			Utility.pause(3);
 			ByAttribute.click("xpath", ReconObjects.reconMonitorLnk,"click on Recon Monitor");
 			Utility.pause(20);
+			
+			if(AGlobalComponents.trialReconJob){
+				ByAttribute.click("xpath", ReconObjects.trialJobRadioButton, "click on trial job radio button");
+				logger.log(LogStatus.INFO, "Navigated to Trial tab on Recon monitor screen");
+				Utility.pause(5);
+			}
 
 			/*
 			 * Filter the records in Recon monitor on basis of entity type
@@ -126,24 +112,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 //			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
 //			Utility.pause(3);
 			Actions action = new Actions (driver);
-			ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
+			if(driver.findElements(By.xpath(ReconObjects.MinusIconToRemoveExistingFilter)).size()>0)
+				ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
+			Utility.pause(5);
+			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
 			Utility.pause(2);
-//			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
-//			Utility.pause(2);
-//			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-//			Utility.pause(2);
-//			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
-//			Utility.pause(2);
-////			ByAttribute.click("xpath", ReconObjects.clickFieldValue2, "click to enter the value");
-//			Utility.pause(2);
-////			ByAttribute.setText("xpath", ReconObjects.enterFieldValue1,entityType ,"enter the value");
-//			
-//			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.clickFieldValue2));
-//			
-//			action.moveToElement(filterValue).click();
-//			action.build().perform();
-//			action.sendKeys(entityType).build().perform();
-//			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+			Utility.pause(2);
+			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+			action.moveToElement(filterValue).click().build().perform();
+			action.sendKeys(entityType).build().perform();
+			Utility.pause(5);
 							
 			//checking if recon job is registered in recon monitor screen or not
 		
@@ -162,13 +145,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			}
 			else{
 				boolean jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false);
-				while(!jobPresent){
+				int c=0;
+				while((!jobPresent)&& (c<10)){
 					System.out.println("job not registered in recon monitor , refreshing the page");
 					logger.log(LogStatus.INFO, "waiting for job to get registered in recon monitor");
 					WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
 					refreshIcon.click();
 					Utility.pause(5);
-					
+					c++;
 					jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 					jobPresent = Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false);
 				}
@@ -178,9 +162,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			//job is present in Recon monitor screen , Checking the status of the job
 		
 			WebElement status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-			if(Utility.compareStringValues(status.getText(), "STARTED")){
-				logger.log(LogStatus.INFO, "Recon Job has been started");
-				boolean flag= true;
+			boolean flag=false;
+			if((Utility.compareStringValues(status.getText(), "STARTED"))|| (Utility.compareStringValues(status.getText(), "COMPLETED"))){
+				logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
+				if((Utility.compareStringValues(status.getText(), "STARTED")))
+						flag= true;
 				for(int i=1;i<10 && flag;i++){
 					while(!Utility.compareStringValues(status.getText(), "COMPLETED") && flag){
 						int count =0;
@@ -208,13 +194,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO, "Total number of active records are : " +activeRecords.getText());
 					activeRecords.click();
 					Utility.pause(10);
-				
-					if(AGlobalComponents.trialReconJob){
-						verifyReconDataFromDB(AGlobalComponents.jobName);
-					}
-					else{
-						verifyReconData();
-					} 
+					verifyReconData();
+				 
 				} 
 				else if(errorRecords.getText()!="0"){
 					logger.log(LogStatus.INFO, "There are Error records ");
@@ -239,6 +220,31 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 }
 
+	public static void verifyReconData() throws Throwable {
+		if(unhandledException==false)
+		{
+				
+			System.out.println("******************Verifying Recon Data************************");	
+			try{
+				if(AGlobalComponents.trialReconJob){
+					verifyTrialReconData();
+				}
+				else if (AGlobalComponents.userRecon){
+					verifyUserReconData();
+				}
+				else if (AGlobalComponents.roleRecon){
+					verifyRoleReconData();
+				}
+				
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
+	}
+
 	/**
 	 * 
 	 * Initiate recon job by providing description , connector value and entity
@@ -251,13 +257,31 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * 
 	 * 
 	 **/
-	public static void initiateReconJob(String connectorName, String entityType, String scheduleType) throws Throwable {
+	public static void initiateReconJob(String connectorName, String scheduleType) throws Throwable {
 	if(unhandledException==false)
 	{
 		System.out.println("******************Initiate recon job********************");
 		try{	
-			AGlobalComponents.jobName="testRecon"+ Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");		
-		
+			if(Utility.compareStringValues(entityType, "Role Data"))
+				AGlobalComponents.roleRecon = true;
+			else if(Utility.compareStringValues(entityType, "User Data"))
+				AGlobalComponents.userRecon = true;
+			AGlobalComponents.jobName="testRecon"+ Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
+			Utility.pause(60);
+			
+			if(driver.findElements(By.xpath(ReconObjects.emptyReconSetUpGrid)).size()>0)
+				ByAttribute.click("xpath", ReconObjects.addRecordsLnk, "Click to add recon record in empty grid");
+			else{
+				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+				Utility.pause(20);
+				while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
+					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+					Utility.pause(10);
+				}
+			}		
 			Actions action = new Actions(driver);
 			WebElement elementConnector=driver.findElement(By.xpath(ReconObjects.elementConnector));
 			action.moveToElement(elementConnector).click();
@@ -273,13 +297,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			action.moveToElement(elementDesc).click();
 			action.sendKeys(AGlobalComponents.jobName);
 			action.build().perform();
-	        
-			WebElement elementDescr=driver.findElement(By.xpath(ReconObjects.elementDesc));
+			
+	        WebElement elementDescr=driver.findElement(By.xpath(ReconObjects.elementDesc));
 			action.moveToElement(elementDescr).click();
 			action.sendKeys(AGlobalComponents.jobName);
 			action.build().perform();
 			logger.log(LogStatus.INFO, "Entered the Description Value");
-        	        									
+        	       									
 			WebElement elementEntity=driver.findElement(By.xpath(ReconObjects.elementEntity));
 			action.moveToElement(elementEntity).click();
 			action.sendKeys(entityType);
@@ -293,8 +317,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			WebElement elementScheduler=driver.findElement(By.xpath(ReconObjects.elementScheduler));
 			action.moveToElement(elementScheduler).click();
 			action.build().perform();
-        
-			WebElement elementSchedulr=driver.findElement(By.xpath(ReconObjects.elementScheduler));
+        	WebElement elementSchedulr=driver.findElement(By.xpath(ReconObjects.elementScheduler));
 			action.moveToElement(elementSchedulr).click();
 			action.build().perform();
 			logger.log(LogStatus.INFO, "Clicked On Scheduler");
@@ -307,12 +330,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			action.moveToElement(confirmButton).click();
 			action.build().perform();
 			Utility.pause(2);
-			
+	
 			if(AGlobalComponents.trialReconJob){
 				logger.log(LogStatus.INFO, "Executing trial job");
 				ByAttribute.click("xpath", ReconObjects.trialButtonLnk, "Click on trial Job Icon");
 				Utility.pause(2);
-				
+			
 				Calendar c = Calendar.getInstance();
 				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy");
 				Date date = new Date();
@@ -322,7 +345,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				c.add(Calendar.DAY_OF_MONTH, -2);  
 				//Date after subtracting the days to the given date
 				String temp = dateFormat.format(c.getTime());  
-				
+			
 				date = new SimpleDateFormat("MM-dd-yy").parse(temp);
 				String	endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(date); 
 					
@@ -341,7 +364,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				logger.log(LogStatus.PASS, "Recon Job saved successfully");
 			}
-		
+			
 		}
 		catch( Exception e){
 			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -378,20 +401,22 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(8);
 				
 				fillProfileInfo();
-//				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
-//				Utility.pause(2);
-//				fillAccessesInfo();
-//				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
-//				Utility.pause(2);
-//				fillSystemsInfo();
-//				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
-//				Utility.pause(2);
-//				fillAssetsInfo();
-				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
-				Utility.pause(10);
-				fillPrerequisitesInfo();
+				if(!AGlobalComponents.deleteSingleIdentityFlag){
+					ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
+					Utility.pause(2);
+					fillAccessesInfo();
+					ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+					Utility.pause(2);
+					fillSystemsInfo();
+					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+					Utility.pause(2);
+					fillAssetsInfo();
+					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
+					Utility.pause(10);
+					fillPrerequisitesInfo();
+				}
 				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
-				Utility.pause(20);
+				Utility.pause(10);
 				logger.log(LogStatus.PASS, "identity created");
 				
 			}
@@ -731,6 +756,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
 					Utility.pause(5);
 				
+				AGlobalComponents.deleteSingleIdentityFlag=true;
 				createIdentity();
 				logger.log(LogStatus.INFO, "Search above created identity");
 				iCode=searchIdentity();
@@ -1514,25 +1540,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.moveToElement(addIcon).click();
 				action.sendKeys(type);
 				action.build().perform();
-				Utility.pause(10);
+				Utility.pause(5);
 				WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+type+"']"));
 				action.moveToElement(typeValue).click();
 				action.build().perform();
 				logger.log(LogStatus.INFO, "prerequisite type Value selected");
-				Utility.pause(2);
-				
-				
-		
-				WebElement prerequisiteTyp=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(prerequisiteTyp).click();
-				action.build().perform();
-				Utility.pause(2);
-				
+				Utility.pause(4);
+								
 				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
 				action.moveToElement(validFromDate).click();
 				action.sendKeys(validFrom);
 				action.build().perform();
-				Utility.pause(2);
+				Utility.pause(5);
 				logger.log(LogStatus.INFO, "Entered valid from");
 			
 				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
@@ -1559,7 +1578,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 
 
-	private static void verifyReconData() throws Throwable{
+	private static void verifyRoleReconData() throws Throwable{
 		if(unhandledException==false)
 		{
 			System.out.println("***************************** Verify Data Fetched From Recon *********************************");
@@ -1580,12 +1599,99 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	    
 				WebElement desc = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[11]//div"));
 				String description = desc.getText();
+				
+				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
+				String syncID = syncId.getText();
 			
 				logger.log(LogStatus.INFO, "Navigating to Access tab to verify recon data on UI");
-				verifyReconDataFromUI(description);
+				verifyRoleReconDataFromUI(description);
 		
 				logger.log(LogStatus.INFO, "verify recon data from DB");
-				verifyReconDataFromDB(description);
+				String query = "select count(*) from aehscnew.stg_role_data where sync_id = '"+syncID+"'";
+				verifyReconDataFromDB(query);
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+	}
+	
+	private static void verifyUserReconData() throws Throwable{
+		if(unhandledException==false)
+		{
+			System.out.println("***************************** Verify User Data Fetched From Recon *********************************");
+			try
+			{
+				logger.log(LogStatus.INFO , "Recon remediation screen loaded with user recon data");
+				System.out.println("Recon remediation screen loaded with user recon data");
+		
+				/*
+				 * Select the view for role recon data
+				 */
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on user recon view");
+				Utility.pause(10);
+	    
+				WebElement userId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[7]//div"));
+				String usrId = userId.getText();
+				
+				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
+				String syncID = syncId.getText();
+			
+				logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
+				verifyUserReconDataFromUI(usrId);
+		
+				logger.log(LogStatus.INFO, "verify recon data from DB");
+				String query = "select count(*) from aehscnew.stg_user_data where sync_id = '"+syncID+"' and int_status='0'";
+				verifyReconDataFromDB(query);
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+	}
+	
+	private static void verifyTrialReconData() throws Throwable{
+		if(unhandledException==false)
+		{
+			System.out.println("***************************** Verify Data Fetched From Recon *********************************");
+			try
+			{
+				logger.log(LogStatus.INFO , "Recon remediation screen loaded with role recon data");
+				System.out.println("Recon remediation screen loaded with role recon data");
+		
+				/*
+				 * Select the appropriate view for  recon data
+				 * 
+				 */
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				if(AGlobalComponents.roleRecon)
+					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+				if(AGlobalComponents.userRecon)
+					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on role recon view");
+				Utility.pause(10);
+	    
+//				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
+//				String syncID = syncId.getText();
+				String query = "";
+			
+				logger.log(LogStatus.INFO, "verify recon data from DB");
+				if(AGlobalComponents.roleRecon)
+					query = "select count(*) from aehscnew.stg_role_data where int_status='1' and sync_type='TRIAL'";
+				if(AGlobalComponents.userRecon)
+					query = "select count(*) from aehscnew.stg_user_data where int_status='1' and sync_type='TRIAL'";
+				
+				verifyReconDataFromDB(query);
 			}
 			catch(Exception e)
 			{		
@@ -1595,13 +1701,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void verifyReconDataFromDB(String description) throws Throwable {
+	public static void verifyReconDataFromDB(String query) throws Throwable {
 		if(unhandledException==false)
 		{
 			
 			System.out.println("**********Verify Recon Data from DB*********");
 			try{
-					String query = "select count(*) from aehscnew.stg_role_data where int_status = '0'";
+					
 					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
 					String dbRecords = rs.get(0).get(0);
 					logger.log(LogStatus.INFO, "total no. of records in staging table after trial job are : " +dbRecords);
@@ -1619,7 +1725,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void verifyReconDataFromUI(String description) throws Throwable {
+	public static void verifyRoleReconDataFromUI(String description) throws Throwable {
 		if(unhandledException==false)
 		{
 			System.out.println("************Verify Recon Data from UI**********");
@@ -1627,6 +1733,85 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.mouseHover("xpath", AccessObjects.accessTabLnk, "Mouse Hover on Access tab");
 					Utility.pause(5);
 					ByAttribute.click("xpath", AccessObjects.manageAccessLnk, "Click on Manage Access ");
+					Utility.pause(10);
+		
+					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+					settingsIcon.click();
+					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+					Utility.pause(10);
+	    
+					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
+					Utility.pause(3);
+			//		ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+			//		Utility.pause(2);
+					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
+					Utility.pause(2);
+					ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
+					Utility.pause(2);
+					ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,description, "Enter the first field value for Filtering");
+					Utility.pause(2);
+		
+					Actions action = new Actions(driver);
+					action.sendKeys(Keys.ENTER);
+					action.build().perform();
+					Utility.pause(5);
+		
+					if(driver.findElements(By.xpath("//div[text()='"+description+"']")).size()>0){
+						int size = driver.findElements(By.xpath("//div[text()='"+description+"']")).size();
+						boolean flag = false;
+						if(size>2){
+							for (int i=0;i<size/2 && (!flag) ;i++){
+								WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
+								String srcId = sourceId.getText();
+								if(Utility.checkIfStringIsNotNull(srcId)){
+									ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+									Utility.pause(2);
+									ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+									Utility.pause(2);
+									ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
+									Utility.pause(2);
+									ByAttribute.click("xpath", AccessObjects.enterFieldValue1, "click to enter the value");
+									Utility.pause(2);
+									ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
+									Utility.pause(2);
+								
+									action = new Actions(driver);
+									action.sendKeys(Keys.ENTER);
+									action.build().perform();
+									Utility.pause(2);
+									flag = true;
+								}
+								
+							}
+						}
+						logger.log(LogStatus.PASS, "Recon data is present on UI");
+						Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
+						System.out.println("Recon data is present on UI");
+						
+					}
+					else{
+						logger.log(LogStatus.FAIL, "Recon data not present on UI");
+					}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+	}
+	
+	public static void verifyUserReconDataFromUI(String userId) throws Throwable {
+		if(unhandledException==false)
+		{
+			System.out.println("************Verify User Recon Data from UI**********");
+			try{
+					ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
 					Utility.pause(10);
 		
 					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
@@ -1729,7 +1914,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
 				Actions action = new Actions (driver);
 				action.moveToElement(filterValue).click().build().perform();;
-				action.sendKeys("Role Data").build().perform();
+				action.sendKeys(entityType).build().perform();
 				Utility.pause(20);
 							
 			//	searching for recon job to be deleted
@@ -1796,36 +1981,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			try
 			{
 				AGlobalComponents.trialReconJob = true;
-				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
-				Utility.pause(2);
-				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
-						
-				Utility.pause(40);
-				
-				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-				Utility.pause(20);
-				while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
-					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-					Utility.pause(10);
-				}
-						
-				if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
-				{
-					String reconDataFile = reconTestDataDirectory + "/Recon.csv";
-					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
-					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
-					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+				String reconDataFile = reconTestDataDirectory + "/TrialRecon.csv";
+				ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+				ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+				ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
 					
-					for(int i=0;i<connectorNames.size();i++) {
-						initiateReconJob(connectorNames.get(i),entityTypes.get(i),scheduleTypes.get(i));
-						checkJobInReconMonitor();
-					}
+				for(int i=0;i<connectorNames.size();i++) {
+					entityType=entityTypes.get(i);
+					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
+					checkJobInReconMonitor();
 				}
-				else{
-					logger.log(LogStatus.FAIL, "Checkbox not visible ");
-				}
-				
-				
 			}
 			catch(Exception e)
 			{		
@@ -1870,33 +2035,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************Deleting multiple recon jobs *********************************");
 			try
 			{
-				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
-				Utility.pause(2);
-				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
-						
-				Utility.pause(40);
 				for (int i=0 ; i<2 ; i++){
-					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-					Utility.pause(20);
-					while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
-						ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-						Utility.pause(10);
-					}
-						
-					if(ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk))
-					{
-						String reconDataFile = reconTestDataDirectory + "/DelMultiReconRecords.csv";
-						ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
-						ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
-						ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
-						
-						for(int j=0;j<connectorNames.size();j++) {
-							initiateReconJob(connectorNames.get(j),entityTypes.get(j),scheduleTypes.get(j));
-							jobNames.add(i, AGlobalComponents.jobName);
-						}
-					}
-					else{
-						logger.log(LogStatus.FAIL, "Checkbox not visible ");
+					
+					String reconDataFile = reconTestDataDirectory + "/DelMultiReconRecords.csv";
+					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+					for(int j=0;j<connectorNames.size();j++) {
+						entityType=entityTypes.get(j);
+						initiateReconJob(connectorNames.get(j),scheduleTypes.get(j));
+						jobNames.add(i, AGlobalComponents.jobName);
 					}
 				}
 				deleteMultipleRecords(jobNames);

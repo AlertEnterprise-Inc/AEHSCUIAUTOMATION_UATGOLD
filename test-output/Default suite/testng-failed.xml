@@ -5,10 +5,10 @@
     <classes>
       <class name="webDriverTestCases.FB_Automation">
         <methods>
-          <include name="FB_Automation_TC001"/>
           <include name="quitDriver"/>
           <include name="commonPage"/>
           <include name="beforeSuite"/>
+          <include name="FB_Automation_TC007"/>
           <include name="afterMethod"/>
         </methods>
       </class> <!-- webDriverTestCases.FB_Automation -->

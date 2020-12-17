@@ -87,6 +87,8 @@ public interface ReconObjects {
 		
 		String roleReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Role Recon View']";
 		
+		String userReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='User Recon View']";
+		
 		String ReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Recon View']";
 		
 		String refreshIconLnk = "//a[contains(@data-qtip,'Reload')]//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aetextlink-medium  ')]";
@@ -120,5 +122,11 @@ public interface ReconObjects {
 		String searchInReconSetup = "//input[contains(@class,'x-form-empty-field-default x-form-text x-form-text-default')]";
 		
 		String filterExpand = "//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus')]";
+
+		String trialJobRadioButton = "//label[text()='Trial']/parent::div//input[@type='radio']";
+
+		String emptyReconSetUpGrid = "//div[contains(@class,'emptyGridMsg')]";
+		
+		String addRecordsLnk = "//a[normalize-space(text())='Click here to Add']";
 		
 }

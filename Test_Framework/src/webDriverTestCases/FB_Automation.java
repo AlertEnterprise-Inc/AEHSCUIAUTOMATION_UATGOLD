@@ -55,6 +55,7 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.PASS, "Login Successful");
 			
 			/* Create Recon Job */
+			logger.log(LogStatus.INFO ,  "Recon Job Execution");
 			FB_Automation_CommonMethods.setUpReconJob();
 			
 			logger.log(LogStatus.INFO ,  "Deleting the created recon record");
@@ -88,7 +89,7 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.PASS, "Login Successful");
 			
 			/* Mandatory fields check while Create Identity */
-			
+			logger.log(LogStatus.INFO ,  "Mandatory field check on create identity");
 			FB_Automation_CommonMethods.mandatoryFieldsCheck();
 			
 				
@@ -119,23 +120,23 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.PASS, "Login Successful");
 			
 			/* Identity Management */
+			logger.log(LogStatus.INFO ,  "Create new identity");
 			
-			logger.log(LogStatus.PASS, "Create new Identity");
 			FB_Automation_CommonMethods.createIdentity();
 			
-			logger.log(LogStatus.PASS, "Search the above created Identity");
+			logger.log(LogStatus.INFO, "Search the above created Identity");
 			FB_Automation_CommonMethods.searchIdentity();
 			
-			logger.log(LogStatus.PASS, "edit the job title of created identity");
+			logger.log(LogStatus.INFO, "edit the job title of created identity");
 			FB_Automation_CommonMethods.editIdentity();
 			
-			logger.log(LogStatus.PASS, "Create duplicate Identity");
+			logger.log(LogStatus.INFO, "Create duplicate Identity");
 			FB_Automation_CommonMethods.createDuplicateIdentity();
 			
-			logger.log(LogStatus.PASS, "Again searching the identity");
+			logger.log(LogStatus.INFO, "Again searching the identity");
 			FB_Automation_CommonMethods.searchIdentity();
 			
-			logger.log(LogStatus.PASS, "deleting the mutiple identities");
+			logger.log(LogStatus.INFO, "deleting the mutiple identities");
 			FB_Automation_CommonMethods.deleteMultipleIdentities();
 				
 			/* Logout from Application */
@@ -164,8 +165,10 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
+			logger.log(LogStatus.INFO, "test showHideFilterWidge functionality on create identity screen");
 			FB_Automation_CommonMethods.cancelCreateIdentity();
 			
+			logger.log(LogStatus.INFO, "test cancel button functionality on create identity screen");
 			FB_Automation_CommonMethods.showHideFilterWidget();
 			
 				
@@ -232,7 +235,7 @@ public class FB_Automation extends BrowserSelection {
 		if(login)
 		{
 			logger.log(LogStatus.PASS, "Login Successful");
-		
+			logger.log(LogStatus.INFO ,  "Testing trial Recon Job Execution");
 			FB_Automation_CommonMethods.executeTrialReconjob();
 		
 			/* Logout from Application */
@@ -260,7 +263,7 @@ public class FB_Automation extends BrowserSelection {
 		if(login)
 		{
 			logger.log(LogStatus.PASS, "Login Successful");
-					
+			logger.log(LogStatus.INFO ,  "Delete Multiple recon records");		
 			FB_Automation_CommonMethods.deleteMultipleReconRecords();
 		
 			/* Logout from Application */

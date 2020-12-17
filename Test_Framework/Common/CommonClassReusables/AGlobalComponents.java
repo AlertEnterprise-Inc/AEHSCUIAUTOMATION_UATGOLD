@@ -24,6 +24,8 @@ public class AGlobalComponents {
 	public static String jobName="";
 	public static boolean trialReconJob=false;
 	public static boolean userRecon=false;
+	public static boolean roleRecon=false;
+	public static boolean deleteSingleIdentityFlag=false;
 	
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://192.168.194.122/";

@@ -1,115 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="1" total="1" passed="0">
+<testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="535623" started-at="2020-12-16T21:21:45Z" finished-at="2020-12-16T21:30:40Z">
+  <suite name="Default suite" duration-ms="352630" started-at="2020-12-17T20:57:51Z" finished-at="2020-12-17T21:03:44Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="535623" started-at="2020-12-16T21:21:45Z" finished-at="2020-12-16T21:30:40Z">
+    <test name="Default test" duration-ms="352630" started-at="2020-12-17T20:57:51Z" finished-at="2020-12-17T21:03:44Z">
       <class name="webDriverTestCases.FB_Automation">
-        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="beforeSuite" is-config="true" duration-ms="4615" started-at="2020-12-17T02:51:45Z" finished-at="2020-12-17T02:51:49Z">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="beforeSuite" is-config="true" duration-ms="4132" started-at="2020-12-18T02:27:51Z" finished-at="2020-12-18T02:27:55Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeSuite -->
-        <test-method status="PASS" signature="commonPage(java.lang.reflect.Method)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="commonPage" is-config="true" duration-ms="359" started-at="2020-12-17T02:51:49Z" finished-at="2020-12-17T02:51:50Z">
+        <test-method status="PASS" signature="commonPage(java.lang.reflect.Method)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="commonPage" is-config="true" duration-ms="41" started-at="2020-12-18T02:27:55Z" finished-at="2020-12-18T02:27:55Z">
           <params>
             <param index="0">
               <value>
-                <![CDATA[public void webDriverTestCases.FB_Automation.FB_Automation_TC001() throws java.lang.Throwable]]>
+                <![CDATA[public void webDriverTestCases.FB_Automation.FB_Automation_TC007() throws java.lang.Throwable]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- commonPage -->
-        <test-method status="FAIL" signature="FB_Automation_TC001()[pri:1, instance:webDriverTestCases.FB_Automation@d706f19]" name="FB_Automation_TC001" duration-ms="530389" started-at="2020-12-17T02:51:50Z" finished-at="2020-12-17T03:00:40Z">
-          <exception class="org.openqa.selenium.NoSuchElementException">
-            <message>
-              <![CDATA[no such element: Unable to locate element: {"method":"xpath","selector":"//span[contains(text(),'admin user')]"}
-  (Session info: chrome=87.0.4280.88)
-  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
-Command duration or timeout: 0 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
-Build info: version: '3.7.1', revision: '8a0099a', time: '2017-11-06T21:07:36.161Z'
-System info: host: 'SCL384', ip: '192.168.161.13', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_261'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
-Session ID: 2513d9ccf0eac21825a8a78e8ea7bd25
-*** Element info: {Using=xpath, value=//span[contains(text(),'admin user')]}]]>
-            </message>
-            <full-stacktrace>
-              <![CDATA[org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {"method":"xpath","selector":"//span[contains(text(),'admin user')]"}
-  (Session info: chrome=87.0.4280.88)
-  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
-Command duration or timeout: 0 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
-Build info: version: '3.7.1', revision: '8a0099a', time: '2017-11-06T21:07:36.161Z'
-System info: host: 'SCL384', ip: '192.168.161.13', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_261'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
-Session ID: 2513d9ccf0eac21825a8a78e8ea7bd25
-*** Element info: {Using=xpath, value=//span[contains(text(),'admin user')]}
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
-	at sun.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source)
-	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source)
-	at java.lang.reflect.Constructor.newInstance(Unknown Source)
-	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
-	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
-	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
-	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
-	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
-	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
-	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
-	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:370)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:472)
-	at org.openqa.selenium.By$ByXPath.findElement(By.java:361)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
-	at CommonFunctions.LoginPage.logout(LoginPage.java:152)
-	at webDriverTestCases.FB_Automation.FB_Automation_TC001(FB_Automation.java:65)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
-	at java.lang.reflect.Method.invoke(Unknown Source)
-	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:100)
-	at org.testng.internal.Invoker.invokeMethod(Invoker.java:646)
-	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:811)
-	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1137)
-	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:129)
-	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:112)
-	at org.testng.TestRunner.privateRun(TestRunner.java:753)
-	at org.testng.TestRunner.run(TestRunner.java:607)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:368)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:363)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:321)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:270)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1284)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1209)
-	at org.testng.TestNG.runSuites(TestNG.java:1124)
-	at org.testng.TestNG.run(TestNG.java:1096)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:132)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:236)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:81)
-]]>
-            </full-stacktrace>
-          </exception> <!-- org.openqa.selenium.NoSuchElementException -->
+        <test-method status="PASS" signature="FB_Automation_TC007()[pri:7, instance:webDriverTestCases.FB_Automation@d706f19]" name="FB_Automation_TC007" duration-ms="348200" started-at="2020-12-18T02:27:55Z" finished-at="2020-12-18T02:33:43Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- FB_Automation_TC001 -->
-        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="afterMethod" is-config="true" duration-ms="241" started-at="2020-12-17T03:00:40Z" finished-at="2020-12-17T03:00:40Z">
+        </test-method> <!-- FB_Automation_TC007 -->
+        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="afterMethod" is-config="true" duration-ms="242" started-at="2020-12-18T02:33:43Z" finished-at="2020-12-18T02:33:44Z">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=FB_Automation_TC001 status=FAILURE method=FB_Automation.FB_Automation_TC001()[pri:1, instance:webDriverTestCases.FB_Automation@d706f19] output={null}]]]>
+                <![CDATA[[TestResult name=FB_Automation_TC007 status=SUCCESS method=FB_Automation.FB_Automation_TC007()[pri:7, instance:webDriverTestCases.FB_Automation@d706f19] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterMethod -->
-        <test-method status="PASS" signature="quitDriver()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="quitDriver" is-config="true" duration-ms="1070" started-at="2020-12-17T03:00:40Z" finished-at="2020-12-17T03:00:41Z">
+        <test-method status="PASS" signature="quitDriver()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="quitDriver" is-config="true" duration-ms="945" started-at="2020-12-18T02:33:44Z" finished-at="2020-12-18T02:33:45Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- quitDriver -->
