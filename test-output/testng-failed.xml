@@ -1,24 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
-  <test name="Test(failed)">
+<suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
+  <test name="Default test(failed)">
     <classes>
       <class name="webDriverTestCases.FB_Automation">
         <methods>
           <include name="FB_Automation_TC001"/>
           <include name="quitDriver"/>
-          <include name="FB_Automation_TC003"/>
           <include name="commonPage"/>
-          <include name="FB_Automation_TC006"/>
           <include name="beforeSuite"/>
-          <include name="FB_Automation_TC008"/>
-          <include name="FB_Automation_TC005"/>
-          <include name="FB_Automation_TC002"/>
-          <include name="FB_Automation_TC007"/>
           <include name="afterMethod"/>
-          <include name="FB_Automation_TC004"/>
         </methods>
       </class> <!-- webDriverTestCases.FB_Automation -->
     </classes>
-  </test> <!-- Test(failed) -->
-</suite> <!-- Failed suite [Suite] -->
+  </test> <!-- Default test(failed) -->
+</suite> <!-- Failed suite [Default suite] -->
