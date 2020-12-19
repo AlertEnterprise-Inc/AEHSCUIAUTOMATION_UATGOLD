@@ -68,6 +68,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					
 					for(int i=0;i<connectorNames.size();i++) {	
 						entityType=entityTypes.get(i);
+						logger.log(LogStatus.INFO, "Creating recon job in recon set up : "+(i+1));
 						initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
 						checkJobInReconMonitor();		
 					}	
@@ -109,14 +110,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			/*
 			 * Filter the records in Recon monitor on basis of entity type
 			 */
-//			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
-//			Utility.pause(3);
+			
 			Actions action = new Actions (driver);
-			if(driver.findElements(By.xpath(ReconObjects.MinusIconToRemoveExistingFilter)).size()>0)
+			if(driver.findElements(By.xpath(ReconObjects.MinusIconToRemoveExistingFilter)).size()>0){
 				ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
+				Utility.pause(5);
+				ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
+				
+			}
 			Utility.pause(5);
-			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
-			Utility.pause(2);
+			if(!(driver.findElements(By.xpath(ReconObjects.addIconToAddFilter)).size()>0))
+				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+			Utility.pause(3);
+			
 			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
 			Utility.pause(2);
 			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
@@ -167,26 +173,24 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
 				if((Utility.compareStringValues(status.getText(), "STARTED")))
 						flag= true;
-				for(int i=1;i<10 && flag;i++){
-					while(!Utility.compareStringValues(status.getText(), "COMPLETED") && flag){
-						int count =0;
-						while((Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, false, false)) && (Utility.compareStringValues(status.getText(), "STARTED"))){
-							WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
-							refreshIcon.click();
-							Utility.pause(20);
-							status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-							logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
-							count++;
-						}
-						System.out.println("Waiting for the recon job to get completed");
+				
+				while(!Utility.compareStringValues(status.getText(), "COMPLETED") && flag){
+					int count =0;
+					while((Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, false, false)) && (Utility.compareStringValues(status.getText(), "STARTED"))){
+						WebElement refreshIcon = driver.findElement(By.xpath(ReconObjects.refreshIconLnk));
+						refreshIcon.click();
+						Utility.pause(20);
 						status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
-						if(Utility.compareStringValues(status.getText(), "COMPLETED")){
-							flag=false;
-						}
+						logger.log(LogStatus.INFO, "recon job is present and status is : "+ status.getText());
+						count++;
+					}
+					System.out.println("Waiting for the recon job to get completed");
+					status=driver.findElement(By.xpath(ReconObjects.reconJobStatus));
+					if(Utility.compareStringValues(status.getText(), "COMPLETED")){
+						flag=false;
 					}
 				}
-
-			
+						
 				WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
 				WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
 				activeRoleReconRecords = activeRecords.getText();
@@ -210,6 +214,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 			else if(Utility.compareStringValues(status.getText(), "FAILED")){
 				logger.log(LogStatus.INFO, "Recon Job failed");
+				WebElement errorMessage = driver.findElement(By.xpath(ReconObjects.errorMessage));
+				String message = errorMessage.getText();
+				logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
 			
 			}
 		}
@@ -233,7 +240,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					verifyUserReconData();
 				}
 				else if (AGlobalComponents.roleRecon){
-					verifyRoleReconData();
+		//			verifyRoleReconData();
 				}
 				
 			}
@@ -1817,20 +1824,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
 					settingsIcon.click();
 					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
 					Utility.pause(10);
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
-			//		ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-			//		Utility.pause(2);
+					ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+					Utility.pause(2);
 					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
 					Utility.pause(2);
-					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
+					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"User ID", "Enter the field name for Filtering");
 					Utility.pause(2);
 					ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
 					Utility.pause(2);
-					ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,description, "Enter the first field value for Filtering");
+					ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,userId, "Enter the first field value for Filtering");
 					Utility.pause(2);
 		
 					Actions action = new Actions(driver);
@@ -1838,37 +1845,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					action.build().perform();
 					Utility.pause(5);
 		
-					if(driver.findElements(By.xpath("//div[text()='"+description+"']")).size()>0){
-						int size = driver.findElements(By.xpath("//div[text()='"+description+"']")).size();
-						boolean flag = false;
-						if(size>2){
-							for (int i=0;i<size/2 && (!flag) ;i++){
-								WebElement sourceId = driver.findElement(By.xpath(AccessObjects.sourceIdLnk));
-								String srcId = sourceId.getText();
-								if(Utility.checkIfStringIsNotNull(srcId)){
-									ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-									Utility.pause(2);
-									ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
-									Utility.pause(2);
-									ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Source ID", "Enter the field name for Filtering");
-									Utility.pause(2);
-									ByAttribute.click("xpath", AccessObjects.enterFieldValue1, "click to enter the value");
-									Utility.pause(2);
-									ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,srcId, "Enter the value for Filtering");
-									Utility.pause(2);
-								
-									action = new Actions(driver);
-									action.sendKeys(Keys.ENTER);
-									action.build().perform();
-									Utility.pause(2);
-									flag = true;
-								}
-								
-							}
-						}
+					if(driver.findElements(By.xpath("//div[text()='"+userId+"']")).size()>0){
 						logger.log(LogStatus.PASS, "Recon data is present on UI");
-						Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
-						System.out.println("Recon data is present on UI");
+						Utility.verifyElementPresent("//div[text()='"+userId+"']", "User ID", true, false);
+						System.out.println("User id is present on UI");
 						
 					}
 					else{

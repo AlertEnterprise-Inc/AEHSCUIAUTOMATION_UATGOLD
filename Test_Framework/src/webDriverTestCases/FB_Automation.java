@@ -120,8 +120,8 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.PASS, "Login Successful");
 			
 			/* Identity Management */
-			logger.log(LogStatus.INFO ,  "Create new identity");
 			
+			logger.log(LogStatus.INFO, "Create new Identity");
 			FB_Automation_CommonMethods.createIdentity();
 			
 			logger.log(LogStatus.INFO, "Search the above created Identity");
@@ -235,7 +235,7 @@ public class FB_Automation extends BrowserSelection {
 		if(login)
 		{
 			logger.log(LogStatus.PASS, "Login Successful");
-			logger.log(LogStatus.INFO ,  "Testing trial Recon Job Execution");
+		
 			FB_Automation_CommonMethods.executeTrialReconjob();
 		
 			/* Logout from Application */
@@ -263,7 +263,7 @@ public class FB_Automation extends BrowserSelection {
 		if(login)
 		{
 			logger.log(LogStatus.PASS, "Login Successful");
-			logger.log(LogStatus.INFO ,  "Delete Multiple recon records");		
+					
 			FB_Automation_CommonMethods.deleteMultipleReconRecords();
 		
 			/* Logout from Application */

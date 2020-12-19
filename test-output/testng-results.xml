@@ -2,42 +2,42 @@
 <testng-results skipped="0" failed="0" total="1" passed="1">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="352630" started-at="2020-12-17T20:57:51Z" finished-at="2020-12-17T21:03:44Z">
+  <suite name="Default suite" duration-ms="105216" started-at="2020-12-19T17:41:31Z" finished-at="2020-12-19T17:43:16Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="352630" started-at="2020-12-17T20:57:51Z" finished-at="2020-12-17T21:03:44Z">
+    <test name="Default test" duration-ms="105216" started-at="2020-12-19T17:41:31Z" finished-at="2020-12-19T17:43:16Z">
       <class name="webDriverTestCases.FB_Automation">
-        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="beforeSuite" is-config="true" duration-ms="4132" started-at="2020-12-18T02:27:51Z" finished-at="2020-12-18T02:27:55Z">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:webDriverTestCases.FB_Automation@1ab06251]" name="beforeSuite" is-config="true" duration-ms="18220" started-at="2020-12-19T23:11:31Z" finished-at="2020-12-19T23:11:49Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- beforeSuite -->
-        <test-method status="PASS" signature="commonPage(java.lang.reflect.Method)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="commonPage" is-config="true" duration-ms="41" started-at="2020-12-18T02:27:55Z" finished-at="2020-12-18T02:27:55Z">
+        <test-method status="PASS" signature="commonPage(java.lang.reflect.Method)[pri:0, instance:webDriverTestCases.FB_Automation@1ab06251]" name="commonPage" is-config="true" duration-ms="297" started-at="2020-12-19T23:11:49Z" finished-at="2020-12-19T23:11:49Z">
           <params>
             <param index="0">
               <value>
-                <![CDATA[public void webDriverTestCases.FB_Automation.FB_Automation_TC007() throws java.lang.Throwable]]>
+                <![CDATA[public void webDriverTestCases.FB_Automation.FB_Automation_TC001() throws java.lang.Throwable]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- commonPage -->
-        <test-method status="PASS" signature="FB_Automation_TC007()[pri:7, instance:webDriverTestCases.FB_Automation@d706f19]" name="FB_Automation_TC007" duration-ms="348200" started-at="2020-12-18T02:27:55Z" finished-at="2020-12-18T02:33:43Z">
+        <test-method status="PASS" signature="FB_Automation_TC001()[pri:1, instance:webDriverTestCases.FB_Automation@1ab06251]" name="FB_Automation_TC001" duration-ms="86275" started-at="2020-12-19T23:11:49Z" finished-at="2020-12-19T23:13:16Z">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- FB_Automation_TC007 -->
-        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="afterMethod" is-config="true" duration-ms="242" started-at="2020-12-18T02:33:43Z" finished-at="2020-12-18T02:33:44Z">
+        </test-method> <!-- FB_Automation_TC001 -->
+        <test-method status="PASS" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:webDriverTestCases.FB_Automation@1ab06251]" name="afterMethod" is-config="true" duration-ms="395" started-at="2020-12-19T23:13:16Z" finished-at="2020-12-19T23:13:16Z">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=FB_Automation_TC007 status=SUCCESS method=FB_Automation.FB_Automation_TC007()[pri:7, instance:webDriverTestCases.FB_Automation@d706f19] output={null}]]]>
+                <![CDATA[[TestResult name=FB_Automation_TC001 status=SUCCESS method=FB_Automation.FB_Automation_TC001()[pri:1, instance:webDriverTestCases.FB_Automation@1ab06251] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- afterMethod -->
-        <test-method status="PASS" signature="quitDriver()[pri:0, instance:webDriverTestCases.FB_Automation@d706f19]" name="quitDriver" is-config="true" duration-ms="945" started-at="2020-12-18T02:33:44Z" finished-at="2020-12-18T02:33:45Z">
+        <test-method status="PASS" signature="quitDriver()[pri:0, instance:webDriverTestCases.FB_Automation@1ab06251]" name="quitDriver" is-config="true" duration-ms="6696" started-at="2020-12-19T23:13:16Z" finished-at="2020-12-19T23:13:23Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- quitDriver -->
