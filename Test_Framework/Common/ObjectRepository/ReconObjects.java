@@ -119,6 +119,8 @@ public interface ReconObjects {
 		
 		String searchInReconMonitor = "//input[contains(@class,'x-form-empty-field-default x-form-text x-form-text-default')]";
 		
+		String searchInReconRemediation = "//input[contains(@class,'x-form-empty-field-default x-form-text x-form-text-default')]";
+		
 		String searchInReconSetup = "//input[contains(@class,'x-form-empty-field-default x-form-text x-form-text-default')]";
 		
 		String filterExpand = "//span[contains(@class,'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus')]";

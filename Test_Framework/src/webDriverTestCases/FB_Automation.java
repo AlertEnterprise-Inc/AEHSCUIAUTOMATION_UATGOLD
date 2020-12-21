@@ -300,10 +300,13 @@ public class FB_Automation extends BrowserSelection {
 			/*Validate download icon and its functionality */
 			FB_Automation_CommonMethods.validateDownloadFunctionality();
 		
-			/*Validate settings icon functionality*/
-		
-			FB_Automation_CommonMethods.validateSettingsFunctionality();
+			/* Search Invalid term on recon Remediation */
+			FB_Automation_CommonMethods.searchInvalidTermOnReconRemediation("Invalid");
 			Utility.pause(1);
+			
+			/*Validate download icon and its functionality in Recon Remediation */
+			FB_Automation_CommonMethods.validateDownloadFunctionalityInReconRemediation();
+		 
 		 
 			/* Logout from Application */
 			LoginPage.logout();

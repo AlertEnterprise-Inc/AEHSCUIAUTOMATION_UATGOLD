@@ -119,10 +119,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 			}
 			Utility.pause(5);
-			if(!(driver.findElements(By.xpath(ReconObjects.addIconToAddFilter)).size()>0))
+			if(driver.findElements(By.xpath(ReconObjects.addIconToAddFilter)).size()>0)
+				ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
+			else
 				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
 			Utility.pause(3);
-			
 			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
 			Utility.pause(2);
 			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
@@ -132,7 +133,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
 			action.moveToElement(filterValue).click().build().perform();
 			action.sendKeys(entityType).build().perform();
-			Utility.pause(5);
+			Utility.pause(15);
 							
 			//checking if recon job is registered in recon monitor screen or not
 		
@@ -190,7 +191,66 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						flag=false;
 					}
 				}
-						
+				
+				checkJobInReconRemediation();
+			}
+		
+			else if(Utility.compareStringValues(status.getText(), "FAILED")){
+				logger.log(LogStatus.INFO, "Recon Job failed");
+				WebElement errorMessage = driver.findElement(By.xpath(ReconObjects.errorMessage));
+				String message = errorMessage.getText();
+				logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
+		
+			}
+		}
+		catch(Exception e){
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+		}
+	}
+}
+
+private static void checkJobInReconRemediation() throws Throwable {
+	if(unhandledException==false)
+	{
+				
+		System.out.println("******************Checking Recon job in recon remediation************************");	
+		try{
+			
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.reconRemediationLnk,"click on Recon Remediation");
+			Utility.pause(20);
+				
+			ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+			Utility.pause(2);
+			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+			Utility.pause(2);
+			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+			Actions action = new Actions (driver);
+			action.moveToElement(filterValue).click().build().perform();;
+			action.sendKeys(entityType).build().perform();
+			Utility.pause(20);
+								
+			
+			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
+			searchBar.click();
+			Utility.pause(5);
+				
+			/* verifying search option with valid search item */
+				
+			ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon monitor screen");
+			Utility.pause(5);
+			action.sendKeys(Keys.ENTER).build().perform();
+			Utility.pause(5);
+			
+			/* view a list */
 				WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
 				WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
 				activeRoleReconRecords = activeRecords.getText();
@@ -212,14 +272,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			}
 		
-			else if(Utility.compareStringValues(status.getText(), "FAILED")){
-				logger.log(LogStatus.INFO, "Recon Job failed");
-				WebElement errorMessage = driver.findElement(By.xpath(ReconObjects.errorMessage));
-				String message = errorMessage.getText();
-				logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
 			
-			}
-		}
 		catch(Exception e){
 			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
 			Utility.recoveryScenario(nameofCurrMethod, e);
@@ -240,7 +293,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					verifyUserReconData();
 				}
 				else if (AGlobalComponents.roleRecon){
-		//			verifyRoleReconData();
+					verifyRoleReconData();
 				}
 				
 			}
@@ -423,7 +476,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					fillPrerequisitesInfo();
 				}
 				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
-				Utility.pause(10);
+				Utility.pause(20);
 				logger.log(LogStatus.PASS, "identity created");
 				
 			}
@@ -1539,9 +1592,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 				}
 		
-//				ByAttribute.click("xpath", IdentityObjects.addRecordsIconPrerequisiteTab, "click on add icon to insert prerequisite");
-//				Utility.pause(5);
-		
+	
 				Actions action = new Actions(driver);
 				WebElement addIcon = driver.findElement(By.xpath(IdentityObjects.addRecordsIconPrerequisiteTab));
 				action.moveToElement(addIcon).click();
@@ -1553,16 +1604,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.build().perform();
 				logger.log(LogStatus.INFO, "prerequisite type Value selected");
 				Utility.pause(4);
-								
-				WebElement validFromDate=driver.findElement(By.xpath("//td[4]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(validFromDate).click();
-				action.sendKeys(validFrom);
-				action.build().perform();
-				Utility.pause(5);
-				logger.log(LogStatus.INFO, "Entered valid from");
-			
-				WebElement prerequisiteType=driver.findElement(By.xpath("//td[3]/div[@class='x-grid-cell-inner ']"));
-				action.moveToElement(prerequisiteType).click();
+				
+				action.sendKeys(Keys.TAB);
 				action.sendKeys(prerequisite);
 				action.build().perform();
 				Utility.pause(5);
@@ -1571,7 +1614,38 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Entered the Prerequisite");
 				
-				WebElement validToDate=driver.findElement(By.xpath("//td[5]/div[@class='x-grid-cell-inner ']"));
+//				action.sendKeys(Keys.TAB);
+//				action.sendKeys(validFrom);
+//				action.build().perform();
+//				Utility.pause(5);
+//				logger.log(LogStatus.INFO, "Entered the valid from date");
+//				
+//				action.sendKeys(Keys.TAB);
+//				action.sendKeys(validTo);
+//				action.build().perform();
+//				Utility.pause(5);
+//				logger.log(LogStatus.INFO, "Entered the valid to date");
+				
+				
+				
+				WebElement validFromDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[2]"));
+				action.moveToElement(validFromDate).click();
+				action.sendKeys(validFrom);
+				action.build().perform();
+				Utility.pause(5);
+				logger.log(LogStatus.INFO, "Entered valid from");
+			
+//				WebElement prerequisiteType=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[1]"));
+//				action.moveToElement(prerequisiteType).click();
+//				action.sendKeys(prerequisite);
+//				action.build().perform();
+//				Utility.pause(5);
+//				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisite+"']"));
+//				action.moveToElement(prerequisiteValue).click();
+//				action.build().perform();
+//				logger.log(LogStatus.INFO, "Entered the Prerequisite");
+//				
+				WebElement validToDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[3]"));
 				action.moveToElement(validToDate).click();
 				action.sendKeys(validTo);
         		action.build().perform();
@@ -1821,11 +1895,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
 					Utility.pause(10);
 		
-					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-					settingsIcon.click();
-					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
-					Utility.pause(10);
+//					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+//					settingsIcon.click();
+//					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+//					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
+//					Utility.pause(10);
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
@@ -2201,5 +2275,105 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 		
 	}
+	
+
+	public static void searchInvalidTermOnReconRemediation(String invalidTerm) throws Throwable {
+
+
+		try{
+			
+			ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+			Utility.pause(3);
+			ByAttribute.click("xpath", ReconObjects.reconRemediationLnk,"click on Recon Remediation");
+			Utility.pause(20);
+			WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchInReconRemediation));
+			searchBar.click();
+			ByAttribute.setText("xpath", ReconObjects.searchInReconRemediation, invalidTerm, "Searching invalid term on recon monitor screen");
+			Actions action = new Actions (driver);
+			action.sendKeys(Keys.ENTER).build().perform();
+			if(driver.findElements(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).size()!=0) {
+				if(!driver.findElement(By.xpath("//div[contains(@class,'x-grid-checkcolumn')]")).isSelected()) {
+				logger.log(LogStatus.PASS, "No element is selected");
+				}
+			}
+			
+		}
+		catch(Exception e)
+		{		
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+		}
+		
+	
+	}
+
+	public static void validateDownloadFunctionalityInReconRemediation() throws Throwable {
+
+		if(unhandledException==false) {
+			try {
+			if(Utility.verifyElementPresentReturn(ReconObjects.downloadLink, "Recon Remediation download Link", true, false)) {
+				System.out.println("download icon is present");
+				logger.log(LogStatus.INFO,"Download icon is present in Recon Remediation");
+				WebDriverWait wait = new WebDriverWait(driver, 20, 500);
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath("//div[contains(@id,'loadmask') and contains(@class,'x-mask-msg-text')]")));
+				ReadDataFromPropertiesFile.clearExistingDownloadFiles("Recon Remediation");
+				ByAttribute.click("xpath", ReconObjects.downloadLink, "clicking on download link");
+				Utility.pause(30);
+				if (ReadDataFromPropertiesFile.checkWhetherFileIsDownloaded("Recon Remediation")) {
+					logger.log(LogStatus.PASS, "Download functionaity verified");
+				}
+				else {
+					logger.log(LogStatus.FAIL, "Unable to download file");
+				}
+				validateDownloadedDataForReconRemediation();
+				}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+			}
+		
+	}
+
+	private static void validateDownloadedDataForReconRemediation() throws Throwable {
+
+		if(unhandledException==false) {
+			try {
+			String elementsNumber = ByAttribute.getText("xpath", ReconObjects.reconMonitorElements, "getting Recon Monitor Grid data");
+			String number=elementsNumber.split(":")[1].trim();
+			System.out.println(number);
+			 String folderName = System.getProperty("user.dir")+ "\\csv Download\\";
+			 File[] listFiles = new File(folderName).listFiles();
+			 String fileOrg = "None";
+			 for (int i = 0; i < listFiles.length; i++) {
+	
+			     if (listFiles[i].isFile()) {
+			         String fileName = listFiles[i].getName();
+			         if (fileName.startsWith("Recon Remediation")
+			                 && fileName.endsWith(".xlsx")) {
+			             System.out.println("found file" + " " + fileName);
+			             fileOrg = fileName;
+			             break;
+			         }
+			     }
+			 }
+	
+			int numbercsv = ReadDataFromPropertiesFile.countLine(System.getProperty("user.dir")+ "\\csv Download\\"+fileOrg);
+			 String str1 = Integer.toString(numbercsv); 
+			 assertEquals(str1,number);
+			 logger.log(LogStatus.PASS, "Download data verified");
+			
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	
+}
+
 
 }
