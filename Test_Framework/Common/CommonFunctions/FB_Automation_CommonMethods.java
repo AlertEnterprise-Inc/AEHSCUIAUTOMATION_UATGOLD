@@ -112,28 +112,43 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			 */
 			
 			Actions action = new Actions (driver);
-			if(driver.findElements(By.xpath(ReconObjects.MinusIconToRemoveExistingFilter)).size()>0){
+			boolean existingFilterflg = true;
+			try{
 				ByAttribute.click("xpath", ReconObjects.MinusIconToRemoveExistingFilter, "Remove existing filter ");
 				Utility.pause(5);
 				ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
 				
 			}
-			Utility.pause(5);
-			if(driver.findElements(By.xpath(ReconObjects.addIconToAddFilter)).size()>0)
-				ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon to enter the filter");
-			else
-				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
-			Utility.pause(3);
-			ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-			Utility.pause(2);
-			ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
-			Utility.pause(2);
-			ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
-			Utility.pause(2);
-			WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
-			action.moveToElement(filterValue).click().build().perform();
-			action.sendKeys(entityType).build().perform();
-			Utility.pause(15);
+			catch(Exception e){
+				logger.log(LogStatus.INFO, "there is no existing filter applied on recon monitor screen");
+				existingFilterflg= false;
+			}
+			try{
+				if(driver.findElements(By.xpath(ReconObjects.enterFieldName1ToFilter)).size()>0){
+					logger.log(LogStatus.INFO, "Filter  icon is already pressed");
+				}
+				else{
+					ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+					Utility.pause(3);
+				}
+				ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+				action.moveToElement(filterValue).click().build().perform();
+				action.sendKeys(entityType).build().perform();
+				action.sendKeys(Keys.ENTER).build().perform();
+				Utility.pause(15);
+				
+			}
+			catch(Exception e){
+				logger.log(LogStatus.FAIL , "Issue in filtering records on recon monitor screen");
+			}
+				
+				
 							
 			//checking if recon job is registered in recon monitor screen or not
 		
@@ -1684,10 +1699,10 @@ private static void checkJobInReconRemediation() throws Throwable {
 				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
 				String syncID = syncId.getText();
 			
-				logger.log(LogStatus.INFO, "Navigating to Access tab to verify recon data on UI");
+				logger.log(LogStatus.INFO, "Navigating to Access tab to verify recon data on UI. Access name is : "+ description);
 				verifyRoleReconDataFromUI(description);
 		
-				logger.log(LogStatus.INFO, "verify recon data from DB");
+				logger.log(LogStatus.INFO, "verify recon data from DB using sync id : " +syncID);
 				String query = "select count(*) from aehscnew.stg_role_data where sync_id = '"+syncID+"'";
 				verifyReconDataFromDB(query);
 			}

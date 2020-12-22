@@ -28,7 +28,7 @@ public class AGlobalComponents {
 	public static boolean deleteSingleIdentityFlag=false;
 	
 	public static String browserName ="GC";
-//	public static String applicationURL  = "http://192.168.194.122/";
+//	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
 	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
 
 	public static String selfServicePortalURL  = "https://airportmit.cloud.alertenterprise.com/AlertSelfService/";
