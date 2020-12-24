@@ -2482,7 +2482,9 @@ private static void checkJobInReconRemediation() throws Throwable {
 }
 
 	public static void modifyingDataInCCURE() {
-		// TODO Auto-generated method stub
+		//need to add code to insert /modify data in ccure DB
+		
+		
 		
 	}
 
