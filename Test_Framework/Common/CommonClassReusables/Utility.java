@@ -295,30 +295,24 @@ public class Utility extends BrowserSelection {
 	* @return  	none
 	**/
 	
-	public static void verifyElementPresent(String verifyElementXpath,String fieldName,boolean takeScreenshotIfPass,boolean stopExecution) throws Exception
-	{
-		try{
+	public static void verifyElementPresent(String verifyElementXpath, String fieldName, boolean stopExecution) throws Exception {
+		try {
 			Assert.assertTrue(driver.findElement(By.xpath(verifyElementXpath)).isDisplayed());
 			WebElement element = driver.findElement(By.xpath(verifyElementXpath));
 			Jexecutor.highlightElement(element);
-			System.out.println("Successfully: "+fieldName+" is present.");
-			if(takeScreenshotIfPass)
-			{
+			System.out.println("Successfully: " + fieldName + " is present.");
+			if (AGlobalComponents.takeScreenshotIfPass) {
 				Utility.takeScreenshot(Utility.UniqueNumber(5));
-				logger.log(LogStatus.PASS,"Successfully: "+fieldName+" is present."+ imgeHtmlPath);
+				logger.log(LogStatus.PASS, "Successfully: " + fieldName + " is present." + imgeHtmlPath);
+			} else {
+				logger.log(LogStatus.PASS, "Successfully: " + fieldName + " is present.");
 			}
-			else
-			{
-				logger.log(LogStatus.PASS,"Successfully: "+fieldName+" is present.");	
-			}		    	
-		}
-		catch(Exception e)
-		{
-			System.out.println("Failed: "+fieldName+" is not present.");
+		} catch (Exception e) {
+			System.out.println("Failed: " + fieldName + " is not present.");
 			Utility.takeScreenshot(Utility.UniqueNumber(5));
-			logger.log(LogStatus.FAIL, "Failed: "+fieldName+" is not present. Screenshort of BUGG :" + e + imgeHtmlPath);
-			if(stopExecution)
-			{
+			logger.log(LogStatus.FAIL,
+					"Failed: " + fieldName + " is not present. Screenshort of BUGG :" + e + imgeHtmlPath);
+			if (stopExecution) {
 				throw (e);
 			}
 		}

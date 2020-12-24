@@ -40,7 +40,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static boolean dupIdentity=false;
 	private static String identityCode = null;
 	private static String entityType= null;
-	private static String activeRoleReconRecords = null;
+	private static String activeReconRecords = null;
 	
 	
 	
@@ -130,6 +130,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				else{
 					ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
+					if(driver.findElements(By.xpath(ReconObjects.enterFieldName1ToFilter)).size()>0)
+						logger.log(LogStatus.INFO, "Add icon is already pressed");
+					else
+						ByAttribute.click("xpath", ReconObjects.addIconToAddFilter, "Click on Add icon ");
 				}
 				ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
 				Utility.pause(2);
@@ -266,16 +270,21 @@ private static void checkJobInReconRemediation() throws Throwable {
 			Utility.pause(5);
 			
 			/* view a list */
-				WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
-				WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
-				activeRoleReconRecords = activeRecords.getText();
+			WebElement activeRecords=driver.findElement(By.xpath(ReconObjects.activeRecords));
+			WebElement errorRecords=driver.findElement(By.xpath(ReconObjects.errorRecords));
+			String totalActiveRecords =  activeRecords.getText();
+			if(Utility.compareStringValues(totalActiveRecords, activeReconRecords)){
+				if(AGlobalComponents.rerunReconJob)
+					logger.log(LogStatus.INFO, "Active records after rerunning the job are same  , when initial job was executed : "+totalActiveRecords +" which means no new records are added ");
+			}
+			else{
+				activeReconRecords = totalActiveRecords;
 				if(activeRecords.getText()!="0" ){
-					logger.log(LogStatus.INFO, "Total number of active records are : " +activeRecords.getText());
+					logger.log(LogStatus.INFO, "Total number of active records are : " +totalActiveRecords);
 					activeRecords.click();
 					Utility.pause(10);
 					verifyReconData();
-				 
-				} 
+				}
 				else if(errorRecords.getText()!="0"){
 					logger.log(LogStatus.INFO, "There are Error records ");
 				}
@@ -286,7 +295,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 				}
 			
 			}
-		
+		}
 			
 		catch(Exception e){
 			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -349,14 +358,13 @@ private static void checkJobInReconRemediation() throws Throwable {
 			
 			if(driver.findElements(By.xpath(ReconObjects.emptyReconSetUpGrid)).size()>0)
 				ByAttribute.click("xpath", ReconObjects.addRecordsLnk, "Click to add recon record in empty grid");
-			else{
+			ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
+			Utility.pause(20);
+			while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
 				ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-				Utility.pause(20);
-				while(!ByAttribute.verifyCheckBox("xpath",ReconObjects.checkboxLnk)){
-					ByAttribute.click("xpath",ReconObjects.addReconRowLnk,"Click on Add icon to initiate Recon");
-					Utility.pause(10);
-				}
-			}		
+				Utility.pause(10);
+			}
+					
 			Actions action = new Actions(driver);
 			WebElement elementConnector=driver.findElement(By.xpath(ReconObjects.elementConnector));
 			action.moveToElement(elementConnector).click();
@@ -805,7 +813,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 								
 				if(driver.findElements(By.xpath(IdentityObjects.errorMessageForFirstName)).size()>0){
 					logger.log(LogStatus.INFO, "Error message displayed to enter the mandatory fields");
-					Utility.verifyElementPresent(IdentityObjects.errorMessageForFirstName, "ErrorMessage", true, false);
+					Utility.verifyElementPresent(IdentityObjects.errorMessageForFirstName, "ErrorMessage",false);
 				}
 				
 			}
@@ -872,7 +880,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 				}
 				ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
 				ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
-				Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
+				Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", false);
 				logger.log(LogStatus.PASS, "deleted the selected identities");
 			}
 			catch(Exception e){
@@ -905,7 +913,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 					System.out.println("identity " +identityCode+"  selected for deletion");
 					ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
 					ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
-					Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", true, false);
+					Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", false);
 					logger.log(LogStatus.PASS, "deleted the selected identity");
 				}
 				else{
@@ -939,12 +947,12 @@ private static void checkJobInReconRemediation() throws Throwable {
 				if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
 					Utility.pause(2);
 				}
-				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
+				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents",false);
 				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
 				System.out.println("Deleted identities pop up appeared");
 				ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsLnk, "Clicked on close icon in the pop up box");
 				Utility.pause(5);
-				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", true, false);
+				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", false);
 				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking close icon, we are back on manage identity screen");
 				System.out.println("Deleted identities pop up box closed afte clicking close icon, we are back on manage identity screen");
 			
@@ -962,12 +970,12 @@ private static void checkJobInReconRemediation() throws Throwable {
 				if(!(driver.findElements(By.xpath(IdentityObjects.deletedIdentityDocumentsHeader)).size()>0)){
 					Utility.pause(2);
 				}
-				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", true, false);
+				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", false);
 				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
 				System.out.println("Deleted identities pop up appeared");
 				ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsLnk, "Clicked on cancel button in the pop up box");
 				Utility.pause(5);
-				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header", true, false);
+				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header",  false);
 				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking cancel button, we are back on manage identity screen");
 				System.out.println("Deleted identities pop up box closed afte clicking cancel button, we are back on manage identity screen");
 			}
@@ -1028,7 +1036,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 						System.out.println("Identity  present does not match with the identity to be restored");
 					}
 				}
-				Utility.verifyElementPresent("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div[text()='"+identityCode+"']", identityCode, true, false);
+				Utility.verifyElementPresent("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[1]//div[text()='"+identityCode+"']", identityCode, false);
 				logger.log(LogStatus.PASS,"Deleted identity has been restored");
 			}
 			catch(Exception e){
@@ -1487,7 +1495,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 				logger.log(LogStatus.INFO, "By Clicking on Cancel button , we will be navigated to Existing asset screen");
 				ByAttribute.click("xpath", IdentityObjects.cancelAssetButtonLnk, "click on cancel button");
 				logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
-				Utility.verifyElementPresent("//div[contains(@class,'x-column-header-text')]//span[text()='Asset']", "Existing asset screen", true, false);
+				Utility.verifyElementPresent("//div[contains(@class,'x-column-header-text')]//span[text()='Asset']", "Existing asset screen",  false);
 		
 				/*
 				 * verify Reset button on New asset screen
@@ -1508,11 +1516,11 @@ private static void checkJobInReconRemediation() throws Throwable {
 				String asstCode="//div[text()='"+assetCode+"']";
 				ByAttribute.click("xpath", asstCode, " select asset code");
 				Utility.pause(2);
-				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
+				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", false);
 				System.out.println("Asset Code is filled");
 			
 				ByAttribute.click("xpath", IdentityObjects.resetButtonAssetScreen, " Click on Reset button on add new asset screen");
-				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", true, false);
+				Utility.verifyElementPresent("//input[contains(@class,'x-form-required-field x-form-text x-form-text-default ') and @placeholder='Select Asset']", "Asset Code", false);
 				logger.log(LogStatus.PASS , "Fields are cleared after clicking reset button");
 			
 				/*
@@ -1807,7 +1815,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
 					String dbRecords = rs.get(0).get(0);
 					logger.log(LogStatus.INFO, "total no. of records in staging table after trial job are : " +dbRecords);
-					if(Utility.compareStringValues(dbRecords, activeRoleReconRecords)){
+					if(Utility.compareStringValues(dbRecords, activeReconRecords)){
 						logger.log(LogStatus.PASS, "total no. of active records are equivalent to data stored in staging table :" + dbRecords);
 					}
 					else{
@@ -1884,7 +1892,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 							}
 						}
 						logger.log(LogStatus.PASS, "Recon data is present on UI");
-						Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name", true, false);
+						Utility.verifyElementPresent("//div[text()='"+description+"']", "Role Name",  false);
 						System.out.println("Recon data is present on UI");
 						
 					}
@@ -1936,7 +1944,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 		
 					if(driver.findElements(By.xpath("//div[text()='"+userId+"']")).size()>0){
 						logger.log(LogStatus.PASS, "Recon data is present on UI");
-						Utility.verifyElementPresent("//div[text()='"+userId+"']", "User ID", true, false);
+						Utility.verifyElementPresent("//div[text()='"+userId+"']", "User ID",  false);
 						System.out.println("User id is present on UI");
 						
 					}
@@ -1952,6 +1960,85 @@ private static void checkJobInReconRemediation() throws Throwable {
 		}
 	}
 
+	
+	public static void rerunReconRecord() throws Throwable {
+		if(unhandledException==false)
+		{
+			AGlobalComponents.rerunReconJob= true;
+			System.out.println("*******************Rerun recon record************************");
+			try{
+				ByAttribute.mouseHover("xpath", ReconObjects.reconTabLnk, "Mouse Hover on Recon tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
+				Utility.pause(40);
+			
+					    
+				/*
+				 * Filter the records in Recon set up on basis of entity type
+				 */
+				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", ReconObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", ReconObjects.enterFieldName1ToFilter,"Entity", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", ReconObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				WebElement filterValue = driver.findElement(By.xpath(ReconObjects.enterFieldValue1));
+				Actions action = new Actions (driver);
+				action.moveToElement(filterValue).click().build().perform();;
+				action.sendKeys(entityType).build().perform();
+				Utility.pause(20);
+							
+			//	searching for recon job which we want to rerun
+			
+				WebElement searchBar = driver.findElement(By.xpath(ReconObjects.searchBarInRecon));
+				searchBar.click();
+				Utility.pause(20);
+				ByAttribute.setText("xpath", ReconObjects.searchBarInRecon, AGlobalComponents.jobName, "Searching recon job on recon set up screen to delete ");
+				action.sendKeys(Keys.ENTER).build().perform();
+				Utility.pause(4);
+				String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
+			
+				if(Utility.verifyElementPresentReturn(jobNameLocator, AGlobalComponents.jobName, true, false) ){
+					logger.log(LogStatus.INFO,"Recon job found to rerun");
+					ByAttribute.click("xpath", ReconObjects.rerunIconReconSetup, "click on rerun icon to rerun the job");
+					Calendar c = Calendar.getInstance();
+					DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy");
+					Date date = new Date();
+					String currentDate= dateFormat.format(date);
+					c.setTime(dateFormat.parse(currentDate));
+					//Number of Days to minus
+					c.add(Calendar.DAY_OF_MONTH, -2);  
+					//Date after subtracting the days to the given date
+					String temp = dateFormat.format(c.getTime());  
+				
+					date = new SimpleDateFormat("MM-dd-yy").parse(temp);
+					String	endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(date); 
+						
+					ByAttribute.click("xpath", ReconObjects.endDateToRerunTheJob, "Click to enter end date");
+					ByAttribute.setText("xpath", ReconObjects.endDateToRerunTheJob, endDate, "Enter end date to rerun the job");
+					WebElement confirmButton = driver.findElement(By.xpath(ReconObjects.confirmButton));
+					confirmButton = driver.findElement(By.xpath(ReconObjects.confirmButton));
+					action.moveToElement(confirmButton).click();
+					action.build().perform();
+					Utility.pause(5);
+					logger.log(LogStatus.PASS,"reran the job successfully");
+				}
+				else{
+					logger.log(LogStatus.INFO,"Recon job not found to rerun");
+				}
+				checkJobInReconMonitor();
+							
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+	}
+	
 	public static void deleteReconRecord() throws Throwable {
 		if(unhandledException==false)
 		{
@@ -2199,17 +2286,17 @@ private static void checkJobInReconRemediation() throws Throwable {
 			try {
 			
 			ByAttribute.click("xpath", ReconObjects.settingsIcon, "clicking on settings icon of recon monitor");
-			Utility.verifyElementPresent(ReconObjects.selectViewLnk, "Select View", true, false); 
-			Utility.verifyElementPresent(ReconObjects.createNewView, "Create New View", false, false); 
+			Utility.verifyElementPresent(ReconObjects.selectViewLnk, "Select View",  false); 
+			Utility.verifyElementPresent(ReconObjects.createNewView, "Create New View",  false); 
 		
 			ByAttribute.click("xpath",ReconObjects.createNewView,"clicking on create new view option of Settings icon");
-			Utility.verifyElementPresent(ReconObjects.saveLayout, "Save Current Layout Label ", false, false); 
-			Utility.verifyElementPresent(ReconObjects.nameInSettingsView, "Name field Verified", false, false); 
-			Utility.verifyElementPresent(ReconObjects.preferredLableInSettingsView, "Preferred checkbox", false, false); 
-			Utility.verifyElementPresent(ReconObjects.sharedLabelInSettingsVew, "Shared checkbox ", false, false); 
-			Utility.verifyElementPresent(ReconObjects.closeInSettingsView, "Close button", false, false); 
-			Utility.verifyElementPresent(ReconObjects.cancelInSettingsView, "Cancel button", false, false);
-			Utility.verifyElementPresent(ReconObjects.confirmButton, "Confirm button", false, false); 
+			Utility.verifyElementPresent(ReconObjects.saveLayout, "Save Current Layout Label ",false); 
+			Utility.verifyElementPresent(ReconObjects.nameInSettingsView, "Name field Verified",false); 
+			Utility.verifyElementPresent(ReconObjects.preferredLableInSettingsView, "Preferred checkbox",false); 
+			Utility.verifyElementPresent(ReconObjects.sharedLabelInSettingsVew, "Shared checkbox ",false); 
+			Utility.verifyElementPresent(ReconObjects.closeInSettingsView, "Close button",false); 
+			Utility.verifyElementPresent(ReconObjects.cancelInSettingsView, "Cancel button",false);
+			Utility.verifyElementPresent(ReconObjects.confirmButton, "Confirm button",false); 
 				
 			ByAttribute.click("xpath",ReconObjects.closeInSettingsView , "Clicking on close icon of settings view");
 			Utility.verifyElementNotPresent(ReconObjects.saveLayout, "save layout on create new view", false);

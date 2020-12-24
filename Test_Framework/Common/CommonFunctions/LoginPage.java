@@ -30,7 +30,8 @@ public class LoginPage extends BrowserSelection
 	
 	public static boolean loginAEHSC(String userName, String passWord) throws Throwable
 	{
-			System.out.println("**************************** login **********************************");
+			System.out.println("*************************** Login as : "+userName+" *********************************");
+			logger.log(LogStatus.INFO, "*************************** Login as : "+userName+" *********************************");
 		
 			driver.get(AGlobalComponents.applicationURL);
 			System.out.println("Successfully: open url-"+AGlobalComponents.applicationURL);
@@ -147,16 +148,21 @@ public class LoginPage extends BrowserSelection
 	**/
 	public static boolean logout() throws Exception
 	{
-			System.out.println("**************************** logout **********************************");
+			System.out.println("*************************** Logout *********************************");
+			logger.log(LogStatus.INFO, "*************************** Logout *********************************");
 		
-			driver.findElement(By.xpath("//span[contains(text(),'admin user')]")).click();
+			driver.findElement(By.xpath(".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']")).click();
 			Thread.sleep(2000);
-			driver.findElement(By.xpath("//span[contains(text(),'Logout')]")).click();
+			driver.findElement(By.xpath(".//span[contains(text(),'Logout')]")).click();
 			Thread.sleep(3000);
 			logger.log(LogStatus.INFO, "Logout from Appplication");
-			Utility.verifyElementPresent("//div[contains(text(),'Welcome Back')]", "Login Page", false, false);
+			Utility.verifyElementPresent("//div[contains(text(),'Welcome Back')]", "Login Page",  false);
 
 		return true;
 	}
+
+
+
+
 
 }

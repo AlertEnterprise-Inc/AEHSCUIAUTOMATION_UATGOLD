@@ -24,7 +24,7 @@
     <div class="top-banner-root">
       <span class="top-banner-title-font">Test results</span>
       <br/>
-      <span class="top-banner-font-1">1 suite, 2 failed tests</span>
+      <span class="top-banner-font-1">1 suite, 8 failed tests</span>
     </div> <!-- top-banner-root -->
     <div class="navigator-root">
       <div class="navigator-suite-header">
@@ -91,7 +91,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">8 methods, 2 failed,   6 passed</span>
+                    <span class="method-stats">8 methods, 8 failed,   </span>
                   </li>
                   <li>
                     <span class="method-list-title failed">Failed methods</span>
@@ -107,49 +107,40 @@
                       <br/>
                       <span>
                         <img width="3%" src="failed.png"/>
-                        <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC003">FB_Automation_TC003</a> <!-- method navigator-link -->
-                      </span>
-                      <br/>
-                    </div> <!-- method-list-content failed suite-Suite -->
-                  </li>
-                  <li>
-                    <span class="method-list-title passed">Passed methods</span>
-                    <span class="show-or-hide-methods passed">
-                      <a href="#" panel-name="suite-Suite" class="hide-methods passed suite-Suite"> (hide)</a> <!-- hide-methods passed suite-Suite -->
-                      <a href="#" panel-name="suite-Suite" class="show-methods passed suite-Suite"> (show)</a> <!-- show-methods passed suite-Suite -->
-                    </span>
-                    <div class="method-list-content passed suite-Suite">
-                      <span>
-                        <img width="3%" src="passed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC002">FB_Automation_TC002</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
-                        <img width="3%" src="passed.png"/>
+                        <img width="3%" src="failed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC003">FB_Automation_TC003</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="failed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC004">FB_Automation_TC004</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
-                        <img width="3%" src="passed.png"/>
+                        <img width="3%" src="failed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC005">FB_Automation_TC005</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
-                        <img width="3%" src="passed.png"/>
+                        <img width="3%" src="failed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC006">FB_Automation_TC006</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
-                        <img width="3%" src="passed.png"/>
+                        <img width="3%" src="failed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC007">FB_Automation_TC007</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
-                        <img width="3%" src="passed.png"/>
+                        <img width="3%" src="failed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="webDriverTestCases.FB_Automation" hash-for-method="FB_Automation_TC008">FB_Automation_TC008</a> <!-- method navigator-link -->
                       </span>
                       <br/>
-                    </div> <!-- method-list-content passed suite-Suite -->
+                    </div> <!-- method-list-content failed suite-Suite -->
                   </li>
                 </ul>
               </div> <!-- suite-section-content -->
@@ -172,17 +163,15 @@
                   <a name="FB_Automation_TC001">
                   </a> <!-- FB_Automation_TC001 -->
                   <span class="method-name">FB_Automation_TC001</span>
-                  <div class="stack-trace">org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[contains(text(),&apos;admin user&apos;)]&quot;}
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
   (Session info: chrome=87.0.4280.88)
   (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
 Command duration or timeout: 0 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
-System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.175&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
 Driver info: org.openqa.selenium.chrome.ChromeDriver
 Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
-Session ID: 5c6fe0a2b462657cbad90581cad48e37
-*** Element info: {Using=xpath, value=//span[contains(text(),&apos;admin user&apos;)]}
+Session ID: f2301a587aa2d94395fdee24fde39af5
 	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
 	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
 	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
@@ -191,12 +180,40 @@ Session ID: 5c6fe0a2b462657cbad90581cad48e37
 	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
 	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
 	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:370)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:472)
-	at org.openqa.selenium.By$ByXPath.findElement(By.java:361)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
-	at CommonFunctions.LoginPage.logout(LoginPage.java:152)
-	at webDriverTestCases.FB_Automation.FB_Automation_TC001(FB_Automation.java:66)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC001(FB_Automation.java:54)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
+                  <a name="FB_Automation_TC002">
+                  </a> <!-- FB_Automation_TC002 -->
+                  <span class="method-name">FB_Automation_TC002</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC002(FB_Automation.java:91)
 ... Removed 29 stack frames
 </div> <!-- stack-trace -->
                 </div> <!-- method-content -->
@@ -206,17 +223,15 @@ Session ID: 5c6fe0a2b462657cbad90581cad48e37
                   <a name="FB_Automation_TC003">
                   </a> <!-- FB_Automation_TC003 -->
                   <span class="method-name">FB_Automation_TC003</span>
-                  <div class="stack-trace">org.openqa.selenium.NoSuchElementException: no such element: Unable to locate element: {&quot;method&quot;:&quot;xpath&quot;,&quot;selector&quot;:&quot;//span[contains(text(),&apos;admin user&apos;)]&quot;}
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
   (Session info: chrome=87.0.4280.88)
   (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
 Command duration or timeout: 0 milliseconds
-For documentation on this error, please visit: http://seleniumhq.org/exceptions/no_such_element.html
 Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
-System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.175&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
 Driver info: org.openqa.selenium.chrome.ChromeDriver
 Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
-Session ID: 4ca9423af3494486075e1429d9b99674
-*** Element info: {Using=xpath, value=//span[contains(text(),&apos;admin user&apos;)]}
+Session ID: f2301a587aa2d94395fdee24fde39af5
 	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
 	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
 	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
@@ -225,29 +240,12 @@ Session ID: 4ca9423af3494486075e1429d9b99674
 	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
 	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
 	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:370)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElementByXPath(RemoteWebDriver.java:472)
-	at org.openqa.selenium.By$ByXPath.findElement(By.java:361)
-	at org.openqa.selenium.remote.RemoteWebDriver.findElement(RemoteWebDriver.java:362)
-	at CommonFunctions.LoginPage.logout(LoginPage.java:152)
-	at webDriverTestCases.FB_Automation.FB_Automation_TC003(FB_Automation.java:143)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC003(FB_Automation.java:122)
 ... Removed 29 stack frames
 </div> <!-- stack-trace -->
-                </div> <!-- method-content -->
-              </div> <!-- method -->
-            </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-Suite-class-failed -->
-          <div class="suite-Suite-class-passed">
-            <div class="main-panel-header rounded-window-top">
-              <img src="passed.png"/>
-              <span class="class-name">webDriverTestCases.FB_Automation</span>
-            </div> <!-- main-panel-header rounded-window-top -->
-            <div class="main-panel-content rounded-window-bottom">
-              <div class="method">
-                <div class="method-content">
-                  <a name="FB_Automation_TC002">
-                  </a> <!-- FB_Automation_TC002 -->
-                  <span class="method-name">FB_Automation_TC002</span>
                 </div> <!-- method-content -->
               </div> <!-- method -->
               <div class="method">
@@ -255,6 +253,29 @@ Session ID: 4ca9423af3494486075e1429d9b99674
                   <a name="FB_Automation_TC004">
                   </a> <!-- FB_Automation_TC004 -->
                   <span class="method-name">FB_Automation_TC004</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC004(FB_Automation.java:168)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
               <div class="method">
@@ -262,6 +283,29 @@ Session ID: 4ca9423af3494486075e1429d9b99674
                   <a name="FB_Automation_TC005">
                   </a> <!-- FB_Automation_TC005 -->
                   <span class="method-name">FB_Automation_TC005</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC005(FB_Automation.java:201)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
               <div class="method">
@@ -269,6 +313,29 @@ Session ID: 4ca9423af3494486075e1429d9b99674
                   <a name="FB_Automation_TC006">
                   </a> <!-- FB_Automation_TC006 -->
                   <span class="method-name">FB_Automation_TC006</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC006(FB_Automation.java:238)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
               <div class="method">
@@ -276,6 +343,29 @@ Session ID: 4ca9423af3494486075e1429d9b99674
                   <a name="FB_Automation_TC007">
                   </a> <!-- FB_Automation_TC007 -->
                   <span class="method-name">FB_Automation_TC007</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC007(FB_Automation.java:266)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
               <div class="method">
@@ -283,10 +373,33 @@ Session ID: 4ca9423af3494486075e1429d9b99674
                   <a name="FB_Automation_TC008">
                   </a> <!-- FB_Automation_TC008 -->
                   <span class="method-name">FB_Automation_TC008</span>
+                  <div class="stack-trace">org.openqa.selenium.ElementNotVisibleException: element not visible
+  (Session info: chrome=87.0.4280.88)
+  (Driver info: chromedriver=2.36.540470 (e522d04694c7ebea4ba8821272dbef4f9b818c91),platform=Windows NT 10.0.18363 x86_64) (WARNING: The server did not provide any stacktrace information)
+Command duration or timeout: 0 milliseconds
+Build info: version: &apos;3.7.1&apos;, revision: &apos;8a0099a&apos;, time: &apos;2017-11-06T21:07:36.161Z&apos;
+System info: host: &apos;SCL384&apos;, ip: &apos;192.168.161.154&apos;, os.name: &apos;Windows 10&apos;, os.arch: &apos;amd64&apos;, os.version: &apos;10.0&apos;, java.version: &apos;1.8.0_261&apos;
+Driver info: org.openqa.selenium.chrome.ChromeDriver
+Capabilities {acceptInsecureCerts: false, acceptSslCerts: false, applicationCacheEnabled: false, browserConnectionEnabled: false, browserName: chrome, chrome: {chromedriverVersion: 2.36.540470 (e522d04694c7eb..., userDataDir: C:\Users\MONIKA~1.MEH\AppDa...}, cssSelectorsEnabled: true, databaseEnabled: false, handlesAlerts: true, hasTouchScreen: false, javascriptEnabled: true, locationContextEnabled: true, mobileEmulationEnabled: false, nativeEvents: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: XP, platformName: XP, rotatable: false, setWindowRect: true, takesHeapSnapshot: true, takesScreenshot: true, unexpectedAlertBehaviour: , unhandledPromptBehavior: , version: 87.0.4280.88, webStorageEnabled: true}
+Session ID: f2301a587aa2d94395fdee24fde39af5
+	at org.openqa.selenium.remote.ErrorHandler.createThrowable(ErrorHandler.java:214)
+	at org.openqa.selenium.remote.ErrorHandler.throwIfResponseFailed(ErrorHandler.java:166)
+	at org.openqa.selenium.remote.http.JsonHttpResponseCodec.reconstructValue(JsonHttpResponseCodec.java:40)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:80)
+	at org.openqa.selenium.remote.http.AbstractHttpResponseCodec.decode(AbstractHttpResponseCodec.java:44)
+	at org.openqa.selenium.remote.HttpCommandExecutor.execute(HttpCommandExecutor.java:164)
+	at org.openqa.selenium.remote.service.DriverCommandExecutor.execute(DriverCommandExecutor.java:83)
+	at org.openqa.selenium.remote.RemoteWebDriver.execute(RemoteWebDriver.java:600)
+	at org.openqa.selenium.remote.RemoteWebElement.execute(RemoteWebElement.java:279)
+	at org.openqa.selenium.remote.RemoteWebElement.click(RemoteWebElement.java:83)
+	at CommonFunctions.LoginPage.loginAEHSC(LoginPage.java:56)
+	at webDriverTestCases.FB_Automation.FB_Automation_TC008(FB_Automation.java:292)
+... Removed 29 stack frames
+</div> <!-- stack-trace -->
                 </div> <!-- method-content -->
               </div> <!-- method -->
             </div> <!-- main-panel-content rounded-window-bottom -->
-          </div> <!-- suite-Suite-class-passed -->
+          </div> <!-- suite-Suite-class-failed -->
         </div> <!-- panel Suite -->
         <div panel-name="test-xml-Suite" class="panel">
           <div class="main-panel-header rounded-window-top">
@@ -343,40 +456,40 @@ data.addRows(8);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'FB_Automation_TC001')
 data.setCell(0, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(0, 3, 675779);
+data.setCell(0, 3, 37622);
 data.setCell(1, 0, 1)
-data.setCell(1, 1, 'FB_Automation_TC003')
+data.setCell(1, 1, 'FB_Automation_TC002')
 data.setCell(1, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(1, 3, 384054);
+data.setCell(1, 3, 4017);
 data.setCell(2, 0, 2)
-data.setCell(2, 1, 'FB_Automation_TC005')
+data.setCell(2, 1, 'FB_Automation_TC003')
 data.setCell(2, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(2, 3, 349486);
+data.setCell(2, 3, 1912);
 data.setCell(3, 0, 3)
-data.setCell(3, 1, 'FB_Automation_TC007')
+data.setCell(3, 1, 'FB_Automation_TC005')
 data.setCell(3, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(3, 3, 326661);
+data.setCell(3, 3, 1644);
 data.setCell(4, 0, 4)
-data.setCell(4, 1, 'FB_Automation_TC006')
+data.setCell(4, 1, 'FB_Automation_TC007')
 data.setCell(4, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(4, 3, 248221);
+data.setCell(4, 3, 1624);
 data.setCell(5, 0, 5)
-data.setCell(5, 1, 'FB_Automation_TC008')
+data.setCell(5, 1, 'FB_Automation_TC004')
 data.setCell(5, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(5, 3, 196389);
+data.setCell(5, 3, 1572);
 data.setCell(6, 0, 6)
-data.setCell(6, 1, 'FB_Automation_TC004')
+data.setCell(6, 1, 'FB_Automation_TC008')
 data.setCell(6, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(6, 3, 135483);
+data.setCell(6, 3, 1399);
 data.setCell(7, 0, 7)
-data.setCell(7, 1, 'FB_Automation_TC002')
+data.setCell(7, 1, 'FB_Automation_TC006')
 data.setCell(7, 2, 'webDriverTestCases.FB_Automation')
-data.setCell(7, 3, 114360);
+data.setCell(7, 3, 1151);
 window.suiteTableData['Suite']= { tableData: data, tableDiv: 'times-div-Suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 40 minutes</span>
+              <span class="suite-total-time">Total running time: 50 seconds</span>
               <div id="times-div-Suite">
               </div> <!-- times-div-Suite -->
             </div> <!-- times-div -->
@@ -409,107 +522,119 @@ return data;
               </div> <!-- configuration-class before -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC001() throws java.lang.Throwable)</span>
-                <span class="method-start">13051 ms</span>
+                <span class="method-start">4286 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
                 <img src="failed.png">
                 </img>
                 <span class="method-name">FB_Automation_TC001</span>
-                <span class="method-start">13091 ms</span>
+                <span class="method-start">4397 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">afterMethod([TestResult name=FB_Automation_TC001 status=FAILURE method=FB_Automation.FB_Automation_TC001()[pri:1...)</span>
-                <span class="method-start">688929 ms</span>
+                <span class="method-start">42028 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC002() throws java.lang.Throwable)</span>
-                <span class="method-start">689151 ms</span>
+                <span class="method-start">42542 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC002</span>
-                <span class="method-start">690110 ms</span>
+                <span class="method-start">43864 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC002 status=SUCCESS method=FB_Automation.FB_Automation_TC002()[pri:2...)</span>
-                <span class="method-start">804471 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC002 status=FAILURE method=FB_Automation.FB_Automation_TC002()[pri:2...)</span>
+                <span class="method-start">47884 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC003() throws java.lang.Throwable)</span>
-                <span class="method-start">804537 ms</span>
+                <span class="method-start">47929 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
                 <img src="failed.png">
                 </img>
                 <span class="method-name">FB_Automation_TC003</span>
-                <span class="method-start">805271 ms</span>
+                <span class="method-start">48666 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">afterMethod([TestResult name=FB_Automation_TC003 status=FAILURE method=FB_Automation.FB_Automation_TC003()[pri:3...)</span>
-                <span class="method-start">1189329 ms</span>
+                <span class="method-start">50588 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC004() throws java.lang.Throwable)</span>
-                <span class="method-start">1189443 ms</span>
+                <span class="method-start">50675 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC004</span>
-                <span class="method-start">1190375 ms</span>
+                <span class="method-start">52037 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC004 status=SUCCESS method=FB_Automation.FB_Automation_TC004()[pri:4...)</span>
-                <span class="method-start">1325860 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC004 status=FAILURE method=FB_Automation.FB_Automation_TC004()[pri:4...)</span>
+                <span class="method-start">53617 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC005() throws java.lang.Throwable)</span>
-                <span class="method-start">1325908 ms</span>
+                <span class="method-start">53712 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC005</span>
-                <span class="method-start">1326606 ms</span>
+                <span class="method-start">54807 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC005 status=SUCCESS method=FB_Automation.FB_Automation_TC005()[pri:5...)</span>
-                <span class="method-start">1676095 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC005 status=FAILURE method=FB_Automation.FB_Automation_TC005()[pri:5...)</span>
+                <span class="method-start">56460 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC006() throws java.lang.Throwable)</span>
-                <span class="method-start">1676151 ms</span>
+                <span class="method-start">56519 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC006</span>
-                <span class="method-start">1676862 ms</span>
+                <span class="method-start">57311 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC006 status=SUCCESS method=FB_Automation.FB_Automation_TC006()[pri:6...)</span>
-                <span class="method-start">1925083 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC006 status=FAILURE method=FB_Automation.FB_Automation_TC006()[pri:6...)</span>
+                <span class="method-start">58463 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC007() throws java.lang.Throwable)</span>
-                <span class="method-start">1925120 ms</span>
+                <span class="method-start">58500 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC007</span>
-                <span class="method-start">1925860 ms</span>
+                <span class="method-start">59199 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC007 status=SUCCESS method=FB_Automation.FB_Automation_TC007()[pri:7...)</span>
-                <span class="method-start">2252523 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC007 status=FAILURE method=FB_Automation.FB_Automation_TC007()[pri:7...)</span>
+                <span class="method-start">60834 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-method before">
                 <span class="method-name">commonPage(public void webDriverTestCases.FB_Automation.FB_Automation_TC008() throws java.lang.Throwable)</span>
-                <span class="method-start">2252596 ms</span>
+                <span class="method-start">60919 ms</span>
               </div> <!-- configuration-method before -->
               <div class="test-method">
+                <img src="failed.png">
+                </img>
                 <span class="method-name">FB_Automation_TC008</span>
-                <span class="method-start">2253316 ms</span>
+                <span class="method-start">61890 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
-                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC008 status=SUCCESS method=FB_Automation.FB_Automation_TC008()[pri:8...)</span>
-                <span class="method-start">2449708 ms</span>
+                <span class="method-name">afterMethod([TestResult name=FB_Automation_TC008 status=FAILURE method=FB_Automation.FB_Automation_TC008()[pri:8...)</span>
+                <span class="method-start">63291 ms</span>
               </div> <!-- configuration-method after -->
               <div class="configuration-suite after">
                 <span class="method-name">quitDriver</span>
-                <span class="method-start">2449828 ms</span>
+                <span class="method-start">63361 ms</span>
               </div> <!-- configuration-suite after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

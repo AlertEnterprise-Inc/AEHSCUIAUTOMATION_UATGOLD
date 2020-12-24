@@ -14,6 +14,7 @@ public class AGlobalComponents {
 	public static String currentDateLoggr = new SimpleDateFormat("dd_MM_yyyy_hhmmss").format(new Date());
 	public static String extentReportScreenshotFolder = System.getProperty("user.dir") + "\\ExtentReport\\Output\\Screenshots\\";
 	public static String extentReportPath = System.getProperty("user.dir") + "\\ExtentReport\\Output\\Report.html";
+	public static boolean takeScreenshotIfPass = false;
 	public static boolean jsExecutor = true;
 	public static String AttachmentPic = System.getProperty("user.dir") + "\\Browser_Files\\Automation.png";
 	public static String AttachmentFile = System.getProperty("user.dir") + "\\Browser_Files\\upload.csv";
@@ -23,10 +24,11 @@ public class AGlobalComponents {
 	public static String identityCode="";
 	public static String jobName="";
 	public static boolean trialReconJob=false;
+	public static boolean rerunReconJob=false;
 	public static boolean userRecon=false;
 	public static boolean roleRecon=false;
 	public static boolean deleteSingleIdentityFlag=false;
-	
+		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
 	public static String applicationURL  = "http://192.168.193.169:60/qarecon";

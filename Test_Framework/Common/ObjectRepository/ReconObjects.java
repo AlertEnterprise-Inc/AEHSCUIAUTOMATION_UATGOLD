@@ -130,5 +130,11 @@ public interface ReconObjects {
 		String emptyReconSetUpGrid = "//div[contains(@class,'emptyGridMsg')]";
 		
 		String addRecordsLnk = "//a[normalize-space(text())='Click here to Add']";
+
+		String rerunIconReconSetup = "//span[contains(@class,' x-btn-icon-el-aetextlink-medium aegrid-rerun ')]";
+
+		String endDateToRerunTheJob = "//input[contains(@id,'baseDateTime')]";
+		
+		
 		
 }

@@ -13,6 +13,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 import CommonClassReusables.BrowserSelection;
 import CommonFunctions.FB_Automation_CommonMethods;
+import CommonClassReusables.AGlobalComponents;
 import CommonFunctions.LoginPage;
 import CommonClassReusables.Utility;
 
@@ -28,6 +29,7 @@ public class FB_Automation extends BrowserSelection {
 	{
 		unhandledException = false;	
 		testName = method.getName();
+		AGlobalComponents.takeScreenshotIfPass = false;
 		driver.navigate().refresh();
 	}
 	
@@ -57,6 +59,9 @@ public class FB_Automation extends BrowserSelection {
 			/* Create Recon Job */
 			logger.log(LogStatus.INFO ,  "Recon Job Execution");
 			FB_Automation_CommonMethods.setUpReconJob();
+			
+			logger.log(LogStatus.INFO ,  "Rerun the created recon record");
+			FB_Automation_CommonMethods.rerunReconRecord();
 			
 			logger.log(LogStatus.INFO ,  "Deleting the created recon record");
 			FB_Automation_CommonMethods.deleteReconRecord();
