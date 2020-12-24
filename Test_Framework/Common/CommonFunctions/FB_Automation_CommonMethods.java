@@ -61,17 +61,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Execute Recon Job *********************************");
 			try
 			{
-					String reconDataFile = reconTestDataDirectory + "/Recon.csv";
-					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
-					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
-					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
-					
-					for(int i=0;i<connectorNames.size();i++) {	
-						entityType=entityTypes.get(i);
-						logger.log(LogStatus.INFO, "Creating recon job in recon set up : "+(i+1));
-						initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
-						checkJobInReconMonitor();		
-					}	
+				String reconDataFile = null;
+				if(AGlobalComponents.CCUREUserRecon)
+					reconDataFile = reconTestDataDirectory + "/CCURERecon.csv";
+				else
+					reconDataFile = reconTestDataDirectory + "/Recon.csv";
+				ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
+				ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
+				ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+				
+				for(int i=0;i<connectorNames.size();i++) {	
+					entityType=entityTypes.get(i);
+					logger.log(LogStatus.INFO, "Creating recon job in recon set up : "+(i+1));
+					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
+					checkJobInReconMonitor();		
+				}	
 			}
 			catch(Exception e)
 			{		
@@ -2476,6 +2480,11 @@ private static void checkJobInReconRemediation() throws Throwable {
 		}
 	
 }
+
+	public static void modifyingDataInCCURE() {
+		// TODO Auto-generated method stub
+		
+	}
 
 
 }

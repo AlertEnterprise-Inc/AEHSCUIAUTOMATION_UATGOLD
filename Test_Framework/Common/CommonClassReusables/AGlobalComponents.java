@@ -25,6 +25,7 @@ public class AGlobalComponents {
 	public static String jobName="";
 	public static boolean trialReconJob=false;
 	public static boolean rerunReconJob=false;
+	public static boolean CCUREUserRecon =false;
 	public static boolean userRecon=false;
 	public static boolean roleRecon=false;
 	public static boolean deleteSingleIdentityFlag=false;

@@ -321,4 +321,43 @@ public class FB_Automation extends BrowserSelection {
 	
 	}
 	
+	
+	/*
+	 * TC009 : User Recon from CCURE and then Incremental recon after modifying identity , asset , access . 
+	 * Rerun job
+	 */
+	
+	@Test(priority=9)
+	public void FB_Automation_TC009() throws Throwable 
+	{
+		
+		logger =report.startTest("FB_Automation_TC009","User Recon from CCURE and then Incremental recon after modifying identity , asset , access and job rerun"); 
+	 	System.out.println("[INFO]--> FB_Automation_TC009 - TestCase Execution Begins");
+	 	AGlobalComponents.CCUREUserRecon=true;
+		
+		/* Login as AS User */
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+			
+			/* Create Recon Job */
+			logger.log(LogStatus.INFO ,  "CCURE user Recon Job Execution");
+			FB_Automation_CommonMethods.setUpReconJob();
+			
+			logger.log(LogStatus.INFO ,  "Adding/Modifying user in ccure");
+			FB_Automation_CommonMethods.modifyingDataInCCURE();
+			
+			logger.log(LogStatus.INFO ,  "Rerun the created recon record");
+			FB_Automation_CommonMethods.rerunReconRecord();
+			
+			/* Logout from Application */
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login failed");
+		
+		
+	}
+	
 }
