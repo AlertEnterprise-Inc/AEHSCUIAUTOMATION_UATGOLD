@@ -502,8 +502,8 @@ private static void checkJobInReconRemediation() throws Throwable {
 					Utility.pause(10);
 					fillPrerequisitesInfo();
 				}
-				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
-				Utility.pause(20);
+//				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
+//				Utility.pause(20);
 				logger.log(LogStatus.PASS, "identity created");
 				
 			}
@@ -1641,20 +1641,6 @@ private static void checkJobInReconRemediation() throws Throwable {
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Entered the Prerequisite");
 				
-//				action.sendKeys(Keys.TAB);
-//				action.sendKeys(validFrom);
-//				action.build().perform();
-//				Utility.pause(5);
-//				logger.log(LogStatus.INFO, "Entered the valid from date");
-//				
-//				action.sendKeys(Keys.TAB);
-//				action.sendKeys(validTo);
-//				action.build().perform();
-//				Utility.pause(5);
-//				logger.log(LogStatus.INFO, "Entered the valid to date");
-				
-				
-				
 				WebElement validFromDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[2]"));
 				action.moveToElement(validFromDate).click();
 				action.sendKeys(validFrom);
@@ -1662,16 +1648,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 				Utility.pause(5);
 				logger.log(LogStatus.INFO, "Entered valid from");
 			
-//				WebElement prerequisiteType=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[1]"));
-//				action.moveToElement(prerequisiteType).click();
-//				action.sendKeys(prerequisite);
-//				action.build().perform();
-//				Utility.pause(5);
-//				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisite+"']"));
-//				action.moveToElement(prerequisiteValue).click();
-//				action.build().perform();
-//				logger.log(LogStatus.INFO, "Entered the Prerequisite");
-//				
+
 				WebElement validToDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[3]"));
 				action.moveToElement(validToDate).click();
 				action.sendKeys(validTo);

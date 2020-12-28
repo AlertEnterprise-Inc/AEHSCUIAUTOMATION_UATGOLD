@@ -5,8 +5,8 @@
     <classes>
       <class name="webDriverTestCases.FB_Automation">
         <methods>
-          <include name="FB_Automation_TC001"/>
           <include name="quitDriver"/>
+          <include name="FB_Automation_TC003"/>
           <include name="commonPage"/>
           <include name="beforeSuite"/>
           <include name="afterMethod"/>
