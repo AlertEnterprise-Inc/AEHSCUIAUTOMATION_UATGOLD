@@ -3,6 +3,7 @@ package CommonFunctions;
 import static org.testng.Assert.assertEquals;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
+import CommonClassReusables.DBValidations;
 import CommonClassReusables.MsSql;
+
 import CommonClassReusables.ReadDataFromPropertiesFile;
 import CommonClassReusables.TestDataEngine;
 import CommonClassReusables.TestDataInterface;
@@ -29,7 +32,6 @@ import CommonClassReusables.Utility;
 import ObjectRepository.AccessObjects;
 import ObjectRepository.IdentityObjects;
 import ObjectRepository.ReconObjects;
-
 
 public class FB_Automation_CommonMethods extends BrowserSelection{
 	
@@ -2455,15 +2457,306 @@ private static void checkJobInReconRemediation() throws Throwable {
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
 		}
-	
-}
-
-	public static void modifyingDataInCCURE() {
-		//need to add code to insert /modify data in ccure DB
-		
-		
-		
 	}
 
+	public static void validateIdentityData() throws Throwable {
+		String userDataFile=reconTestDataDirectory+"/Identity.csv";
+		ArrayList<String> firstNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "firstName");
+		ArrayList<String> lastNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "lastName");
+		ArrayList<String> typeList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "workerType");
+		ArrayList<String> validFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "validFrom");
+		ArrayList<String> validToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "validTo");
+		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
+		ArrayList<String> emailList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "email");
+		ArrayList<String> workLocationList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "workLocation");
+		ArrayList<String> cityList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "city");
+		ArrayList<String> managerIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "managerId");
+		
+//		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
+//		validateDataInStagingTable(firstNameList,lastNameList,userIdList,typeList);
+		validateDataInMasterTable(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,workLocationList,cityList,managerIdList);
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+			validateDataOnUI(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,workLocationList,cityList,managerIdList);
+			LoginPage.logout();
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Login failed");
+		}
+	}
+
+	private static void validateDataInMasterTable(ArrayList<String> firstNameList, ArrayList<String> lastNameList,
+			ArrayList<String> userIdList, ArrayList<String> typeList, ArrayList<String> validFromList,
+			ArrayList<String> validToList, ArrayList<String> emailList,ArrayList<String> workLocationList,
+			ArrayList<String> cityList, ArrayList<String> managerIdList) throws ClassNotFoundException, SQLException {
+
+		for(String userId:userIdList) {
+			String firstName=DBValidations.getFirstNameOfUser(userId);
+			String lastName=DBValidations.getLastNameOfUser(userId);
+			String type=DBValidations.getTypeofUserId(userId);
+			String validFrom=DBValidations.getValidFromOfUser(userId);
+			String validTo=DBValidations.getValidToOfUser(userId);
+			String email=DBValidations.getEmailIdOfUser(userId);
+			String workLocation=DBValidations.getWorkLocationOfUser(userId);
+			String city=DBValidations.getCityOfUser(userId);
+			String managerId=DBValidations.getManagerIdOfUser(userId);
+			if(firstNameList.contains(firstName)) {
+				logger.log(LogStatus.PASS, "FirstName "+firstName+"exists in master table for UserID" +userId);
+			}
+			if(lastNameList.contains(lastName)) {
+				logger.log(LogStatus.PASS, "LastName "+lastName+"exists in master table for UserID" +userId);
+			}
+			if(typeList.contains(type)) {
+				logger.log(LogStatus.PASS, "WorkerType "+type+"exists in master table for UserID" +userId);
+			}
+			if(validFromList.contains(validFrom)) {
+				logger.log(LogStatus.PASS, "ValidFrom "+validFrom+"exists in master table for UserID" +userId);
+			}
+			if(validToList.contains(validTo)) {
+				logger.log(LogStatus.PASS, "ValidTo "+validTo+"exists in master table for UserID" +userId);
+			}
+			if(emailList.contains(email)) {
+				logger.log(LogStatus.PASS, "Email "+email+"exists in master table for UserID" +userId);
+			}
+			if(workLocationList.contains(workLocation)) {
+				logger.log(LogStatus.PASS, "WorkLocation "+workLocation+"exists in master table for UserID" +userId);
+			}
+			if(cityList.contains(city)) {
+				logger.log(LogStatus.PASS, "City "+city+"exists in master table for UserID" +userId);
+			}
+			if(managerIdList.contains(managerId)) {
+				logger.log(LogStatus.PASS, "ManagerId "+managerId+"exists in master table for UserID" +userId);
+			}
+		}
+	}
+
+	private static ArrayList<String> getEmpTypeFromtypeList(ArrayList<String> typeList) {
+		ArrayList<String> empTypeList= new ArrayList<String>();
+		for(String type:typeList) {
+			if(type==null || !(type.trim().equals("2")||type.trim().equals("3")||type.trim().equals("4"))) {
+				empTypeList.add("Permanent");
+			} 
+			else if(type.trim().equals("2")){
+				empTypeList.add("Employee");
+			}
+			else if(type.trim().equals("3")){
+				empTypeList.add("Contractor");
+			}
+			else if (type.trim().equals("4")){
+				empTypeList.add("Visitor");
+			}
+		}
+		return empTypeList;
+	}
+
+	private static void validateDataInStagingTable(ArrayList<String> firstNameList,ArrayList<String> lastNameList,ArrayList<String> userIdList,ArrayList<String> typeList) throws Throwable {
+		
+		String job_instance_id=getJobInstanceIdFromJobName("test2");
+		
+		ArrayList<ArrayList<String>> dataList=getDataFromStagingTable(job_instance_id);
+		
+		for(int i=0;i<=firstNameList.size()-1;i++) {
+			for (ArrayList<String> s : dataList) {	
+				if(firstNameList.get(i).equalsIgnoreCase(s.get(0))) {
+					logger.log(LogStatus.PASS,"firstName "+firstNameList.get(i)+"exists in staging table");
+				}
+				if(lastNameList.get(i).equalsIgnoreCase(s.get(1))) {
+					logger.log(LogStatus.PASS,"lastName "+lastNameList.get(i)+ "exists in staging table");
+				}
+				if(userIdList.get(i).equalsIgnoreCase(s.get(2))) {
+					logger.log(LogStatus.PASS,"UserId "+userIdList.get(i)+ "exists in staging table ");
+				}
+				if(typeList.get(i).equalsIgnoreCase(s.get(3))) {
+					logger.log(LogStatus.PASS,"EmployeeType "+typeList.get(i)+" exists in staging table for userId "+userIdList.get(i));
+				}
+			}
+		}
+	}
+
+	private static ArrayList<ArrayList<String>> getDataFromStagingTable(String job_instance_id) throws ClassNotFoundException, SQLException {
+		String query = "select first_name,last_name,user_id,type from stg_user_data where sync_id='"+job_instance_id+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		System.out.println("resultset"+rs);
+	
+		return rs;
+	
+	}
+	private static String getJobInstanceIdFromJobName(String jobName) throws Throwable {
+		
+		String query = "select job_instance_id from recon_monitor where recon_config_id=(select id from recon_config where description='"+jobName+"') and int_status=0";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String Id =rs.get(0).get(0);	
+		if(Id!=null) {
+			System.out.println("max objectId is"+Id);
+		}
+		else {
+			System.out.println("Unable to fetch max objectID");
+		}
+		return Id;
+	}
+
+	private static void validateDataOnUI(ArrayList<String> firstNameList, ArrayList<String> lastNameList, ArrayList<String> userIdList, ArrayList<String> empTypeList,
+			ArrayList<String> validFromList,ArrayList<String> validToList,ArrayList<String> emailList,ArrayList<String> workLocationList,ArrayList<String> cityList,ArrayList<String> managerIdList) throws Throwable {
+
+		ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
+		Utility.pause(5);
+		ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
+		Utility.pause(30);
+		ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
+		Utility.pause(3);
+		ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
+		Utility.pause(5);
+		ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+		Utility.pause(2);
+		ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,"User ID", "Enter the field name for Filtering");
+		Utility.pause(2);
+		ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
+		Utility.pause(2);
+		for(int i=0;i<=userIdList.size()-1;i++) {
+			ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userIdList.get(i), "Enter the first field value for Filtering");
+			Utility.pause(2);
+	
+			Actions action = new Actions(driver);
+			action.sendKeys(Keys.ENTER).build().perform();
+			Utility.pause(20);
+		
+			if(driver.findElements(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
+				WebElement record=driver.findElement(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+				identityCode=record.getText();	
+				action.doubleClick(record).perform();
+				Utility.pause(15);
+				String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
+				if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
+					//FirstName Validation
+					String firstName=driver.findElement(By.xpath("//input[@placeholder='Enter First Name']")).getAttribute("value");
+					if(firstName!=null) {
+						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
+							logger.log(LogStatus.PASS, "FirstName "+firstName+" displaying on UI");
+						}
+						else {
+							logger.log(LogStatus.FAIL, "FirstName " +firstName+" on UI is not same as expected");
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see firstName "+firstNameList.get(i)+"on UI ");
+					}
+					//LastName validation
+					String lastName=driver.findElement(By.xpath("//input[@placeholder='Enter Last Name']")).getAttribute("value");
+					if(lastName!=null) {
+						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
+							logger.log(LogStatus.PASS, "LsatName "+lastName+" displaying on UI");
+						}
+						else {
+							logger.log(LogStatus.FAIL, "LastName " +lastName+" on UI is not same as expected");
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see LastName "+lastNameList.get(i)+"on UI ");
+					}
+					//Employee Type Validaiton
+					String employeeType=driver.findElement(By.xpath("//input[@placeholder='Select Employee Type']")).getAttribute("value");
+					if(employeeType!=null) {
+						if(empTypeList.get(i).equalsIgnoreCase(employeeType)) {
+							logger.log(LogStatus.PASS, "EmployeeType "+employeeType+" displaying on UI");
+						}
+						else {
+							logger.log(LogStatus.FAIL, "EmployeeType " +employeeType+" on UI is not same as expected");
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+empTypeList.get(i)+"on UI ");
+					}
+					//validfrom Validation
+					String validFrom=driver.findElement(By.xpath("//input[@placeholder='Select Valid From']")).getAttribute("value");
+					validFrom=TestDataEngine.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
+					if(validFrom!=null) {
+						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
+							logger.log(LogStatus.PASS, "ValidFrom "+validFrom+" displaying on UI for UserId" +userIdList.get(i));
+						}
+						else {
+							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList.get(i));
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+validFromList.get(i)+"on UI " +userIdList.get(i));
+					}
+					//ValidTo validation
+					String validTo=driver.findElement(By.xpath("//input[@placeholder='Select Valid To']")).getAttribute("value");
+					validTo=TestDataEngine.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
+					if(validTo!=null) {
+						if(validToList.get(i).equalsIgnoreCase(validTo)) {
+							logger.log(LogStatus.PASS, "ValidTo "+validTo+" displaying on UI" +userIdList.get(i));
+						}
+						else {
+							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+validToList.get(i)+"on UI " +userIdList.get(i));
+					}
+					
+					//EmailId Validation
+					String email=driver.findElement(By.xpath("//input[@placeholder='Enter Email ID']")).getAttribute("value");
+					if(email!=null) {
+						if(emailList.get(i).equalsIgnoreCase(email)) {
+							logger.log(LogStatus.PASS, "EmailId "+email+" displaying on UI" +userIdList.get(i));
+						}
+						else {
+							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userIdList.get(i));
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+emailList.get(i)+"on UI " +userIdList.get(i));
+					}
+					//workLocation Validation
+					String workLocation=driver.findElement(By.xpath("//input[@placeholder='Enter Work Location']")).getAttribute("value");
+					if(workLocation!=null) {
+						if(workLocationList.get(i).equalsIgnoreCase(workLocation)) {
+							logger.log(LogStatus.PASS, "ValidTo "+workLocation+" displaying on UI" +userIdList.get(i));
+						}
+						else {
+							logger.log(LogStatus.FAIL, "ValidTo " +workLocation+" on UI is not same as expected" +userIdList.get(i));
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+workLocationList.get(i)+"on UI " +userIdList.get(i));
+					}
+				}
+				
+				//City Validation
+				String city=driver.findElement(By.xpath("//input[@placeholder='Enter City']")).getAttribute("value");
+				if(city!=null) {
+					if(cityList.get(i).equalsIgnoreCase(city)) {
+						logger.log(LogStatus.PASS, "ValidTo "+city+" displaying on UI" +userIdList.get(i));
+					}
+					else {
+						logger.log(LogStatus.FAIL, "ValidTo " +city+" on UI is not same as expected" +userIdList.get(i));
+					}
+				}	
+				else {
+					logger.log(LogStatus.FAIL, "Not able to see ValidTo "+cityList.get(i)+"on UI " +userIdList.get(i));
+				}		
+			
+				//ManagerID Validation
+				String managerId=driver.findElement(By.xpath("//input[@placeholder='Select Manager']")).getAttribute("value");
+				if(managerId!=null) {
+					if(managerIdList.get(i).equalsIgnoreCase(managerId)) {
+						logger.log(LogStatus.PASS, "ValidTo "+managerId+" displaying on UI" +userIdList.get(i));
+					}
+					else {
+						logger.log(LogStatus.FAIL, "ValidTo " +managerId+" on UI is not same as expected" +userIdList.get(i));
+					}
+				}
+				else {
+					logger.log(LogStatus.FAIL, "Not able to see ValidTo "+managerIdList.get(i)+"on UI " +userIdList.get(i));
+				}
+			}
+			else{
+				logger.log(LogStatus.FAIL ,"Failed to search the record");
+			}
+		}			
+	}
 }

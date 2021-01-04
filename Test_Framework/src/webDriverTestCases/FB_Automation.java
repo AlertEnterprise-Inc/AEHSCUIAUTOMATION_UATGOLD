@@ -1,6 +1,7 @@
 package webDriverTestCases;
 
 import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,7 +15,9 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.BrowserSelection;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonClassReusables.AGlobalComponents;
+import CommonClassReusables.ApiMethods;
 import CommonFunctions.LoginPage;
+import io.restassured.RestAssured;
 import CommonClassReusables.Utility;
 
 
@@ -323,7 +326,7 @@ public class FB_Automation extends BrowserSelection {
 	
 	
 	/*
-	 * TC009 : User Recon from CCURE and then Incremental recon after modifying identity , asset , access . 
+	 * TC009 : Create identity through API. 
 	 * Rerun job
 	 */
 	
@@ -331,33 +334,14 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC009() throws Throwable 
 	{
 		
-		logger =report.startTest("FB_Automation_TC009","User Recon from CCURE and then Incremental recon after modifying identity , asset , access and job rerun"); 
+		logger =report.startTest("FB_Automation_TC009","Create identity through API"); 
 	 	System.out.println("[INFO]--> FB_Automation_TC009 - TestCase Execution Begins");
 	 	AGlobalComponents.CCUREUserRecon=true;
 		
-		/* Login as AS User */
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
-
-		if(loginStatus){
-			logger.log(LogStatus.PASS, "Login Successful");
-			
-			/* Create Recon Job */
-			logger.log(LogStatus.INFO ,  "CCURE user Recon Job Execution");
-			FB_Automation_CommonMethods.setUpReconJob();
-			
-			logger.log(LogStatus.INFO ,  "Adding/Modifying user in ccure");
-			FB_Automation_CommonMethods.modifyingDataInCCURE();
-			
-			logger.log(LogStatus.INFO ,  "Rerun the created recon record");
-			FB_Automation_CommonMethods.rerunReconRecord();
-			
-			/* Logout from Application */
-			LoginPage.logout();
-		}	
-		else
-			logger.log(LogStatus.FAIL, "Login failed");
-		
-		
+	 	if(ApiMethods.generateAccessToken())
+	 	{
+	 		ApiMethods.createIdentityThroughAPI();
+	 		FB_Automation_CommonMethods.validateIdentityData();
+	 	}
 	}
-	
 }

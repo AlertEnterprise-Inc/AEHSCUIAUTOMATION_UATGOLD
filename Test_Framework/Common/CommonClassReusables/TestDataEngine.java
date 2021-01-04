@@ -1,6 +1,7 @@
 package CommonClassReusables;
 
 import java.io.File;
+
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,7 +24,7 @@ import java.util.Properties;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import org.apache.commons.io.filefilter.FileFileFilter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.log4testng.Logger;
 
 import com.opencsv.CSVReader;
@@ -603,7 +604,7 @@ public class TestDataEngine extends BrowserSelection{
 		String cellData = null;
 		Calendar c = Calendar.getInstance();
 //		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy hh:mm:ss");
-		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy");
+		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		Date date = new Date();
 		String currentDate= dateFormat.format(date);
 		System.out.println(currentDate);
@@ -3073,6 +3074,54 @@ public class TestDataEngine extends BrowserSelection{
 //		}		
 //	}
 	
+	public static String convertDateFormatToGivenFormat(String Date, String requestedFormat) {
+		if(Utility.checkIfStringIsNotNullAndNotEmpty(Date)) {
+			if(Utility.checkIfStringIsNotNullAndNotEmpty(requestedFormat)) {
+				String dateComponents[] = new String[2];
+				if(Date.contains("/")){
+					dateComponents = Date.split("/");
+				}
+				int dayIdx = -1, monthIdx = -1, yearIdx = -1;
+				if("MM-dd-yyyy".equalsIgnoreCase(requestedFormat)) {
+					String appDateFormatComps[] = new String[2];
+					appDateFormatComps = requestedFormat.split("-");
+					ArrayList<String> componentPosition = new ArrayList<String>(Arrays.asList(appDateFormatComps));
+					if(Utility.checkIfListContains(componentPosition, "DD") || Utility.checkIfListContains(componentPosition, "dd")) {
+						dayIdx = Utility.getIndex(componentPosition, "DD");
+						if(dayIdx == -1) {
+							dayIdx = Utility.getIndex(componentPosition, "dd");
+						}
+					}
+					if(Utility.checkIfListContains(componentPosition, "MM") || Utility.checkIfListContains(componentPosition, "mm")) {
+						monthIdx = Utility.getIndex(componentPosition, "MM");
+						if(monthIdx == -1) {
+							monthIdx = Utility.getIndex(componentPosition, "mm");
+						}
+					}
+					if(Utility.checkIfListContains(componentPosition, "YYYY") || Utility.checkIfListContains(componentPosition, "yyyy")) {
+						yearIdx = Utility.getIndex(componentPosition, "YYYY");
+						if(yearIdx == -1) {
+							yearIdx = Utility.getIndex(componentPosition, "yyyy");
+						}
+					}
+					if(yearIdx != -1 && monthIdx != -1 && dayIdx != -1) {
+						if(dateComponents[dayIdx].length()!=2) {
+							dateComponents[dayIdx]="0"+dateComponents[dayIdx];
+						}
+						if(dateComponents[monthIdx].length()!=2) {
+							dateComponents[monthIdx]="0"+dateComponents[monthIdx];
+						}
+						if(dateComponents[yearIdx].length()!=4) {
+							dateComponents[yearIdx]="20"+dateComponents[yearIdx];
+						}
+						Date = dateComponents[dayIdx] + "-" + dateComponents[monthIdx] + "-" + dateComponents[yearIdx];	
+					}	
+				}	
+			}
+		}
+		return Date;
+	}
+	
 	public static void writeStringToFile(String fileLocation, String text) {
 		PrintWriter pw;
 		try {
@@ -3083,6 +3132,4 @@ public class TestDataEngine extends BrowserSelection{
 			e.printStackTrace();
 		}
     }
-	
-	
 }	

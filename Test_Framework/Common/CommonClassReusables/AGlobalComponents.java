@@ -51,5 +51,7 @@ public class AGlobalComponents {
 	public static String applicantSSN = "";
 	public static int  RANDOM_DATA_GEN_LEN = 10;
 	public static boolean RANDOM_DATA_GEN_FLAG = true;
+	public static String baseURI="http://192.168.193.169:60";
+	public static String access_token="";
 	
 }
