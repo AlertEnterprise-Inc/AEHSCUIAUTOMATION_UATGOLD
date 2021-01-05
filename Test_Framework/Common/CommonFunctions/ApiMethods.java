@@ -1,10 +1,13 @@
-package CommonClassReusables;
+package CommonFunctions;
 
 import static io.restassured.RestAssured.given;
 
 import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
-
+import CommonClassReusables.BrowserSelection;
+import CommonClassReusables.Payload;
+import CommonClassReusables.TestDataInterface;
+import CommonClassReusables.Utility;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -63,7 +66,7 @@ public static boolean createIdentityThroughAPI() throws Throwable {
 					.body(requestBody).when().post("/api/identity/external/save").then().log().all().extract().response();
 			int statusCode=response.getStatusCode();
 			if(statusCode==200) {
-				logger.log(LogStatus.FAIL, "Status code is:"+statusCode);
+				logger.log(LogStatus.PASS, "Status code is:"+statusCode);
 				JsonPath js= new JsonPath(response.getBody().asString());
 				String messageText=js.getString("messages[0].messageDisplayText");
 				if(messageText.equalsIgnoreCase("Identity saved successfully.")) {

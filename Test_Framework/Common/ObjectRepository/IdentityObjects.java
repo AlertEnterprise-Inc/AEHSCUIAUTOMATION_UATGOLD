@@ -57,6 +57,12 @@ public interface IdentityObjects {
 	
 	String phoneNumberLnk = "//input[@placeholder='Enter Phone Number']";
 	
+	String workLocationLnk="//input[@placeholder='Enter Work Location']";
+	
+	String cityLnk="//input[@placeholder='Enter City']";
+	
+	String managerSourceIdLnk="//input[@placeholder='Enter manager source id']";
+	
 	String collapseContactInfoSection = "//fieldset[@aria-label='Contact Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";
 	
 	String collapseOrganisationInfoSection = "//fieldset[@aria-label='Organisation Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";

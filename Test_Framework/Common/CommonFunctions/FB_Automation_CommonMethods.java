@@ -2503,31 +2503,31 @@ private static void checkJobInReconRemediation() throws Throwable {
 			String city=DBValidations.getCityOfUser(userId);
 			String managerId=DBValidations.getManagerIdOfUser(userId);
 			if(firstNameList.contains(firstName)) {
-				logger.log(LogStatus.PASS, "FirstName "+firstName+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "FirstName "+firstName+" exists in master table for UserID" +userId);
 			}
 			if(lastNameList.contains(lastName)) {
-				logger.log(LogStatus.PASS, "LastName "+lastName+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "LastName "+lastName+" exists in master table for UserID" +userId);
 			}
 			if(typeList.contains(type)) {
-				logger.log(LogStatus.PASS, "WorkerType "+type+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "WorkerType "+type+" exists in master table for UserID" +userId);
 			}
 			if(validFromList.contains(validFrom)) {
-				logger.log(LogStatus.PASS, "ValidFrom "+validFrom+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "ValidFrom "+validFrom+" exists in master table for UserID" +userId);
 			}
 			if(validToList.contains(validTo)) {
-				logger.log(LogStatus.PASS, "ValidTo "+validTo+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "ValidTo "+validTo+" exists in master table for UserID" +userId);
 			}
 			if(emailList.contains(email)) {
-				logger.log(LogStatus.PASS, "Email "+email+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "Email "+email+" exists in master table for UserID" +userId);
 			}
 			if(workLocationList.contains(workLocation)) {
-				logger.log(LogStatus.PASS, "WorkLocation "+workLocation+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "WorkLocation "+workLocation+" exists in master table for UserID" +userId);
 			}
 			if(cityList.contains(city)) {
-				logger.log(LogStatus.PASS, "City "+city+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "City "+city+" exists in master table for UserID" +userId);
 			}
 			if(managerIdList.contains(managerId)) {
-				logger.log(LogStatus.PASS, "ManagerId "+managerId+"exists in master table for UserID" +userId);
+				logger.log(LogStatus.PASS, "ManagerId "+managerId+" exists in master table for UserID" +userId);
 			}
 		}
 	}
@@ -2599,7 +2599,8 @@ private static void checkJobInReconRemediation() throws Throwable {
 
 	private static void validateDataOnUI(ArrayList<String> firstNameList, ArrayList<String> lastNameList, ArrayList<String> userIdList, ArrayList<String> empTypeList,
 			ArrayList<String> validFromList,ArrayList<String> validToList,ArrayList<String> emailList,ArrayList<String> workLocationList,ArrayList<String> cityList,ArrayList<String> managerIdList) throws Throwable {
-
+		
+		AGlobalComponents.takeScreenshotIfPass=true;
 		ByAttribute.mouseHover("xpath", IdentityObjects.IdentityTabLnk, "Mouse Hover on Identity tab");
 		Utility.pause(5);
 		ByAttribute.click("xpath", IdentityObjects.manageIdentityLnk, "Click on Manage Identity ");
@@ -2631,10 +2632,10 @@ private static void checkJobInReconRemediation() throws Throwable {
 				if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
 					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 					//FirstName Validation
-					String firstName=driver.findElement(By.xpath("//input[@placeholder='Enter First Name']")).getAttribute("value");
+					String firstName=driver.findElement(By.xpath(IdentityObjects.firstNameLnk)).getAttribute("value");
 					if(firstName!=null) {
 						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
-							logger.log(LogStatus.PASS, "FirstName "+firstName+" displaying on UI");
+							Utility.verifyElementPresent(IdentityObjects.firstNameLnk, "FirstName "+firstName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "FirstName " +firstName+" on UI is not same as expected");
@@ -2644,10 +2645,10 @@ private static void checkJobInReconRemediation() throws Throwable {
 						logger.log(LogStatus.FAIL, "Not able to see firstName "+firstNameList.get(i)+"on UI ");
 					}
 					//LastName validation
-					String lastName=driver.findElement(By.xpath("//input[@placeholder='Enter Last Name']")).getAttribute("value");
+					String lastName=driver.findElement(By.xpath(IdentityObjects.lastNameLnk)).getAttribute("value");
 					if(lastName!=null) {
 						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
-							logger.log(LogStatus.PASS, "LsatName "+lastName+" displaying on UI");
+							Utility.verifyElementPresent(IdentityObjects.lastNameLnk, "LastName "+lastName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "LastName " +lastName+" on UI is not same as expected");
@@ -2657,9 +2658,10 @@ private static void checkJobInReconRemediation() throws Throwable {
 						logger.log(LogStatus.FAIL, "Not able to see LastName "+lastNameList.get(i)+"on UI ");
 					}
 					//Employee Type Validaiton
-					String employeeType=driver.findElement(By.xpath("//input[@placeholder='Select Employee Type']")).getAttribute("value");
+					String employeeType=driver.findElement(By.xpath(IdentityObjects.employeeTypeLnk)).getAttribute("value");
 					if(employeeType!=null) {
 						if(empTypeList.get(i).equalsIgnoreCase(employeeType)) {
+							Utility.verifyElementPresent(IdentityObjects.employeeTypeLnk, "EmployeeType "+employeeType+" displaying on UI",false);
 							logger.log(LogStatus.PASS, "EmployeeType "+employeeType+" displaying on UI");
 						}
 						else {
@@ -2670,11 +2672,11 @@ private static void checkJobInReconRemediation() throws Throwable {
 						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+empTypeList.get(i)+"on UI ");
 					}
 					//validfrom Validation
-					String validFrom=driver.findElement(By.xpath("//input[@placeholder='Select Valid From']")).getAttribute("value");
+					String validFrom=driver.findElement(By.xpath(IdentityObjects.validFromLnk)).getAttribute("value");
 					validFrom=TestDataEngine.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
 					if(validFrom!=null) {
 						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
-							logger.log(LogStatus.PASS, "ValidFrom "+validFrom+" displaying on UI for UserId" +userIdList.get(i));
+							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidFrom "+validFrom+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList.get(i));
@@ -2688,7 +2690,7 @@ private static void checkJobInReconRemediation() throws Throwable {
 					validTo=TestDataEngine.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
 					if(validTo!=null) {
 						if(validToList.get(i).equalsIgnoreCase(validTo)) {
-							logger.log(LogStatus.PASS, "ValidTo "+validTo+" displaying on UI" +userIdList.get(i));
+							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
@@ -2699,10 +2701,10 @@ private static void checkJobInReconRemediation() throws Throwable {
 					}
 					
 					//EmailId Validation
-					String email=driver.findElement(By.xpath("//input[@placeholder='Enter Email ID']")).getAttribute("value");
+					String email=driver.findElement(By.xpath(IdentityObjects.emailIdLnk)).getAttribute("value");
 					if(email!=null) {
 						if(emailList.get(i).equalsIgnoreCase(email)) {
-							logger.log(LogStatus.PASS, "EmailId "+email+" displaying on UI" +userIdList.get(i));
+							Utility.verifyElementPresent(IdentityObjects.emailIdLnk, "EmailId "+email+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userIdList.get(i));
@@ -2712,47 +2714,47 @@ private static void checkJobInReconRemediation() throws Throwable {
 						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+emailList.get(i)+"on UI " +userIdList.get(i));
 					}
 					//workLocation Validation
-					String workLocation=driver.findElement(By.xpath("//input[@placeholder='Enter Work Location']")).getAttribute("value");
+					String workLocation=driver.findElement(By.xpath(IdentityObjects.workLocationLnk)).getAttribute("value");
 					if(workLocation!=null) {
 						if(workLocationList.get(i).equalsIgnoreCase(workLocation)) {
-							logger.log(LogStatus.PASS, "ValidTo "+workLocation+" displaying on UI" +userIdList.get(i));
+							Utility.verifyElementPresent(IdentityObjects.workLocationLnk, "WorkLocation "+workLocation+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
-							logger.log(LogStatus.FAIL, "ValidTo " +workLocation+" on UI is not same as expected" +userIdList.get(i));
+							logger.log(LogStatus.FAIL, "WorkLocation " +workLocation+" on UI is not same as expected" +userIdList.get(i));
 						}
 					}
 					else {
-						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+workLocationList.get(i)+"on UI " +userIdList.get(i));
+						logger.log(LogStatus.FAIL, "Not able to see WorkLocation "+workLocationList.get(i)+"on UI " +userIdList.get(i));
 					}
 				}
 				
 				//City Validation
-				String city=driver.findElement(By.xpath("//input[@placeholder='Enter City']")).getAttribute("value");
+				String city=driver.findElement(By.xpath(IdentityObjects.cityLnk)).getAttribute("value");
 				if(city!=null) {
 					if(cityList.get(i).equalsIgnoreCase(city)) {
-						logger.log(LogStatus.PASS, "ValidTo "+city+" displaying on UI" +userIdList.get(i));
+						Utility.verifyElementPresent(IdentityObjects.workLocationLnk, "City "+city+" displaying on UI "+userIdList.get(i),false);
 					}
 					else {
-						logger.log(LogStatus.FAIL, "ValidTo " +city+" on UI is not same as expected" +userIdList.get(i));
+						logger.log(LogStatus.FAIL, "City " +city+" on UI is not same as expected" +userIdList.get(i));
 					}
 				}	
 				else {
-					logger.log(LogStatus.FAIL, "Not able to see ValidTo "+cityList.get(i)+"on UI " +userIdList.get(i));
+					logger.log(LogStatus.FAIL, "Not able to see City "+cityList.get(i)+"on UI " +userIdList.get(i));
 				}		
 			
 				//ManagerID Validation
-				String managerId=driver.findElement(By.xpath("//input[@placeholder='Select Manager']")).getAttribute("value");
+				String managerId=driver.findElement(By.xpath(IdentityObjects.managerSourceIdLnk)).getAttribute("value");
 				if(managerId!=null) {
 					if(managerIdList.get(i).equalsIgnoreCase(managerId)) {
-						logger.log(LogStatus.PASS, "ValidTo "+managerId+" displaying on UI" +userIdList.get(i));
+						Utility.verifyElementPresent(IdentityObjects.managerSourceIdLnk, "ManagerSourceID "+managerId+" displaying on UI "+userIdList.get(i),false);
 					}
 					else {
-						logger.log(LogStatus.FAIL, "ValidTo " +managerId+" on UI is not same as expected" +userIdList.get(i));
+						logger.log(LogStatus.FAIL, "ManagerId " +managerId+" on UI is not same as expected" +userIdList.get(i));
 					}
 				}
 				else {
-					logger.log(LogStatus.FAIL, "Not able to see ValidTo "+managerIdList.get(i)+"on UI " +userIdList.get(i));
-				}
+					logger.log(LogStatus.FAIL, "Not able to see ManagerId "+managerIdList.get(i)+"on UI " +userIdList.get(i));
+				} 
 			}
 			else{
 				logger.log(LogStatus.FAIL ,"Failed to search the record");

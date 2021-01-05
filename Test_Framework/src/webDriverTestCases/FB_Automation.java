@@ -13,9 +13,9 @@ import org.testng.annotations.Test;
 import com.relevantcodes.extentreports.LogStatus;
 
 import CommonClassReusables.BrowserSelection;
+import CommonFunctions.ApiMethods;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonClassReusables.AGlobalComponents;
-import CommonClassReusables.ApiMethods;
 import CommonFunctions.LoginPage;
 import io.restassured.RestAssured;
 import CommonClassReusables.Utility;
