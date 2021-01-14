@@ -51,14 +51,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
 import com.opencsv.CSVReaderBuilder;
 import com.relevantcodes.extentreports.LogStatus;
-
-import ObjectRepository.IdentityObjects;
 
 
 
@@ -1644,6 +1641,52 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 			logger.log(LogStatus.ERROR, e);
 			return null;
 		}
+	}
+    
+    /**
+	 * <h1>switchToNewBrowserDriver</h1>
+	 * This is Method to Switch to New Browser
+	 * @author Jiten Khanna
+	 * @modified
+	 * @version 1.0
+	 * @since 01-11-2021
+	 * @param String fileLocation
+	 * @return none
+	 **/
+
+	public static void switchToNewBrowserDriver()
+	{
+
+		System.out.println(
+				"******************************* switchToNewBrowserDriver  ****************************************");
+
+		WebDriver driver2 = Utility.openPrivateBrowser();
+		default_driver = driver;
+		driver = driver2;
+		logger.log(LogStatus.INFO, "New Private Browser Launched and Control Switched");
+	}
+
+	/**
+	 * <h1>switchToNewBrowserDriver</h1>
+	 * This is Method to Switch to New Browser
+	 * @author Jiten Khanna
+	 * @modified
+	 * @version 1.0
+	 * @since 01-11-2021
+	 * @param String fileLocation
+	 * @return none
+	 **/
+
+	public static void switchToDefaultBrowserDriver()
+	{
+
+		System.out.println(
+				"******************************* switchToDefaultBrowserDriver  ****************************************");
+
+		WebDriver driver2 = driver;
+		driver2.quit();
+		driver = default_driver;
+		logger.log(LogStatus.INFO, "Switched Back to Default Browser Driver");
 	}
 	
 }

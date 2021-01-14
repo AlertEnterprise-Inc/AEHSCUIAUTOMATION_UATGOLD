@@ -73,19 +73,21 @@ public interface ReconObjects {
 		
 		String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
 		
-		String reconJobStatus = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[2]";
+//		String reconJobStatus = ".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.statusIndex+"]";
 		
-		String activeRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[7]//a";
+//		String activeRecords = "(.//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.activeIndex+"]";
 		
-		String errorRecords = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[8]" ; 
+//		String errorRecords = "(.//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.errorIndex+"]" ; 
 		
-		String errorMessage = "(//tr//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-gridcolumn')])[6]";
+//		String errorMessage = "(.//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.messageIndex+"]";
 		
 		String settingsIcon = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-setting ')]";
 		
 		String selectViewLnk = "//span[contains(@class,' x-menu-item-indent-no-separator x-menu-item-indent-right-arrow') and text()='Select View']";
 		
 		String roleReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Role Recon View']";
+		
+		String roleMonitorViewLnk = "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Role Monitor View']";
 		
 		String userReconViewLnk =  "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='User Recon View']";
 		
@@ -135,6 +137,6 @@ public interface ReconObjects {
 
 		String endDateToRerunTheJob = "//input[contains(@id,'baseDateTime')]";
 		
-		
+		String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 		
 }

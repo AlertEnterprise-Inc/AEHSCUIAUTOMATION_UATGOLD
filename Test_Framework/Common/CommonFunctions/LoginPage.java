@@ -57,6 +57,8 @@ public class LoginPage extends BrowserSelection
 			System.out.println("Click Sign-in Button");
 			Utility.pause(30);
 			dynamicwait.WAitUntilPageLoad();
+			driver.navigate().refresh();
+			dynamicwait.WAitUntilPageLoad();
 			boolean flag = false;
 			try{
 				
@@ -74,6 +76,7 @@ public class LoginPage extends BrowserSelection
 						Utility.pause(15);
 					}
 					else
+						logger.log(LogStatus.PASS, "Login Successful");
 						flag=true;
 				}
 				if(!flag){

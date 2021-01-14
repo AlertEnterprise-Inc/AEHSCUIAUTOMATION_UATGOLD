@@ -21,5 +21,17 @@
 	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/snakeyaml-1.20-android.jar"/>
 	<classpathentry kind="con" path="org.testng.TESTNG_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/extentreports-2.41.2.jar/extentreports-2.41.2.jar"/>
+	<classpathentry kind="src" output="target/classes" path="NoidaTeam Project/UIAutomation/AEHSCUIAUTOMATION.git/trunk">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

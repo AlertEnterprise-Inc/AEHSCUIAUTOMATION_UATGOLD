@@ -1,17 +1,18 @@
-package ObjectRepository;import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-
-import com.relevantcodes.extentreports.LogStatus;
-
-import CommonClassReusables.ByAttribute;
-import CommonClassReusables.Utility;
+package ObjectRepository;
 
 public interface IdentityObjects {
 	
-	String IdentityTabLnk ="//span[contains(@class,'x-btn-inner-aeTopMenuButton-small') and contains(text(),'IDM')]";
+	String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='IDM']";
 	
-	String manageIdentityLnk = "//span[text()='Manage Identity']";
+	String idmManageIdentityLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";	
+	
+	String idmManageIdentitySearchFieldTxt =".//input[@name='searchField']";
+	
+	String idmManageIdentityAccessesTabBtn =".//*[@data-ref='btnInnerEl' and text()='Accesses']";
+	
+//	String IdentityTabLnk ="//span[contains(@class,'x-btn-inner-aeTopMenuButton-small') and contains(text(),'IDM')]";
+	
+//	String manageIdentityLnk = "//span[text()='Manage Identity']";
 	
 	String createIdentityHeader = "//div[contains(@class,'x-box-target')]//label[text()='Create Identity Management']";
 	
@@ -109,7 +110,7 @@ public interface IdentityObjects {
 	
 	String settingsIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-setting ')]";
 	
-	String widgetMenuLnk = "//span[contains(@class,'x-menu-item-text-default x-menu-item-indent-no-separator') and text()='Show/hide Filter Widget']";
+	String widgetMenuLnk = "//div[contains(@class,'x-menu-item x-menu-item-default x-box-item')]//span[ text()='Show/hide Filter Widget']";
 	
 	String errorMessageForFirstName = "//div[contains(@class,'x-form-error-msg')]//li[text()='First Name is required ']";
 	

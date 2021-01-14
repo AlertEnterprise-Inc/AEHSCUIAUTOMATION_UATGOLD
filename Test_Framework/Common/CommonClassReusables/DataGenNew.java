@@ -1,18 +1,16 @@
 package CommonClassReusables;
 
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Random;
 
-import com.github.javafaker.Faker;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import com.github.javafaker.Faker;
 
 public class DataGenNew {
 	private static Faker faker =  new Faker();

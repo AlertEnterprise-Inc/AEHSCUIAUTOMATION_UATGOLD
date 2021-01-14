@@ -3,8 +3,6 @@ package CommonClassReusables;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import CommonClassReusables.ReadDataFromPropertiesFile;
-
 public class AGlobalComponents {
 
 
@@ -26,9 +24,13 @@ public class AGlobalComponents {
 	public static boolean trialReconJob=false;
 	public static boolean rerunReconJob=false;
 	public static boolean CCUREUserRecon =false;
+	public static boolean CCURERoleRecon=false;
+	public static boolean DBUserRecon=false;
 	public static boolean userRecon=false;
 	public static boolean roleRecon=false;
 	public static boolean deleteSingleIdentityFlag=false;
+	public static int statusIndex,activeIndex,errorIndex,messageIndex,descriptionIndex;
+	public static Date validToDate = new Date();
 		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";

@@ -1,24 +1,17 @@
 package webDriverTestCases;
 
-import java.text.DateFormat;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.relevantcodes.extentreports.LogStatus;
 
+import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
+import CommonClassReusables.Utility;
 import CommonFunctions.ApiMethods;
 import CommonFunctions.FB_Automation_CommonMethods;
-import CommonClassReusables.AGlobalComponents;
 import CommonFunctions.LoginPage;
-import io.restassured.RestAssured;
-import CommonClassReusables.Utility;
 
 
 public class FB_Automation extends BrowserSelection {
@@ -32,7 +25,7 @@ public class FB_Automation extends BrowserSelection {
 	{
 		unhandledException = false;	
 		testName = method.getName();
-		AGlobalComponents.takeScreenshotIfPass = false;
+		AGlobalComponents.takeScreenshotIfPass = true;
 		driver.navigate().refresh();
 	}
 	
@@ -50,27 +43,27 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC001() throws Throwable 
 	{
 		
-		logger =report.startTest("FB_Automation_TC001","Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality");
+		logger =report.startTest("FB_Automation_TC001","Role Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality, incremental recon");
 		System.out.println("[INFO]--> FB_Automation_TC001 - TestCase Execution Begins");
-		
-		/* Login as AS User */
+		AGlobalComponents.CCURERoleRecon=true;
+	
+		/** Login as AS User **/
 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			/* Create Recon Job */
-			logger.log(LogStatus.INFO ,  "Recon Job Execution");
+			/** Create Recon Job **/
 			FB_Automation_CommonMethods.setUpReconJob();
 			
-			logger.log(LogStatus.INFO ,  "Rerun the created recon record");
+			/** Rerun the role recon job **/
 			FB_Automation_CommonMethods.rerunReconRecord();
 			
-			logger.log(LogStatus.INFO ,  "Deleting the created recon record");
+			/** Deleting the Recon Record **/
 			FB_Automation_CommonMethods.deleteReconRecord();
 			
 				
-			/* Logout from Application */
+			/** Logout from Application **/
 			LoginPage.logout();
 		}	
 		else
@@ -78,6 +71,7 @@ public class FB_Automation extends BrowserSelection {
 		
 		
 	}
+	
 	
 	/*
 	 * TC002 : Mandatory fields check when creating new identity
@@ -90,18 +84,16 @@ public class FB_Automation extends BrowserSelection {
 		logger =report.startTest("FB_Automation_TC002","Mandatory Fields check in  Create Identity");
 		System.out.println("[INFO]--> FB_Automation_TC005 - TestCase Execution Begins");
 	
-		/* Login as AS User */
+		/** Login as AS User **/
 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			/* Mandatory fields check while Create Identity */
-			logger.log(LogStatus.INFO ,  "Mandatory field check on create identity");
+			/** Mandatory fields check while Create Identity **/
 			FB_Automation_CommonMethods.mandatoryFieldsCheck();
 			
-				
-			/* Logout from Application */
+			/** Logout from Application **/
 			LoginPage.logout();
 		}	
 		else
@@ -121,33 +113,31 @@ public class FB_Automation extends BrowserSelection {
 		logger =report.startTest("FB_Automation_TC003","Create Identity,search Identity ,edit Identity ,Duplicate check identity");
 		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
 	
-		/* Login as AS User */
+		/** Login as AS User **/
 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			/* Identity Management */
-			
-			logger.log(LogStatus.INFO, "Create new Identity");
+			/** Create Identity **/
 			FB_Automation_CommonMethods.createIdentity();
 			
-			logger.log(LogStatus.INFO, "Search the above created Identity");
+			/** Search Identity **/
 			FB_Automation_CommonMethods.searchIdentity();
 			
-			logger.log(LogStatus.INFO, "edit the job title of created identity");
+			/** Modify Identity **/
 			FB_Automation_CommonMethods.editIdentity();
 			
-			logger.log(LogStatus.INFO, "Create duplicate Identity");
+			/** Create Duplicate Identity **/
 			FB_Automation_CommonMethods.createDuplicateIdentity();
 			
-			logger.log(LogStatus.INFO, "Again searching the identity");
+			/** Search the duplicate identity **/
 			FB_Automation_CommonMethods.searchIdentity();
 			
-			logger.log(LogStatus.INFO, "deleting the mutiple identities");
+			/** Delete multiple identities **/
 			FB_Automation_CommonMethods.deleteMultipleIdentities();
 				
-			/* Logout from Application */
+			/** Logout from Application **/
 			LoginPage.logout();
 		}	
 		else			
@@ -173,14 +163,14 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			logger.log(LogStatus.INFO, "test showHideFilterWidge functionality on create identity screen");
+			/** test cancel button functionality **/
 			FB_Automation_CommonMethods.cancelCreateIdentity();
 			
-			logger.log(LogStatus.INFO, "test cancel button functionality on create identity screen");
+			/** test show/HideFilterWidget functionality **/
 			FB_Automation_CommonMethods.showHideFilterWidget();
 			
 				
-			/* Logout from Application */
+			/** Logout from Application **/
 			LoginPage.logout();
 		}	
 		else
@@ -206,17 +196,17 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
+			/** create identity and then delete single identity **/
 			FB_Automation_CommonMethods.deleteIdentity();
 			
-			logger.log(LogStatus.INFO, "check the deleted identity in deleted items");
+			/** check deleted items list **/
 			FB_Automation_CommonMethods.verifyCancelAndCloseButtonInDeletedItems();
 			
-			logger.log(LogStatus.INFO, "recover the above deleted identity");
+			/** recover deleted identity **/
 			FB_Automation_CommonMethods.recoverDeletedItems();
 			
 				
-			/* Logout from Application */
+			/** Logout from Application **/
 			LoginPage.logout();
 		}	
 		else
@@ -344,4 +334,37 @@ public class FB_Automation extends BrowserSelection {
 	 		FB_Automation_CommonMethods.validateIdentityData();
 	 	}
 	}
+	/*
+	 * TC010 : User Recon from DB .Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality
+	 */
+	
+	@Test(priority=10)
+	public void FB_Automation_TC010() throws Throwable 
+	{
+		
+		logger =report.startTest("FB_Automation_TC001","Role Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality, incremental recon");
+		System.out.println("[INFO]--> FB_Automation_TC001 - TestCase Execution Begins");
+		AGlobalComponents.DBUserRecon=true;
+		
+		/* Login as AS User */
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+			
+			/* Create Recon Job */
+			FB_Automation_CommonMethods.setUpReconJob();
+			
+			/** delete the created recon record **/
+			FB_Automation_CommonMethods.deleteReconRecord();
+				
+			/** Logout from Application **/
+			LoginPage.logout();
+		}	
+		else
+			logger.log(LogStatus.FAIL, "Login failed");
+		
+		
+	}
+	
 }
