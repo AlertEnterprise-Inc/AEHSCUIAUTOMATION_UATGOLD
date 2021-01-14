@@ -310,5 +310,40 @@ public void Self_Service_Automation_TC005() throws Throwable
 
 }
 
+/*
+* TC006 : AEAP-14 : Wellness check : Auto approval  )
+*/
+
+@Test(priority=6)
+public void Self_Service_Automation_TC006() throws Throwable 
+{
+
+	logger =report.startTest("Self_Service_Automation_TC006","AEAP-14 : Wellness Check - Auto approval)");
+	System.out.println("[INFO]--> Self_Service_Automation_TC006 - TestCase Execution Begins");
+	
+	String firstName = "Anwell";
+	String lastName = "Bailey";
+
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("anwell.bailey", "Alert1234");
+	
+	if(loginStatus){
+		
+		/** check asset status before wellness check **/
+		Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+		
+		/** submit wellness check request **/
+		Self_Service_CommonMethods.createWellnessCheckRequest();
+			
+		/** Validate asset status after wellness check request approved**/
+		Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+
+}
+
 		
 }
