@@ -327,11 +327,26 @@ public class FB_Automation extends BrowserSelection {
 		logger =report.startTest("FB_Automation_TC009","Create identity through API"); 
 	 	System.out.println("[INFO]--> FB_Automation_TC009 - TestCase Execution Begins");
 	 	AGlobalComponents.CCUREUserRecon=true;
-		
+	 	AGlobalComponents.rerunReconJob= true;
+	 	
 	 	if(ApiMethods.generateAccessToken())
 	 	{
-	 		ApiMethods.createIdentityThroughAPI();
+	 		if(ApiMethods.createIdentityThroughAPI()) {
+	 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+
+			if(loginStatus){
+				logger.log(LogStatus.PASS, "Login Successful");
+			
+			FB_Automation_CommonMethods.setUpReconJob();
 	 		FB_Automation_CommonMethods.validateIdentityData();
+	 		LoginPage.logout();
+			}	
+			else
+				logger.log(LogStatus.FAIL, "login failed");
+	 		}
+	 		else {
+	 			logger.log(LogStatus.FAIL, "failed to create identity in backend");
+	 		}
 	 	}
 	}
 	/*

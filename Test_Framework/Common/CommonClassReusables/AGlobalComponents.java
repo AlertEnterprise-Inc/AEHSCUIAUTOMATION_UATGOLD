@@ -21,6 +21,7 @@ public class AGlobalComponents {
 	
 	public static String identityCode="";
 	public static String jobName="";
+	public static String syncId="";
 	public static boolean trialReconJob=false;
 	public static boolean rerunReconJob=false;
 	public static boolean CCUREUserRecon =false;
@@ -29,7 +30,7 @@ public class AGlobalComponents {
 	public static boolean userRecon=false;
 	public static boolean roleRecon=false;
 	public static boolean deleteSingleIdentityFlag=false;
-	public static int statusIndex,activeIndex,errorIndex,messageIndex,descriptionIndex;
+	public static int statusIndex,activeIndex,errorIndex,messageIndex,descriptionIndex,userIdIndex,firstNameIndex,syncIdIndex;
 	public static Date validToDate = new Date();
 		
 	public static String browserName ="GC";

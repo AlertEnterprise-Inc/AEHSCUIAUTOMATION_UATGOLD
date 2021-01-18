@@ -1,6 +1,7 @@
 package CommonClassReusables;
 
 import java.io.IOException;
+
 import java.io.Reader;
 import java.sql.Clob;
 import java.sql.Connection;
@@ -15,10 +16,6 @@ import java.util.ArrayList;
 import com.relevantcodes.extentreports.LogStatus;
 
 import CommonClassReusables.AGlobalComponents;
-
-
-
-
 
 public class MsSql extends BrowserSelection {
 
@@ -237,5 +234,35 @@ public class MsSql extends BrowserSelection {
 		}
 
 
-	 
+	public static int setResultsToDatabase(String query) throws ClassNotFoundException {
+		
+		logger.log(LogStatus.INFO, "Querry in getResultsFromDatabase function :  " + query);
+	
+		Connection _conn = null;
+		int queryStatus = -1;
+		try {
+		
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			System.out.println("dbConString :" + AGlobalComponents.dbConString);
+			_conn = DriverManager.getConnection(AGlobalComponents.dbConString);
+			if (_conn != null) {
+				_smt = _conn.prepareStatement(query);
+				try{
+					queryStatus  = _smt.executeUpdate();
+				}
+				finally{
+					try{
+						_smt.close();
+					}
+					catch(Exception ignore){}
+				}
+			}
+		} catch (SQLException se) {
+			logger.log(LogStatus.ERROR, se);
+		} catch (NullPointerException ne) {
+			logger.log(LogStatus.ERROR, ne);	
+		}
+		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
+		return queryStatus;
+	}
 }

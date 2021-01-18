@@ -1,11 +1,11 @@
 package CommonClassReusables;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import com.relevantcodes.extentreports.LogStatus;
 
 
-;
 
 public class DBValidations extends BrowserSelection{
 	
@@ -194,5 +194,91 @@ public class DBValidations extends BrowserSelection{
 			System.out.println("Unable to fetch ManagerId");
 		}
 		return manageId;
+	}
+
+	public static void deleteUserInMasterTable(String userId) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query = "delete from identity_user where master_identity_id='"+userId+"'";	
+		noOfRecordsUpdated = MsSql.setResultsToDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+		}
+		else {
+			System.out.println("failed to delete user in identity system");
+		}
+	
+	}
+
+	public static String getIdentityIdOfUser(String userId) throws ClassNotFoundException, SQLException {
+
+		String query = "select id from identity_user where master_identity_id='"+userId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String identityId =rs.get(0).get(0);	
+		if(identityId!=null) {
+			System.out.println("IdentityId: "+identityId);
+		}
+		else {
+			System.out.println("Unable to fetch IdentityId");
+		}
+		return identityId;
+	
+	}
+
+	public static void deleteUserInSystemTable(String userId) throws ClassNotFoundException, SQLException {
+
+		int noOfRecordsUpdated=-1;
+		String query = "delete from identity_system where identity_id=(select id from identity_user where master_identity_id='"+userId+"')";	
+		noOfRecordsUpdated = MsSql.setResultsToDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+		}
+		else {
+			System.out.println("failed to delete user in identity system");
+		}
+	}
+
+	public static String getEndDate(String reconConfigId,String connectorName) throws ClassNotFoundException, SQLException {
+
+		String query = "select top 1 changed_on from recon_config where id="+reconConfigId+" and system_id=(select id from system where text='"+connectorName+"') and entity_id='42' order by changed_on desc";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String endDate =rs.get(0).get(0);	
+		if(endDate!=null) {
+			System.out.println("EndDate: "+endDate);
+		}
+		else {
+			System.out.println("Unable to fetch ManagerId");
+		}
+		return endDate;
+	}
+
+	public static ArrayList<String> getReconConfigIdList() throws ClassNotFoundException, SQLException {
+
+		ArrayList<String> reconConfigList = new ArrayList<String>();
+		String query = "select recon_config_id from recon_monitor order by 1 desc";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		if(!rs.isEmpty()) {
+			for(ArrayList<String> eachResult: rs) {
+				reconConfigList.add(eachResult.get(0));
+			}
+		}
+		else {
+			System.out.println("Unable to get recon Config List");
+		}
+		return reconConfigList;
+	}
+
+	public static String getEntityType(String reconConfigId) throws ClassNotFoundException, SQLException {
+
+		String query = "select type from job where config_id="+reconConfigId+" order by changed_on desc";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String endDate =rs.get(0).get(0);	
+		if(endDate!=null) {
+			System.out.println("entityType: "+endDate);
+		}
+		else {
+			System.out.println("Unable to fetch entityType");
+		}
+		return endDate;
 	}
 }

@@ -23,7 +23,7 @@ public interface ReconObjects {
 		
 		String MinusIconToRemoveExistingFilter = "//span[contains(@class,'aegrid-rowMinus ')]" ; 
 		
-		String searchBarInRecon = "//input[contains(@class,'x-ibeGridSearch-field x-form-empty-field x-form-empty-field-default')]";
+		String searchBarInRecon = "//input[contains(@class,'x-ibeGridSearch-field')]";
 		
 		String ListValueAfterSearch = "//li[@class='x-boundlist-item' and text()='"+AGlobalComponents.jobName+"']";
 		
@@ -136,7 +136,11 @@ public interface ReconObjects {
 		String rerunIconReconSetup = "//span[contains(@class,' x-btn-icon-el-aetextlink-medium aegrid-rerun ')]";
 
 		String endDateToRerunTheJob = "//input[contains(@id,'baseDateTime')]";
+
+		String reconMonitorViewLnk = "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Recon Monitor View']";
 		
+		String reconRemediationViewLnk = "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Recon Remediation View']";
+
 		String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 		
 }

@@ -2,10 +2,14 @@ package CommonFunctions;
 
 import static io.restassured.RestAssured.given;
 
+import java.util.ArrayList;
+
 import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
+import CommonClassReusables.DBValidations;
 import CommonClassReusables.Payload;
+import CommonClassReusables.TestDataEngine;
 import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import io.restassured.RestAssured;
@@ -56,7 +60,8 @@ public static boolean createIdentityThroughAPI() throws Throwable {
 		String identitySystemTemplateFile = reconTestDataDirectory + "/IdentitySystem_Template.csv";
 		String identitySystemDataFile = reconTestDataDirectory + "/IdentitySystem.csv";
 		TestDataInterface.compileTwoRowDataTemplate(identitySystemTemplateFile, identitySystemDataFile);
-			
+		
+		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
 		RestAssured.baseURI=AGlobalComponents.baseURI;
 		String requestBody=Payload.createIdentityJson(identityDataFile,identitySystemDataFile);
 		if(requestBody!=null) {
@@ -66,6 +71,10 @@ public static boolean createIdentityThroughAPI() throws Throwable {
 					.body(requestBody).when().post("/api/identity/external/save").then().log().all().extract().response();
 			int statusCode=response.getStatusCode();
 			if(statusCode==200) {
+				for(String userId:userIdList) {
+					DBValidations.deleteUserInSystemTable(userId);
+					DBValidations.deleteUserInMasterTable(userId);
+				}
 				logger.log(LogStatus.PASS, "Status code is:"+statusCode);
 				JsonPath js= new JsonPath(response.getBody().asString());
 				String messageText=js.getString("messages[0].messageDisplayText");
