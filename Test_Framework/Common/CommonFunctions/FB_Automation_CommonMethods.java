@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -423,7 +424,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				verifyUserReconDataFromUI(usrId);
 		
 				logger.log(LogStatus.INFO, "verify recon data from DB");
-				String query = "select count(*) from aehscnew.stg_user_data where sync_id = '"+syncID+"' and int_status='0'";
+				String query = "select active from recon_monitor where job_instance_id='"+syncID+"'";
 				verifyReconDataFromDB(query);
 				}
 			}
@@ -3021,22 +3022,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		ArrayList<String> validToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "validTo");
 		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
 		ArrayList<String> emailList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "email");
-		ArrayList<String> workLocationList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "workLocation");
 		ArrayList<String> cityList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "city");
-		ArrayList<String> managerIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "managerId");
 		
-//		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
-		validateDataInStagingTable(firstNameList,lastNameList,userIdList,typeList);
-		validateDataInMasterTable(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,workLocationList,cityList,managerIdList);
-		validateDataOnUI(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,workLocationList,cityList,managerIdList);
-
-
+		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
+		validateDataInStagingTable(firstNameList,lastNameList,userIdList,empTypeList);
+		validateDataInMasterTable(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,cityList);
+		validateDataOnUI(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,cityList);
 	}
 
 	private static void validateDataInMasterTable(ArrayList<String> firstNameList, ArrayList<String> lastNameList,
 			ArrayList<String> userIdList, ArrayList<String> typeList, ArrayList<String> validFromList,
-			ArrayList<String> validToList, ArrayList<String> emailList,ArrayList<String> workLocationList,
-			ArrayList<String> cityList, ArrayList<String> managerIdList) throws ClassNotFoundException, SQLException {
+			ArrayList<String> validToList, ArrayList<String> emailList,
+			ArrayList<String> cityList) throws ClassNotFoundException, SQLException, ParseException {
 
 		for(String userId:userIdList) {
 			String firstName=DBValidations.getFirstNameOfUser(userId);
@@ -3045,9 +3042,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			String validFrom=DBValidations.getValidFromOfUser(userId);
 			String validTo=DBValidations.getValidToOfUser(userId);
 			String email=DBValidations.getEmailIdOfUser(userId);
-			String workLocation=DBValidations.getWorkLocationOfUser(userId);
 			String city=DBValidations.getCityOfUser(userId);
-			String managerId=DBValidations.getManagerIdOfUser(userId);
 			if(firstNameList.contains(firstName)) {
 				logger.log(LogStatus.PASS, "FirstName "+firstName+" exists in master table for UserID" +userId);
 			}
@@ -3066,14 +3061,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(emailList.contains(email)) {
 				logger.log(LogStatus.PASS, "Email "+email+" exists in master table for UserID" +userId);
 			}
-			if(workLocationList.contains(workLocation)) {
-				logger.log(LogStatus.PASS, "WorkLocation "+workLocation+" exists in master table for UserID" +userId);
-			}
 			if(cityList.contains(city)) {
 				logger.log(LogStatus.PASS, "City "+city+" exists in master table for UserID" +userId);
-			}
-			if(managerIdList.contains(managerId)) {
-				logger.log(LogStatus.PASS, "ManagerId "+managerId+" exists in master table for UserID" +userId);
 			}
 		}
 	}
@@ -3081,17 +3070,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static ArrayList<String> getEmpTypeFromtypeList(ArrayList<String> typeList) {
 		ArrayList<String> empTypeList= new ArrayList<String>();
 		for(String type:typeList) {
-			if(type==null || !(type.trim().equals("2")||type.trim().equals("3")||type.trim().equals("4"))) {
-				empTypeList.add("Permanent");
-			} 
-			else if(type.trim().equals("2")){
-				empTypeList.add("Employee");
+			 if(type.trim().equals("employee")){
+				empTypeList.add("2");
 			}
-			else if(type.trim().equals("3")){
-				empTypeList.add("Contractor");
+			else if(type.trim().equals("contractor")){
+				empTypeList.add("3");
 			}
-			else if (type.trim().equals("4")){
-				empTypeList.add("Visitor");
+			else if (type.trim().equals("visitor")){
+				empTypeList.add("4");
 			}
 		}
 		return empTypeList;
@@ -3153,32 +3139,37 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 
 	private static void validateDataOnUI(ArrayList<String> firstNameList, ArrayList<String> lastNameList, ArrayList<String> userIdList, ArrayList<String> empTypeList,
-			ArrayList<String> validFromList,ArrayList<String> validToList,ArrayList<String> emailList,ArrayList<String> workLocationList,ArrayList<String> cityList,ArrayList<String> managerIdList) throws Throwable {
+			ArrayList<String> validFromList,ArrayList<String> validToList,ArrayList<String> emailList,ArrayList<String> cityList) throws Throwable {
 		
-		AGlobalComponents.takeScreenshotIfPass=true;
-		ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-		Utility.pause(5);
-		ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-		Utility.pause(30);
-		ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
-		Utility.pause(3);
-		ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
-		Utility.pause(5);
-		ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,"User ID", "Enter the field name for Filtering");
-		Utility.pause(2);
-		ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
-		Utility.pause(2);
+		
 		for(int i=0;i<=userIdList.size()-1;i++) {
-			ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userIdList.get(i), "Enter the first field value for Filtering");
-			Utility.pause(2);
-	
+			
 			Actions action = new Actions(driver);
-			action.sendKeys(Keys.ENTER).build().perform();
-			Utility.pause(20);
+			if(driver.findElements(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()<0){
+				AGlobalComponents.takeScreenshotIfPass=true;
+				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+				Utility.pause(30);
+				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,"User ID", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userIdList.get(i), "Enter the first field value for Filtering");
+				Utility.pause(2);
 		
-			if(driver.findElements(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
+				
+				action.sendKeys(Keys.ENTER).build().perform();
+				Utility.pause(20);
+			}
+			
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
 				action.doubleClick(record).perform();
@@ -3190,7 +3181,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String firstName=driver.findElement(By.xpath(IdentityObjects.firstNameLnk)).getAttribute("value");
 					if(firstName!=null) {
 						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
-							Utility.verifyElementPresent(IdentityObjects.firstNameLnk, "FirstName "+firstName+" displaying on UI",false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.firstNameLnk, "FirstName", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.firstNameLnk, "FirstName "+firstName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "FirstName " +firstName+" on UI is not same as expected");
@@ -3203,7 +3195,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String lastName=driver.findElement(By.xpath(IdentityObjects.lastNameLnk)).getAttribute("value");
 					if(lastName!=null) {
 						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
-							Utility.verifyElementPresent(IdentityObjects.lastNameLnk, "LastName "+lastName+" displaying on UI",false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.lastNameLnk, "LastName", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.lastNameLnk, "LastName "+lastName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "LastName " +lastName+" on UI is not same as expected");
@@ -3216,7 +3209,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String employeeType=driver.findElement(By.xpath(IdentityObjects.employeeTypeLnk)).getAttribute("value");
 					if(employeeType!=null) {
 						if(empTypeList.get(i).equalsIgnoreCase(employeeType)) {
-							Utility.verifyElementPresent(IdentityObjects.employeeTypeLnk, "EmployeeType "+employeeType+" displaying on UI",false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.employeeTypeLnk, "EmployeeType", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.employeeTypeLnk, "EmployeeType "+employeeType+" displaying on UI",false);
 							logger.log(LogStatus.PASS, "EmployeeType "+employeeType+" displaying on UI");
 						}
 						else {
@@ -3231,7 +3225,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					validFrom=TestDataEngine.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
 					if(validFrom!=null) {
 						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
-							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidFrom "+validFrom+" displaying on UI "+userIdList.get(i),false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.validFromLnk, "ValidFrom", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidFrom "+validFrom+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList.get(i));
@@ -3245,7 +3240,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					validTo=TestDataEngine.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
 					if(validTo!=null) {
 						if(validToList.get(i).equalsIgnoreCase(validTo)) {
-							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
@@ -3259,7 +3255,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String email=driver.findElement(By.xpath(IdentityObjects.emailIdLnk)).getAttribute("value");
 					if(email!=null) {
 						if(emailList.get(i).equalsIgnoreCase(email)) {
-							Utility.verifyElementPresent(IdentityObjects.emailIdLnk, "EmailId "+email+" displaying on UI "+userIdList.get(i),false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.emailIdLnk, "EmailId", true, false);
+//							Utility.verifyElementPresent(IdentityObjects.emailIdLnk, "EmailId "+email+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userIdList.get(i));
@@ -3268,25 +3265,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					else {
 						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+emailList.get(i)+"on UI " +userIdList.get(i));
 					}
-					//workLocation Validation
-					String workLocation=driver.findElement(By.xpath(IdentityObjects.workLocationLnk)).getAttribute("value");
-					if(workLocation!=null) {
-						if(workLocationList.get(i).equalsIgnoreCase(workLocation)) {
-							Utility.verifyElementPresent(IdentityObjects.workLocationLnk, "WorkLocation "+workLocation+" displaying on UI "+userIdList.get(i),false);
-						}
-						else {
-							logger.log(LogStatus.FAIL, "WorkLocation " +workLocation+" on UI is not same as expected" +userIdList.get(i));
-						}
-					}
-					else {
-						logger.log(LogStatus.FAIL, "Not able to see WorkLocation "+workLocationList.get(i)+"on UI " +userIdList.get(i));
-					}
-				}
 				
 				//City Validation
 				String city=driver.findElement(By.xpath(IdentityObjects.cityLnk)).getAttribute("value");
 				if(city!=null) {
 					if(cityList.get(i).equalsIgnoreCase(city)) {
+						Utility.verifyElementPresentByScrollView(IdentityObjects.workLocationLnk, "City", true, false);
 						Utility.verifyElementPresent(IdentityObjects.workLocationLnk, "City "+city+" displaying on UI "+userIdList.get(i),false);
 					}
 					else {
@@ -3296,23 +3280,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				else {
 					logger.log(LogStatus.FAIL, "Not able to see City "+cityList.get(i)+"on UI " +userIdList.get(i));
 				}		
-			
-				//ManagerID Validation
-				String managerId=driver.findElement(By.xpath(IdentityObjects.managerSourceIdLnk)).getAttribute("value");
-				if(managerId!=null) {
-					if(managerIdList.get(i).equalsIgnoreCase(managerId)) {
-						Utility.verifyElementPresent(IdentityObjects.managerSourceIdLnk, "ManagerSourceID "+managerId+" displaying on UI "+userIdList.get(i),false);
-					}
-					else {
-						logger.log(LogStatus.FAIL, "ManagerId " +managerId+" on UI is not same as expected" +userIdList.get(i));
-					}
-				}
-				else {
-					logger.log(LogStatus.FAIL, "Not able to see ManagerId "+managerIdList.get(i)+"on UI " +userIdList.get(i));
-				} 
-			}
-			else{
-				logger.log(LogStatus.FAIL ,"Failed to search the record");
 			}
 		}			
 	}

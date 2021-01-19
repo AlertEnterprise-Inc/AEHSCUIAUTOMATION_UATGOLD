@@ -98,7 +98,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getValidFromOfUser(String userId) throws ClassNotFoundException, SQLException {
 
-		String query = "select format(valid_from,'dd-MM-yyyy') from identity_user where master_identity_id='"+userId+"'";
+		String query = "select format(valid_from,'MM-dd-yyyy') from identity_user where master_identity_id='"+userId+"'";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
 		String validFrom =rs.get(0).get(0);	
 		validFrom=validFrom.split(" ")[0];
@@ -113,7 +113,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getValidToOfUser(String userId) throws ClassNotFoundException, SQLException {
 
-		String query = "select format(valid_to,'dd-MM-yyyy') from identity_user where master_identity_id='"+userId+"'";
+		String query = "select format(valid_to,'MM-dd-yyyy') from identity_user where master_identity_id='"+userId+"'";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
 		String validTo =rs.get(0).get(0);
 		validTo=validTo.split(" ")[0];

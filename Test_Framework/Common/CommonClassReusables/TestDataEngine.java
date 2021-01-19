@@ -617,7 +617,7 @@ public class TestDataEngine extends BrowserSelection{
 			 }
 			   
 			//Number of Days to add
-			c.add(Calendar.DAY_OF_MONTH, 7);  
+			c.add(Calendar.DAY_OF_MONTH, 1);  
 			//Date after adding the days to the given date
 			String newDate = dateFormat.format(c.getTime());  
 			//Displaying the new Date after addition of Days
@@ -3114,7 +3114,7 @@ public class TestDataEngine extends BrowserSelection{
 						if(dateComponents[yearIdx].length()!=4) {
 							dateComponents[yearIdx]="20"+dateComponents[yearIdx];
 						}
-						Date = dateComponents[dayIdx] + "-" + dateComponents[monthIdx] + "-" + dateComponents[yearIdx];	
+						Date = dateComponents[monthIdx] + "-" + dateComponents[dayIdx] + "-" + dateComponents[yearIdx];	
 					}	
 				}	
 			}
