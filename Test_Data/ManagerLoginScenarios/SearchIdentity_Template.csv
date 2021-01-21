@@ -1,0 +1,2 @@
+FieldName1,FieldName2,FieldValue1,FieldValue2,EmployeeType
+First Name,Last Name,AUTO|FirstName|File||Test_Data//ManagerLoginScenarios//CreateIdentity.csv:FirstName:1,AUTO|LastName|File||Test_Data//ManagerLoginScenarios//CreateIdentity.csv:LastName:1,AUTO|EmployeeType|File||Test_Data//ManagerLoginScenarios//CreateIdentity.csv:EmployeeType:1

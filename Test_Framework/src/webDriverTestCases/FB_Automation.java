@@ -125,8 +125,11 @@ public class FB_Automation extends BrowserSelection {
 			/** Search Identity **/
 			FB_Automation_CommonMethods.searchIdentity();
 			
+			/** update photo of User through IDM screen**/
+			FB_Automation_CommonMethods.updatePhoto();
+			
 			/** Modify Identity **/
-			FB_Automation_CommonMethods.editIdentity();
+			FB_Automation_CommonMethods.modifyIdentity();
 			
 			/** Create Duplicate Identity **/
 			FB_Automation_CommonMethods.createDuplicateIdentity();

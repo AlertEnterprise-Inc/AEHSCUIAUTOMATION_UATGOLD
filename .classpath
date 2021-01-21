@@ -7,20 +7,12 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/alnt-4.1.10_ga/CommonLib/selenium-server-standalone-3.7.1.jar"/>
-	<classpathentry kind="lib" path="/alnt-4.1.10_ga/CommonLib/javax.mail.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/automaton-1.11-8.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/commons-lang3-3.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/generex-1.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/javafaker-0.16.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/jar_files/snakeyaml-1.20-android.jar"/>
 	<classpathentry kind="con" path="org.testng.TESTNG_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Monika.mehta/Downloads/extentreports-2.41.2.jar/extentreports-2.41.2.jar"/>
 	<classpathentry kind="src" output="target/classes" path="NoidaTeam Project/UIAutomation/AEHSCUIAUTOMATION.git/trunk">
 		<attributes>
 			<attribute name="optional" value="true"/>

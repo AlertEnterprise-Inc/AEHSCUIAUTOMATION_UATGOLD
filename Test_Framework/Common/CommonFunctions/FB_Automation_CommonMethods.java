@@ -2,6 +2,10 @@ package CommonFunctions;
 
 import static org.testng.Assert.assertEquals;
 
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -38,8 +42,10 @@ import ObjectRepository.ReconObjects;
 
 public class FB_Automation_CommonMethods extends BrowserSelection{
 	
-	public static String testDataDirectory= "Test_Data/IdentityManagement";
+	public static String createIdentityTestDataDirectory= "Test_Data/IdentityManagement";
+	public static String ManagerCasesTestDataDirectory= "Test_Data/ManagerLoginScenarios";
 	public static String reconTestDataDirectory= "Test_Data/Recon";
+	public static String photoFilePath ;
 	public static ArrayList<String> identityCodes = new ArrayList<String>();
 	public static ArrayList<String> jobNames = new ArrayList<String>();
 	private static boolean dupIdentity=false;
@@ -995,7 +1001,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(8);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityLnk, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
 				Utility.pause(8);
 				
 				fillProfileInfo();
@@ -1013,7 +1019,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(10);
 					fillPrerequisitesInfo();
 				}
-				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
 				Utility.pause(20);
 
 				logger.log(LogStatus.PASS, "identity created");		
@@ -1046,16 +1052,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Search Identity*********************************");
 			try
 			{
+				String searchIdentityTemplateFile,searchIdentityDataFile;
+				
 				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
 					Utility.pause(5);
+				if(AGlobalComponents.ManagerLogin){
+					searchIdentityTemplateFile = ManagerCasesTestDataDirectory + "/SearchIdentity_Template.csv";
+					searchIdentityDataFile = ManagerCasesTestDataDirectory + "/SearchIdentity.csv";
+				}
+				else{
+					searchIdentityTemplateFile = createIdentityTestDataDirectory + "/SearchIdentity_Template.csv";
+					searchIdentityDataFile = createIdentityTestDataDirectory + "/SearchIdentity.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(searchIdentityTemplateFile, searchIdentityDataFile);
 				
-				String identityTemplateFile = testDataDirectory + "/SearchIdentity_Template.csv";
-				String identityDataFile = testDataDirectory + "/SearchIdentity.csv";
-				TestDataInterface.compileTwoRowDataTemplate(identityTemplateFile, identityDataFile);
 				
-				
-				ArrayList<String> headers = Utility.getCSVRow(identityDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(identityDataFile, 0);
+				ArrayList<String> headers = Utility.getCSVRow(searchIdentityDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(searchIdentityDataFile, 0);
 				int len = headers.size();
 
 				Actions action = new Actions(driver);
@@ -1113,7 +1126,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
 					ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");
-					Utility.pause(5);
+					
 					ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
 					Utility.pause(2);
 					ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,fieldName1, "Enter the field name for Filtering");
@@ -1177,7 +1190,73 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 	
 	
-	public static void editIdentity() throws Throwable
+	
+	public static void searchIdentity(String firstName,String lastName) throws Throwable
+	{
+		
+		if(unhandledException==false)
+		{
+			logger.log(LogStatus.INFO, "Search the  Identity");
+			System.out.println("***************************** Search Identity*********************************");
+			try
+			{
+				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+				Utility.pause(30);
+				
+				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");
+				ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,"First Name", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,firstName, "Enter the first name");
+				Utility.pause(2);
+		
+				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.enterFieldName2ToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldName2ToFilter,"Last Name", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.clickFieldValue2, "click to enter the second value");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,lastName, "Enter the last name");
+		
+				Actions action = new Actions(driver);
+				action.sendKeys(Keys.ENTER).build().perform();
+				Utility.pause(20);
+			
+		
+			if(driver.findElements(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
+				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+				identityCode=record.getText();	
+				action.doubleClick(record).perform();
+				Utility.pause(15);
+				String searchResult= "//label[contains(text(),'"+firstName+"')]";
+				if(Utility.verifyElementPresentReturn(searchResult,firstName,true,false)){
+					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
+				}
+				logger.log(LogStatus.PASS, "Search Identity successful");
+			}
+			else{
+				logger.log(LogStatus.FAIL ,"Failed to search the record");
+			}
+				
+			}catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
+	}
+	
+	public static void modifyIdentity() throws Throwable
 	{
 
 		if(unhandledException==false)
@@ -1220,11 +1299,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityLnk, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
 				fillDuplicateProfileInfo();
-				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
 				Utility.pause(15);
 				dupIdentity=true;
 				
@@ -1253,7 +1332,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityLnk, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
 				if(driver.findElements(By.xpath(IdentityObjects.createIdentityHeader)).size()>0){
@@ -1337,10 +1416,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityLnk, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
-				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "click on save  icon ");
+				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "click on save  icon ");
 				Utility.pause(10);
 								
 
@@ -1414,7 +1493,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 				}
 				ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
-				ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
+				ByAttribute.click("xpath", IdentityObjects.yesButtonInDeleteIdentitiesPopUp, "Confirm deletion of identities");
 				Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", false);
 				logger.log(LogStatus.PASS, "deleted the selected identities");
 			}
@@ -1447,7 +1526,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
 					System.out.println("identity " +identityCode+"  selected for deletion");
 					ByAttribute.click("xpath", IdentityObjects.deleteIdentityIconLnk, "Delete identities selected");
-					ByAttribute.click("xpath", IdentityObjects.yesButtonToDeleteIdentities, "Confirm deletion of identities");
+					ByAttribute.click("xpath", IdentityObjects.yesButtonInDeleteIdentitiesPopUp, "Confirm deletion of identities");
 					Utility.verifyElementPresent("//div[@class='emptyGridMsg']", "Empty Grid Message", false);
 					logger.log(LogStatus.PASS, "deleted the selected identity");
 				}
@@ -1473,7 +1552,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			try{
 			
 				System.out.println("Click on icon to display the menu");
-				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.menuItemsIcon, "Click on icon to display the menu");
 				Utility.pause(1);
 			
 				System.out.println("Click on Deleted Items link from the menu");
@@ -1486,7 +1565,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents",false);
 				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
 				System.out.println("Deleted identities pop up appeared");
-				ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsLnk, "Clicked on close icon in the pop up box");
+				ByAttribute.click("xpath", IdentityObjects.closeButtonInDeletedItemsWindow, "Clicked on close icon in the pop up box");
 				Utility.pause(5);
 				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity management header", false);
 				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking close icon, we are back on manage identity screen");
@@ -1496,7 +1575,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Verifying Cancel button functionality on Deleted Identity Documents pop up
 				 */
 				System.out.println("Click on icon to display the menu");
-				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.menuItemsIcon, "Click on icon to display the menu");
 				Utility.pause(1);
 			
 				System.out.println("Click on Deleted Items link from the menu");
@@ -1509,7 +1588,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.verifyElementPresent(IdentityObjects.deletedIdentityDocumentsHeader, "Deleted Identity Documents", false);
 				logger.log(LogStatus.INFO, "Deleted identities pop up appeared");
 				System.out.println("Deleted identities pop up appeared");
-				ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsLnk, "Clicked on cancel button in the pop up box");
+				ByAttribute.click("xpath", IdentityObjects.cancelButtonInDeletedItemsWindow, "Clicked on cancel button in the pop up box");
 				Utility.pause(5);
 				Utility.verifyElementPresent(IdentityObjects.identityManagementHeader, "Identity Management Header",  false);
 				logger.log(LogStatus.PASS, "Deleted identities pop up box closed after clicking cancel button, we are back on manage identity screen");
@@ -1532,7 +1611,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			try{
 			
 				System.out.println("Click on icon to display the menu");
-				ByAttribute.click("xpath", IdentityObjects.deletedItemsIcon, "Click on icon to display the menu");
+				ByAttribute.click("xpath", IdentityObjects.menuItemsIcon, "Click on icon to display the menu");
 				Utility.pause(1);
 			
 				System.out.println("Click on Deleted Items link from the menu");
@@ -1565,7 +1644,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						Utility.pause(5);
 						if(driver.findElements(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]")).size()>0){
 							System.out.println("identity " +identityCode+"  selected for restoration");
-							ByAttribute.click("xpath", IdentityObjects.restoreButtonInDeletedItemsLnk, "Restore selected identity");
+							ByAttribute.click("xpath", IdentityObjects.restoreButtonInDeletedItemsWindow, "Restore selected identity");
 							Utility.pause(10);
 						}
 						else{
@@ -1592,17 +1671,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	{
 		if(unhandledException==false)
 		{
-			
+			String createIdentityTemplateFile ,createIdentityDataFile;
 			System.out.println("********************Fill Profile Info********************");
 			try{
-				String EmployeeCreationTemplateFile = testDataDirectory + "/CreateIdentity_Template.csv";
-				String EmployeeCreationDataFile=testDataDirectory+ "/CreateIdentity.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
+				if(AGlobalComponents.ManagerLogin){
+					createIdentityTemplateFile = ManagerCasesTestDataDirectory + "/CreateIdentity_Template.csv";
+					createIdentityDataFile=ManagerCasesTestDataDirectory+ "/CreateIdentity.csv";
+				}
+				else{
+					createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
+					createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(createIdentityTemplateFile, createIdentityDataFile);
 		
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
+				ArrayList<String> headers = Utility.getCSVRow(createIdentityDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(createIdentityDataFile, 0);
 				int len = headers.size();
-				String firstName= null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header;
+				String firstName= null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header,jobTitle;
 				
 				for (int i=0;i<len;i++){
 					header= headers.get(i);
@@ -1628,6 +1713,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							break;
 						case "email":
 							emailId = Utility.getIndexValue(userData, index);
+							break;
+						case "jobtitle":
+							jobTitle = Utility.getIndexValue(userData, index);
 							break;
 						default: 
 							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
@@ -1675,8 +1763,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("********************Edit Profile Info*******************");
 			try
 			{
-				String EmployeeCreationTemplateFile = testDataDirectory + "/EditIdentity_Template.csv";
-				String EmployeeCreationDataFile=testDataDirectory+ "/EditIdentity.csv";
+				String EmployeeCreationTemplateFile = createIdentityTestDataDirectory + "/EditIdentity_Template.csv";
+				String EmployeeCreationDataFile=createIdentityTestDataDirectory+ "/EditIdentity.csv";
 				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
 		
 				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
@@ -1711,7 +1799,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO, "No job title is assigned to the identity");
 				}
 				ByAttribute.setText("xpath", IdentityObjects.jobTitleLnk, jobTitle, "Enter job Title");
-				ByAttribute.click("xpath", IdentityObjects.saveIconLnk, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
 				Utility.pause(20);
 		
 				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
@@ -1742,8 +1830,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("**************Fill Duplicate profile Info*****************");
 			try{
 			
-				String EmployeeCreationTemplateFile = testDataDirectory + "/CreateDuplicateIdentity_Template.csv";
-				String EmployeeCreationDataFile=testDataDirectory+ "/CreateDuplicateIdentity.csv";
+				String EmployeeCreationTemplateFile = createIdentityTestDataDirectory + "/CreateDuplicateIdentity_Template.csv";
+				String EmployeeCreationDataFile=createIdentityTestDataDirectory+ "/CreateDuplicateIdentity.csv";
 				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
 		
 				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
@@ -1802,15 +1890,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("****************Fill Access Info******************");
 			try{
-				String accessName= null,validFrom= null,validTo = null,header,temp;
+				String accessName= null,validFrom= null,validTo = null,header,temp,accessTemplateFile,accessDataFile;
 				Date date;
+				
+				if(AGlobalComponents.ManagerLogin){
+					accessTemplateFile = ManagerCasesTestDataDirectory + "/Accesses_Template.csv";
+					accessDataFile=ManagerCasesTestDataDirectory+ "/Accesses.csv";
+				}
+				else{
+					accessTemplateFile = createIdentityTestDataDirectory + "/Accesses_Template.csv";
+					accessDataFile=createIdentityTestDataDirectory+ "/Accesses.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(accessTemplateFile, accessDataFile);
 		
-				String EmployeeCreationAccessTemplateFile = testDataDirectory + "/Accesses_Template.csv";
-				String EmployeeCreationAccessDataFile=testDataDirectory+ "/Accesses.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAccessTemplateFile, EmployeeCreationAccessDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAccessDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAccessDataFile, 0);
+				ArrayList<String> headers = Utility.getCSVRow(accessDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(accessDataFile, 0);
 				int len = headers.size();
 		
 				for (int i=0;i<len;i++){
@@ -1890,14 +1984,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		{
 			System.out.println("*************Fill systems info**********");
 			try{
-				String systemName= null,srcId= null,validTo = null,validFrom = null,header,temp;
+				String systemName= null,srcId= null,validTo = null,validFrom = null,header,temp,systemTemplateFile,systemDataFile;
 				Date date;
-		
-				String EmployeeCreationSystemTemplateFile = testDataDirectory + "/Systems_Template.csv";
-				String EmployeeCreationSystemDataFile=testDataDirectory+ "/Systems.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationSystemTemplateFile, EmployeeCreationSystemDataFile);
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationSystemDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationSystemDataFile, 0);
+				
+				if(AGlobalComponents.ManagerLogin){
+					systemTemplateFile = ManagerCasesTestDataDirectory + "/Systems_Template.csv";
+					systemDataFile=ManagerCasesTestDataDirectory+ "/Systems.csv";
+				}
+				else{
+					systemTemplateFile = createIdentityTestDataDirectory + "/Systems_Template.csv";
+					systemDataFile=createIdentityTestDataDirectory+ "/Systems.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(systemTemplateFile, systemDataFile);
+				ArrayList<String> headers = Utility.getCSVRow(systemDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(systemDataFile, 0);
 				int len = headers.size();
 		
 				for (int i=0;i<len;i++){
@@ -1989,15 +2089,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("*****************Fill Assets Info*****************");
 			try{
-				String assetCode= null,validTo = null,validFrom = null,header,temp;
+				String assetCode= null,validTo = null,validFrom = null,header,temp,assetTemplateFile,assetDataFile;
 				Date date;
+				
+				if(AGlobalComponents.ManagerLogin){
+					assetTemplateFile = ManagerCasesTestDataDirectory + "/Assets_Template.csv";
+					assetDataFile=ManagerCasesTestDataDirectory+ "/Assets.csv";
+				}
+				else{
+					assetTemplateFile = createIdentityTestDataDirectory + "/Assets_Template.csv";
+					assetDataFile=createIdentityTestDataDirectory+ "/Assets.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(assetTemplateFile, assetDataFile);
 		
-				String EmployeeCreationAssetTemplateFile = testDataDirectory + "/Assets_Template.csv";
-				String EmployeeCreationAssetDataFile=testDataDirectory+ "/Assets.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationAssetTemplateFile, EmployeeCreationAssetDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationAssetDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationAssetDataFile, 0);
+				ArrayList<String> headers = Utility.getCSVRow(assetDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(assetDataFile, 0);
 				int len = headers.size();
 		
 				for (int i=0;i<len;i++){
@@ -2126,10 +2232,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("**************Fill prerequisite info***********");
 			try{
-				String type= null,prerequisite=null,validFrom= null,validTo = null,header;
-		
-				String prerequisiteTemplateFile = testDataDirectory + "/Prerequisite_Template.csv";
-				String prerequisiteDataFile=testDataDirectory+ "/Prerequisite.csv";
+				String type= null,prerequisite=null,validFrom= null,validTo = null,header,prerequisiteTemplateFile,prerequisiteDataFile;
+				
+				if(AGlobalComponents.ManagerLogin){
+					prerequisiteTemplateFile = ManagerCasesTestDataDirectory + "/Prerequisite_Template.csv";
+					prerequisiteDataFile=ManagerCasesTestDataDirectory+ "/Prerequisite.csv";
+				}
+				else{
+					prerequisiteTemplateFile = createIdentityTestDataDirectory + "/Prerequisite_Template.csv";
+					prerequisiteDataFile=createIdentityTestDataDirectory+ "/Prerequisite.csv";
+				}
 				TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
 		
 				ArrayList<String> headers = Utility.getCSVRow(prerequisiteDataFile, 1);
@@ -3282,5 +3394,51 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				}		
 			}
 		}			
+	}
+	
+	public static void updatePhoto() throws Throwable {
+		if(unhandledException==false) {
+			System.out.println("********* Update Photo Of user through IDM screen*******************");
+			logger.log(LogStatus.INFO,"******Update Photo Of user through IDM screen************");
+			try {
+				
+				WebElement image = driver.findElement(By.xpath(IdentityObjects.imageLnk));
+				String oldPhotoSrc = image.getAttribute("src");
+				if(oldPhotoSrc.contains("defaultprofile")){
+					photoFilePath = System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
+				}
+				else{
+					photoFilePath = System.getProperty("user.dir") + "\\Browser_Files\\UserImage.png";
+				}
+				Utility.verifyElementPresent(IdentityObjects.imageLnk, "existing image", false);
+				Utility.pause(5);
+				ByAttribute.click("xpath",IdentityObjects.addImageLnk, "Click on existing image to modify it");
+				Thread.sleep(1000);
+								
+				StringSelection ss = new StringSelection(photoFilePath);
+	            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+	            
+	            Robot robot = new Robot();
+	            robot.keyPress(KeyEvent.VK_CONTROL);
+	            robot.keyPress(KeyEvent.VK_V);
+	            robot.keyRelease(KeyEvent.VK_V);
+	            robot.keyRelease(KeyEvent.VK_CONTROL);
+	            robot.keyPress(KeyEvent.VK_ENTER);
+	            robot.keyRelease(KeyEvent.VK_ENTER);
+				
+				String newPhotoSrc = image.getAttribute("src");
+				if(Utility.compareStringValues(oldPhotoSrc,newPhotoSrc ))
+					logger.log(LogStatus.FAIL, "image is not modified");
+				else{
+					logger.log(LogStatus.PASS, "image is updated");
+					Utility.verifyElementPresent(IdentityObjects.imageLnk, "new image", false);
+				}
+					
+			}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
 	}
 }

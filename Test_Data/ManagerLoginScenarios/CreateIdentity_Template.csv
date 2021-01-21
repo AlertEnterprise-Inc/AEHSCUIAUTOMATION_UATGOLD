@@ -1,0 +1,2 @@
+FirstName,LastName,ValidFrom,ValidTo,EmployeeType,Email,JobTitle
+UDS|FirstName|String|10,UDS|LastName|String|10,AUTO|Date|Date,AUTO|Date|Date,Temporary,autouser2@aeqaind.corp,Software Engineer

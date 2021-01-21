@@ -321,23 +321,49 @@ public void Self_Service_Automation_TC006() throws Throwable
 	logger =report.startTest("Self_Service_Automation_TC006","AEAP-14 : Wellness Check - Auto approval)");
 	System.out.println("[INFO]--> Self_Service_Automation_TC006 - TestCase Execution Begins");
 	
-	String firstName = "Anwell";
+	String firstName = "Wellcheck";
 	String lastName = "Bailey";
-
+		
+	//AGlobalComponents.wellnessCheckActivate =true;
 	
-	/** Login as Requester User **/
-	boolean loginStatus = LoginPage.loginAEHSC("anwell.bailey", "Alert1234");
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 	
 	if(loginStatus){
 		
-		/** check asset status before wellness check **/
-		Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+		for(int i=0;i<2;i++){
 		
-		/** submit wellness check request **/
-		Self_Service_CommonMethods.createWellnessCheckRequest();
+			/** check asset status in IDM before wellness check **/
+			Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+	
+			/** Launch New Private Browser **/
+			Utility.switchToNewBrowserDriver();
+		
+			/** Login as requester **/
+			LoginPage.loginAEHSC("wellcheck.bailey", "Alert1234");
 			
-		/** Validate asset status after wellness check request approved**/
-		Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+			if(loginStatus){
+			
+				/** submit wellness check request to activate the user**/
+				Self_Service_CommonMethods.createWellnessCheckRequest();
+			
+				/** checkAssetStatusInMyRequestInbox**/
+				Self_Service_CommonMethods.checkAssetStatusInMyRequestInbox(firstName,lastName);
+			
+				/** Switch to Default Browser **/
+				Utility.switchToDefaultBrowserDriver();
+			}
+			else{
+				logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+			}
+		
+			/** Validate asset status in IDM after wellness check request approved**/
+			Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+			
+		}
+		
+		/** Logout from Application **/
+		LoginPage.logout();
 		
 	}else{
 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");

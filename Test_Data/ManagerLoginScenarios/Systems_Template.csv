@@ -1,0 +1,2 @@
+SystemName,SourceId,ValidFrom,ValidTo
+CCURE 9000,543768912345,AUTO|ValidFrom|File||Test_Data//ManagerLoginScenarios//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//ManagerLoginScenarios//CreateIdentity.csv:ValidTo:1

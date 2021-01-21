@@ -23,10 +23,12 @@ import CommonClassReusables.Utility;
 import ObjectRepository.AdminObjects;
 import ObjectRepository.HomeObjects;
 import ObjectRepository.IdentityObjects;
-
+import ObjectRepository.MyRequestObjects;
 
 public class Self_Service_CommonMethods extends BrowserSelection{
 	
+	private static int assignmentStatusIndex = 0;
+	private static String beforeStatus = null,afterStatus=null,badgeStatusInRequest=null;
 	
 	
 	/**
@@ -1208,18 +1210,212 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 
 
-	public static void checkAssetStatus(String firstName, String lastName) {
-		// TODO Auto-generated method stub
+	/**
+	 * <h1>checkAssetStatus</h1> 
+	 * This is Method to check Asset status before and after wellness check request
+	 * @author Monika Mehta
+	 * @modified
+	 * @version 1.0
+	 * @since 01-15-2021
+	 * @param String firstname,lastname
+	 * @return none
+	 **/
+
+	public static void checkAssetStatus(String firstName, String lastName) throws Throwable {
+	
+		if (unhandledException == false) {
+			System.out.println("********* Check Asset status in IDM before wellness check request submission*******************");
+			logger.log(LogStatus.INFO,"******Check Asset status in IDM before wellness check request submission************");
+			try {
+			
+				if(AGlobalComponents.wellnessCheckRequestSubmit){
+					logger.log(LogStatus.INFO, "Checking badge status of the user after wellness check request submission");
+					ByAttribute.click("xpath", MyRequestObjects.reloadOptionMenu, "Click on menu to reload");
+					Utility.pause(1);
+					ByAttribute.click("xpath", MyRequestObjects.reloadOption, "Click on reload ");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+					WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
+					afterStatus=assetStatus.getText();
+					Utility.verifyElementPresent("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
+					
+					logger.log(LogStatus.INFO, "Current asset Assignment status is : " +afterStatus);
+					//if condition lagani hai ki IDM me bhi same status hai jo request open karne pe tha and before status se opposite hai hence pass
+					logger.log(LogStatus.PASS, "Current asset Assignment status in IDM is  : " +afterStatus);
+					AGlobalComponents.wellnessCheckRequestSubmit=false;
+				}
+				else{
+					FB_Automation_CommonMethods.searchIdentity(firstName,lastName);
+				
+					//Checking the  asset status in IDM
+					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+					getIndexOfHeaders();
+					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
+						logger.log(LogStatus.FAIL, "No Badge is assigned to the user ");
+					WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
+					beforeStatus=assetStatus.getText();
+					Utility.verifyElementPresent("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
+					
+					logger.log(LogStatus.INFO, "Current asset Assignment status is : " +beforeStatus);
+				}
+				
+				
+				if(Utility.compareStringValues(beforeStatus, "ACTIVE"))
+					AGlobalComponents.wellnessCheckDeActivate =true;
+				else
+					AGlobalComponents.wellnessCheckActivate =true;
+				
+				
+			}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void getIndexOfHeaders() throws Throwable {
+		try{
+			List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
+			int size = headers.size(),j=1;
+			boolean flag=true;
+						
+			for (int i=1;i<size && flag;i++){
+				WebElement header= headers.get(i);
+				String heading = header.getText();
+				System.out.println("heading "+ (i) +" "+ heading);
+						
+					switch (heading.toLowerCase()) {
+		            case "assignment status":
+		            	assignmentStatusIndex = j+1;
+		            	j++;
+		            	flag=false;
+		            	break;
+		            case "":
+		                break;
+		            default: 
+		            	System.out.println("Need to skip this header : "+ heading);
+		            	j++;
+					}
+				}
+			}
+			catch(Exception e){
+				logger.log(LogStatus.ERROR, "Failed: Header Not Found ");
+			}
+	}
+
+
+	/**
+	 * <h1>Submit WellnessCheck request</h1> 
+	 * This is Method to submit WllnessCheck request
+	 * @author Monika Mehta
+	 * @modified
+	 * @version 1.0
+	 * @since 01-15-2021
+	 * @param none
+	 * @return none
+	 **/
+
+	public static void createWellnessCheckRequest() throws Throwable {
+		if (unhandledException == false) {
+			System.out.println("***************************** submitRequest For WellnessCheck *********************************");
+			logger.log(LogStatus.INFO,"***************************** submitRequest For WellnessCheck *********************************");
+			try {
+					logger.log(LogStatus.INFO, "Navigate to My Requests Tab");
+					ByAttribute.click("xpath", MyRequestObjects.myRequestsTabBtn, "Click on MyRequests tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", MyRequestObjects.createBtn, "Click on create button ");
+					Utility.pause(5);
+					ByAttribute.click("xpath", MyRequestObjects.wellnessCheckLnk, "Click on WellnessCheck pod ");
+					Utility.pause(5);
+					
+					logger.log(LogStatus.INFO, "Fill the questionnaire" );
+					if(AGlobalComponents.wellnessCheckActivate)
+						submitRequestToActivateTheBadge();
+					else if(AGlobalComponents.wellnessCheckDeActivate)
+						submitRequestToDeActivateTheBadge();
+					else
+						logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
+					
+					
+					ByAttribute.click("xpath", MyRequestObjects.acknowledgementCheckbox, "Click acknowledgement checkbox ");
+					Utility.pause(2);
+					ByAttribute.click("xpath", MyRequestObjects.submitBtn, "Click Submit button ");
+					Utility.pause(5);
+					AGlobalComponents.wellnessCheckRequestSubmit= true;
+								
+				}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
 		
 	}
 
 
 
-	public static void createWellnessCheckRequest() {
-		// TODO Auto-generated method stub
+	private static void submitRequestToActivateTheBadge() {
+		try{
+			logger.log(LogStatus.INFO, "Filling the questionnaire for badge activation case");
+			ByAttribute.click("xpath", MyRequestObjects.questionOneNo, "Select radio button for first question");
+			Utility.pause(2);
+			ByAttribute.click("xpath", MyRequestObjects.questionTwoNo, "Select radio button for second question");
+			Utility.pause(2);
+			ByAttribute.click("xpath", MyRequestObjects.questionThreeNo, "Select radio button for third question");
+			Utility.verifyElementPresent(MyRequestObjects.userRequestHeader, "Filled User Request", false);
+			
+		}catch(Exception e){
+			logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
+		}
+				
+	}
+
+
+
+	private static void submitRequestToDeActivateTheBadge() {
+		try{
+			
+			logger.log(LogStatus.INFO, "Filling the questionnaire for badge deactivation case");
+			ByAttribute.click("xpath", MyRequestObjects.questionOneYes, "Select radio button for first question");
+			Utility.pause(2);
+			ByAttribute.click("xpath", MyRequestObjects.questionTwoNo, "Select radio button for second question");
+			Utility.pause(2);
+			ByAttribute.click("xpath", MyRequestObjects.questionThreeNo, "Select radio button for third question");
+			Utility.verifyElementPresent(MyRequestObjects.userRequestHeader, "Filled User Request", false);
+		}catch(Exception e){
+			logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
+		}
 		
 	}
 
+
+
+	public static void checkAssetStatusInMyRequestInbox(String firstName, String lastName) throws Throwable {
+		if (unhandledException == false) {
+			System.out.println("***************************** Checking the status of Badge in the Request *********************************");
+			logger.log(LogStatus.INFO,"*************** Checking the status of Badge in the Request *********************************");
+			try{
+			
+				WebElement requestNo = driver.findElement(By.xpath(MyRequestObjects.requestNoLnk));
+				Actions action = new Actions(driver);
+				action.doubleClick(requestNo);
+				action.build().perform();
+				Utility.pause(5);
+				
+				String requesterName= "//div[text()='Request By']//parent::div//label[text()='"+firstName+"']";
+				if(Utility.verifyElementPresentReturn(requesterName,"Requester Name",true,false)){
+					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
+				}
+				else
+					logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
+				//write the code to check the badge status and store it in badgeStatusInRequest
+				//compare badge status is different from before status hence pass
+				
+			}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
 	
 
 }
