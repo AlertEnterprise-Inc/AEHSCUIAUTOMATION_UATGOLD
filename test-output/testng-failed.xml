@@ -3,15 +3,15 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="webDriverTestCases.FB_Automation">
+      <class name="webDriverTestCases.Self_Service">
         <methods>
-          <include name="FB_Automation_TC001"/>
+          <include name="Self_Service_Automation_TC007"/>
           <include name="quitDriver"/>
-          <include name="commonPage"/>
           <include name="beforeSuite"/>
+          <include name="commonPage"/>
           <include name="afterMethod"/>
         </methods>
-      </class> <!-- webDriverTestCases.FB_Automation -->
+      </class> <!-- webDriverTestCases.Self_Service -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

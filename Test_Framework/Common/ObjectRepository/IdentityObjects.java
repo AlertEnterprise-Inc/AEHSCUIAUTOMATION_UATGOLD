@@ -88,7 +88,7 @@ public interface IdentityObjects {
 	
 	String deletedSinceDateValue = "//div[contains(@id,'baseDateTime')]//input[contains(@class,'x-form-text-default  x-form-empty-field x-form-empty-field-default')]";
 	
-	String addRecordsIconPrerequisiteTab = "//a[normalize-space(text())='Click here to Add']";
+	String addRecordsIconPrerequisiteTab = "(//a[normalize-space(text())='Click here to Add'])[2]";
 	
 	String addRecordsIconSystemsTab = "//a[normalize-space(text())='Click here to Add']";
 	

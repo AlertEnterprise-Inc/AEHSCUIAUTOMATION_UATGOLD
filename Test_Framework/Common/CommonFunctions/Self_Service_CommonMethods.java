@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -28,7 +29,7 @@ import ObjectRepository.MyRequestObjects;
 public class Self_Service_CommonMethods extends BrowserSelection{
 	
 	private static int assignmentStatusIndex = 0;
-	private static String beforeStatus = null,afterStatus=null,badgeStatusInRequest=null;
+	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null;
 	
 	
 	/**
@@ -1211,8 +1212,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 
 	/**
-	 * <h1>checkAssetStatus</h1> 
-	 * This is Method to check Asset status before and after wellness check request
+	 * <h1>checkStatus</h1> 
+	 * This is Method to check sset status before and after request approval
 	 * @author Monika Mehta
 	 * @modified
 	 * @version 1.0
@@ -1221,49 +1222,71 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	 * @return none
 	 **/
 
-	public static void checkAssetStatus(String firstName, String lastName) throws Throwable {
+		public static void checkStatus(String firstName, String lastName) throws Throwable {
 	
 		if (unhandledException == false) {
-			System.out.println("********* Check Asset status in IDM before wellness check request submission*******************");
-			logger.log(LogStatus.INFO,"******Check Asset status in IDM before wellness check request submission************");
+			System.out.println("********* Check Asset status in IDM before  request submission*******************");
+			logger.log(LogStatus.INFO,"******Check Asset status in IDM before  request submission************");
 			try {
-			
-				if(AGlobalComponents.wellnessCheckRequestSubmit){
-					logger.log(LogStatus.INFO, "Checking badge status of the user after wellness check request submission");
+				WebElement image=null ;
+				String oldPhotoSrc=null;
+							
+				if(AGlobalComponents.RequestSubmit){
+					logger.log(LogStatus.INFO, "Checking status of the user after request submission");
 					ByAttribute.click("xpath", MyRequestObjects.reloadOptionMenu, "Click on menu to reload");
 					Utility.pause(1);
 					ByAttribute.click("xpath", MyRequestObjects.reloadOption, "Click on reload ");
 					Utility.pause(5);
+					
+					//Photo validation
+					logger.log(LogStatus.INFO, "Capturing updated photo");
+					String newPhotoSrc = image.getAttribute("src");
+					if(Utility.compareStringValues(oldPhotoSrc,newPhotoSrc ))
+						logger.log(LogStatus.FAIL, "image is not modified");
+					else{
+						logger.log(LogStatus.PASS, "image is updated");
+						Utility.verifyElementPresent(IdentityObjects.imageLnk, "new image", false);
+					}
 					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
 					WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
-					afterStatus=assetStatus.getText();
+					newAssetStatus=assetStatus.getText();
 					Utility.verifyElementPresent("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
 					
-					logger.log(LogStatus.INFO, "Current asset Assignment status is : " +afterStatus);
+					logger.log(LogStatus.INFO, "Current asset Assignment status is : " +newAssetStatus);
 					//if condition lagani hai ki IDM me bhi same status hai jo request open karne pe tha and before status se opposite hai hence pass
-					logger.log(LogStatus.PASS, "Current asset Assignment status in IDM is  : " +afterStatus);
-					AGlobalComponents.wellnessCheckRequestSubmit=false;
+					logger.log(LogStatus.PASS, "Current asset Assignment status in IDM is  : " +newAssetStatus);
+					AGlobalComponents.RequestSubmit=false;
 				}
 				else{
 					FB_Automation_CommonMethods.searchIdentity(firstName,lastName);
+					
+					//existing photo capture
+					image = driver.findElement(By.xpath(IdentityObjects.imageLnk));
+					oldPhotoSrc = image.getAttribute("src");
+					logger.log(LogStatus.INFO, "Capturing the existing photo");
+					Utility.verifyElementPresent(IdentityObjects.imageLnk, "existing image", false);
+					Utility.pause(5);
 				
-					//Checking the  asset status in IDM
+				//Checking the  asset status in IDM
 					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
 					getIndexOfHeaders();
 					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
-						logger.log(LogStatus.FAIL, "No Badge is assigned to the user ");
-					WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
-					beforeStatus=assetStatus.getText();
-					Utility.verifyElementPresent("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
+						logger.log(LogStatus.INFO, "No Badge is assigned to the user ");
+					else{
+						WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
+						oldAssetStatus=assetStatus.getText();
+						Utility.verifyElementPresent("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
 					
-					logger.log(LogStatus.INFO, "Current asset Assignment status is : " +beforeStatus);
+						logger.log(LogStatus.INFO, "Current asset Assignment status is : " +oldAssetStatus);
+						if(Utility.compareStringValues(oldAssetStatus, "ACTIVE"))
+							AGlobalComponents.wellnessCheckDeActivate =true;
+						else
+							AGlobalComponents.wellnessCheckActivate =true;
+					}
 				}
 				
 				
-				if(Utility.compareStringValues(beforeStatus, "ACTIVE"))
-					AGlobalComponents.wellnessCheckDeActivate =true;
-				else
-					AGlobalComponents.wellnessCheckActivate =true;
+				
 				
 				
 			}catch (Exception e) {
@@ -1341,7 +1364,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(2);
 					ByAttribute.click("xpath", MyRequestObjects.submitBtn, "Click Submit button ");
 					Utility.pause(5);
-					AGlobalComponents.wellnessCheckRequestSubmit= true;
+					AGlobalComponents.RequestSubmit= true;
 								
 				}catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
@@ -1391,22 +1414,28 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 	public static void checkAssetStatusInMyRequestInbox(String firstName, String lastName) throws Throwable {
 		if (unhandledException == false) {
-			System.out.println("***************************** Checking the status of Badge in the Request *********************************");
-			logger.log(LogStatus.INFO,"*************** Checking the status of Badge in the Request *********************************");
+			System.out.println("***************************** Checking the status in the Request *********************************");
+			logger.log(LogStatus.INFO,"*************** Checking the status in the Request *********************************");
 			try{
-			
-				WebElement requestNo = driver.findElement(By.xpath(MyRequestObjects.requestNoLnk));
+				String identityName = firstName +" "+ lastName;
+				List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+				WebElement requestNo = requestNumberElements.get(0);
 				Actions action = new Actions(driver);
 				action.doubleClick(requestNo);
 				action.build().perform();
 				Utility.pause(5);
 				
-				String requesterName= "//div[text()='Request By']//parent::div//label[text()='"+firstName+"']";
-				if(Utility.verifyElementPresentReturn(requesterName,"Requester Name",true,false)){
+				WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
+				String requesterName= requestBy.getText();
+				if(Utility.compareStringValues(requesterName, "CAROL PAYNE") && AGlobalComponents.ManagerLogin){
 					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
 				}
-				else
+				else if(Utility.compareStringValues(requesterName, identityName.toUpperCase())){
+					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
+				}else
 					logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
+				logger.log(LogStatus.INFO, "Screenshot of the opened Request");
+				Utility.verifyElementPresent("//*[@class='x-component x-box-item x-component-activitytext' and text()='"+identityName+"']", "User Image", false);
 				//write the code to check the badge status and store it in badgeStatusInRequest
 				//compare badge status is different from before status hence pass
 				
@@ -1416,6 +1445,146 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			}
 		}
 	}
-	
 
+	/**
+	 * <h1>Temporary worker Onboarding</h1> 
+	 * This is Method to hire temporary worker by running Recon using File Connector
+	 * @author Monika Mehta
+	 * @modified
+	 * @version 1.0
+	 * @since 01-21-2021
+	 * @param none
+	 * @return none
+	 **/
+
+	public static void temporaryWorkerOnboarding() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void tempWorkerModification() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void employeeConversion() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void temporaryWorkerOffboarding() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void requestLocationAccess() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void emergencyTermination() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	public static void modifyIdentity(String firstName) throws Throwable {
+		String reqNum="";
+		if (unhandledException == false) {
+			System.out.println("***************************** Modify Identity By Manager*********************************");
+			logger.log(LogStatus.INFO,"***************************** Modify Identity By Manager*********************************");
+			try {
+				
+				if(driver.findElements(By.xpath(HomeObjects.myRequestsTabBtn)).size()>0)
+				{
+					ByAttribute.click("xpath", HomeObjects.myRequestsTabBtn, "Click on Access Request Link");
+					Utility.pause(5);
+				}else{
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestLnk, "Click on Access Request Link");
+					Utility.pause(5);
+				}
+				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) 
+				{
+					System.out.println("Access Request Page Loaded Successfully");
+					logger.log(LogStatus.PASS, "Access Request Page Loaded Successfully");
+					
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
+					ByAttribute.click("xpath", MyRequestObjects.otherRequestsLnk, "Click on Other Requests Pod");
+					Utility.pause(2);
+					ByAttribute.click("xpath", MyRequestObjects.selectRequestType,"Enter the request type");
+					ByAttribute.setText("xpath", MyRequestObjects.selectRequestType,"Modify Identity", "Enter the request type");
+					Utility.pause(2);
+					ByAttribute.click("xpath", MyRequestObjects.selectRequestType,"Enter the request type");
+					ByAttribute.setText("xpath", MyRequestObjects.selectRequestType,"Modify Identity", "Enter the request type");
+					Utility.pause(2);
+					Actions action = new Actions(driver);
+					action.sendKeys(Keys.TAB);
+					action.sendKeys(firstName);
+					action.build().perform();
+					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
+					Utility.pause(5);
+					
+					String photoFilePath=System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
+					ByAttribute.click("xpath",MyRequestObjects.uploadImgBtn, "Click on upload button to update the photo");
+					Thread.sleep(1000);
+									
+					StringSelection ss = new StringSelection(photoFilePath);
+		            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+		            
+		            Robot robot = new Robot();
+		            robot.keyPress(KeyEvent.VK_CONTROL);
+		            robot.keyPress(KeyEvent.VK_V);
+		            robot.keyRelease(KeyEvent.VK_V);
+		            robot.keyRelease(KeyEvent.VK_CONTROL);
+		            robot.keyPress(KeyEvent.VK_ENTER);
+		            robot.keyRelease(KeyEvent.VK_ENTER);
+					Utility.pause(2);
+		            ByAttribute.click("xpath",MyRequestObjects.cropAndSaveBtn, "Click on Crop and Save button");
+		            Utility.pause(4);
+		            Utility.verifyElementPresent("//*[@class='x-img x-box-item x-img-default']", "Uploaded Image", false);
+		            
+		            ByAttribute.click("xpath",MyRequestObjects.submitBtn, "Click on submit button");
+					//
+				}else {
+					System.out.println("Navigation to 'Access Request' Page Failed");
+					logger.log(LogStatus.FAIL, "Navigation to 'Access Request' Page Failed");
+				}
+
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		
+		}
+	
+	}
+
+
+
+	public static String getfirstNameFromAPI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+	public static String getLastNameFromAPI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

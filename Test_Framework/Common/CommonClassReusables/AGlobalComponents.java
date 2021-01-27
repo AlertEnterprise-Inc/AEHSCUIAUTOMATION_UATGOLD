@@ -34,7 +34,7 @@ public class AGlobalComponents {
 	public static Date validToDate = new Date();
 	public static boolean wellnessCheckActivate =false;
 	public static boolean wellnessCheckDeActivate =false;
-	public static boolean wellnessCheckRequestSubmit =false;
+	public static boolean RequestSubmit =false;
 	public static boolean ManagerLogin = false;
 	public static boolean createIdentityPermanent = false;
 	public static boolean createIdentityContractor = false;

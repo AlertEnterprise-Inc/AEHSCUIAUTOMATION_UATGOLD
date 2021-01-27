@@ -9,6 +9,8 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.Utility;
+import CommonFunctions.ApiMethods;
+import CommonFunctions.FB_Automation_CommonMethods;
 import CommonFunctions.LoginPage;
 import CommonFunctions.Self_Service_CommonMethods;
 
@@ -334,7 +336,7 @@ public void Self_Service_Automation_TC006() throws Throwable
 		for(int i=0;i<2;i++){
 		
 			/** check asset status in IDM before wellness check **/
-			Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+			Self_Service_CommonMethods.checkStatus(firstName,lastName);
 	
 			/** Launch New Private Browser **/
 			Utility.switchToNewBrowserDriver();
@@ -358,7 +360,7 @@ public void Self_Service_Automation_TC006() throws Throwable
 			}
 		
 			/** Validate asset status in IDM after wellness check request approved**/
-			Self_Service_CommonMethods.checkAssetStatus(firstName,lastName);
+			Self_Service_CommonMethods.checkStatus(firstName,lastName);
 			
 		}
 		
@@ -371,5 +373,77 @@ public void Self_Service_Automation_TC006() throws Throwable
 
 }
 
+/*
+ * TC007 : 5.0 Use cases . Manager Login Scenarios
+ */
+
+@Test(priority=7)
+public void Self_Service_Automation_TC007() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC007","Manager Login Scenarios ");
+	System.out.println("[INFO]--> Self_Service_Automation_TC007 - TestCase Execution Begins");
+	AGlobalComponents.ManagerLogin = true;
+	
+	String firstName =Utility.getRandomString(4);
+	String lastName =Utility.getRandomString(4);
+	firstName = firstName+"mlogin";
+	lastName= lastName+"Scenario";
+	
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");	
+	if(loginStatus){
 		
+		FB_Automation_CommonMethods.createIdentity(firstName,lastName);
+		if(Utility.checkIfStringIsNotNull(firstName))	{
+ 		
+		
+ 			/** check asset and access and photo screenshot   in IDM **/
+ 			Self_Service_CommonMethods.checkStatus(firstName,lastName);
+	
+ 			/** Launch New Private Browser **/
+ 			Utility.switchToNewBrowserDriver();
+		
+ 			/* Login as Manager */
+ 			loginStatus = LoginPage.loginAEHSC("carol.payne", "Alert1234");
+
+ 			if(loginStatus){
+ 				logger.log(LogStatus.PASS, "Login Successful");
+		
+		
+ 				/** Modify Identity **/
+ 				Self_Service_CommonMethods.modifyIdentity(firstName);
+		
+ 				/** Employee Type Conversion**/
+	//			Self_Service_CommonMethods.employeeConversion();
+		
+ 				/** Request Location Access **/
+	//			Self_Service_CommonMethods.requestLocationAccess();
+		
+ 				/** checkStatusInMyRequestInbox**/
+ 				Self_Service_CommonMethods.checkAssetStatusInMyRequestInbox(firstName,lastName);
+	
+ 				/** Switch to Default Browser **/
+ 				Utility.switchToDefaultBrowserDriver();
+ 			}
+ 			else{
+ 				logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 			}
+
+ 			/** Validate  status in IDM after  request approved**/
+ 			Self_Service_CommonMethods.checkStatus(firstName,lastName);
+	
+ 			/** Logout from Application **/
+ 			LoginPage.logout();
+	
+ 		}else{
+ 			
+ 			logger.log(LogStatus.FAIL, "failed to create identity ");
+ 		}
+	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
 }
