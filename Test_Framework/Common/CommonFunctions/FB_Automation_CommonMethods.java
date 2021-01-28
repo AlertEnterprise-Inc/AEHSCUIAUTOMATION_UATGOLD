@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,6 +31,7 @@ import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
 import CommonClassReusables.DBValidations;
+import CommonClassReusables.FileOperations;
 import CommonClassReusables.MsSql;
 
 import CommonClassReusables.ReadDataFromPropertiesFile;
@@ -52,6 +54,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static String identityCode = null;
 	private static String entityType= null;
 	private static String activeReconRecords = null;
+	private static int assetCodeIndex,badgeValidFromIndex, badgeValidToIndex,badgeTypeIndex;
+
 	
 	
 	
@@ -431,7 +435,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 				logger.log(LogStatus.INFO, "verify recon data from DB");
 				String query = "select active from recon_monitor where job_instance_id='"+syncID+"'";
-				verifyReconDataFromDB(query);
+//				verifyReconDataFromDB(query);
 				}
 			}
 			catch(Exception e)
@@ -3353,12 +3357,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(typeList.get(i).equalsIgnoreCase(s.get(3))) {
 					logger.log(LogStatus.PASS,"EmployeeType "+typeList.get(i)+" exists in staging table for userId "+userIdList.get(i));
 				}
-
-
 			}
-
-
-
 		}
 	}
 
@@ -3413,10 +3412,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userIdList.get(i), "Enter the first field value for Filtering");
 				Utility.pause(2);
 		
-				
 				action.sendKeys(Keys.ENTER).build().perform();
 				Utility.pause(20);
-			}
+			} 
 			
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
@@ -3430,7 +3428,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(firstName!=null) {
 						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.firstNameLnk, "FirstName", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.firstNameLnk, "FirstName "+firstName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "FirstName " +firstName+" on UI is not same as expected");
@@ -3444,7 +3441,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(lastName!=null) {
 						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.lastNameLnk, "LastName", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.lastNameLnk, "LastName "+lastName+" displaying on UI",false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "LastName " +lastName+" on UI is not same as expected");
@@ -3458,7 +3454,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(employeeType!=null) {
 						if(empTypeList.get(i).equalsIgnoreCase(employeeType)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.employeeTypeLnk, "EmployeeType", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.employeeTypeLnk, "EmployeeType "+employeeType+" displaying on UI",false);
 							logger.log(LogStatus.PASS, "EmployeeType "+employeeType+" displaying on UI");
 						}
 						else {
@@ -3474,7 +3469,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(validFrom!=null) {
 						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.validFromLnk, "ValidFrom", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidFrom "+validFrom+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList.get(i));
@@ -3488,8 +3482,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					validTo=TestDataEngine.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
 					if(validTo!=null) {
 						if(validToList.get(i).equalsIgnoreCase(validTo)) {
-							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
@@ -3504,7 +3497,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					if(email!=null) {
 						if(emailList.get(i).equalsIgnoreCase(email)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.emailIdLnk, "EmailId", true, false);
-//							Utility.verifyElementPresent(IdentityObjects.emailIdLnk, "EmailId "+email+" displaying on UI "+userIdList.get(i),false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userIdList.get(i));
@@ -3519,7 +3511,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(city!=null) {
 					if(cityList.get(i).equalsIgnoreCase(city)) {
 						Utility.verifyElementPresentByScrollView(IdentityObjects.workLocationLnk, "City", true, false);
-						Utility.verifyElementPresent(IdentityObjects.workLocationLnk, "City "+city+" displaying on UI "+userIdList.get(i),false);
 					}
 					else {
 						logger.log(LogStatus.FAIL, "City " +city+" on UI is not same as expected" +userIdList.get(i));
@@ -3530,6 +3521,333 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				}		
 			}
 		}			
+	}
+
+	public static void assignBadgeToUserInCCURE() throws Throwable {
+		if(unhandledException==false) {
+			try {
+				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
+				String badgesDataFile = reconTestDataDirectory + "/BadgesData.csv"; 
+				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
+				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
+				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
+				ArrayList<String> userIds=new ArrayList<String>();
+				ArrayList<String> badgeIds=new ArrayList<String>();
+				ArrayList<String> badgeValidFroms=new ArrayList<String>();
+				ArrayList<String> badgeValidTos=new ArrayList<String>();
+				ArrayList<String> badgeTypes=new ArrayList<String>();
+				for(String userId:userIdList) {
+					String name=lastNameList.get(userIdList.indexOf(userId))+", "+firstNameList.get(userIdList.indexOf(userId));
+					String badgeId=Utility.UniqueNumber(6);
+					String activationDate=Utility.getCurrentDateTime("MM-dd-yyyy");
+					String expirationDate=Utility.getDate("MM-dd-yyyy", 4, "years");
+					Calendar cal = Calendar.getInstance();
+					
+					Date date=new SimpleDateFormat("MM-dd-yyyy")
+                            .parse(activationDate);
+
+					cal.setTime(date);
+					cal.set(Calendar.HOUR_OF_DAY, 0);
+					cal.set(Calendar.SECOND,(cal.get(Calendar.SECOND)+20));
+					String badgeActivationDate=new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(cal.getTime());
+					
+					Date date1=new SimpleDateFormat("MM-dd-yyyy")
+                            .parse(expirationDate);
+
+					cal.setTime(date1);
+					cal.set(Calendar.HOUR_OF_DAY, 0);
+					cal.set(Calendar.SECOND,(cal.get(Calendar.SECOND)-20));
+
+					String badgeExpirationDate=new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(cal.getTime());
+					
+					int maxObjectId=DBValidations.getMaxCredentialObjectId();
+					int objectId=DBValidations.getObjectIdOfTheUser(name);
+					if(DBValidations.assignBadgeToUserInCCURE(objectId,name,badgeId,activationDate,expirationDate,maxObjectId+1)) {
+						
+						ReadDataFromPropertiesFile.updateCSVCellValue(identityDataFile, "validTo", 1,expirationDate);
+						userIds.add(Integer.toString(objectId));
+						badgeIds.add(badgeId);
+						badgeValidFroms.add(badgeActivationDate);
+						badgeValidTos.add(badgeExpirationDate);
+						badgeTypes.add("gb");
+						
+						ArrayList<ArrayList<String>> badgesData = new ArrayList<ArrayList<String>>();
+						String detailsHeaderArray []= {"UserId","BadgeId","BadgeValidFrom","BadgeValidTo","BadgeType"};
+						
+						ArrayList<String> badgesDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+						
+						badgesData = Utility.appendColumnDataAtEnd(badgesData, userIds);
+						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeIds);
+						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidFroms);
+						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidTos);
+						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeTypes);
+						if(Utility.checkIfListIsNotNullAndNotEmpty(badgesData)) {
+							
+								badgesData.add(0, badgesDataFileHeaders);
+								if(FileOperations.createFileIfDoesNotExist(badgesDataFile)) {
+									ReadDataFromPropertiesFile.writeTestDataInFile(badgesDataFile, badgesData, false);
+								}
+						}	
+					}
+				}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	public static void validateAssetsData() throws Throwable {
+
+		String userDataFile=reconTestDataDirectory+"/BadgesData.csv";
+		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "UserId");
+		ArrayList<String> badgeIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeId");
+		ArrayList<String> badgeValidFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeValidFrom");
+		ArrayList<String> badgeValidToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeValidTo");
+		ArrayList<String> badgeTypeList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeType");
+		
+		validateAssetsDataInStagingTable(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
+	
+		validateAssetsDataInMasterTable(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
+		validateAssetsDataOnUI(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
+	
+	}
+
+	private static void validateAssetsDataOnUI(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
+			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList, ArrayList<String> badgeTypeList) throws Throwable {
+		
+
+		if(unhandledException==false)
+		{
+			System.out.println("*****************Fill Assets Info*****************");
+			try{
+				for(int i=0;i<=userIdList.size()-1;i++) {
+					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
+					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
+						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+						Utility.pause(2);
+					
+						logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
+						Utility.verifyElementPresent("//label[contains(@class,'x-form-cb-label') and text()='AssetExisting']", "Existing asset screen",  false);
+				
+						getIndexOfAssetsHeaders();
+						
+						//AssetCode Validation
+						WebElement assetCodeElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div"));
+						String assetCode=assetCodeElement.getText();
+						Utility.pause(2);
+		
+						if(assetCode!=null) {
+							if(AGlobalComponents.assetCode.equalsIgnoreCase(assetCode)) {
+								Utility.verifyElementPresentByScrollView(assetCode, "AssetCode", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "FirstName " +assetCode+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see assetCode "+assetCode+"on UI ");
+						}
+						
+						//BadgeValidFrom Validation
+						WebElement badgeValidFromElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidFromIndex+"]/div"));
+						String badgeValidFrom=badgeValidFromElement.getText();
+						Utility.pause(2);
+						
+						SimpleDateFormat month_date = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
+						SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+						Date date = month_date.parse(badgeValidFrom);
+						String newDate = sdf.format(date);
+						
+						if(newDate!=null) {
+							if(badgeValidFromList.get(i).equalsIgnoreCase(newDate)) {
+								Utility.verifyElementPresentByScrollView(newDate, "BadgeValidFrom", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "BadgeValidFrom " +newDate+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see badgeValidFrom "+newDate+"on UI ");
+						}
+						
+						//BadgeValidTo Validation
+						WebElement badgeValidToElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidToIndex+"]/div"));
+						String badgeValidTo=badgeValidToElement.getText();
+						Utility.pause(2);
+						
+						SimpleDateFormat valdToMonth = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
+						SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+						Date date1 = valdToMonth.parse(badgeValidTo);
+						String newValidToDate = sdf1.format(date1);
+						
+						if(badgeValidTo!=null) {
+							if(badgeValidToList.get(i).equalsIgnoreCase(newValidToDate)) {
+								Utility.verifyElementPresentByScrollView(newValidToDate, "BadgeValidTo", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "BadgeValidTo " +newValidToDate+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see badgeValidTo "+newValidToDate+"on UI ");
+						}
+							
+						//AssetCode Validation
+						WebElement assetCodeElemnt= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div"));
+						String assetCode1=assetCodeElemnt.getText();
+						Utility.pause(2);
+		
+						if(assetCode1!=null) {
+							if(AGlobalComponents.assetCode.equalsIgnoreCase(assetCode1)) {
+								Utility.verifyElementPresentByScrollView(assetCode1, "AssetType", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "AssetCode " +assetCode1+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see AssetCode "+assetCode1+"on UI ");
+						}
+						
+						//Badge Type Validation
+						WebElement badgeTypeElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeTypeIndex+"]/div"));
+						String badgeType=badgeTypeElement.getText();
+						Utility.pause(2);
+		
+						if(badgeType!=null) {
+							if(badgeType.equalsIgnoreCase("Generic Badge")) {
+								badgeType="gb";
+							}
+								
+							if(badgeTypeList.get(i).equalsIgnoreCase(badgeType)) {
+								Utility.verifyElementPresentByScrollView(badgeType, "AssetType", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "AssetType " +badgeType+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see AssetType "+badgeType+"on UI ");
+						}
+					}
+				}
+			}			
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	public static void getIndexOfAssetsHeaders() {
+
+		try{
+			List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
+			int size = headers.size(),j=1;
+			boolean flag=true;
+				
+			for (int i=1;i<size;i++){
+				WebElement header= headers.get(i);
+				String heading = header.getText();
+				System.out.println("heading "+ (i) +" "+ heading);
+						
+					switch (heading.toLowerCase()) {
+		            case "asset":
+		            	assetCodeIndex = j+1;
+		            	j++;
+		            	break;
+		            case "valid from":
+		            	badgeValidFromIndex=j+1;
+		            	j++;
+		            	break;
+		            case "valid to":
+		            	badgeValidToIndex=j+1;
+		            	j++;
+		            	break;
+		            case "asset type":
+		            	badgeTypeIndex=j+1;
+		            	j++;
+		            	break;
+		            case "":
+		                break;
+		            default: 
+		            	System.out.println("Need to skip this header : "+ heading);
+		            	j++;
+					}
+				}
+			}
+			catch(Exception e){
+				logger.log(LogStatus.ERROR, "Failed: Header Not Found ");
+			}
+	}
+
+	private static void validateAssetsDataInMasterTable(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
+			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList,ArrayList<String> badgeTypeList) throws ClassNotFoundException, SQLException 
+	{
+		for(String userId:userIdList) {
+			String identityId=DBValidations.getIdentityIdOfUser(userId);
+			String assetId=DBValidations.getAssetId(identityId);
+			String badgeId=DBValidations.getBadgeIdFromMasterTable(assetId);
+			String badgeValidFrom=DBValidations.getBadgeValidFromFromMasterTable(identityId);
+			String badgeValidTo=DBValidations.getBadgeValidToFromMasterTable(identityId);
+			String badgeType=DBValidations.getBadgeTypeFromMasterTable(assetId);
+			AGlobalComponents.assetCode=DBValidations.getAssetCodeFromMasterTable(assetId);
+			if(badgeIdList.contains(badgeId)) {
+				logger.log(LogStatus.PASS, "BadgeId "+badgeId+" exists in master table for UserID" +userId);
+			}
+			if(badgeValidFromList.contains(badgeValidFrom)) {
+				logger.log(LogStatus.PASS, "BadgeValidFrom "+badgeValidFrom+" exists in master table for UserID" +userId);
+			}
+			if(badgeValidToList.contains(badgeValidTo)) {
+				logger.log(LogStatus.PASS, "BadgeValidTo "+badgeValidTo+" exists in master table for UserID" +userId);
+			}
+			if(badgeTypeList.contains(badgeType)) {
+				logger.log(LogStatus.PASS, "BadgeType "+badgeType+" exists in master table for UserID" +userId);
+			}
+		}
+	}
+
+	private static void validateAssetsDataInStagingTable(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
+			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList, ArrayList<String> badgeTypeList) throws ClassNotFoundException, SQLException, ParseException {
+		for(String userId:userIdList) {
+			String userDataExtId=DBValidations.getUserdataExtId(userId);
+			String badgeId=DBValidations.getBadgeIdFromStagingTable(userDataExtId);
+			String badgeValidFrom=DBValidations.getBadgeValidFromFromStagingTable(userDataExtId);	
+			badgeValidFrom=badgeValidFrom.replace("/", "-");
+			Date date1=new SimpleDateFormat("MM-dd-yyyy")
+                    .parse(badgeValidFrom);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date1);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.SECOND,(cal.get(Calendar.SECOND)+20));
+			String badgeActivationDate=new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(cal.getTime());
+			
+			String badgeValidTo=DBValidations.getBadgeValidToFromStagingTable(userDataExtId);
+			
+			badgeValidTo=badgeValidTo.replace("/", "-");
+			Date date=new SimpleDateFormat("MM-dd-yyyy")
+                    .parse(badgeValidTo);
+			cal.setTime(date);
+			cal.set(Calendar.HOUR_OF_DAY, 0);
+			cal.set(Calendar.SECOND,(cal.get(Calendar.SECOND)-20));
+			String badgeExpirationDate=new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(cal.getTime());
+//			String badgeType=DBValidations.getBadgeTypeFromStagingTable("3130431672928784");
+			
+			if(badgeIdList.contains(badgeId)) {
+				logger.log(LogStatus.PASS, "BadgeId "+badgeId+" exists in master table for UserID" +userId);
+			}
+			if(badgeValidFromList.contains(badgeActivationDate)) {
+				logger.log(LogStatus.PASS, "BadgeValidFrom "+badgeValidFrom+" exists in master table for UserID" +userId);
+			}
+			if(badgeValidToList.contains(badgeExpirationDate)) {
+				logger.log(LogStatus.PASS, "BadgeValidTo "+badgeValidTo+" exists in master table for UserID" +userId);
+			}
+			
+		}
 	}
 	
 	public static void updatePhoto() throws Throwable {
@@ -3577,5 +3895,4 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 		
 	}
-
 }

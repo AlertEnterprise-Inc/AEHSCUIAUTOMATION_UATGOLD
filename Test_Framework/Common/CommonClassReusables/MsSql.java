@@ -265,4 +265,115 @@ public class MsSql extends BrowserSelection {
 		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
 		return queryStatus;
 	}
+
+
+	public static int setResultsToCCUREDatabase(String query) throws ClassNotFoundException {
+
+		logger.log(LogStatus.INFO, "Querry in getResultsFromDatabase function :  " + query);
+	
+		Connection _conn = null;
+		int queryStatus = -1;
+		try {
+		
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			System.out.println("dbConString :" + AGlobalComponents.ccureDbConString);
+			_conn = DriverManager.getConnection(AGlobalComponents.ccureDbConString);
+			if (_conn != null) {
+				_smt = _conn.prepareStatement(query);
+				try{
+					queryStatus  = _smt.executeUpdate();
+				}
+				finally{
+					try{
+						_smt.close();
+					}
+					catch(Exception ignore){}
+				}
+			}
+		} catch (SQLException se) {
+			logger.log(LogStatus.ERROR, se);
+		} catch (NullPointerException ne) {
+			logger.log(LogStatus.ERROR, ne);	
+		}
+		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
+		return queryStatus;
+	}
+
+
+	public static ArrayList<ArrayList<Object>> getResultsFromCCUREDatabase(String Query) throws ClassNotFoundException {
+
+		logger.log(LogStatus.INFO, "Querry in getResultsFromDatabase function :  " + Query);
+		Connection _conn = null;
+		try {
+			String columnType = null;
+			String className = null;
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			System.out.println("dbConString :" + AGlobalComponents.ccureDbConString);
+			_conn = DriverManager.getConnection(AGlobalComponents.ccureDbConString);
+//			_conn= DriverManager.getConnection("jdbc:sqlserver://192.168.192.163", "AEQA14470", "Alert@1234");
+			if (_conn != null) {
+				_resultList = new ArrayList<ArrayList<Object>>();
+				_smt = _conn.prepareStatement(Query);
+				_rs = _smt.executeQuery();
+				_rsmd = _rs.getMetaData();
+				while (_rs.next()) {
+					_resultRecord = new ArrayList<Object>();
+					for (int i = 1; i <= _rsmd.getColumnCount(); i++) {
+						columnType = _rsmd.getColumnClassName(i);
+						className = _rsmd.getColumnTypeName(i);
+						if (columnType.toLowerCase().indexOf("string") >= 0) {
+							_resultRecord.add((Object) _rs.getString(i));
+						} else if (columnType.toLowerCase().indexOf("integer") >= 0) {
+							_resultRecord.add((Object) _rs.getInt(i));
+						} else if (columnType.toLowerCase().indexOf("date") >= 0) {
+							_resultRecord.add((Object) _rs.getDate(i));
+						} else if (columnType.toLowerCase().indexOf("bigdecimal") >= 0) {
+							_resultRecord.add((Object) _rs.getBigDecimal(i));
+						} else if (columnType.toLowerCase().indexOf("timestamp") >= 0) {
+							_resultRecord.add((Object) _rs.getTimestamp(i));
+						} else if (columnType.toLowerCase().indexOf("boolean") >= 0) {
+							_resultRecord.add((Object) _rs.getBoolean(i));
+						} else if (columnType.toLowerCase().indexOf("byte") >= 0) {
+							_resultRecord.add((Object) _rs.getByte(i));
+						} else if (columnType.toLowerCase().indexOf("double") >= 0) {
+							_resultRecord.add((Object) _rs.getDouble(i));
+						} else if (columnType.toLowerCase().indexOf("float") >= 0) {
+							_resultRecord.add((Object) _rs.getFloat(i));
+						} else if (columnType.toLowerCase().indexOf("long") >= 0) {
+							_resultRecord.add((Object) _rs.getLong(i));
+						} else if (columnType.toLowerCase().indexOf("short") >= 0) {
+							_resultRecord.add((Object) _rs.getShort(i));
+						} else if (className.toLowerCase().indexOf("image") >= 0) {
+							_resultRecord.add((Object) _rs.getString(i));
+						} else if (columnType.toLowerCase().indexOf("clob") >= 0) {
+							Clob clob = _rs.getClob(i);
+							Reader r = clob.getCharacterStream();
+					        StringBuffer buffer = new StringBuffer();
+					        int ch;
+					         try {
+								while ((ch = r.read())!=-1) {
+								    buffer.append(""+(char)ch);
+								 }
+							_resultRecord.add((Object) buffer.toString());	
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						
+					}
+					_resultList.add(_resultRecord);
+				}
+				_smt.close();
+				_rs.close();
+			} else {
+				System.err.println("Database connection not set");
+			}
+		} catch (SQLException se) {
+			logger.log(LogStatus.ERROR, se);
+		} catch (NullPointerException ne) {
+			logger.log(LogStatus.ERROR, ne);
+		}
+		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
+		return _resultList;
+	}
 }

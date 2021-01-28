@@ -281,4 +281,195 @@ public class DBValidations extends BrowserSelection{
 		}
 		return endDate;
 	}
+
+	public static boolean assignBadgeToUserInCCURE(int objectId,String name,String badgeId,String activationDate,String expirationDate,int credentialObjectId) throws ClassNotFoundException {
+		int noOfRecordsUpdated=-1;
+		String query="insert into [ACVSCore].[Access].[Credential](ObjectID,Name,AccessType,ClassType,ActivationDateTime,ExpirationDateTime,CardNumber,PersonnelId) "
+				+ "values("+credentialObjectId+",'"+name+"',0,'SoftwareHouse.NextGen.Common.SecurityObjects.Credential','"+activationDate+"','"+expirationDate+"','"+badgeId+"','"+objectId+"')";
+		noOfRecordsUpdated = MsSql.setResultsToCCUREDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to delete user in identity system");
+			return false;
+		}
+	}
+
+	public static int getMaxCredentialObjectId() throws ClassNotFoundException {
+
+		String query = "Select max(ObjectID) from [ACVSCore].[Access].[Credential]";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
+		int objectId =Integer.parseInt(rs.get(0).get(0));	
+		if(objectId!=0) {
+			System.out.println("MaxObjectId: "+objectId);
+		}
+		else {
+			System.out.println("Unable to fetch maxObjectId");
+		}
+		return objectId;
+	}
+
+	public static int getObjectIdOfTheUser(String name) throws ClassNotFoundException {
+
+		String query = "Select ObjectID from [ACVSCore].[Access].[Personnel] where Name='"+name+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
+		int objectId =Integer.parseInt(rs.get(0).get(0));	
+		if(objectId!=0) {
+			System.out.println("ObjectId of the user: "+objectId);
+		}
+		else {
+			System.out.println("Unable to get ObjectId of the user");
+		}
+		return objectId;
+	}
+
+	public static String getUserdataExtId(String userId) throws ClassNotFoundException, SQLException {
+
+		String query = "select ext_id from stg_user_data where user_id='"+userId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String identityId =rs.get(0).get(0);	
+		if(identityId!=null) {
+			System.out.println("UserDataExtId: "+identityId);
+		}
+		else {
+			System.out.println("Unable to fetch UserDataExtId");
+		}
+		return identityId;
+	}
+
+	public static String getBadgeValidToFromStagingTable(String userDatExtId) throws ClassNotFoundException, SQLException {
+
+		String query = "select valid_to from stg_user_badge_data where user_data_ext_id='"+userDatExtId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String badgeValidTo =rs.get(0).get(0);	
+		if(badgeValidTo!=null) {
+			System.out.println("BadgeValidTo: "+badgeValidTo);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeValidTo");
+		}
+		return badgeValidTo;
+	}
+
+	public static String getBadgeValidFromFromStagingTable(String userDatExtId) throws ClassNotFoundException, SQLException {
+
+		String query = "select valid_from from stg_user_badge_data where user_data_ext_id='"+userDatExtId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String badgeId =rs.get(0).get(0);	
+		if(badgeId!=null) {
+			System.out.println("BadgeValidFrom: "+badgeId);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeValidFrom");
+		}
+		return badgeId;
+	}
+
+	public static String getBadgeIdFromStagingTable(String userDatExtId) throws ClassNotFoundException, SQLException {
+
+
+		String query = "select source_id from stg_user_badge_data where user_data_ext_id='"+userDatExtId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String badgeId =rs.get(0).get(0);	
+		if(badgeId!=null) {
+			System.out.println("BadgeIs: "+badgeId);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeId");
+		}
+		return badgeId;
+	
+		
+	}
+
+	public static String getBadgeTypeFromStagingTable(String userDataExtId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getAssetId(String identityId) throws ClassNotFoundException, SQLException {
+
+		String query = "select asset_id from identity_asset where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String assetId =rs.get(0).get(0);	
+		if(assetId!=null) {
+			System.out.println("UserDataExtId: "+assetId);
+		}
+		else {
+			System.out.println("Unable to fetch UserDataExtId");
+		}
+		return assetId;	
+	}
+
+	public static String getBadgeValidFromFromMasterTable(String identityId) throws ClassNotFoundException, SQLException {
+		
+		String query = "select format(valid_from,'MM-dd-yyyy HH:mm:ss') from identity_asset where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String badgeId =rs.get(0).get(0);	
+		if(badgeId!=null) {
+			System.out.println("UserDataExtId: "+badgeId);
+		}
+		else {
+			System.out.println("Unable to fetch UserDataExtId");
+		}
+		return badgeId;				
+	}
+
+	public static String getBadgeIdFromMasterTable(String assetId) throws ClassNotFoundException, SQLException {
+	
+		String query = "select source_id from asset where id='"+assetId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String badgeId =rs.get(0).get(0);	
+		if(badgeId!=null) {
+			System.out.println("BadgeId: "+badgeId);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeId");
+		}
+		return badgeId;				
+	}
+
+	public static String getBadgeValidToFromMasterTable(String identityId) throws ClassNotFoundException, SQLException {
+	
+		String query = "select format(valid_to,'MM-dd-yyyy HH:mm:ss') from identity_asset where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String validTo =rs.get(0).get(0);	
+		if(validTo!=null) {
+			System.out.println("BadgeValidTo: "+validTo);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeValidTo");
+		}
+		return validTo;				
+	}
+
+	public static String getBadgeTypeFromMasterTable(String assetId) throws ClassNotFoundException, SQLException {
+	
+		String query = "select type from asset where id='"+assetId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String type =rs.get(0).get(0);	
+		if(type!=null) {
+			System.out.println("BadgeType: "+type);
+		}
+		else {
+			System.out.println("Unable to fetch BadgeType");
+		}
+		return type;				
+	}
+
+	public static String getAssetCodeFromMasterTable(String assetId) throws ClassNotFoundException, SQLException {
+	
+		String query = "select ext_id from asset where id='"+assetId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String type =rs.get(0).get(0);	
+		if(type!=null) {
+			System.out.println("assetCode: "+type);
+		}
+		else {
+			System.out.println("Unable to fetch assetCode");
+		}
+		return type;				
+	}
 }

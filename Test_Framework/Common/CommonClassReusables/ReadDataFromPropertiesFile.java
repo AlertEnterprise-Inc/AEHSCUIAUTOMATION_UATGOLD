@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -26,6 +27,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.relevantcodes.extentreports.LogStatus;
 
 public class ReadDataFromPropertiesFile {
 
@@ -533,6 +536,69 @@ public class ReadDataFromPropertiesFile {
 		}	catch(Throwable e){
 			throw  new RuntimeException(e);
 		}
+	}
+
+
+	public static boolean writeTestDataInFile(String badgesDataFile, ArrayList<ArrayList<String>> badgesData, boolean appendMode) {
+
+
+		boolean dataWrittenSuccessfully = false;
+		if(Utility.checkIfFileExists(badgesDataFile)) {
+			if(Utility.checkIfListIsNotNull(badgesData)) {
+		        List<String[]> writeContents = new ArrayList<String[]>();
+		        try {
+		               for (ArrayList<String> row : badgesData) {
+		                     writeContents.add(row.toArray(new String[row.size()]));
+		               }
+		               CSVWriter csvWriter = new CSVWriter(new FileWriter(badgesDataFile, appendMode), ',',
+		                            CSVWriter.NO_QUOTE_CHARACTER);
+		               csvWriter.writeAll(writeContents);
+		               dataWrittenSuccessfully = true;
+		               csvWriter.close();
+		        }
+		        	catch(Throwable e){
+		    			throw  new RuntimeException(e);
+		        	}
+			}
+		}		
+        return dataWrittenSuccessfully;
+	}
+
+
+	public static boolean updateCSVCellValue(String badgesDataFile, String columnHeader, int rowNum, String newCellValue) {
+
+		boolean cellUpdated = false;
+		if(Utility.checkIfStringIsNotNullAndNotEmpty(badgesDataFile) && Utility.checkIfFileExists(badgesDataFile)) {
+			if(Utility.checkIfStringIsNotNullAndNotEmpty(columnHeader)) {
+				if(Utility.checkIfStringIsNotNullAndNotEmpty(newCellValue) && rowNum > 0) {
+					try {
+						List<String[]> updatedData = new ArrayList<String[]>();
+						List<String[]> contents = null;
+						String[] row = null;
+						CSVReader reader = new CSVReader(new FileReader(badgesDataFile));
+						int colNum = TestDataEngine.getColumnNumberOfHeader(badgesDataFile, columnHeader);
+						contents = reader.readAll();
+						reader.close();
+						row = contents.get(rowNum);
+						row[colNum] = newCellValue;
+						contents.set(rowNum, row);
+						for (String[] els : contents) {
+							updatedData.add(els);
+						}
+						CSVWriter writer = new CSVWriter(new FileWriter(badgesDataFile), ',', CSVWriter.NO_QUOTE_CHARACTER);
+						writer.writeAll(updatedData);
+						cellUpdated = true;
+						writer.close();
+						System.out.println("TestData file successfully updated!!");
+					}
+						catch(Throwable e){
+			    			throw  new RuntimeException(e);
+			        	}
+				}
+			}
+		}
+		return cellUpdated;
+	
 	}
 
 }

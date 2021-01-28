@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -54,7 +55,9 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
 import com.relevantcodes.extentreports.LogStatus;
 
 
@@ -984,10 +987,11 @@ public class Utility extends BrowserSelection {
    	* @version 	1.0
    	* @since   	05-01-2020
    	* @param   	String filePath,String fileName,String sheetName,String[] dataToWrite
+     * @return 
    	* @return  	none
    	**/    
     
-    public void writeExcel(String filePath,String fileName,String sheetName,String[] dataToWrite) throws IOException{
+    public static void writeExcel(String filePath,String fileName,String sheetName,String[] dataToWrite) throws IOException{
 
         //Create an object of File class to open xlsx file
 
@@ -1395,8 +1399,8 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		String[] headers = null;
 		int colNumber = -1;
 		try {
-			CSVReaderBuilder csvReader = new CSVReaderBuilder(new FileReader(filePath));
-			headers = csvReader.build().readNext();
+			CSVReader csvReader = new CSVReader(new FileReader(filePath));
+			headers = csvReader.readNext();
 			for (int i = 0; i < headers.length; i++) {
 				if (headers[i].equalsIgnoreCase(Header)) {
 					colNumber = i;
@@ -1404,7 +1408,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 				}
 			}
 			if (colNumber != -1) {
-				contents = csvReader.build().readAll();
+				contents = csvReader.readAll();
 				listIterate = contents.listIterator();
 				colContents = new ArrayList<String>();
 				while (listIterate.hasNext()) {
@@ -1412,7 +1416,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 					colContents.add(rowContents[colNumber]);
 				}
 			}
-			csvReader.build().close();
+			csvReader.close();
 		} catch (FileNotFoundException fne) {
 			logger.log(LogStatus.ERROR, fne);
 		} catch (IOException ioe) {
@@ -1688,5 +1692,4 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		driver = default_driver;
 		logger.log(LogStatus.INFO, "Switched Back to Default Browser Driver");
 	}
-	
 }

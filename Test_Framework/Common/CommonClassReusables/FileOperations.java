@@ -1,5 +1,7 @@
 package CommonClassReusables;
 
+import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,5 +37,23 @@ public class FileOperations {
 			});
 		}
 	}
-
+	public static boolean createFileIfDoesNotExist(String fileName) {
+		boolean fileExists = false;
+		if(Utility.checkIfStringIsNotNullAndNotEmpty(fileName)) {
+			File obj = new File(fileName);
+			if(obj.exists() && obj.isFile()){
+				fileExists = true;
+			}
+			else {
+				if(!obj.exists()) {
+					try {
+						fileExists = obj.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} 
+				}
+			}
+		}
+		return fileExists;
+	}
 }

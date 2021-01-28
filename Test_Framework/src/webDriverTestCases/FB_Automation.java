@@ -335,14 +335,16 @@ public class FB_Automation extends BrowserSelection {
 	 	if(ApiMethods.generateAccessToken())
 	 	{
 	 		if(ApiMethods.createIdentityThroughAPI()) {
-	 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE();
+	 			boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
 
-			if(loginStatus){
-				logger.log(LogStatus.PASS, "Login Successful");
+	 			if(loginStatus){
+	 				logger.log(LogStatus.PASS, "Login Successful");
 			
-			FB_Automation_CommonMethods.setUpReconJob();
-	 		FB_Automation_CommonMethods.validateIdentityData();
-	 		LoginPage.logout();
+	 				FB_Automation_CommonMethods.setUpReconJob();
+	 				FB_Automation_CommonMethods.validateIdentityData();	 	
+	 				FB_Automation_CommonMethods.validateAssetsData();
+	 				LoginPage.logout();
 			}	
 			else
 				logger.log(LogStatus.FAIL, "login failed");

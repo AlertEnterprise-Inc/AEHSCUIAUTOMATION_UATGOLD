@@ -55,6 +55,13 @@ public class AGlobalComponents {
 	public final static String recoveryPassword = password;
 	public static String dbConString =dbUrl+";user="+dbUsername+";password="+dbPassword+";database="+dbName;	
 	
+	public static String ccureDbName = "ACVSCore";
+	public static String ccureDbUsername = "sa";
+	public static String ccureDbPassword = "Alert1234";
+	public static String ccureDbIP="AEDEVW2CCURE29";
+	public static String ccureDbUrl = "jdbc:sqlserver://"+ ccureDbIP;
+	public static String ccureDbConString =ccureDbUrl+";user="+ccureDbUsername+";password="+ccureDbPassword+";database="+ccureDbName+";portNumber=1433";	
+	
 	public static String applicantFirstName = "";
 //	public static String applicantFirstName = "AUTOUJES";
 	public static String applicantSSN = "";
@@ -62,5 +69,6 @@ public class AGlobalComponents {
 	public static boolean RANDOM_DATA_GEN_FLAG = true;
 	public static String baseURI="http://192.168.193.169:60";
 	public static String access_token="";
+	public static String assetCode="";
 	
 }
