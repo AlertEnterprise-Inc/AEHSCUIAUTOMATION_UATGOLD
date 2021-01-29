@@ -77,7 +77,8 @@ public class BrowserSelection  {
 			break;
 
 		case "GC":
-			System.setProperty("webdriver.chrome.driver", "Browser_Files/chromedriver.exe");
+	//		System.setProperty("webdriver.chrome.driver", "Browser_Files/chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "Browser_Files/chromedriver");
 			String downloadFilepath = System.getProperty("user.dir")+ "\\csv Download";
 			HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
 			chromePrefs.put("profile.default_content_settings.popups", 0);
