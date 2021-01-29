@@ -3621,7 +3621,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 		if(unhandledException==false)
 		{
-			System.out.println("*****************Fill Assets Info*****************");
+			System.out.println("*****************Validate Assets Info*****************");
 			try{
 				for(int i=0;i<=userIdList.size()-1;i++) {
 					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
@@ -3636,13 +3636,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						getIndexOfAssetsHeaders();
 						
 						//AssetCode Validation
-						WebElement assetCodeElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div"));
-						String assetCode=assetCodeElement.getText();
+						String assetCodeElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div";
+						String assetCode=driver.findElement(By.xpath(assetCodeElement)).getText();
+						
 						Utility.pause(2);
 		
 						if(assetCode!=null) {
 							if(AGlobalComponents.assetCode.equalsIgnoreCase(assetCode)) {
-								Utility.verifyElementPresentByScrollView(assetCode, "AssetCode", true, false);
+								Utility.verifyElementPresentByScrollView(assetCodeElement, "AssetCode", true, false);
 							}
 							else {
 								logger.log(LogStatus.FAIL, "FirstName " +assetCode+" on UI is not same as expected");
@@ -3653,8 +3654,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 						
 						//BadgeValidFrom Validation
-						WebElement badgeValidFromElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidFromIndex+"]/div"));
-						String badgeValidFrom=badgeValidFromElement.getText();
+						String badgeValidFromElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidFromIndex+"]/div";
+						String badgeValidFrom=driver.findElement(By.xpath(badgeValidFromElement)).getText();
 						Utility.pause(2);
 						
 						SimpleDateFormat month_date = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
@@ -3664,7 +3665,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 						if(newDate!=null) {
 							if(badgeValidFromList.get(i).equalsIgnoreCase(newDate)) {
-								Utility.verifyElementPresentByScrollView(newDate, "BadgeValidFrom", true, false);
+								Utility.verifyElementPresentByScrollView(badgeValidFromElement, "BadgeValidFrom", true, false);
 							}
 							else {
 								logger.log(LogStatus.FAIL, "BadgeValidFrom " +newDate+" on UI is not same as expected");
@@ -3675,8 +3676,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 						
 						//BadgeValidTo Validation
-						WebElement badgeValidToElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidToIndex+"]/div"));
-						String badgeValidTo=badgeValidToElement.getText();
+						String badgeValidToElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidToIndex+"]/div";
+						String badgeValidTo=driver.findElement(By.xpath(badgeValidToElement)).getText();
 						Utility.pause(2);
 						
 						SimpleDateFormat valdToMonth = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
@@ -3686,7 +3687,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 						if(badgeValidTo!=null) {
 							if(badgeValidToList.get(i).equalsIgnoreCase(newValidToDate)) {
-								Utility.verifyElementPresentByScrollView(newValidToDate, "BadgeValidTo", true, false);
+								Utility.verifyElementPresentByScrollView(badgeValidToElement, "BadgeValidTo", true, false);
 							}
 							else {
 								logger.log(LogStatus.FAIL, "BadgeValidTo " +newValidToDate+" on UI is not same as expected");
@@ -3695,27 +3696,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						else {
 							logger.log(LogStatus.FAIL, "Not able to see badgeValidTo "+newValidToDate+"on UI ");
 						}
-							
-						//AssetCode Validation
-						WebElement assetCodeElemnt= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div"));
-						String assetCode1=assetCodeElemnt.getText();
-						Utility.pause(2);
-		
-						if(assetCode1!=null) {
-							if(AGlobalComponents.assetCode.equalsIgnoreCase(assetCode1)) {
-								Utility.verifyElementPresentByScrollView(assetCode1, "AssetType", true, false);
-							}
-							else {
-								logger.log(LogStatus.FAIL, "AssetCode " +assetCode1+" on UI is not same as expected");
-							}
-						}
-						else {
-							logger.log(LogStatus.FAIL, "Not able to see AssetCode "+assetCode1+"on UI ");
-						}
 						
 						//Badge Type Validation
-						WebElement badgeTypeElement= driver.findElement(By.xpath("//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeTypeIndex+"]/div"));
-						String badgeType=badgeTypeElement.getText();
+						String badgeTypeElement="//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeTypeIndex+"]/div";
+						String badgeType=driver.findElement(By.xpath(badgeTypeElement)).getText();
 						Utility.pause(2);
 		
 						if(badgeType!=null) {
@@ -3724,7 +3708,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							}
 								
 							if(badgeTypeList.get(i).equalsIgnoreCase(badgeType)) {
-								Utility.verifyElementPresentByScrollView(badgeType, "AssetType", true, false);
+								Utility.verifyElementPresentByScrollView(badgeTypeElement, "Asset Type", true, false);
 							}
 							else {
 								logger.log(LogStatus.FAIL, "AssetType " +badgeType+" on UI is not same as expected");
