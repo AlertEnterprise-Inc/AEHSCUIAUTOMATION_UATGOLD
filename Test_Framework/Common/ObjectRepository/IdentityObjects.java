@@ -96,10 +96,6 @@ public interface IdentityObjects {
 	
 	String emptyGrid = ".//div[@class='emptyGridMsg']";
 	
-//	String confirmButtonValidFrom = "(//span[contains(@id,'ButtonbaseDatePicker') and text()='Confirm'])[1]";
-	
-//	String confirmButtonValidTo ="(//span[contains(@id,'ButtonbaseDatePicker') and text()='Confirm'])[2]";
-	
 	String confirmButton = "//*[contains(@id,'button') and text()='Confirm']";
 	
 //	String addCommentsButtonLnk = "//span[contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small') and text()='Add Comment']";

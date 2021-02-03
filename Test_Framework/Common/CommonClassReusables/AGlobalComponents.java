@@ -38,6 +38,9 @@ public class AGlobalComponents {
 	public static boolean ManagerLogin = false;
 	public static boolean createIdentityPermanent = false;
 	public static boolean createIdentityContractor = false;
+	public static boolean updatePhoto = false;
+	public static boolean wellnessCheckCase=false;
+	public static boolean contractorToPermanentEmployeeConversion = false;
 		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";

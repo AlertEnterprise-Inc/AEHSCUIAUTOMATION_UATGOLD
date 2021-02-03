@@ -19,6 +19,6 @@ public interface MyRequestObjects {
 	String selectRequestType = "//*[contains(@id,'baseComboBoxRemote') and @placeholder ='Select Request Type']";
 	String uploadImgBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Upload']";
 	String cropAndSaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Crop & Save']";
-	;
-
+	String employeeType = "//input[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
+	String deleteAttachmentBtnLnk = "//*[contains(@id,'button') and @data-qtip='Delete Image']";
 }
