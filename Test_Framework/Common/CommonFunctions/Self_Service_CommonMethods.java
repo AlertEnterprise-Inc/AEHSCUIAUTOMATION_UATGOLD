@@ -21,18 +21,23 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
+import CommonClassReusables.MsSql;
 import CommonClassReusables.Utility;
 import ObjectRepository.AdminObjects;
+import ObjectRepository.AssetObjects;
 import ObjectRepository.HomeObjects;
 import ObjectRepository.IdentityObjects;
-import ObjectRepository.MyRequestObjects;
 
 public class Self_Service_CommonMethods extends BrowserSelection{
 	
-	private static int assignmentStatusIndex,accessIndex,actionIndex = 0;
-	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="";;
+	private static int assignmentStatusIndex,accessIndex,actionIndex,assetCodeIndex = 0;
+	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="";
 	private static ArrayList<String> contractorAccessNames = new ArrayList<String>();
 	private static ArrayList<String> permanentAccessNames = new ArrayList<String>();
+	private static String badgeId = Utility.UniqueNumber(12);
+	private static String access1ForTempOnboarding = "SC NWPTIE NONR GATE ACCESS" , access2ForTempOnboarding = "End User";
+	private static String access1ForPermanentEmp = "SC CHRWLS NONR CONST GATE" , access2ForPermanentEmp = "SC LEEXSS NONR GENERAL ACCESS";
+	private static String system1ForTempOnboarding = "AMAG",system2ForTempOnboarding = "HR System";
 	
 	
 	/**
@@ -1228,21 +1233,22 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		public static void checkStatus(String firstName, String lastName) throws Throwable {
 	
 		if (unhandledException == false) {
-			System.out.println("********* Check status in IDM before  request submission*******************");
-			logger.log(LogStatus.INFO,"******Check status in IDM before  request submission************");
+			System.out.println("********* Check status in IDM *******************");
+			logger.log(LogStatus.INFO,"******Check status in IDM ************");
 			try {
 				WebElement image=null ;
 				String oldPhotoSrc=null;
 							
 				if(AGlobalComponents.RequestSubmit){
 					logger.log(LogStatus.INFO, "Checking status of the user after request submission");
-					ByAttribute.click("xpath", MyRequestObjects.reloadOptionMenu, "Click on menu to reload");
-					Utility.pause(1);
-					ByAttribute.click("xpath", MyRequestObjects.reloadOption, "Click on reload ");
-					Utility.pause(5);
+					
 					
 					//Photo validation
 					if(AGlobalComponents.updatePhoto){
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						Utility.pause(5);
 						logger.log(LogStatus.INFO, "Capturing updated photo");
 						String newPhotoSrc = image.getAttribute("src");
 						if(Utility.compareStringValues(oldPhotoSrc,newPhotoSrc ))
@@ -1254,6 +1260,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}	
 					//Asset Status Validation 
 					if(AGlobalComponents.wellnessCheckCase){	
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						Utility.pause(5);
 						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
 						WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
 						newAssetStatus=assetStatus.getText();
@@ -1266,6 +1276,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 					//Access Validation 
 					if(AGlobalComponents.contractorToPermanentEmployeeConversion){	
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						Utility.pause(5);
 						ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
 						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
 						int size = noOfAccessRows.size();
@@ -1299,6 +1313,46 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						else{
 							logger.log(LogStatus.FAIL, "There is no changes in the accesses assigned to the user ");
 						}
+					}
+					
+					if(AGlobalComponents.tempWorkerOnboarding){
+						FB_Automation_CommonMethods.searchIdentity(firstName,lastName);
+						logger.log(LogStatus.PASS, "Temporary Onboardidng done is successful , user is present in IDM");
+						
+						/*Validating access assigned to the user*/
+						ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
+						Utility.verifyElementPresent("//*[text()='"+access1ForTempOnboarding+"']", access1ForTempOnboarding, false);
+						Utility.verifyElementPresent("//*[text()='"+access2ForTempOnboarding+"']", access2ForTempOnboarding, false);
+						logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
+						
+						 /* checking for asset added by badge admin at time of approval
+						 */
+						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+						Utility.verifyElementPresent("//*[text()='"+badgeId+"']", "badgeId", false);
+						logger.log(LogStatus.PASS, "Asset is assigned to the user with asset Id : "+badgeId);
+						
+						
+						/*
+						 * checking for Systems AMAG and HR added on the basis of Accesses
+						 */
+						ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+						Utility.verifyElementPresent(IdentityObjects.systemsTabLnk, "AMAG and HR System", false);
+			//			Utility.verifyElementPresent("//*[text()='"+system1ForTempOnboarding+"']", "AMAG System", false);
+			//			Utility.verifyElementPresent("//*[text()='"+system2ForTempOnboarding+"']", "HR System", false);
+						logger.log(LogStatus.PASS, "2 systems are successfully assigned to the user");
+									
+						
+					}
+					
+					if(AGlobalComponents.tempWorkerModification){
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						Utility.pause(5);
+						
+						Utility.verifyElementPresent(HomeObjects.inputLastNameLnk, "Modified last name", false);
+						logger.log(LogStatus.PASS, "Last name modified successfully ");
+						
 					}
 					AGlobalComponents.RequestSubmit=false;
 				}
@@ -1350,6 +1404,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							}
 						}
 					}
+					
+					//checking the last name of user before modification
+					if (AGlobalComponents.tempWorkerModification){
+						logger.log(LogStatus.INFO, "Current last name of temp worker is : "+lastName);
+					}
 				}
 					
 			}catch (Exception e) {
@@ -1373,6 +1432,37 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					switch (heading.toLowerCase()) {
 		            case "assignment status":
 		            	assignmentStatusIndex = j+1;
+		            	j++;
+		            	flag=false;
+		            	break;
+		            case "":
+		                break;
+		            default: 
+		            	System.out.println("Need to skip this header : "+ heading);
+		            	j++;
+					}
+				}
+			}
+			catch(Exception e){
+				logger.log(LogStatus.ERROR, "Failed: Header Not Found ");
+			}
+	}
+	
+	
+	public static void getIndexOfManageAssetsHeaders() throws Throwable {
+		try{
+			List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
+			int size = headers.size(),j=1;
+			boolean flag=true;
+						
+			for (int i=1;i<size && flag;i++){
+				WebElement header= headers.get(i);
+				String heading = header.getText();
+				System.out.println("heading "+ (i) +" "+ heading);
+						
+					switch (heading.toLowerCase()) {
+		            case "asset code":
+		            	assetCodeIndex = j+1;
 		            	j++;
 		            	flag=false;
 		            	break;
@@ -1439,11 +1529,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.INFO,"***************************** submitRequest For WellnessCheck *********************************");
 			try {
 					logger.log(LogStatus.INFO, "Navigate to My Requests Tab");
-					ByAttribute.click("xpath", MyRequestObjects.myRequestsTabBtn, "Click on MyRequests tab");
+					ByAttribute.click("xpath", HomeObjects.myRequestsTabBtn, "Click on MyRequests tab");
 					Utility.pause(5);
-					ByAttribute.click("xpath", MyRequestObjects.createBtn, "Click on create button ");
+					ByAttribute.click("xpath", HomeObjects.createBtn, "Click on create button ");
 					Utility.pause(5);
-					ByAttribute.click("xpath", MyRequestObjects.wellnessCheckLnk, "Click on WellnessCheck pod ");
+					ByAttribute.click("xpath", HomeObjects.wellnessCheckLnk, "Click on WellnessCheck pod ");
 					Utility.pause(5);
 					
 					logger.log(LogStatus.INFO, "Fill the questionnaire" );
@@ -1455,9 +1545,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
 					
 					
-					ByAttribute.click("xpath", MyRequestObjects.acknowledgementCheckbox, "Click acknowledgement checkbox ");
+					ByAttribute.click("xpath", HomeObjects.acknowledgementCheckbox, "Click acknowledgement checkbox ");
 					Utility.pause(2);
-					ByAttribute.click("xpath", MyRequestObjects.submitBtn, "Click Submit button ");
+					ByAttribute.click("xpath", HomeObjects.submitBtn, "Click Submit button ");
 					Utility.pause(5);
 					AGlobalComponents.RequestSubmit= true;
 								
@@ -1474,12 +1564,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	private static void submitRequestToActivateTheBadge() {
 		try{
 			logger.log(LogStatus.INFO, "Filling the questionnaire for badge activation case");
-			ByAttribute.click("xpath", MyRequestObjects.questionOneNo, "Select radio button for first question");
+			ByAttribute.click("xpath", HomeObjects.questionOneNo, "Select radio button for first question");
 			Utility.pause(2);
-			ByAttribute.click("xpath", MyRequestObjects.questionTwoNo, "Select radio button for second question");
+			ByAttribute.click("xpath", HomeObjects.questionTwoNo, "Select radio button for second question");
 			Utility.pause(2);
-			ByAttribute.click("xpath", MyRequestObjects.questionThreeNo, "Select radio button for third question");
-			Utility.verifyElementPresent(MyRequestObjects.userRequestHeader, "Filled User Request", false);
+			ByAttribute.click("xpath", HomeObjects.questionThreeNo, "Select radio button for third question");
+			Utility.verifyElementPresent(HomeObjects.userRequestHeader, "Filled User Request", false);
 			
 		}catch(Exception e){
 			logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
@@ -1493,12 +1583,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		try{
 			
 			logger.log(LogStatus.INFO, "Filling the questionnaire for badge deactivation case");
-			ByAttribute.click("xpath", MyRequestObjects.questionOneYes, "Select radio button for first question");
+			ByAttribute.click("xpath", HomeObjects.questionOneYes, "Select radio button for first question");
 			Utility.pause(2);
-			ByAttribute.click("xpath", MyRequestObjects.questionTwoNo, "Select radio button for second question");
+			ByAttribute.click("xpath", HomeObjects.questionTwoNo, "Select radio button for second question");
 			Utility.pause(2);
-			ByAttribute.click("xpath", MyRequestObjects.questionThreeNo, "Select radio button for third question");
-			Utility.verifyElementPresent(MyRequestObjects.userRequestHeader, "Filled User Request", false);
+			ByAttribute.click("xpath", HomeObjects.questionThreeNo, "Select radio button for third question");
+			Utility.verifyElementPresent(HomeObjects.userRequestHeader, "Filled User Request", false);
 		}catch(Exception e){
 			logger.log(LogStatus.FAIL, "Unable to fill the questionnaire");
 		}
@@ -1507,12 +1597,17 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 
 
-	public static void checkAssetStatusInMyRequestInbox(String firstName, String lastName) throws Throwable {
+	public static void checkRequestInMyRequestInbox(String firstName, String lastName) throws Throwable {
 		if (unhandledException == false) {
 			System.out.println("***************************** Checking the status in the Request *********************************");
 			logger.log(LogStatus.INFO,"*************** Checking the status in the Request *********************************");
 			try{
 				String identityName = firstName +" "+ lastName;
+				if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+					ByAttribute.mouseHover("xpath",HomeObjects.homeTabBtn,"Mouse hover on Home tab to open My Requests");
+					ByAttribute.click("xpath",HomeObjects.homeMyRequestLnk,"click on My Requests");
+					Utility.pause(5);
+				}
 				List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 				WebElement requestNo = requestNumberElements.get(0);
 				Actions action = new Actions(driver);
@@ -1522,21 +1617,68 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
 				String requesterName= requestBy.getText();
-				if(Utility.compareStringValues(requesterName, "CAROL PAYNE") && AGlobalComponents.ManagerLogin){
+				if(Utility.compareStringValues(requesterName, "CAROL PAYNE") ||(Utility.compareStringValues(requesterName, "ANNA MORDENO")) && AGlobalComponents.ManagerLogin){
 					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
 				}
 				else if(Utility.compareStringValues(requesterName, identityName.toUpperCase())){
 					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
 				}else
 					logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
-				logger.log(LogStatus.INFO, "Screenshot of the opened Request");
-				Utility.verifyElementPresent("//*[@class='x-component x-box-item x-component-activitytext' and text()='"+identityName+"']", "User Image", false);
+	
+				if(AGlobalComponents.wellnessCheckCase){
+					//validate badge/asset status in my request inbox
+					//write the code to check the badge status and store it in badgeStatusInRequest
+					//compare badge status is different from before status hence pass
+				}
+				if(AGlobalComponents.contractorToPermanentEmployeeConversion){
 				
-				//validate badge/asset status in my request inbox
-				//write the code to check the badge status and store it in badgeStatusInRequest
-				//compare badge status is different from before status hence pass
+					Utility.verifyElementPresentByScrollView(HomeObjects.accessListGrid, "AccessList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+access1ForPermanentEmp+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForPermanentEmp+"']")).size()>0)){
+						logger.log(LogStatus.INFO, "2 accesses :" +access1ForPermanentEmp +","+access2ForPermanentEmp+ " are assigned to the user");
+					}
+					else
+						logger.log(LogStatus.FAIL, " As per the rule , new accesses are not added");
+					ByAttribute.click("xpath", HomeObjects.workFlowBtn, "CLick on workflow button");
+					Utility.pause(2);
+					Utility.verifyElementPresent(HomeObjects.workflowStatusHeaderInWFPopupWindow, "workflow status window", false);
+					ByAttribute.click("xpath", HomeObjects.closeIconInWFStatusWindow, "close the workflow status popup window");
+				}
+				if(AGlobalComponents.tempWorkerOnboarding){
+					/*
+					 * checking for accesses added through pre feed rule while onboarding
+					 */
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.accessListGrid, "AccessList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+access1ForTempOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForTempOnboarding+"']")).size()>0)){
+						logger.log(LogStatus.INFO, "2 accesses :" +access1ForTempOnboarding +","+access2ForTempOnboarding+ " are assigned to the user");
+					}
+					
+					/*
+					 * checking for badge added through pre feed rule while onboarding
+					 */
+					Utility.verifyElementPresentByScrollView(HomeObjects.badgeListGrid, "BadgeList Grid", true,false);
+					WebElement activationDate = driver.findElement(By.xpath("//span[normalize-space(text())='Activation Date']//ancestor::div[contains(@id,'headercontainer')]//following-sibling::div//td[1]"));
+					String activationDateValue = activationDate.getText();
+					if(Utility.checkIfStringIsNotNull(activationDateValue)){
+						logger.log(LogStatus.INFO, "Badge is assigned to the user with activation date as: "+ activationDateValue);
+					}
+					
+					/*
+					 * checking for prerequisites added through pre feed rule while onboarding
+					 */
+					String prerequisite1 = "IT Security Training 2020" , prerequisite2 = "Background Check";
+					Utility.verifyElementPresentByScrollView(HomeObjects.prerequisiteList, "PrerequisiteList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+prerequisite1+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+prerequisite1+"']")).size()>0)){
+						logger.log(LogStatus.INFO, "2 prerquisites  :" +prerequisite1 +","+prerequisite2+ " are assigned to the user");
+					}
+					
+				}
 				
-				//compare the accesses assigned to the user
+				if(AGlobalComponents.tempWorkerModification){
+					ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
+					Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+lastName+"']", "modifiedLastName", false);
+					logger.log(LogStatus.PASS,"Last name is modified for temp worker");
+				}
 				
 				
 			}catch (Exception e) {
@@ -1548,31 +1690,126 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 	/**
 	 * <h1>Temporary worker Onboarding</h1> 
-	 * This is Method to hire temporary worker by running Recon using File Connector
+	 * This is Method to hire temporary worker by Manager
 	 * @author Monika Mehta
 	 * @modified
 	 * @version 1.0
 	 * @since 01-21-2021
 	 * @param none
 	 * @return none
+	 * @throws Throwable 
 	 **/
 
-	public static void temporaryWorkerOnboarding() {
-		// TODO Auto-generated method stub
+	public static void temporaryWorkerOnboarding(String firstName , String lastName) throws Throwable {
+		if (unhandledException == false) {
+			System.out.println("******** Temporary worker onboarding By Manager*********");
+			logger.log(LogStatus.INFO,"*********Temporary worker onboarding By Manager**************");
+			
+			try {
+				
+					if (driver.findElements(By.xpath(HomeObjects.TempWorkerTab)).size() > 0) 
+					{
+					ByAttribute.mouseHover("xpath", HomeObjects.TempWorkerTab, "Mouse hover on Temp Worker tab");
+					ByAttribute.click("xpath", HomeObjects.TempWorkerOnboardingLnk, "Click on Temp worker Onboarding");
+					Thread.sleep(1000);
+										
+					ByAttribute.click("xpath",HomeObjects.inputFirstNameLnk , "Click to enter first name ");
+					ByAttribute.setText("xpath",HomeObjects.inputFirstNameLnk,firstName , "Enter First name");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath",HomeObjects.inputLastNameLnk , "Click to enter last name ");
+					ByAttribute.setText("xpath",HomeObjects.inputLastNameLnk,lastName , "Enter Last name");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath",HomeObjects.inputCountry , "Click to enter Country ");
+					ByAttribute.setText("xpath",HomeObjects.inputCountry,"United States Of America" , "Enter Country");
+					Utility.pause(2);
+					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States of America')]" , "Select the country");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath",HomeObjects.inputLocation , "Click to enter location ");
+					Actions action = new Actions(driver);
+					action.sendKeys("America").build().perform();
+					Utility.pause(2);
+					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'America')]" , "Select the location");
+					Utility.pause(2);
+										       
+		       //     ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
+					WebElement submitBtn = driver.findElement(By.xpath(HomeObjects.submitBtn));
+					action.click(submitBtn).build().perform();	
+		            Utility.pause(60);
+		            if(AGlobalComponents.tempWorkerOnboarding)
+		            	AGlobalComponents.RequestSubmit=true;
+		            
+		            if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+		            	ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home tab");
+		            	ByAttribute.click("xpath", HomeObjects.homeMyRequestLnk, "click on My Requests");
+		            	Utility.pause(5);
+		            }
+		            List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+					WebElement latestRequestNumber = requestNumberElements.get(0);
+					
+					reqNum = latestRequestNumber.getText();
+				}else {
+					System.out.println("Navigation to 'Create Request' Page Failed");
+					logger.log(LogStatus.FAIL, "Navigation to 'Create Request' Page Failed");
+				}
+
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		
+		}
+	
 		
 	}
 
 
 
-	public static void tempWorkerModification() {
-		// TODO Auto-generated method stub
+	public static void tempWorkerModification(String firstName,String lastName,String modifiedLastName) throws Throwable {
+		if (unhandledException == false) {
+			System.out.println("******** Modifying last name of Temporary worker  By Manager*********");
+			logger.log(LogStatus.INFO,"*********Modifying last name of Temporary worker  By Manager**************");
+			try {
+				
+				if (driver.findElements(By.xpath(HomeObjects.TempWorkerTab)).size() > 0) 
+				{
+					ByAttribute.mouseHover("xpath", HomeObjects.TempWorkerTab, "Mouse hover on Temp Worker tab");
+					ByAttribute.click("xpath", HomeObjects.TempWorkerModificationLnk, "Click on Temp worker modification");
+					Thread.sleep(1000);
+					
+					logger.log(LogStatus.INFO, "Search the user to be modified");
+					WebElement identity = driver.findElement(By.xpath(".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']"));
+					Actions action = new Actions(driver);
+					action.sendKeys(identity, firstName);
+					action.build().perform();
+					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
+					Utility.pause(5);
+					
+					ByAttribute.clearSetText("xpath", HomeObjects.inputLastNameLnk, modifiedLastName, "Enter the value of new last name ");
+					Utility.pause(2);
+					ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
+		            Utility.pause(60);
+		            AGlobalComponents.RequestSubmit=true;
+				}else {
+					System.out.println("Navigation to 'Create Request' Page Failed");
+					logger.log(LogStatus.FAIL, "Navigation to 'Create Request' Page Failed");
+				}
+				
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		
+		}
 		
 	}
 
 
 
 	public static void employeeConversion(String firstName) throws Throwable {
-String reqNum="";
+		String reqNum="";
 		
 		if (unhandledException == false) {
 			System.out.println("******** Employment Type conversion from contractor to Permanent By Manager*********");
@@ -1597,10 +1834,10 @@ String reqNum="";
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
-					ByAttribute.click("xpath", MyRequestObjects.otherRequestsLnk, "Click on Other Requests Pod");
+					ByAttribute.click("xpath", HomeObjects.otherRequestsLnk, "Click on Other Requests Pod");
 					Utility.pause(2);
-					ByAttribute.click("xpath", MyRequestObjects.selectRequestType,"Enter the request type");
-					ByAttribute.setText("xpath", MyRequestObjects.selectRequestType,"Employment Type Conversion", "Enter the request type");
+					ByAttribute.click("xpath", HomeObjects.selectRequestType,"Enter the request type");
+					ByAttribute.setText("xpath", HomeObjects.selectRequestType,"Employment Type Conversion", "Enter the request type");
 					Utility.pause(2);
 					Actions action = new Actions(driver);
 					action.sendKeys(Keys.TAB);
@@ -1609,14 +1846,14 @@ String reqNum="";
 					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
 					Utility.pause(5);
 					
-					WebElement employeeType = driver.findElement(By.xpath(MyRequestObjects.employeeType));
+					WebElement employeeType = driver.findElement(By.xpath(HomeObjects.employeeType));
 					employeeType.clear();
-					ByAttribute.setText("xpath",MyRequestObjects.employeeType,"Permanent", "Enter the employement type as permanent");
+					ByAttribute.setText("xpath",HomeObjects.employeeType,"Permanent", "Enter the employement type as permanent");
 					action.sendKeys(Keys.TAB);
 					action.sendKeys("Employment Conversion from Contractor to Permanent");
 					action.build().perform();
 						         	            
-		            ByAttribute.click("xpath",MyRequestObjects.submitBtn, "Click on submit button");
+		            ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
 		            Utility.pause(5);
 		            AGlobalComponents.RequestSubmit=true;
 				}else {
@@ -1683,10 +1920,10 @@ String reqNum="";
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
-					ByAttribute.click("xpath", MyRequestObjects.otherRequestsLnk, "Click on Other Requests Pod");
+					ByAttribute.click("xpath", HomeObjects.otherRequestsLnk, "Click on Other Requests Pod");
 					Utility.pause(2);
-					ByAttribute.click("xpath", MyRequestObjects.selectRequestType,"Enter the request type");
-					ByAttribute.setText("xpath", MyRequestObjects.selectRequestType,"Modify Identity", "Enter the request type");
+					ByAttribute.click("xpath", HomeObjects.selectRequestType,"Enter the request type");
+					ByAttribute.setText("xpath", HomeObjects.selectRequestType,"Modify Identity", "Enter the request type");
 					Utility.pause(2);
 					Actions action = new Actions(driver);
 					action.sendKeys(Keys.TAB);
@@ -1696,7 +1933,7 @@ String reqNum="";
 					Utility.pause(5);
 					
 					String photoFilePath=System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
-					ByAttribute.click("xpath",MyRequestObjects.uploadImgBtn, "Click on upload button to update the photo");
+					ByAttribute.click("xpath",HomeObjects.uploadImgBtn, "Click on upload button to update the photo");
 					Thread.sleep(1000);
 									
 					StringSelection ss = new StringSelection(photoFilePath);
@@ -1710,14 +1947,14 @@ String reqNum="";
 		            robot.keyPress(KeyEvent.VK_ENTER);
 		            robot.keyRelease(KeyEvent.VK_ENTER);
 					Utility.pause(10);
-		            ByAttribute.click("xpath",MyRequestObjects.cropAndSaveBtn, "Click on Crop and Save button");
+		            ByAttribute.click("xpath",HomeObjects.cropAndSaveBtn, "Click on Crop and Save button");
 		            Utility.pause(4);
 		            if(driver.findElements(By.xpath("//*[@class='x-img x-box-item x-img-default']")).size()>0){
 		            	logger.log(LogStatus.PASS, "Image uploaded successfully");
-		            	Utility.verifyElementPresent(MyRequestObjects.deleteAttachmentBtnLnk, "Uploaded Image", false);
+		            	Utility.verifyElementPresent(HomeObjects.deleteAttachmentBtnLnk, "Uploaded Image", false);
 		            }
 		         	            
-		            ByAttribute.click("xpath",MyRequestObjects.submitBtn, "Click on submit button");
+		            ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
 		            Utility.pause(5);
 		            List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 					WebElement latestRequestNumber = requestNumberElements.get(0);
@@ -1751,7 +1988,7 @@ String reqNum="";
 				empType.clear();
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, "Contractor", "Setting emp type of identity as contractor");
 				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Save the changes done to Identity");
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Save the changes done to Identity");
 				Utility.pause(5);
 			}
 			if(AGlobalComponents.updatePhoto){
@@ -1767,10 +2004,10 @@ String reqNum="";
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
-					ByAttribute.click("xpath", MyRequestObjects.otherRequestsLnk, "Click on Other Requests Pod");
+					ByAttribute.click("xpath", HomeObjects.otherRequestsLnk, "Click on Other Requests Pod");
 					Utility.pause(2);
-					ByAttribute.click("xpath", MyRequestObjects.selectRequestType,"Enter the request type");
-					ByAttribute.setText("xpath", MyRequestObjects.selectRequestType,"Modify Identity", "Enter the request type");
+					ByAttribute.click("xpath", HomeObjects.selectRequestType,"Enter the request type");
+					ByAttribute.setText("xpath", HomeObjects.selectRequestType,"Modify Identity", "Enter the request type");
 					Utility.pause(2);
 					Actions action = new Actions(driver);
 					action.sendKeys(Keys.TAB);
@@ -1779,10 +2016,10 @@ String reqNum="";
 					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
 					Utility.pause(5);
 					
-					ByAttribute.click("xpath",MyRequestObjects.deleteAttachmentBtnLnk , "Click on delete button to remove the photo");
+					ByAttribute.click("xpath",HomeObjects.deleteAttachmentBtnLnk , "Click on delete button to remove the photo");
 					Utility.pause(5);
 				
-					ByAttribute.click("xpath",MyRequestObjects.submitBtn, "Click on submit button");
+					ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
 		            Utility.pause(5);
 				}
 				
@@ -1793,6 +2030,191 @@ String reqNum="";
 		}
 
 	}
+	}
+
+
+
+	public static void approveRequest(String WfActor) throws Throwable {
+		if (unhandledException == false) {
+			try {
+				logger.log(LogStatus.INFO, "Approving the request ");
+				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+				ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
+				Utility.pause(4);
+				
+				if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+					ByAttribute.click("xpath", HomeObjects.openRequestsLnk, "Click on Open Requests Link to open the request");
+					Utility.pause(5);
+					Utility.verifyElementPresent(".//*[@class='x-component x-component-activityLabeltext' and contains( text(),'"+reqNum+"')]", "Request", false);
+					
+					if(Utility.compareStringValues("manager", WfActor)){
+						System.out.println("Approving the temp onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the temp onboarding request by manager ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: '"+WfActor+"'']", WfActor+" Stage", false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button ");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+						
+					}
+					if(Utility.compareStringValues("badgeAdmin", WfActor)){
+						System.out.println("Approving the temp onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the temp onboarding request by  ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: '"+WfActor+"'']", WfActor+" Stage", false);
+						
+						
+						/*Giving badge to the user */
+						
+						ByAttribute.click("xpath",HomeObjects.selectBadgeField,"Enter the  asset created to the user");
+						Actions action = new Actions(driver);
+						action.sendKeys(AGlobalComponents.badgeName).build().perform();
+						Utility.pause(2);
+						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+AGlobalComponents.badgeName+"')]" , "Select the asset name");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.badgeListGrid,"Asset assigned");
+						Utility.verifyElementPresent("//*[text()='"+badgeId+"']", badgeId, false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button By badge admin");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.yesButtonOnPopUpWindow, "Click yes button to save the changes done in badge");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by badge admin");
+						
+					}
+					
+				}
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+
+		}
+		
+	}
+
+
+
+	/**
+	 * <h1>createNewAsset</h1> 
+	 * This is Method to Create a New Asset
+	 * @author Jiten Khanna
+	 * @modified
+	 * @version 1.0
+	 * @since 02-09-2021
+	 * @param String requestStatus
+	 * @return none
+	 **/
+
+	public static String createNewAsset(String badgeType, String badgeSubType, String system) throws Throwable {
+
+		String badgeName="";
+		String badgeId="";
+		if (unhandledException == false) {
+			System.out.println("**************************** createNewAsset ********************************");
+			logger.log(LogStatus.INFO,"**************************** createNewAsset ********************************");
+			try {
+				
+				if(Utility.compareStringValues(AGlobalComponents.applicationURL, "http://aepdemo.alertenterprise.com")){
+					ByAttribute.mouseHover("xpath", AssetObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Asset Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", AssetObjects.manageAssetsLnk, "Click on Manage Asset Link");
+					Utility.pause(5);
+				}
+				else{
+					ByAttribute.mouseHover("xpath", AssetObjects.assetTabBtn, "Mouse Hover on Asset Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", AssetObjects.assetManageAssetLnk, "Click on Manage Asset Link");
+					Utility.pause(5);
+				}
+				if ((driver.findElements(By.xpath(".//label[text()='Manage Asset']")).size() > 0)||(driver.findElements(By.xpath(".//label[text()='Manage Assets']")).size() > 0)) 
+				{
+					System.out.println("Manage Asset Page Loaded Successfully");
+					logger.log(LogStatus.PASS, "Manage Asset Page Loaded Successfully");
+					
+					ByAttribute.click("xpath", AssetObjects.assetCreateAssetBtn, "Click Create Button");
+					Thread.sleep(1000);
+					ByAttribute.clearSetText("xpath", AssetObjects.assetTypeTxt, badgeType, "Enter Badge Type: "+badgeType);
+					Thread.sleep(500);
+					ByAttribute.click("xpath", ".//li[@role='option' and text()='"+badgeType+"']", "Select "+badgeType+" Option from List");
+					
+					ByAttribute.clearSetText("xpath", AssetObjects.assetSubTypeTxt, badgeSubType, "Enter Bdge Sub Type: "+badgeSubType);
+					Thread.sleep(500);
+					ByAttribute.click("xpath", ".//li[@role='option' and text()='"+badgeSubType+"']", "Select "+badgeSubType+" Option from List");
+					
+					badgeName="AUTO-"+Utility.getRandomNumber(5);
+					ByAttribute.clearSetText("xpath", AssetObjects.assetSerialNumberTxt, badgeName, "Enter Serial Number");
+					Thread.sleep(1000);
+					
+					switch(system){
+					
+					case "AMAG":
+						badgeId = "8"+Utility.getRandomNumber(11);
+						break;
+						
+					case "CCURE 9000":
+						badgeId = "9"+Utility.getRandomNumber(4);
+						break;
+						
+					default:
+						badgeId = "";
+						
+					}
+					
+					AGlobalComponents.badgeId = badgeId;
+					ByAttribute.clearSetText("xpath", AssetObjects.assetBadgeIdTxt, badgeId, "Enter Badge ID: "+badgeId);
+					Thread.sleep(1000);
+					
+					ByAttribute.clearSetText("xpath", AssetObjects.assetBadgeNameTxt, badgeName, "Enter Badge Name: "+badgeName);
+					Thread.sleep(1000);
+					
+					ByAttribute.clearSetText("xpath", AssetObjects.assetSystemTxt, system, "Enter System");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", ".//li[@role='option' and text()='"+system+"']", "Select "+system+" Option from List");
+					Thread.sleep(1000);
+					
+					ByAttribute.clearSetText("xpath", AssetObjects.assetSourceIdTxt, badgeId, "Enter Source Id");
+					Thread.sleep(1000);
+					
+					ByAttribute.click("xpath", AssetObjects.assetSaveBtn, "Click Save Button");
+					Thread.sleep(3000);
+
+					ByAttribute.mouseHover("xpath", AssetObjects.assetTabBtn, "Mouse Hover on Asset Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", AssetObjects.assetManageAssetLnk, "Click on Manage Asset Link");
+					Utility.pause(5);
+					
+					Utility.verifyElementPresent(".//tbody//div[text()='"+badgeName+"']", "Newly Create Badge", false);
+				} else {
+					System.out.println("Navigation to 'Manage Asset' Page Failed");
+					logger.log(LogStatus.FAIL, "Navigation to 'Manage Asset' Page Failed");
+				}
+
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
+		return badgeName;
+		
+	}
+
+
+	public static void checkStatusInDB(String firstName, String lastName) throws Throwable {
+		if (unhandledException == false) {
+			
+			try {
+				logger.log(LogStatus.INFO,"Verify temp onboarded user from DB");
+				String query = "select * from aepdemo.identity_user where first_name='"+firstName+"' and last_name='"+lastName+"'";
+				ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+				//for each loop laga ke data print karna hai basically yahan
+				
+	
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+
+		
 	}
 }
 

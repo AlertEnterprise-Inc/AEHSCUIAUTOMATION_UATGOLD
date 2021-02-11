@@ -48,7 +48,7 @@ public class FB_Automation extends BrowserSelection {
 		AGlobalComponents.CCURERoleRecon=true;
 	
 		/** Login as AS User **/
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -85,7 +85,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC005 - TestCase Execution Begins");
 	
 		/** Login as AS User **/
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -114,7 +114,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
 	
 		/** Login as AS User **/
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -161,7 +161,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC004 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -194,7 +194,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC005 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -231,7 +231,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC006 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		boolean login =LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean login =LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(login)
 		{
@@ -259,7 +259,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC007 - TestCase Execution Begins");
 	
 		/* Login as AS User */
-		boolean login =LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean login =LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(login)
 		{
@@ -285,7 +285,7 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC008 - TestCase Execution Begins");
 
 		/* Login as AS User */	
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
@@ -336,7 +336,7 @@ public class FB_Automation extends BrowserSelection {
 	 	{
 	 		if(ApiMethods.createIdentityThroughAPI()) {
 	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE();
-	 			boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+	 			boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 	 			if(loginStatus){
 	 				logger.log(LogStatus.PASS, "Login Successful");
@@ -367,7 +367,7 @@ public class FB_Automation extends BrowserSelection {
 		AGlobalComponents.DBUserRecon=true;
 		
 		/* Login as AS User */
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert1234");
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");

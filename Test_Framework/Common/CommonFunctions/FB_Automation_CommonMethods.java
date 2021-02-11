@@ -179,11 +179,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					 * Select the view for role monitor screen
 					 */
 					logger.log(LogStatus.INFO,"Selecting the appropriate view on recon monitor screen");
-//					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//					settingsIcon.click();
-//					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for recon monitor screen");
-//					ByAttribute.click("xpath",ReconObjects.roleMonitorViewLnk, "click on role monitor view");
-//					Utility.pause(10);
+					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+					settingsIcon.click();
+					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for recon monitor screen");
+					ByAttribute.click("xpath",ReconObjects.roleMonitorViewLnk, "click on role monitor view");
+					Utility.pause(10);
 				}
 				getIndexOfHeaders();
 							
@@ -282,9 +282,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO,"Selecting the appropriate view for recon remediation screen");
 				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
 				settingsIcon.click();
-		//		ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
-		//		ByAttribute.click("xpath",ReconObjects.reconRemediationViewLnk, "click on user recon view");
-				//		Utility.pause(10);
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+				ByAttribute.click("xpath",ReconObjects.reconRemediationViewLnk, "click on user recon view");
+						Utility.pause(10);
 				
 				
 				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
@@ -413,12 +413,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the view for role recon data
 				 */
 
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
-//				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on user recon view");
-//				Utility.pause(10);
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on user recon view");
+				Utility.pause(10);
 
 				getIndexHeadersOfActiveRecords();
 				String userDataFile=reconTestDataDirectory+"/Identity.csv";
@@ -560,11 +560,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the view for role monitor screen
 				 */
 				logger.log(LogStatus.INFO,"Selecting the appropriate view on recon monitor screen");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for recon monitor screen");
-//				ByAttribute.click("xpath",ReconObjects.roleMonitorViewLnk, "click on role monitor view");
-//				Utility.pause(10);
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for recon monitor screen");
+				ByAttribute.click("xpath",ReconObjects.roleMonitorViewLnk, "click on role monitor view");
+				Utility.pause(10);
 			}
 			getIndexOfHeaders();	
 							
@@ -712,9 +712,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO,"Selecting the appropriate view for recon remediation screen");
 				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
 				settingsIcon.click();
-		//		ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
-	   //    	ByAttribute.click("xpath",ReconObjects.reconRemediationViewLnk, "click on user recon view");
-	  //		Utility.pause(10);
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+				ByAttribute.click("xpath",ReconObjects.reconRemediationViewLnk, "click on user recon view");
+				Utility.pause(10);
 			
 			
 				ByAttribute.click("xpath", ReconObjects.filterIconLnk, "Click on Filter icon ");
@@ -1005,7 +1005,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(8);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(8);
 				
 				fillProfileInfo();
@@ -1023,7 +1023,61 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(10);
 					fillPrerequisitesInfo();
 				}
-				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
+				Utility.pause(20);
+
+				logger.log(LogStatus.PASS, "identity created");	
+				
+
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}	
+		}
+				
+	}
+	
+	
+	public static void createIdentity(String firstName,String lastName) throws Throwable
+	{
+		
+		if(unhandledException==false)
+		{
+			
+			logger.log(LogStatus.INFO, "Create new Identity");
+			System.out.println("***************************** Create Identity *********************************");
+			try
+			{
+				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
+					Utility.pause(3);
+				
+				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+				Utility.pause(8);
+				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
+				Utility.pause(8);
+				
+				fillProfileInfo(firstName,lastName);
+				if(!AGlobalComponents.deleteSingleIdentityFlag){
+					ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
+					Utility.pause(2);
+					fillAccessesInfo();
+			//		ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+			//		Utility.pause(2);
+			//		fillSystemsInfo();
+					
+					/** create asset **/
+			//		ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+			//		Utility.pause(2);
+			//		fillAssetsInfo();
+					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
+					Utility.pause(10);
+					fillPrerequisitesInfo();
+				}
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 				Utility.pause(20);
 
 				logger.log(LogStatus.PASS, "identity created");	
@@ -1244,9 +1298,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
 				action.doubleClick(record).perform();
-				Utility.pause(15);
-				String searchResult= "//label[contains(text(),'"+firstName+"')]";
-				if(Utility.verifyElementPresentReturn(searchResult,firstName,true,false)){
+				Utility.pause(10);
+				String searchResult= "//*[contains(text(),'"+identityCode+"')]";
+				if(driver.findElements(By.xpath(searchResult)).size()>0){
+					Utility.verifyElementPresent(searchResult,"Identity",false);
 					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 				}
 				logger.log(LogStatus.PASS, "Search Identity successful");
@@ -1307,11 +1362,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
 				fillDuplicateProfileInfo();
-				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 				Utility.pause(15);
 				dupIdentity=true;
 				
@@ -1340,7 +1395,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
 				if(driver.findElements(By.xpath(IdentityObjects.createIdentityHeader)).size()>0){
@@ -1424,10 +1479,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 				Utility.pause(20);
-				ByAttribute.click("xpath", IdentityObjects.createIdentityBtn, "click on create  icon to create new identity");
+				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
-				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "click on save  icon ");
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "click on save  icon ");
 				Utility.pause(10);
 								
 
@@ -1765,6 +1820,102 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 	
+	public static void fillProfileInfo(String fName,String lName) throws Throwable 
+	{
+		
+		if(unhandledException==false)
+		{
+			String createIdentityTemplateFile ,createIdentityDataFile;
+			System.out.println("********************Fill Profile Info********************");
+			try{
+				if(AGlobalComponents.ManagerLogin){
+					createIdentityTemplateFile = ManagerCasesTestDataDirectory + "/CreateIdentity_Template.csv";
+					createIdentityDataFile=ManagerCasesTestDataDirectory+ "/CreateIdentity.csv";
+				}
+				else{
+					createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
+					createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
+				}
+				TestDataInterface.compileTwoRowDataTemplate(createIdentityTemplateFile, createIdentityDataFile);
+		
+				ArrayList<String> headers = Utility.getCSVRow(createIdentityDataFile, 1);
+				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(createIdentityDataFile, 0);
+				int len = headers.size();
+				String firstName=null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header,jobTitle;
+				
+				for (int i=0;i<len;i++){
+					header= headers.get(i);
+					System.out.println("heading "+ (i+1) +" "+ header);
+					int index = Utility.getIndex(headers,header);
+					for(ArrayList<String> userData : usersData) {
+				
+						switch (header.toLowerCase()) {
+						case "firstname":
+							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
+								firstName = fName;
+							else
+								firstName = Utility.getIndexValue(userData, index);
+							break;
+						case "lastname":
+							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
+								lastName = lName;
+							else
+								lastName = Utility.getIndexValue(userData, index);
+							break;
+						case "validfrom":
+							validFrom=Utility.getIndexValue(userData, index);
+							break;
+						case "validto":
+							validTo=Utility.getIndexValue(userData, index);
+							break;
+						case "employeetype":
+							empType = Utility.getIndexValue(userData, index);
+							break;
+						case "email":
+							emailId = Utility.getIndexValue(userData, index);
+							break;
+						case "jobtitle":
+							jobTitle = Utility.getIndexValue(userData, index);
+							break;
+						default: 
+							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
+							throw new UnsupportedOperationException();
+						}
+					}
+				}
+				
+				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
+				Utility.pause(5);
+				ByAttribute.click("xpath", IdentityObjects.firstNameLnk, "Enter first Name");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.emailIdLnk, emailId, "Enter email Id");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
+				Utility.pause(2);
+				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
+				Utility.pause(2);
+//				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
+//				Utility.pause(2);
+
+
+//				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
+				
+			}
+			catch(Exception e)
+			{
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		
+	}
+	
 	
 	
 	
@@ -1812,7 +1963,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO, "No job title is assigned to the identity");
 				}
 				ByAttribute.setText("xpath", IdentityObjects.jobTitleLnk, jobTitle, "Enter job Title");
-				ByAttribute.click("xpath", IdentityObjects.idmSaveBtn, "Click on save Button ");
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 				Utility.pause(20);
 		
 				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
@@ -2112,7 +2263,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 						switch (header.toLowerCase()) {
 						case "assetcode":
-							assetCode = Utility.getIndexValue(userData, index);
+							assetCode = AGlobalComponents.asstCode;
 							break;
 						case "validfrom":
 							temp=Utility.getIndexValue(userData, index);
@@ -2196,23 +2347,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 //				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
 //				Utility.pause(2);
 			
-				/*
-				 * Add notes while adding new asset
-				 */
-	//			String notes = "//span[contains(@id,'button') and text()='Notes']";
-//				String comments = "New Asset assignment";
-//				ByAttribute.click("xpath",notes, " Click notes button");
-//				Utility.pause(2);
-//				if(driver.findElements(By.xpath("//div[contains(@id,'header-title-textEl') and text()='Add Comment']")).size()>0){
-//					ByAttributeAngular.setText("xpath", "//body[contains(@class,'mce-content-body ')]//p",comments , "Adding comments while assigning new asset");
-//					ByAttributeAngular.click("xpath", IdentityObjects.addCommentsButtonLnk, "Click on Add Comments button");
-//					ByAttributeAngular.click("xpath", IdentityObjects.closeNotesWindowLnk, "close notes window");
-//				}
-//				else{
-//					logger.log(LogStatus.INFO,"window not opened to add notes");
-//				}
-			
-				
 				ByAttribute.click("xpath", IdentityObjects.confirmButton, " Click confirm ");
 				Utility.pause(5);
 			}
@@ -2325,12 +2459,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				/*
 				 * Select the view for role recon data
 				 */
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-//				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-//				Utility.pause(10);
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+				Utility.pause(10);
 	    
 				WebElement desc = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[11]//div"));
 				String description = desc.getText();
@@ -2366,13 +2500,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the view for role recon data
 				 */
 
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
 
-//				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
-//				Utility.pause(10);
+				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
+				Utility.pause(10);
 	    
 
 				WebElement userId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[7]//div"));
@@ -2409,18 +2543,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the appropriate view for  recon data
 				 * 
 				 */
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-//				if(AGlobalComponents.roleRecon)
-//					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-//				if(AGlobalComponents.userRecon)
-//					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on role recon view");
-//				Utility.pause(10);
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check role recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				if(AGlobalComponents.roleRecon)
+					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+				if(AGlobalComponents.userRecon)
+					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on role recon view");
+				Utility.pause(10);
 	    
-//				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
-//				String syncID = syncId.getText();
+				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
+				String syncID = syncId.getText();
 				String query = "";
 			
 				logger.log(LogStatus.INFO, "verify recon data from DB");
@@ -2473,11 +2607,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", AccessObjects.manageAccessLnk, "Click on Manage Access ");
 					Utility.pause(10);
 		
-//					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//					settingsIcon.click();
-//					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-//					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-//					Utility.pause(10);
+					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+					settingsIcon.click();
+					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+					Utility.pause(10);
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
@@ -2552,11 +2686,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
 					Utility.pause(10);
 		
-//					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//					settingsIcon.click();
-//					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-//					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
-//					Utility.pause(10);
+					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+					settingsIcon.click();
+					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+					ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
+					Utility.pause(10);
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
@@ -2691,12 +2825,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", ReconObjects.reconSetUpLnk, "Click on Recon Setup ");
 				Utility.pause(40);
 			
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view on recon setup screen");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-//				ByAttribute.click("xpath",ReconObjects.ReconViewLnk, "click on recon view");
-//				Utility.pause(20);
+				logger.log(LogStatus.INFO,"Selecting the appropriate view on recon setup screen");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+				ByAttribute.click("xpath",ReconObjects.ReconViewLnk, "click on recon view");
+				Utility.pause(20);
 
 
 		    
@@ -3695,6 +3829,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.INFO,"******Update Photo Of user through IDM screen************");
 			try {
 				
+				ByAttribute.click("xpath",IdentityObjects.leftPaneExpansionLnk , "Expand left pane window");
 				WebElement image = driver.findElement(By.xpath(IdentityObjects.imageLnk));
 				String oldPhotoSrc = image.getAttribute("src");
 				if(oldPhotoSrc.contains("defaultprofile")){

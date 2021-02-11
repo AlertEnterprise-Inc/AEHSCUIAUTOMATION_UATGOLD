@@ -41,14 +41,20 @@ public class AGlobalComponents {
 	public static boolean updatePhoto = false;
 	public static boolean wellnessCheckCase=false;
 	public static boolean contractorToPermanentEmployeeConversion = false;
+	public static boolean tempWorkerOnboarding=false;
+	public static boolean tempWorkerModification=false;
+	public static String asstCode= "";
+	public static String badgeId="";
+	public static String badgeName="";
 		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
-	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
+//	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
+	public static String applicationURL  = "http://aepdemo.alertenterprise.com";
 
 	public static String selfServicePortalURL  = "https://airportmit.cloud.alertenterprise.com/AlertSelfService/";
 	public static String username = "admin";
-	public static String password = "Alert1234";
+	public static String password = "Alert@783";
 	public static String dbUsername = "AEQA15191";
 	public static String dbPassword = "Alert#1234";
 	public static String dbName = "AEQA15191";

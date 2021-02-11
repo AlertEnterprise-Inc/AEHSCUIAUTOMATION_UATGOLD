@@ -1,2 +1,2 @@
 AccessName,ValidFrom,ValidTo
-Admin User Role,AUTO|ValidFrom|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidTo:1
+End User Role,AUTO|ValidFrom|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidTo:1
