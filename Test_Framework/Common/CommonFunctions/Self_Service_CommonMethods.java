@@ -1915,17 +1915,17 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(2);
 					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States of America')]" , "Select the country");
 					Utility.pause(2);
-					
-//					ByAttribute.click("xpath",HomeObjects.inputLocation , "Click to enter location ");
-//					
-//					action.sendKeys("America").build().perform();
-//					Utility.pause(2);
-//					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'America')]" , "Select the location");
-//					Utility.pause(2);
-										       
+					Actions action = new Actions(driver);
+					if(driver.findElements(By.xpath(HomeObjects.inputLocation)).size()>0){
+						ByAttribute.click("xpath",HomeObjects.inputLocation , "Click to enter location ");
+						action.sendKeys("America").build().perform();
+						Utility.pause(2);
+						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'America')]" , "Select the location");
+						Utility.pause(2);
+					}					       
 		       //     ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
 					WebElement submitBtn = driver.findElement(By.xpath(HomeObjects.submitBtn));
-					Actions action = new Actions(driver);
+					
 					action.click(submitBtn).build().perform();	
 					Utility.pause(50);
 		            if(AGlobalComponents.tempWorkerOnboarding)
@@ -2325,7 +2325,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.INFO,"**************************** createNewAsset ********************************");
 			try {
 				
-				if(Utility.compareStringValues(AGlobalComponents.applicationURL, "http://192.168.192.207:60/qarecon")){
+				if(driver.findElements(By.xpath(AssetObjects.cardHoldersAndAssetsTabBtn)).size()>0){
 					ByAttribute.mouseHover("xpath", AssetObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Asset Tab Link");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", AssetObjects.manageAssetsLnk, "Click on Manage Asset Link");
@@ -2389,7 +2389,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", AssetObjects.assetSaveBtn, "Click Save Button");
 					Thread.sleep(3000);
 
-					if(Utility.compareStringValues(AGlobalComponents.applicationURL, "http://192.168.192.207:60/qarecon")){
+					if(driver.findElements(By.xpath(AssetObjects.cardHoldersAndAssetsTabBtn)).size()>0){
 						ByAttribute.mouseHover("xpath", AssetObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Asset Tab Link");
 						Thread.sleep(1000);
 						ByAttribute.click("xpath", AssetObjects.manageAssetsLnk, "Click on Manage Asset Link");

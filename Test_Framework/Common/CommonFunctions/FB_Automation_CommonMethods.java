@@ -1051,15 +1051,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Create Identity *********************************");
 			try
 			{
-				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0))
-					logger.log(LogStatus.INFO,"Home page loaded successfully");
-				else
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
 					Utility.pause(5);
-				
-				ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-				Utility.pause(8);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
+					
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(2);
 				
@@ -1126,8 +1132,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			{
 				String searchIdentityTemplateFile,searchIdentityDataFile;
 				
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(5);
+				
 				if(AGlobalComponents.ManagerLogin){
 					searchIdentityTemplateFile = ManagerCasesTestDataDirectory + "/SearchIdentity_Template.csv";
 					searchIdentityDataFile = ManagerCasesTestDataDirectory + "/SearchIdentity.csv";
