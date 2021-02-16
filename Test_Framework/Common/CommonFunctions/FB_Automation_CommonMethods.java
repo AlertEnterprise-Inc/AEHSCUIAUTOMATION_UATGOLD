@@ -999,13 +999,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Create Identity *********************************");
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(3);
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(8);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(8);
 				
@@ -1188,17 +1196,22 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					
 				}
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(30);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				
-				//narrowing down the search by selecting Employee Type 
-//				if(!dupIdentity){
-//					String employeeType = "//div[@class='thumbInnerHolder']//span[text()='"+ empType+"']";
-//					ByAttribute.click("xpath", employeeType, "Click on employee type ");
-//					Utility.pause(5);
-//				}
+
 				if(!dupIdentity){
 					ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
@@ -1372,13 +1385,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Create DuplicateIdentity *********************************");
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(5);
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
@@ -1405,13 +1426,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Cancel Button in Create Identity *********************************");
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(5);
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
@@ -1489,13 +1518,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Mandatory Field check in Create Identity *********************************");
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.idmTabBtn")).size()>0))
-					Utility.pause(5);
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(10);
 				
@@ -1593,10 +1630,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 			try{
 		
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				
 				Actions action = new Actions(driver);
 				WebElement idCheckbox = driver.findElement(By.xpath("//div[text()='"+identityCode+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-not-selected')]"));
@@ -1983,10 +2030,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 				Utility.pause(20);
 		
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(20);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				
 				WebElement finalJobTitle = driver.findElement(By.xpath("(//div[@class='x-grid-cell-inner '])[7]"));
 				String jbTitle = finalJobTitle.getText();
@@ -2691,10 +2748,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		{
 			System.out.println("************Verify User Recon Data from UI**********");
 			try{
-					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
 					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-					Utility.pause(10);
+					Utility.pause(8);
+				}
 		
 					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
 					settingsIcon.click();
@@ -3393,10 +3460,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			Actions action = new Actions(driver);
 			if(driver.findElements(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()<0){
 				AGlobalComponents.takeScreenshotIfPass=true;
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-				Utility.pause(30);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+					
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(2);
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(8);
+				}
 				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
 				Utility.pause(3);
 				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
