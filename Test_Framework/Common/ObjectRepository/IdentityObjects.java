@@ -2,10 +2,12 @@ package ObjectRepository;
 
 public interface IdentityObjects {
 	
-	String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
+	//String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
+	String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='IDM']";
 	String cardHoldersAndAssetsTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
 	String manageAssetsLnk = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Assets']";
-	String idmManageIdentityLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identities']";	
+	String idmManageIdentitiesLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identities']";
+	String idmManageIdentityLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
 	String idmManageIdentitySearchFieldTxt =".//input[@name='searchField']";
 	String idmManageIdentityAccessesTabBtn =".//*[@data-ref='btnInnerEl' and text()='Accesses']";
 	String createIdentityHeader = "//div[contains(@class,'x-box-target')]//label[text()='Create Identity Management']";
@@ -47,26 +49,11 @@ public interface IdentityObjects {
 	String closeButtonInDeletedItemsWindow = "//div[contains(@class,'x-tool-tool-el x-tool-img x-tool-close ')]";
 	String deletedIdentityDocumentsHeader = "//div[contains(@id,'MainPanelTrashCanPopup') and text()='Deleted identity Documents']";
 	String deletedSinceDateValue = "//div[contains(@id,'baseDateTime')]//input[contains(@class,'x-form-text-default  x-form-empty-field x-form-empty-field-default')]";
-	String addRecordsIconPrerequisiteTab = "(//a[normalize-space(text())='Click here to Add'])[2]";
-	String addRecordsIconSystemsTab = "//a[normalize-space(text())='Click here to Add']";
-	String addRecordsIconAccessTab = "//a[normalize-space(text())='Click here to Add']";
 	String emptyGrid = ".//div[@class='emptyGridMsg']";
 	String confirmButton = "//*[contains(@id,'button') and text()='Confirm']";
-	
-//	String addCommentsButtonLnk = "//span[contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small') and text()='Add Comment']";
-	
-//	String closeNotesWindowLnk = "//div[text()='Add Comment']/parent::div//following-sibling::div//div[contains(@class,'x-tool-img x-tool-close ')]";
-	
 	String settingsIconLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-setting ')]";
 	String widgetMenuLnk = "//div[contains(@class,'x-menu-item x-menu-item-default x-box-item')]//span[ text()='Show/hide Filter Widget']";
 	String errorMessageForFirstName = "//div[contains(@class,'x-form-error-msg')]//li[text()='First Name is required ']";
-	
-//	String uploadAttachmentLnk = "//span[contains(@class,'x-fa fa-paperclip ')]";
-	
-//	String downloadAttachmentLnk = "//span[contains(@class,' x-fa fa-download ')]";
-	
-//	String deleteAttachmentLnk = "//span[contains(@class,'x-fa fa-trash ')]";
-	
 	String deleteIdentityIconLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-delete ')]";
 	String noButtonInDeleteIdentitiesPopUp = "//*[contains(@id,'button') and contains(@class,'x-btn-inner-aebtnSmallSecondary-small') and text()='No']";
 	String yesButtonInDeleteIdentitiesPopUp = "//*[contains(@id,'button') and contains(@class,'x-btn-inner-aebtnSmallPrimary-small') and text()='Yes']";

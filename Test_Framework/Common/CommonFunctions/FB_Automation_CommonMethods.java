@@ -30,6 +30,7 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
+import CommonClassReusables.ByAttributeAngular;
 import CommonClassReusables.DBValidations;
 import CommonClassReusables.FileOperations;
 import CommonClassReusables.MsSql;
@@ -54,7 +55,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static String identityCode = null;
 	private static String entityType= null;
 	private static String activeReconRecords = null;
-	private static int assetCodeIndex,badgeValidFromIndex, badgeValidToIndex,badgeTypeIndex;
+	private static int assetCodeIndex,badgeValidFromIndex, badgeValidToIndex,badgeTypeIndex,index=0;
 
 	
 	
@@ -1050,39 +1051,48 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Create Identity *********************************");
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(3);
+				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0))
+					logger.log(LogStatus.INFO,"Home page loaded successfully");
+				else
+					Utility.pause(5);
 				
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
 				Utility.pause(8);
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
-				Utility.pause(8);
+				Utility.pause(2);
 				
 				fillProfileInfo(firstName,lastName);
-				if(!AGlobalComponents.deleteSingleIdentityFlag){
-					ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
-					Utility.pause(2);
-					fillAccessesInfo();
-			//		ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
-			//		Utility.pause(2);
-			//		fillSystemsInfo();
+				
+				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
+				Utility.pause(2);
+				fillAccessesInfo();
 					
-					/** create asset **/
-			//		ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
-			//		Utility.pause(2);
-			//		fillAssetsInfo();
-					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
-					Utility.pause(10);
-					fillPrerequisitesInfo();
-				}
+				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
+				Utility.pause(2);
+				fillPrerequisitesInfo();
+				
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(20);
+				Utility.pause(40);
 
 				logger.log(LogStatus.PASS, "identity created");	
-				
-
+//				
+//				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+//				Utility.pause(2);
+//				fillAssetsInfo(AGlobalComponents.assetCode);
+//				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
+//				Utility.pause(10);
+//				logger.log(LogStatus.INFO, "Created asset assigned to the user");
+//				
+//				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+//				Utility.pause(1);
+//				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+//				Utility.pause(5);
+//				
+//				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+//				if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
+//						logger.log(LogStatus.INFO, "System is assigned to the user");
 			}
 			catch(Exception e)
 			{		
@@ -1262,9 +1272,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Search Identity*********************************");
 			try
 			{
-				ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+				Actions action = new Actions(driver);
+				action.click().build().perform();
+				ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
 				Utility.pause(30);
 				
 				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
@@ -1289,16 +1301,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,lastName, "Enter the last name");
 		
-				Actions action = new Actions(driver);
+		//		Actions action = new Actions(driver);
 				action.sendKeys(Keys.ENTER).build().perform();
-				Utility.pause(20);
+				Utility.pause(5);
 			
 		
 			if(driver.findElements(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
 				action.doubleClick(record).perform();
-				Utility.pause(10);
+				Utility.pause(5);
 				String searchResult= "//*[contains(text(),'"+identityCode+"')]";
 				if(driver.findElements(By.xpath(searchResult)).size()>0){
 					Utility.verifyElementPresent(searchResult,"Identity",false);
@@ -1851,13 +1863,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 						switch (header.toLowerCase()) {
 						case "firstname":
-							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
+							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers))
 								firstName = fName;
 							else
 								firstName = Utility.getIndexValue(userData, index);
 							break;
 						case "lastname":
-							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
+							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers))
 								lastName = lName;
 							else
 								lastName = Utility.getIndexValue(userData, index);
@@ -2051,7 +2063,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	{
 		if(unhandledException==false)
 		{
-			
+			index++;
 			System.out.println("****************Fill Access Info******************");
 			try{
 				String accessName= null,validFrom= null,validTo = null,header,temp,accessTemplateFile,accessDataFile;
@@ -2096,15 +2108,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 				}
-		
-				ByAttribute.click("xpath", IdentityObjects.addRecordsIconAccessTab, "click on add icon to insert new access");
+				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(5);
 		
 				Actions action = new Actions(driver);		
 				action.sendKeys(accessName);
 				action.build().perform();
 				Utility.pause(5);
-				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Admin User Role')]"));
+				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessName+"')]"));
 				action.moveToElement(accessValue).click();
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Access Value selected");
@@ -2143,6 +2155,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		{
 			System.out.println("*************Fill systems info**********");
 			try{
+				index++;
 				String systemName= null,srcId= null,validTo = null,validFrom = null,header,temp,systemTemplateFile,systemDataFile;
 				Date date;
 				
@@ -2187,7 +2200,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 				}
-				ByAttribute.click("xpath",  IdentityObjects.addRecordsIconSystemsTab, "click on add icon to insert new System");
+				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new system");
+				
 				Utility.pause(5);
 		
 				Actions action = new Actions(driver);
@@ -2246,53 +2261,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String assetCode= null,validTo = null,validFrom = null,header,temp,assetTemplateFile,assetDataFile;
 				Date date;
 				
-				assetTemplateFile = createIdentityTestDataDirectory + "/Assets_Template.csv";
-				assetDataFile=createIdentityTestDataDirectory+ "/Assets.csv";
-				
-				TestDataInterface.compileTwoRowDataTemplate(assetTemplateFile, assetDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(assetDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(assetDataFile, 0);
-				int len = headers.size();
-		
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-				
-						switch (header.toLowerCase()) {
-						case "assetcode":
-							assetCode = AGlobalComponents.asstCode;
-							break;
-						case "validfrom":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validFrom = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
-							}
-							break;
-						case "validto":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validTo = new SimpleDateFormat("MM/d/yy hh:mm a").format(date);
-							}
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-		
+								
+				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+				Utility.pause(5);
 				/*
 				 * Verify Cancel button on Assets screen
 				 */
 		
-				String newRadioButton = "(//label[text()='New']//preceding::span[contains(@class,'x-form-radio x-form-radio-default')]//input[@class='x-form-cb-input'])[1]";
-				ByAttribute.click("xpath", newRadioButton, "click on New radio button");
-				Utility.pause(2);
 				logger.log(LogStatus.INFO, "By Clicking on Cancel button , we will be navigated to Existing asset screen");
 				ByAttribute.click("xpath", IdentityObjects.cancelAssetButtonLnk, "click on cancel button");
 				logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
@@ -2301,14 +2277,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				/*
 				 * verify Reset button on New asset screen
 				 */
-				ByAttribute.click("xpath", newRadioButton, "click on New radio button");
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(2);
 				String dropdownArrow="(//span[text()='Asset Code']//ancestor::label//following::div[contains(@class,' x-form-trigger-default x-form-arrow-trigger')])[1]";
 				ByAttribute.click("xpath", dropdownArrow, "click on dropdown to select asset code");
-				Utility.pause(40);
+				Utility.pause(2);
 		
 				for(int i=0;i<10;i++){
-					if(driver.findElements(By.xpath("//div[text()='"+assetCode+"']")).size()>0){
+					if(driver.findElements(By.xpath("//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetCode+"']")).size()>0){
 						break;
 					}
 					else
@@ -2357,11 +2333,42 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 	
-	public static void fillPrerequisitesInfo() throws Throwable 
+	public static void fillAssetsInfo(String assetCode) throws Throwable 
 	{
 		if(unhandledException==false)
 		{
 			
+			System.out.println("*****************Fill Assets Info*****************");
+			try{
+						
+								
+				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+				Utility.pause(5);
+				
+				String dropdownArrow="//*[@class='x-form-trigger x-form-trigger-default x-form-arrow-trigger x-form-arrow-trigger-default ']";
+				                      
+				ByAttributeAngular.click("xpath", dropdownArrow, "click on dropdown to select asset code");
+				Utility.pause(2);
+		
+				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+assetCode+"']", " select asset code");
+				Utility.pause(2);
+		
+				ByAttribute.click("xpath", IdentityObjects.confirmButton, " Click confirm ");
+				Utility.pause(5);
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+	
+	public static void fillPrerequisitesInfo() throws Throwable 
+	{
+		if(unhandledException==false)
+		{
+			index++;
 			System.out.println("**************Fill prerequisite info***********");
 			try{
 				String type= null,prerequisite=null,validFrom= null,validTo = null,header,prerequisiteTemplateFile,prerequisiteDataFile;
@@ -2400,11 +2407,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 				}
 				
-		//		ByAttribute.click("xpath",  IdentityObjects.addRecordsIconPrerequisiteTab, "click on add icon to insert Prerequisites");
-		//		Utility.pause(5);
-	
+				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
 				Actions action = new Actions(driver);
-				WebElement addIcon = driver.findElement(By.xpath(IdentityObjects.addRecordsIconPrerequisiteTab));
+				WebElement addIcon = driver.findElement(By.xpath(addRecordsIcon));
 				action.moveToElement(addIcon).click();
 				action.sendKeys(type);
 				action.build().perform();

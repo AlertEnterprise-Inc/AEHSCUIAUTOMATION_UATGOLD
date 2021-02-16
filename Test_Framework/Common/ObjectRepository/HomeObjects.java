@@ -19,6 +19,7 @@ public interface HomeObjects {
 		String myRequestsTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Requests']";
 		String inboxTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Inbox']";
 		String homeAccessRequestLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Access Request']";
+		String homeMyRequestsLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='My Requests']";
 		String homeMyRequestLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and contains( text(),'My Requests')]";
 		String homeInboxLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Inbox']";
 		String homeDashboardLnk = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and contains( text(),'Dashboard')]";
@@ -61,6 +62,7 @@ public interface HomeObjects {
 		
 		String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
 		String wellnessCheckLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Wellness Check']";
+		String physicalAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Physical Access']";
 		String acknowledgementCheckbox = "(//input[@type='checkbox'])[1]";
 		String submitBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String questionOneNo = "//*[@class='x-form-item-label-text' and contains(text(),'tested positive')]//ancestor::label//following-sibling::div//label[text()='No']//preceding-sibling::span//input";
@@ -81,6 +83,7 @@ public interface HomeObjects {
 		String inputLocation = "//*[contains(@class,'x-placeholder-label') and text()='Select Location']";
 		String accessListGrid = "//*[@class='x-box-target']//label[text()='Access List']";
 		String badgeListGrid = "//*[@class='x-box-target']//label[text()='Badge List']";
+		String systemListGrid = "//*[@class='x-box-target']//label[text()='System List']";
 		String prerequisiteList = "//*[@class='x-box-target']//label[text()='Prerequisite List']";
 		String approveButton = "//*[text()='Approve']";
 		String openRequestsLnk = ".//*[@class='activeReq' and contains( text(),'Open Requests')]";
@@ -96,6 +99,7 @@ public interface HomeObjects {
 		String workFlowBtn = "//td[contains(@class,' x-grid-cell-workflowActionColumn x-grid-cell-last')]//button[@class='aegrid-view']";
 		String workflowStatusHeaderInWFPopupWindow = "//div[contains(@id,'header-title') and contains(text(),'Workflow Status')]";
 		String closeIconInWFStatusWindow = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
+		String selectTerminationReason = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";
 	
 }
 

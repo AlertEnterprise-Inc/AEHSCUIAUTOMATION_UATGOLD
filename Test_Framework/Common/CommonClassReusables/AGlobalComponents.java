@@ -43,9 +43,11 @@ public class AGlobalComponents {
 	public static boolean contractorToPermanentEmployeeConversion = false;
 	public static boolean tempWorkerOnboarding=false;
 	public static boolean tempWorkerModification=false;
+	public static boolean tempWorkerOffboardingRehireTermination=false;
+	public static boolean requestLocationAccessOthers = false;
 	public static String asstCode= "";
 	public static String badgeId="";
-	public static String badgeName="";
+	public static String assetName="";
 		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
