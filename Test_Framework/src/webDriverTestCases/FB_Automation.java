@@ -12,6 +12,7 @@ import CommonClassReusables.Utility;
 import CommonFunctions.ApiMethods;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonFunctions.LoginPage;
+import CommonFunctions.Self_Service_CommonMethods;
 
 
 public class FB_Automation extends BrowserSelection {
@@ -344,6 +345,7 @@ public class FB_Automation extends BrowserSelection {
 	 				FB_Automation_CommonMethods.setUpReconJob();
 	 				FB_Automation_CommonMethods.validateIdentityData();	 	
 	 				FB_Automation_CommonMethods.validateAssetsData();
+	 				FB_Automation_CommonMethods.validateAccessesData();
 	 				LoginPage.logout();
 			}	
 			else
@@ -382,9 +384,73 @@ public class FB_Automation extends BrowserSelection {
 			LoginPage.logout();
 		}	
 		else
-			logger.log(LogStatus.FAIL, "Login failed");
-		
-		
-	}
+			logger.log(LogStatus.FAIL, "Login failed");	
+	}	
 	
+	@Test(priority=11)
+	public void FB_Automation_TC011() throws Throwable 
+	{
+		logger =report.startTest("SuccessFactors HR System Usecases E01","Employee Onboarding from HR DB Connector");
+		System.out.println("[INFO]--> SuccessFactors HR System Usecases E01 - TestCase Execution Begins");
+		AGlobalComponents.EmpOnboardingthroughHRDb=true;
+		AGlobalComponents.DBUserRecon=true;
+		AGlobalComponents.applicationURL="http://aepdemo.alertenterprise.com/";
+		if(FB_Automation_CommonMethods.createUserInHRDb()) {
+			boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
+
+			if(loginStatus){
+				logger.log(LogStatus.PASS, "Login Successful");
+			
+				/* Create Recon Job */
+				FB_Automation_CommonMethods.setUpReconJob();
+						
+				/**creating asset for the user**/
+				AGlobalComponents.badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
+					
+				/** Launch New Private Browser **/
+				Utility.switchToNewBrowserDriver();
+				
+				/* Login as Manager */
+				loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+
+				if(loginStatus){
+					logger.log(LogStatus.PASS, "Login Successful");
+					
+					/** checkStatusInMyRequestInbox**/
+					Self_Service_CommonMethods.checkRequestInManagerInbox();
+			 		
+					/** approve request  by manager**/
+					Self_Service_CommonMethods.approveRequestInInbox("Manager");
+			 			
+					/* Logout from application */
+					LoginPage.logout();
+			 		
+					/* Login as Badge Admin */
+					loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+
+					if(loginStatus){
+						logger.log(LogStatus.PASS, "Login Successful");
+			 	 			
+						/** approve request By badge admin **/
+						Self_Service_CommonMethods.approveRequestInInbox("Badge Admin");
+					}
+				}
+				
+				/** Switch to Default Browser **/
+				Utility.switchToDefaultBrowserDriver();
+			 		
+				/** Validate  created User in IDM after  request approved**/
+				Self_Service_CommonMethods.checkUserStatus();
+			 		
+				/** Validate  created employee in database**/
+		//		Self_Service_CommonMethods.checkStatusInDB(firstName,lastName);
+			 		
+				/** Logout from Application **/
+				LoginPage.logout();		
+			}
+			else {
+				logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+			}	
+		}
+	}
 }

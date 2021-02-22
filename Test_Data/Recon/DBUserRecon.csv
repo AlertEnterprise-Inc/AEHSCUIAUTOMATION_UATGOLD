@@ -1,2 +1,2 @@
-ConnectorName,EntityType,ScheduleType
-Database Connector,User Data,Immediate
+ConnectorName,EntityType,PreFeedRule,CreateRequest,ScheduleType
+Database Connector,User Data,PreFeed For HR DB Connector,Yes,Immediate

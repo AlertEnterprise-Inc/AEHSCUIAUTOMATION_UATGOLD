@@ -22,7 +22,7 @@ public class ApiMethods extends BrowserSelection{
 	public static boolean generateAccessToken() {
 		
 		RestAssured.baseURI=AGlobalComponents.baseURI;
-		String requestBody=Payload.accessTokenJson("admin", "Alert1234");
+		String requestBody=Payload.accessTokenJson("admin", "Alert@783");
 		if(requestBody!=null) {
 			logger.log(LogStatus.PASS, "Generate access token json: "+requestBody);
 			Response response=given().log().all().queryParam("grant_type", "password").header("Content-Type","application/Json")

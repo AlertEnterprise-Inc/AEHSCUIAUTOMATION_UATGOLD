@@ -52,7 +52,8 @@ public class AGlobalComponents {
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
 //	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
-	public static String applicationURL  = "http://aepdemo.alertenterprise.com";
+	public static String applicationURL  = "http://devhsc.alertenterprise.com";
+
 
 	public static String selfServicePortalURL  = "https://airportmit.cloud.alertenterprise.com/AlertSelfService/";
 	public static String username = "admin";
@@ -73,13 +74,24 @@ public class AGlobalComponents {
 	public static String ccureDbUrl = "jdbc:sqlserver://"+ ccureDbIP;
 	public static String ccureDbConString =ccureDbUrl+";user="+ccureDbUsername+";password="+ccureDbPassword+";database="+ccureDbName+";portNumber=1433";	
 	
+	public static String postgresqlDbName="aehscdb";
+	public static String postgresqlDbUserName="alert";
+	public static String postgresqlDbPassword="alert123";
+	public static String postgresqlDbIP="44.237.132.34";
+	public static String postgresqlDbUrl="jdbc:postgresql://"+ postgresqlDbIP+":5432/"+postgresqlDbName;
+	
 	public static String applicantFirstName = "";
 //	public static String applicantFirstName = "AUTOUJES";
 	public static String applicantSSN = "";
 	public static int  RANDOM_DATA_GEN_LEN = 10;
 	public static boolean RANDOM_DATA_GEN_FLAG = true;
-	public static String baseURI="http://192.168.193.169:60";
+	public static String baseURI="http://aepdemo.alertenterprise.com/";
 	public static String access_token="";
 	public static String assetCode="";
+	public static String reviewName="";
+	public static boolean createRequest=false;
+	public static String badgeName="";
+	public static boolean EmpOnboardingthroughHRDb=false;
+	public static boolean EmpChangeJobTitlethroughHRDb=false;
 	
 }

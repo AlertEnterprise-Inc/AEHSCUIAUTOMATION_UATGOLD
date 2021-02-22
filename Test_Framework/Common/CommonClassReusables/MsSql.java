@@ -376,4 +376,40 @@ public class MsSql extends BrowserSelection {
 		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
 		return _resultList;
 	}
+
+
+	public static int setResultsToPostgreSQLDatabase(String query) throws ClassNotFoundException {
+
+
+		logger.log(LogStatus.INFO, "Querry in getResultsFromDatabase function :  " + query);
+	
+		Connection _conn = null;
+		int queryStatus = -1;
+		try {
+		
+			Class.forName("org.postgresql.Driver");
+
+			 _conn = DriverManager.getConnection(AGlobalComponents.postgresqlDbUrl, AGlobalComponents.postgresqlDbUserName, AGlobalComponents.postgresqlDbPassword);
+		
+			if (_conn != null) {
+				_smt = _conn.prepareStatement(query);
+				try{
+					queryStatus  = _smt.executeUpdate();
+				}
+				finally{
+					try{
+						_smt.close();
+					}
+					catch(Exception ignore){}
+				}
+			}
+		} catch (SQLException se) {
+			logger.log(LogStatus.ERROR, se);
+		} catch (NullPointerException ne) {
+			logger.log(LogStatus.ERROR, ne);	
+		}
+		logger.log(LogStatus.INFO, "Result from getResultsFromDatabase function :  " + _resultList);
+		return queryStatus;
+	
+	}
 }

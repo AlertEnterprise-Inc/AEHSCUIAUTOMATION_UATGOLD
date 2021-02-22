@@ -48,6 +48,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	public static String createIdentityTestDataDirectory= "Test_Data/IdentityManagement";
 	public static String ManagerCasesTestDataDirectory= "Test_Data/ManagerLoginScenarios";
 	public static String reconTestDataDirectory= "Test_Data/Recon";
+	public static String accessReviewTestDataDirectory= "Test_Data/AccessReview";
 	public static String photoFilePath ;
 	public static ArrayList<String> identityCodes = new ArrayList<String>();
 	public static ArrayList<String> jobNames = new ArrayList<String>();
@@ -88,11 +89,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
 				ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
 				ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+				ArrayList<String> preFeedRule=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "PreFeedRule");
+				ArrayList<String> createRequest=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "CreateRequest");
 				
 				for(int i=0;i<connectorNames.size();i++) {	
 					entityType=entityTypes.get(i);
 					logger.log(LogStatus.INFO, "Creating recon job in recon set up : "+(i+1));
-					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
+					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i),preFeedRule.get(i),createRequest.get(i));
 					if(connectorNames.get(i).equalsIgnoreCase("CCURE 9000")&&(entityType.equalsIgnoreCase("User Data")))
 						checkCCUREUserDataJobInReconMonitor(connectorNames.get(i));	
 						else {
@@ -678,14 +681,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		            	j++;
 		            	break;
 		            case "active":
-		            	AGlobalComponents.activeIndex = j;
+		            	AGlobalComponents.activeIndex = j+1;
 		            	j++;
 		            	break;
 		            case "":
 		            	
 		            	break;
 		            case "error":
-		            	AGlobalComponents.errorIndex = j;
+		            	AGlobalComponents.errorIndex = j+1;
 		                break;
 		            default: 
 		            	System.out.println("Need to skip this header : "+ heading);
@@ -747,8 +750,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(5);
 			
 				/* view a list */
-				WebElement activeRecords=driver.findElement(By.xpath("(.//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.activeIndex+"]"));
-				WebElement errorRecords=driver.findElement(By.xpath("(.//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.errorIndex+"]"));
+				WebElement activeRecords=driver.findElement(By.xpath("//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.activeIndex+"]"));
+				WebElement errorRecords=driver.findElement(By.xpath("//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.errorIndex+"]"));
 				String totalActiveRecords =  activeRecords.getText();
 				if(Utility.compareStringValues(totalActiveRecords, activeReconRecords)){
 					if(AGlobalComponents.rerunReconJob)
@@ -811,6 +814,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * Initiate recon job by providing description , connector value and entity
 	 *  
 	 * Author : Monika Mehta
+	 * @param createRequest 
+	 * @param preFeedRule 
 	 * @param string
 	 * @param string 
 	 * @param string 
@@ -818,7 +823,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * 
 	 * 
 	 **/
-	public static void initiateReconJob(String connectorName, String scheduleType) throws Throwable {
+	public static void initiateReconJob(String connectorName, String scheduleType, String preFeedRule, String createRequest) throws Throwable {
 	if(unhandledException==false)
 		{
 		System.out.println("******************Initiate recon job********************");
@@ -827,7 +832,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(Utility.compareStringValues(entityType, "Role Data"))
 				AGlobalComponents.roleRecon = true;
 			else if(Utility.compareStringValues(entityType, "User Data")) {
-				endDate=getEndDate(connectorName);
 				AGlobalComponents.userRecon = true;
 			}
 			AGlobalComponents.jobName="testRecon"+ Utility.getCurrentDateTime("dd/MM/yy hh:mm:ss");		
@@ -871,12 +875,49 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			action.moveToElement(elementEntity).click();
 			action.sendKeys(entityType);
 			action.build().perform();
-			WebElement entityValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+entityType+"')]"));
-			action.moveToElement(entityValue).click();
-			action.build().perform();
+//			WebElement entityValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+entityType+"')]"));
+//			action.moveToElement(entityValue).click();
+//			action.build().perform();
 			logger.log(LogStatus.INFO, "Entity Type selected");
 			Utility.pause(5);
 		
+			WebElement sequence=driver.findElement(By.xpath(ReconObjects.sequence));
+			action.moveToElement(sequence).click();
+			action.sendKeys("1");
+			action.build().perform();
+			Utility.pause(5);
+		
+			if(createRequest.equalsIgnoreCase("yes")) {
+				WebElement createRequestLocator=driver.findElement(By.xpath(ReconObjects.createRequest));
+				action.moveToElement(createRequestLocator).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "CreateRequest checkbox selected");
+				AGlobalComponents.createRequest=true;
+				Utility.pause(5);
+			}
+			
+			WebElement fetchEntityLocator=driver.findElement(By.xpath(ReconObjects.createRequest));
+			action.moveToElement(fetchEntityLocator).click();
+			action.build().perform();
+			logger.log(LogStatus.INFO, "Fetch Entity checkbox selected");
+			Utility.pause(5);
+			
+			if(preFeedRule!=null) {
+				WebElement preFeedRuleLocator=driver.findElement(By.xpath(ReconObjects.preFeedRule));
+				action.click(preFeedRuleLocator);
+				action.build().perform();
+				Utility.pause(5);
+				List<WebElement> checkBoxPreFeedRuleLocator=driver.findElements(By.xpath("//div[text()='"+preFeedRule+"']/parent::td/preceding-sibling::td[contains(@class,'checkbox')]"));
+				int size=checkBoxPreFeedRuleLocator.size();
+				action.moveToElement(checkBoxPreFeedRuleLocator.get(size-1)).click();
+				action.build().perform();
+				WebElement confirmBtn = driver.findElement(By.xpath(ReconObjects.confirmButton));
+				action.moveToElement(confirmBtn).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "PreFeed Rule :"+preFeedRule);
+				Utility.pause(5);
+			}
+			
 			WebElement elementScheduler=driver.findElement(By.xpath(ReconObjects.elementScheduler));
 			action.moveToElement(elementScheduler).click();
 			action.build().perform();
@@ -920,16 +961,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(5);
 				logger.log(LogStatus.PASS, "Trial recon job saved successfully");
 			}
-			else if(connectorName.equalsIgnoreCase("CCURE 9000")&& entityType.equalsIgnoreCase("User Data")) {
+			else if(entityType.equalsIgnoreCase("User Data")) {
 				ByAttribute.click("xpath", ReconObjects.rerunIconReconSetup, "click on rerun icon to rerun the job");
 				
-	//			endDate=getEndDate(connectorName);
 				Calendar c = Calendar.getInstance();
 				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yy hh:mm:ss");
-	//			DateFormat dateFormat2 = new SimpleDateFormat("MM/dd/YY h:mm a",Locale.ENGLISH);
-	//			c.setTime(dateFormat.parse(endDate));
-	//			Date date = dateFormat.parse(endDate);
-	//			endDate = dateFormat2.format(date);
 				
 				Date date = new Date();
 				String currentDate= dateFormat.format(date);
@@ -2576,18 +2612,25 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(10);
 	    
 
-				WebElement userId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[7]//div"));
+				WebElement userId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[10]//div"));
 				String usrId = userId.getText();
+				if(usrId!=null) {
+					logger.log(LogStatus.PASS, "UserId" +usrId+ "successfully reconciled");
+				}
+				else {
+					logger.log(LogStatus.FAIL, "There might exists error for the userId "+usrId);
+				}
 				
-				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[12]//div"));
+				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[9]//div"));
 				String syncID = syncId.getText();
 			
-				logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
-				verifyUserReconDataFromUI(usrId);
-		
-				logger.log(LogStatus.INFO, "verify recon data from DB");
-				String query = "select count(*) from aehscnew.stg_user_data where sync_id = '"+syncID+"' and int_status='0'";
-				verifyReconDataFromDB(query);
+				if(!AGlobalComponents.createRequest) {
+					logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
+					verifyUserReconDataFromUI(usrId);
+					logger.log(LogStatus.INFO, "verify recon data from DB");
+					String query = "select count(*) from aehscnew.stg_user_data where sync_id = '"+syncID+"' and int_status='0'";
+					verifyReconDataFromDB(query);
+				}
 			}
 			catch(Exception e)
 			{		
@@ -2996,10 +3039,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
 				ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
 				ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+				ArrayList<String> preFeedRule=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "PreFeedRule");
+				ArrayList<String> createRequest=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "CreateRequest");
+				
 					
 				for(int i=0;i<connectorNames.size();i++) {
 					entityType=entityTypes.get(i);
-					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i));
+					initiateReconJob(connectorNames.get(i),scheduleTypes.get(i),preFeedRule.get(i),createRequest.get(i));
 					checkJobInReconMonitor();
 				}
 			}
@@ -3052,9 +3098,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ArrayList<String> connectorNames=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ConnectorName");
 					ArrayList<String> entityTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "EntityType");
 					ArrayList<String> scheduleTypes=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "ScheduleType");
+					ArrayList<String> preFeedRule=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "PreFeedRule");
+					ArrayList<String> createRequest=TestDataEngine.getCSVColumnPerHeader(reconDataFile, "CreateRequest");
+					
 					for(int j=0;j<connectorNames.size();j++) {
 						entityType=entityTypes.get(j);
-						initiateReconJob(connectorNames.get(j),scheduleTypes.get(j));
+						initiateReconJob(connectorNames.get(j),scheduleTypes.get(j),preFeedRule.get(i),createRequest.get(i));
 						jobNames.add(i, AGlobalComponents.jobName);
 					}
 				}
@@ -3955,5 +4004,314 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			}
 		}
 		
+	}
+
+	public static void assignAccessToUserInCCURE() throws Throwable {
+
+		if(unhandledException==false) {
+			try {
+				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
+				String accessDataFile = reconTestDataDirectory + "/AccessData.csv"; 
+				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
+				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
+				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
+				ArrayList<String> userIds=new ArrayList<String>();
+				ArrayList<String> accessValidFroms=new ArrayList<String>();
+				ArrayList<String> accessValidTos=new ArrayList<String>();
+				ArrayList<String> accessNames=new ArrayList<String>();
+				ArrayList<String> accessIds=new ArrayList<String>();
+				for(String userId:userIdList) {
+					String name=lastNameList.get(userIdList.indexOf(userId))+", "+firstNameList.get(userIdList.indexOf(userId));
+					String activationDate=Utility.getCurrentDateTime("MM-dd-yyyy");
+					String expirationDate=Utility.getDate("MM-dd-yyyy", 4, "years");
+					int accessId=DBValidations.getAccessId("07 Contractors");
+					int objectId=DBValidations.getObjectIdOfTheUser(name);
+					if(DBValidations.assignAccessToUserInCCURE(objectId,accessId,activationDate,expirationDate)) {
+											
+						accessValidFroms.add(activationDate);
+						accessValidTos.add(expirationDate);
+						accessNames.add("07 Contractors");
+						accessIds.add(Integer.toString(accessId));
+						userIds.add(Integer.toString(objectId));
+						ArrayList<ArrayList<String>> accessesData = new ArrayList<ArrayList<String>>();
+						String detailsHeaderArray []= {"UserId","AccessId","AccessName","ValidFrom","ValidTo"};
+						
+						ArrayList<String> accessDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+						
+						accessesData = Utility.appendColumnDataAtEnd(accessesData, userIds);
+						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessIds);
+						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessNames );
+						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidFroms );
+						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidTos);
+						if(Utility.checkIfListIsNotNullAndNotEmpty(accessesData)) {
+							
+							accessesData.add(0, accessDataFileHeaders);
+								if(FileOperations.createFileIfDoesNotExist(accessDataFile)) {
+									ReadDataFromPropertiesFile.writeTestDataInFile(accessDataFile, accessesData, false);
+								}
+						}	
+					}
+				}
+			}
+			catch(Exception e)
+			{		
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	public static void validateAccessesData() throws Throwable {
+
+		String userDataFile=reconTestDataDirectory+"/AccessData.csv";
+		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "UserId");
+		ArrayList<String> accessIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "AccessId");
+		ArrayList<String> accessValidFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "ValidFrom");
+		ArrayList<String> accessValidToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "ValidTo");
+		ArrayList<String> accessNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "AccessName");
+		
+		validateAccessesDataInStagingTable(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
+	
+		validateAccessesDataInMasterTable(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
+		validateAccessesDataOnUI(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
+	}
+
+	private static void validateAccessesDataOnUI(ArrayList<String> userIdList, ArrayList<String> accessIdList,
+			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
+			ArrayList<String> accessNameList) throws Throwable {
+
+		
+		if(unhandledException==false)
+		{
+			System.out.println("*****************Validate Assets Info*****************");
+			try{
+				for(int i=0;i<=userIdList.size()-1;i++) {
+					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
+					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
+						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+						Utility.pause(2);
+					
+						logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
+						Utility.verifyElementPresent("//label[contains(@class,'x-form-cb-label') and text()='AssetExisting']", "Existing asset screen",  false);
+				
+						getIndexOfAssetsHeaders();
+						
+						//AssetCode Validation
+						String assetCodeElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+assetCodeIndex+"]/div";
+						String assetCode=driver.findElement(By.xpath(assetCodeElement)).getText();
+						
+						Utility.pause(2);
+		
+						if(assetCode!=null) {
+							if(AGlobalComponents.assetCode.equalsIgnoreCase(assetCode)) {
+								Utility.verifyElementPresentByScrollView(assetCodeElement, "AssetCode", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "FirstName " +assetCode+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see assetCode "+assetCode+"on UI ");
+						}
+						
+						//BadgeValidFrom Validation
+						String badgeValidFromElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidFromIndex+"]/div";
+						String badgeValidFrom=driver.findElement(By.xpath(badgeValidFromElement)).getText();
+						Utility.pause(2);
+						
+						SimpleDateFormat month_date = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
+						SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+						Date date = month_date.parse(badgeValidFrom);
+						String newDate = sdf.format(date);
+						
+						if(newDate!=null) {
+							if(accessValidFromList.get(i).equalsIgnoreCase(newDate)) {
+								Utility.verifyElementPresentByScrollView(badgeValidFromElement, "BadgeValidFrom", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "BadgeValidFrom " +newDate+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see badgeValidFrom "+newDate+"on UI ");
+						}
+						
+						//BadgeValidTo Validation
+						String badgeValidToElement= "//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeValidToIndex+"]/div";
+						String badgeValidTo=driver.findElement(By.xpath(badgeValidToElement)).getText();
+						Utility.pause(2);
+						
+						SimpleDateFormat valdToMonth = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
+						SimpleDateFormat sdf1 = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+						Date date1 = valdToMonth.parse(badgeValidTo);
+						String newValidToDate = sdf1.format(date1);
+						
+						if(badgeValidTo!=null) {
+							if(accessValidToList.get(i).equalsIgnoreCase(newValidToDate)) {
+								Utility.verifyElementPresentByScrollView(badgeValidToElement, "BadgeValidTo", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "BadgeValidTo " +newValidToDate+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see badgeValidTo "+newValidToDate+"on UI ");
+						}
+						
+						//Badge Type Validation
+						String badgeTypeElement="//td[contains(@class,'x-grid-cell x-grid-td')]["+badgeTypeIndex+"]/div";
+						String badgeType=driver.findElement(By.xpath(badgeTypeElement)).getText();
+						Utility.pause(2);
+		
+						if(badgeType!=null) {
+							if(badgeType.equalsIgnoreCase("Generic Badge")) {
+								badgeType="gb";
+							}
+								
+							if(accessNameList.get(i).equalsIgnoreCase(badgeType)) {
+								Utility.verifyElementPresentByScrollView(badgeTypeElement, "Asset Type", true, false);
+							}
+							else {
+								logger.log(LogStatus.FAIL, "AssetType " +badgeType+" on UI is not same as expected");
+							}
+						}
+						else {
+							logger.log(LogStatus.FAIL, "Not able to see AssetType "+badgeType+"on UI ");
+						}
+					}
+				}
+			}			
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	private static void validateAccessesDataInMasterTable(ArrayList<String> userIdList, ArrayList<String> accessIdList,
+			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
+			ArrayList<String> accessNameList) throws ClassNotFoundException, SQLException {
+
+		for(String userId:userIdList) {
+			String identityId=DBValidations.getIdentityIdOfUser(userId);
+			String accessId=DBValidations.getAccessIdFromMasterTable(identityId);
+			String accessValidFrom=DBValidations.getAccessValidFromFromMasterTable(identityId);
+			String accessValidTo=DBValidations.getAccessValidToFromMasterTable(identityId);
+			String accessName=DBValidations.geAccessNameFromMasterTable(accessId);
+			AGlobalComponents.assetCode=DBValidations.getAssetCodeFromMasterTable(accessId);
+			if(accessIdList.contains(accessId)) {
+				logger.log(LogStatus.PASS, "AccessId "+accessId+" exists in master table for UserID" +userId);
+			}
+			if(accessValidFromList.contains(accessValidFrom)) {
+				logger.log(LogStatus.PASS, "AccessValidFrom "+accessValidFrom+" exists in master table for UserID" +userId);
+			}
+			if(accessValidToList.contains(accessValidTo)) {
+				logger.log(LogStatus.PASS, "AccessValidTo "+accessValidTo+" exists in master table for UserID" +userId);
+			}
+			if(accessNameList.contains(accessName)) {
+				logger.log(LogStatus.PASS, "AccessName "+accessName+" exists in master table for UserID" +userId);
+			}
+		}
+	}
+
+	private static void validateAccessesDataInStagingTable(ArrayList<String> userIdList, ArrayList<String> accessIdList,
+			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
+			ArrayList<String> accessNameList) throws ParseException, ClassNotFoundException, SQLException {
+
+		for(String userId:userIdList) {
+			String userDataExtId=DBValidations.getUserdataExtId(userId);
+			String accessName=DBValidations.getAccessNameFromStagingTable(userDataExtId);
+			String accessValidFrom=DBValidations.getAccessValidFromFromStagingTable(userDataExtId);	
+			String accessValidTo=DBValidations.getBadgeValidToFromStagingTable(userDataExtId);
+					
+			if(accessIdList.contains(accessName)) {
+				logger.log(LogStatus.PASS, "AccessId "+accessName+" exists in master table for UserID" +userId);
+			}
+			if(accessValidFromList.contains(accessValidFrom)) {
+				logger.log(LogStatus.PASS, "BadgeValidFrom "+accessValidFrom+" exists in master table for UserID" +userId);
+			}
+			if(accessValidToList.contains(accessValidTo)) {
+				logger.log(LogStatus.PASS, "BadgeValidTo "+accessValidTo+" exists in master table for UserID" +userId);
+			}
+		}
+	}
+
+	public static boolean createUserInHRDb() throws ClassNotFoundException {
+		
+		ArrayList<String> userIds=new ArrayList<String>();
+		ArrayList<String> firstNameList=new ArrayList<String>();
+		ArrayList<String> lastNameList=new ArrayList<String>();
+		ArrayList<String> validFroms=new ArrayList<String>();
+		ArrayList<String> validTos=new ArrayList<String>();
+		ArrayList<String> jobTitle=new ArrayList<String>();
+		ArrayList<String> identityType=new ArrayList<String>();
+		ArrayList<String> managerId=new ArrayList<String>();
+		ArrayList<String> payStatus= new ArrayList<String>();
+		
+		String hrUserDataFile = reconTestDataDirectory + "/HRDbCreateUser.csv"; 
+		String validFrom=Utility.getCurrentDateTime("MM-dd-yyyy");
+		String validTo=Utility.getDate("MM-dd-yyyy", 4, "years");
+		String userId=Utility.UniqueNumber(6);
+		String firstName=Utility.getRandomString(5);
+		String lastName=Utility.getRandomString(5);
+		String name=firstName+" "+lastName;
+		
+		if(DBValidations.createUserInHRDb(userId,firstName,lastName,name,validFrom,validTo,"Software Engineer","Permanent","Hire","anna.mordeno")) {
+				
+			userIds.add(userId);
+			firstNameList.add(firstName);
+			lastNameList.add(lastName);
+			validFroms.add(validFrom);
+			validTos.add(validTo);
+			jobTitle.add("Software Engineer");
+			identityType.add("Permanent");
+			managerId.add("anna.mordeno");
+			payStatus.add("Hire");
+			
+			ArrayList<ArrayList<String>> userData = new ArrayList<ArrayList<String>>();
+			String detailsHeaderArray []= {"UserId","FirstName","LastName","ValidFrom","ValidTo","JobTitle","IdentityType","ManagerId","PayStatus"};
+			
+			ArrayList<String> userDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+			
+			userData = Utility.appendColumnDataAtEnd(userData, userIds);
+			userData = Utility.appendColumnDataAtEnd(userData, firstNameList);
+			userData = Utility.appendColumnDataAtEnd(userData, lastNameList );
+			userData = Utility.appendColumnDataAtEnd(userData, validFroms );
+			userData = Utility.appendColumnDataAtEnd(userData, validTos);
+			userData = Utility.appendColumnDataAtEnd(userData, jobTitle);
+			userData = Utility.appendColumnDataAtEnd(userData, identityType);
+			userData = Utility.appendColumnDataAtEnd(userData, managerId);
+			userData = Utility.appendColumnDataAtEnd(userData, payStatus);
+			
+			if(Utility.checkIfListIsNotNullAndNotEmpty(userData)) {
+				
+				userData.add(0, userDataFileHeaders);
+				if(FileOperations.createFileIfDoesNotExist(hrUserDataFile)) {
+					ReadDataFromPropertiesFile.writeTestDataInFile(hrUserDataFile, userData, false);
+					return true;
+				}
+			}
+			return true;
+		}	
+		else {
+			logger.log(LogStatus.FAIL, "Failed to create user in HR Db");
+			return false;		
+		}
+	}
+
+	public static boolean changeEmpJobTitleThroughHRDB() throws ClassNotFoundException {
+		String hrUserDataFile = reconTestDataDirectory + "/HRDbCreateUser.csv";
+		
+		String userId=Utility.getCSVCellValue(hrUserDataFile, "UserId", 1);
+		
+		if(DBValidations.updateUserInHrdb(userId,"Manager")) {
+			ReadDataFromPropertiesFile.updateCSVCellValue(hrUserDataFile, "JobTitle", 1, "Manager");
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change job title of user in HR Db");
+			return false;		
+		}
 	}
 }

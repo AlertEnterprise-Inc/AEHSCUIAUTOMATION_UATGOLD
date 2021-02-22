@@ -472,4 +472,150 @@ public class DBValidations extends BrowserSelection{
 		}
 		return type;				
 	}
+
+	public static int getAccessId(String name) throws ClassNotFoundException {
+
+		String query = "Select ObjectID from [ACVSCore].[Access].[Clearance] where Name='"+name+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
+		int objectId =Integer.parseInt(rs.get(0).get(0));	
+		if(objectId!=0) {
+			System.out.println("ObjectId of the user: "+objectId);
+		}
+		else {
+			System.out.println("Unable to get ObjectId of the user");
+		}
+		return objectId;
+	}
+
+	public static boolean assignAccessToUserInCCURE(int userId,int accessId, String activationDate, String expirationDate) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="insert into [ACVSCore].[Access].[PersonnelClearancePair](ClassType,PersonnelID,ClearanceID,StartDateTime,EndDateTime)"
+				+ "values('SoftwareHouse.NextGen.Common.SecurityObjects.Credential',"+userId+",'"+accessId+"','"+activationDate+"','"+expirationDate+"')";
+		noOfRecordsUpdated = MsSql.setResultsToCCUREDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to delete user in identity system");
+			return false;
+		}
+	
+	}
+
+	public static String getAccessNameFromStagingTable(String userDataExtId) throws ClassNotFoundException, SQLException {
+
+		String query = "select description from stg_user_role_data where user_data_ext_id='"+userDataExtId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String accessName =rs.get(0).get(0);	
+		if(accessName!=null) {
+			System.out.println("AccessName: "+accessName);
+		}
+		else {
+			System.out.println("Unable to fetch AccessName");
+		}
+		return accessName;
+	}
+
+	public static String getAccessValidFromFromStagingTable(String userDataExtId) throws ClassNotFoundException, SQLException {
+
+		String query = "select description from stg_user_role_data where user_data_ext_id='"+userDataExtId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String accessName =rs.get(0).get(0);	
+		if(accessName!=null) {
+			System.out.println("AccessValidFrom: "+accessName);
+		}
+		else {
+			System.out.println("Unable to fetch AccessValidFrom");
+		}
+		return accessName;
+	}
+
+	public static String getAccessIdFromMasterTable(String identityId) throws ClassNotFoundException, SQLException {
+
+		String query = "select access_id from identity_access where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String assetId =rs.get(0).get(0);	
+		if(assetId!=null) {
+			System.out.println("AccessId: "+assetId);
+		}
+		else {
+			System.out.println("Unable to fetch AccessId");
+		}
+		return assetId;	
+	}
+
+	public static String getAccessValidFromFromMasterTable(String identityId) throws ClassNotFoundException, SQLException {
+
+		String query = "select valid_from from identity_access where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String assetId =rs.get(0).get(0);	
+		if(assetId!=null) {
+			System.out.println("AccessValidFrom: "+assetId);
+		}
+		else {
+			System.out.println("Unable to fetch AccessValidFrom");
+		}
+		return assetId;	
+	}
+
+	public static String getAccessValidToFromMasterTable(String identityId) throws ClassNotFoundException, SQLException {
+
+		String query = "select valid_to from identity_access where identity_id='"+identityId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String assetId =rs.get(0).get(0);	
+		if(assetId!=null) {
+			System.out.println("AccessValidTo: "+assetId);
+		}
+		else {
+			System.out.println("Unable to fetch AccessValidTo");
+		}
+		return assetId;	
+	}
+
+	public static String geAccessNameFromMasterTable(String accessId) throws ClassNotFoundException, SQLException {
+
+		String query = "select text from access_role where id='"+accessId+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+		String assetId =rs.get(0).get(0);	
+		if(assetId!=null) {
+			System.out.println("AccessName: "+assetId);
+		}
+		else {
+			System.out.println("Unable to fetch AccessName");
+		}
+		return assetId;	
+	}
+
+	public static boolean createUserInHRDb(String userId, String firstName, String lastName, String name,
+			String validFrom, String validTo, String jobTitle, String identityType,String payStatus, String managerId) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="insert into aepdemo.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto)" + 
+				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"');";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to create user in HR DB");
+			return false;
+		}	
+	}
+
+	public static boolean updateUserInHrdb(String userId, String jobTitle) throws ClassNotFoundException {
+		int noOfRecordsUpdated=-1;
+		String query="update aepdemo.hr_data set jobtitle ='"+jobTitle+"' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	}
 }

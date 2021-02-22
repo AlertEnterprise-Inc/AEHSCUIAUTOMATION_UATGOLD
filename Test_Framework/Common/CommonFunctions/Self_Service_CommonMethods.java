@@ -37,7 +37,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	private static String access1ForTempOnboarding = "SC NWPTIE NONR GATE ACCESS" , access2ForTempOnboarding = "End User";
 	private static String access1ForPermanentEmp = "SC CHRWLS NONR CONST GATE" , access2ForPermanentEmp = "SC LEEXSS NONR GENERAL ACCESS";
 	private static String system1ForTempOnboarding = "AMAG",system2ForTempOnboarding = "HR System";
-	
+	private static String access1ForEmpOnboarding = "CCURE_NEW_TEST18" , access2ForEmpOnboarding = "New Admin Role";
 	
 	/**
 	 * <h1>createAccessRequest</h1> 
@@ -2301,6 +2301,212 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 		}
 		
+	}
+	
+	public static void approveRequest(String WfActor) throws Throwable {
+		if (unhandledException == false) {
+			try {
+				logger.log(LogStatus.INFO, "Approving the request ");
+				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+				ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
+				Utility.pause(4);
+				
+				if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+					ByAttribute.click("xpath", HomeObjects.openRequestsLnk, "Click on Open Requests Link to open the request");
+					Utility.pause(5);
+					WebElement check1=driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+reqNum+"')]"));
+					Utility.verifyElementPresent(".//*[@class='x-component x-component-activityLabeltext' and contains( text(),'"+reqNum+"')]", "Request", false);
+					
+					if(Utility.compareStringValues("manager", WfActor)){
+						WfActor="Manager";
+						System.out.println("Approving the Employee onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the Employee onboarding request by manager ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: "+WfActor+"']", WfActor+" Stage", false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button ");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+						
+					}
+					if(Utility.compareStringValues("Badge Admin", WfActor)){
+						System.out.println("Approving the Employee onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the Employee onboarding request by  ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: "+WfActor+"']", WfActor+" Stage", false);
+						
+						/**creating asset for the user**/
+//						String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG");
+						
+						/*Giving badge to the user */
+						
+						ByAttribute.click("xpath",HomeObjects.selectBadgeField,"Enter the  asset created to the user");
+						Actions action = new Actions(driver);
+						action.sendKeys(AGlobalComponents.badgeName).build().perform();
+						Utility.pause(2);
+						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+AGlobalComponents.badgeName+"')]" , "Select the asset name");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.badgeListGrid,"Asset assigned");
+						Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", AGlobalComponents.badgeId, false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button By badge admin");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.yesButtonOnPopUpWindow, "Click yes button to save the changes done in badge");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by badge admin");		
+					}	
+				}
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}	
+	}
+	
+	public static void checkRequestInManagerInbox() throws Throwable {
+		if (unhandledException == false) {
+			System.out.println("***************************** Checking the status in the Request *********************************");
+			logger.log(LogStatus.INFO,"*************** Checking the status in the Request *********************************");
+			try{
+				if(AGlobalComponents.EmpOnboardingthroughHRDb){
+					if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+						ByAttribute.mouseHover("xpath",HomeObjects.homeTabBtn,"Mouse hover on Home tab to open My Requests");
+						ByAttribute.click("xpath",HomeObjects.homeInboxLnk,"click on Inbox");
+						Utility.pause(5);
+					}
+					List<WebElement> requestNumberElements = driver.findElements(By.xpath("//div[@class='x-grid-cell-inner ']/descendant::div"));
+					WebElement requestNo=requestNumberElements.get(0);
+					Actions action = new Actions(driver);
+					action.doubleClick(requestNo);
+					action.build().perform();
+					Utility.pause(5);
+					reqNum=requestNo.getText();
+					
+					WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
+					String requesterName= requestBy.getText();
+					if(Utility.compareStringValues(requesterName, "SYSTEM")&& AGlobalComponents.EmpOnboardingthroughHRDb)
+						logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
+					else
+						logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
+	
+					/*
+					 * checking for accesses added through pre feed rule while onboarding
+					 */
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.accessListGrid, "AccessList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+access1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForEmpOnboarding+"']")).size()>0)){
+						logger.log(LogStatus.INFO, "2 accesses :" +access1ForEmpOnboarding +","+access2ForEmpOnboarding+ " are assigned to the user");
+					}
+					
+					/*
+					 * checking for badge added through pre feed rule while onboarding
+					 */
+					Utility.verifyElementPresentByScrollView(HomeObjects.badgeListGrid, "BadgeList Grid", true,false);
+					WebElement activationDate = driver.findElement(By.xpath("//span[normalize-space(text())='Activation Date']//ancestor::div[contains(@id,'headercontainer')]//following-sibling::div//td[1]"));
+					String activationDateValue = activationDate.getText();
+					if(Utility.checkIfStringIsNotNull(activationDateValue)){
+						logger.log(LogStatus.INFO, "Badge is assigned to the user with activation date as: "+ activationDateValue);
+					}			
+				}	
+			}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	public static void checkUserStatus() throws Throwable {
+
+		if (unhandledException == false) {
+			System.out.println("********* Check status in IDM *******************");
+			logger.log(LogStatus.INFO,"******Check status in IDM ************");
+			try {	
+				if(AGlobalComponents.EmpOnboardingthroughHRDb){	
+					String hrUserDataFile = "Test_Data/Recon/HRUserData.csv"; 
+					String firstName=Utility.getCSVCellValue(hrUserDataFile, "FirstName", 1);
+					String lastName=Utility.getCSVCellValue(hrUserDataFile, "LastName", 1);
+			
+					FB_Automation_CommonMethods.searchIdentity(firstName,lastName);
+					logger.log(LogStatus.PASS, "Employee Onboardidng done is successful , user is present in IDM");
+			
+					/*Validating access assigned to the user*/
+					ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
+					Utility.verifyElementPresent("//*[text()='"+access1ForEmpOnboarding+"']", access1ForEmpOnboarding, false);
+					Utility.verifyElementPresent("//*[text()='"+access2ForEmpOnboarding+"']", access2ForEmpOnboarding, false);
+					logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
+			
+					/* checking for asset added by badge admin at time of approval
+					 */
+					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+					Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", "badgeId", false);
+					logger.log(LogStatus.PASS, "Asset is assigned to the user with asset Id : "+AGlobalComponents.badgeId);
+					
+					/*
+					 * checking for Systems AMAG and HR added on the basis of Accesses
+					 */
+					ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+					Utility.verifyElementPresent(IdentityObjects.systemsTabLnk, "AMAG and HR System", false);
+					logger.log(LogStatus.PASS, "2 systems are successfully assigned to the user");
+				}
+			}catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+
+
+	public static void approveRequestInInbox(String WfActor) throws Throwable {
+
+		if (unhandledException == false) {
+			try {
+				logger.log(LogStatus.INFO, "Approving the request ");
+				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+				ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
+				Utility.pause(4);
+				
+				if(driver.findElements(By.xpath(HomeObjects.openRequestsLnk)).size()>0){
+					ByAttribute.click("xpath", HomeObjects.openRequestsLnk, "Click on Open Requests Link to open the request");
+					Utility.pause(5);
+					Utility.verifyElementPresent("//div[contains(@class,'x-component') and text()='"+reqNum+"']", "Request", false);
+					
+					if(Utility.compareStringValues("manager", WfActor)){
+						WfActor="Manager";
+						System.out.println("Approving the Employee onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the Employee onboarding request by manager ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: "+WfActor+"']", WfActor+" Stage", false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button ");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+						
+					}
+					if(Utility.compareStringValues("Badge Admin", WfActor)){
+						System.out.println("Approving the Employee onboarding request by : "+WfActor);
+						logger.log(LogStatus.INFO,"******Approving the Employee onboarding request by  ******: "+WfActor);
+						Utility.verifyElementPresent("//div[@class='x-box-target']//*[text()='Stage: "+WfActor+"']", WfActor+" Stage", false);
+						
+						/**creating asset for the user**/
+//						String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG");
+						
+						/*Giving badge to the user */
+						
+						ByAttribute.click("xpath",HomeObjects.selectBadgeField,"Enter the  asset created to the user");
+						Actions action = new Actions(driver);
+						action.sendKeys(AGlobalComponents.badgeName).build().perform();
+						Utility.pause(2);
+						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+AGlobalComponents.badgeName+"')]" , "Select the asset name");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.badgeListGrid,"Asset assigned");
+						Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", AGlobalComponents.badgeId, false);
+						ByAttribute.click("xpath",HomeObjects.approveButton, "Click approve button By badge admin");
+						Utility.pause(2);
+						ByAttribute.click("xpath",HomeObjects.yesButtonOnPopUpWindow, "Click yes button to save the changes done in badge");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by badge admin");		
+					}	
+				}
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}	
 	}
 
 

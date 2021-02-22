@@ -69,7 +69,15 @@ public interface ReconObjects {
 		
 		String elementEntity = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[6]";
 		
-		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[13]//div[@class='aegrid-schedule']";
+		String preFeedRule = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[9]";
+		
+		String createRequest="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[10]";
+		
+		String fetchEntity="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[11]";
+		
+		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[12]";
+		
+		String sequence="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[4]";
 		
 		String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
 		
