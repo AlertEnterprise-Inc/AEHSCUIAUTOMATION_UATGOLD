@@ -92,7 +92,7 @@ public interface HomeObjects {
 		String homeAccessRequestSystemListGrid = "//*[@class='x-box-target']//label[text()='System List']";
 		String homeAccessRequestPrerequisiteList = "//*[@class='x-box-target']//label[text()='Prerequisite List']";
 		String homeAccessRequestApproveButton = "//*[text()='Approve']";
-		String HomeOpenRequestsLnk = ".//*[@class='activeReq' and contains( text(),'Open Requests')]";
+		String homeOpenRequestsLnk = ".//*[@class='activeReq' and contains( text(),'Open Requests')]";
 		String homeAccessRequestSelectBadgeDDn = "//div[@class='x-grid-cell-inner ' and text()='Select Badge']";
 		String homeAccessRequestYesButtonOnPopUpWindow = "//*[@class='x-btn-inner x-btn-inner-default-small' and text()='Yes']";
 		String TempWorkerTab = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Temp Worker']";

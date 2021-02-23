@@ -355,7 +355,7 @@ public void Self_Service_Automation_TC006() throws Throwable
 				Self_Service_CommonMethods.createWellnessCheckRequest();
 			
 				/** checkAssetStatusInMyRequestInbox**/
-				Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"");
+				Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","");
 			
 				/** Switch to Default Browser **/
 				Utility.switchToDefaultBrowserDriver();
@@ -414,7 +414,7 @@ public void Self_Service_Automation_TC007() throws Throwable
  	     	Self_Service_CommonMethods.modifyIdentity(firstName);
 		
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","");
 	
  			/** Switch to Default Browser **/
  			Utility.switchToDefaultBrowserDriver();
@@ -480,7 +480,7 @@ public void Self_Service_Automation_TC008() throws Throwable
 			requestNumber = Self_Service_CommonMethods.employeeConversion(firstName);
 		
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","");
  			
  			/* Logout from application */
  	 		LoginPage.logout();
@@ -552,7 +552,7 @@ public void Self_Service_Automation_TC009() throws Throwable
  			requestNumber=Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
 		
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
  			
  			/** Switch to Default Browser **/
  	 		Utility.switchToDefaultBrowserDriver();
@@ -691,7 +691,7 @@ public void Self_Service_Automation_TC010() throws Throwable
  			Self_Service_CommonMethods.tempWorkerModification(firstName,lastName);
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,accessName);
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,accessName,"");
  			
  		}
  		/** Switch to Default Browser **/
@@ -784,7 +784,7 @@ public void Self_Service_Automation_TC011() throws Throwable
  			Self_Service_CommonMethods.tempWorkerModification(firstName,modifiedLastName);
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,modifiedLastName);
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,modifiedLastName,"");
  			
  		}
  		/** Switch to Default Browser **/
@@ -855,8 +855,8 @@ public void Self_Service_Automation_TC012() throws Throwable
  		//	requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Pittsburgh","430 Market St",firstName,lastName);
  			requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Las Vegas","300 S 4th St",firstName,lastName);
 		
- 			/** Launch New Private Browser **/
- 	 		Utility.switchToNewBrowserDriver();
+ 			/** logout from the application **/
+ 	 		LoginPage.logout();
  			
  			/** Login as approver **/
  	 		loginStatus = LoginPage.loginAEHSC("carol.payne", "Alert1234");
@@ -866,11 +866,8 @@ public void Self_Service_Automation_TC012() throws Throwable
  	 			/** Approve Access Request by area admin**/
  	 			Self_Service_CommonMethods.approveRequest("areaAdmin",requestNumber,accessName);
  	 			
- 		 	 	/** Switch to Default Browser **/
- 	 			Utility.switchToDefaultBrowserDriver();
-			
- 	 			/** Validate Access Request Status **/
- 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName, lastName,"");
+ 		 	 	/** Validate Access Request Status **/
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName, lastName,"",requestNumber);
  	 		}else{
  	 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
  	 	
@@ -984,7 +981,7 @@ public void Self_Service_Automation_TC013() throws Throwable
  			requestNumber=Self_Service_CommonMethods.tempWorkerOffboarding(firstName,lastName);
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
  			
  			/** Switch to Default Browser **/
  	 		Utility.switchToDefaultBrowserDriver();

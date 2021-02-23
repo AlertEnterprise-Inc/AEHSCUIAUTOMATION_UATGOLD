@@ -22,6 +22,7 @@ public interface IdentityObjects {
 	String clickFieldValue2 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
 	String enterFieldValue2 = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
 	String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
+	String addRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]";
 	String profileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
 	String accessTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
 	String systemsTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Systems']";

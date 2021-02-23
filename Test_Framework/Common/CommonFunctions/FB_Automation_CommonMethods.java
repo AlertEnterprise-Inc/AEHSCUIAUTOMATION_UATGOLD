@@ -1125,7 +1125,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				fillPrerequisitesInfo();
 				
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(40);
+				Utility.pause(20);
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
@@ -2480,93 +2480,75 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 	
-	public static void fillPrerequisitesInfo() throws Throwable 
+	public static void fillPrerequisitesInfo() throws Throwable
 	{
-		if(unhandledException==false)
-		{
-			index++;
-			System.out.println("**************Fill prerequisite info***********");
-			try{
-				String type= null,prerequisite=null,validFrom= null,validTo = null,header,prerequisiteTemplateFile,prerequisiteDataFile;
-				
-				prerequisiteTemplateFile = createIdentityTestDataDirectory + "/Prerequisite_Template.csv";
-				prerequisiteDataFile=createIdentityTestDataDirectory+ "/Prerequisite.csv";
-				
-				TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(prerequisiteDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(prerequisiteDataFile, 0);
-				int len = headers.size();
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-				
-						switch (header.toLowerCase()) {
-						case "type":
-							type = Utility.getIndexValue(userData, index);
-							break;
-						case "prerequisite":
-							prerequisite = Utility.getIndexValue(userData, index);
-							break;
-						case "validfrom":
-							validFrom=Utility.getIndexValue(userData, index);
-							break;
-						case "validto":
-							validTo=Utility.getIndexValue(userData, index);
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-				
-				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
-				Actions action = new Actions(driver);
-				WebElement addIcon = driver.findElement(By.xpath(addRecordsIcon));
-				action.moveToElement(addIcon).click();
-				action.sendKeys(type);
-				action.build().perform();
-				Utility.pause(5);
-				WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+type+"']"));
-				action.moveToElement(typeValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "prerequisite type Value selected");
-				Utility.pause(4);
-				
-				action.sendKeys(Keys.TAB);
-				action.sendKeys(prerequisite);
-				action.build().perform();
-				Utility.pause(5);
-				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisite+"']"));
-				action.moveToElement(prerequisiteValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered the Prerequisite");
-				
-//				WebElement validFromDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[2]"));
-//				action.moveToElement(validFromDate).click();
-//				action.sendKeys(validFrom);
-//				action.build().perform();
-//				Utility.pause(5);
-//				logger.log(LogStatus.INFO, "Entered valid from");
+	if(unhandledException==false)
+	{
+	index++;
+	System.out.println("**************Fill prerequisite info***********");
+	try{
+	String type= null,prerequisite=null,validFrom= null,validTo = null,header,prerequisiteTemplateFile,prerequisiteDataFile;
 
+	prerequisiteTemplateFile = createIdentityTestDataDirectory + "/Prerequisite_Template.csv";
+	prerequisiteDataFile=createIdentityTestDataDirectory+ "/Prerequisite.csv";
 
+	TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
 
-//				WebElement validToDate=driver.findElement(By.xpath("(//div[text()='"+type+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[3]"));
-//				action.moveToElement(validToDate).click();
-//				action.sendKeys(validTo);
-//       		action.build().perform();
-  //      		logger.log(LogStatus.INFO, "Entered valid to");
-			}
-			catch(Exception e){
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}
-		}
+	ArrayList<String> prerequisiteTypeList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "Type");
+	ArrayList<String> prerequisiteNameList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "Prerequisite");
+	ArrayList<String> prerequisiteValidFromList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "ValidFrom");
+	ArrayList<String> prerequisiteValidToList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "ValidTo");
+
+	for(int i=0;i<prerequisiteNameList.size();i++) {
+	Actions action = new Actions(driver);
+	if(i==0) {
+	String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
+	WebElement addIcon = driver.findElement(By.xpath(addRecordsIcon));
+	action.moveToElement(addIcon).click();
 	}
+	else
+	ByAttribute.click("xpath",IdentityObjects.addRowLnk,"Click on Add icon to initiate Recon");
 
+	action.sendKeys(prerequisiteTypeList.get(i));
+	action.build().perform();
+	Utility.pause(5);
+	WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteTypeList.get(i)+"']"));
+	action.moveToElement(typeValue).click();
+	action.build().perform();
+	logger.log(LogStatus.INFO, "prerequisite type Value selected");
+	Utility.pause(4);
+
+	action.sendKeys(Keys.TAB);
+	action.sendKeys(prerequisiteNameList.get(i));
+	action.build().perform();
+	Utility.pause(5);
+	WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteNameList.get(i)+"']"));
+	action.moveToElement(prerequisiteValue).click();
+	action.build().perform();
+	logger.log(LogStatus.INFO, "Entered the Prerequisite Name");
+
+	// WebElement validFromDate=driver.findElement(By.xpath("(//div[text()='"+prerequisiteTypeList.get(prerequisiteNameList.indexOf(name))+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[2]"));
+	// action.moveToElement(validFromDate).click();
+	action.sendKeys(Keys.TAB);
+	action.sendKeys(prerequisiteValidFromList.get(i));
+	action.build().perform();
+	Utility.pause(5);
+	logger.log(LogStatus.INFO, "Entered prerequiste valid from");
+
+	// WebElement validToDate=driver.findElement(By.xpath("(//div[text()='"+prerequisiteTypeList.get(prerequisiteNameList.indexOf(name))+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[3]"));
+	// action.moveToElement(validToDate).click();
+	action.sendKeys(Keys.TAB);
+	action.sendKeys(prerequisiteValidToList.get(i));
+	action.build().perform();
+	logger.log(LogStatus.INFO, "Entered prerequiste valid to");
+	}
+	}
+	catch(Exception e){
+	String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+	Utility.recoveryScenario(nameofCurrMethod, e);
+	}
+	}
+	}
 
 	private static void verifyRoleReconData() throws Throwable{
 		if(unhandledException==false)
