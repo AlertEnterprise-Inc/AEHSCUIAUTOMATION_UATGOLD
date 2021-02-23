@@ -23,6 +23,7 @@ public interface HomeObjects {
 		String homeMyRequestLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and contains( text(),'My Requests')]";
 		String homeInboxLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Inbox']";
 		String homeDashboardLnk = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and contains( text(),'Dashboard')]";
+		String homeMyDashboardBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Dashboard']";
 		
 		String homeAccessRequestPageLbl =".//*[contains(@id,'label') and text()='Access Request']";
 		String homeAccessRequestCreateBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
@@ -42,9 +43,12 @@ public interface HomeObjects {
 		String homeAccessRequestAddLocationSubmitBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String homeAccessRequestAddLocationCancelBtn =".//a[@data-qtip='Cancel' and @aria-hidden='false']";
 		String homeAccessRequestAddLocationChangesWillBeLostMsgLbl =".//*[contains(@id,'messagebox') and text()='You request changes will lost, do you want to proceed?']";
+		String homeAccessRequestHistoryBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnSmallSecondary-small' and text()='History']";
 		
 		String homeAccessRequestAddLocationReasonTxt =".//*[contains(@id,'baseComboBox') and @placeholder='Select Reason for request']";
 		String homeAccessRequestAddLocationBusinessJustificationTxt =".//textarea[contains(@id,'baseTextArea')]";
+		String homeAccessRequestAddLocationJustificationTxt =".//*[text()='Justification']//following::div//input[contains(@id,'baseText')]";
+		String homeAccessRequestAddLocationGroupNameTxt = ".//*[text()='Group Name *']//following::div//input[contains(@id,'baseComboBox')]";
 		String homeAccessRequestAddLocationConfirmBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
 		
 		String homeInboxRequestApproveBtn = ".//button[contains(@data-qtip,'Approve')]";
@@ -63,6 +67,7 @@ public interface HomeObjects {
 		String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
 		String wellnessCheckLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Wellness Check']";
 		String physicalAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Physical Access']";
+		String requestLocationAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Request Location Access']";
 		String acknowledgementCheckbox = "(//input[@type='checkbox'])[1]";
 		String submitBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String questionOneNo = "//*[@class='x-form-item-label-text' and contains(text(),'tested positive')]//ancestor::label//following-sibling::div//label[text()='No']//preceding-sibling::span//input";
@@ -77,18 +82,19 @@ public interface HomeObjects {
 		String cropAndSaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Crop & Save']";
 		String employeeType = "//input[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
 		String deleteAttachmentBtnLnk = "//*[contains(@id,'button') and @data-qtip='Delete Image']";
-		String inputFirstNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
-		String inputLastNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";
-		String inputCountry = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Country']";
-		String inputLocation = "//*[contains(@class,'x-placeholder-label') and text()='Select Location']";
-		String accessListGrid = "//*[@class='x-box-target']//label[text()='Access List']";
-		String badgeListGrid = "//*[@class='x-box-target']//label[text()='Badge List']";
-		String systemListGrid = "//*[@class='x-box-target']//label[text()='System List']";
-		String prerequisiteList = "//*[@class='x-box-target']//label[text()='Prerequisite List']";
-		String approveButton = "//*[text()='Approve']";
-		String openRequestsLnk = ".//*[@class='activeReq' and contains( text(),'Open Requests')]";
-		String selectBadgeField = "//div[@class='x-grid-cell-inner ' and text()='Select Badge']";
-		String yesButtonOnPopUpWindow = "//*[@class='x-btn-inner x-btn-inner-default-small' and text()='Yes']";
+		String homeAccessRequestFirstNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
+		String homeAccessRequestLastNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";
+		String homeAccessRequestCountryDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Country']";
+		String homeAccessRequestDepartmentDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']";
+		String homeAccessRequestLocationDdn = "//*[contains(@class,'x-placeholder-label') and text()='Select Location']";
+		String homeAccessRequestAccessListGrid = "//*[@class='x-box-target']//label[text()='Access List']";
+		String homeAccessRequestBadgeListGrid = "//*[@class='x-box-target']//label[text()='Badge List']";
+		String homeAccessRequestSystemListGrid = "//*[@class='x-box-target']//label[text()='System List']";
+		String homeAccessRequestPrerequisiteList = "//*[@class='x-box-target']//label[text()='Prerequisite List']";
+		String homeAccessRequestApproveButton = "//*[text()='Approve']";
+		String HomeOpenRequestsLnk = ".//*[@class='activeReq' and contains( text(),'Open Requests')]";
+		String homeAccessRequestSelectBadgeDDn = "//div[@class='x-grid-cell-inner ' and text()='Select Badge']";
+		String homeAccessRequestYesButtonOnPopUpWindow = "//*[@class='x-btn-inner x-btn-inner-default-small' and text()='Yes']";
 		String TempWorkerTab = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Temp Worker']";
 		String TempWorkerOnboardingLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Temp Worker Onboarding']";
 		String TempWorkerModificationLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Temp Worker Modification']";
@@ -96,7 +102,7 @@ public interface HomeObjects {
 		String TempWorkerRehireLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Temp Worker Rehire']";
 		String ComparisonButton = "//*[@class='x-btn-inner x-btn-inner-aebtnSmallSecondary-small' and text()='Comparison']";
 		String MyRequestsHeader = "//*[@class='x-box-target']//label[text()='My Requests']";
-		String workFlowBtn = "//td[contains(@class,' x-grid-cell-workflowActionColumn x-grid-cell-last')]//button[@class='aegrid-view']";
+		String homeAccessRequestWorkFlowBtn = "//td[contains(@class,' x-grid-cell-workflowActionColumn x-grid-cell-last')]//button[@class='aegrid-view']";
 		String workflowStatusHeaderInWFPopupWindow = "//div[contains(@id,'header-title') and contains(text(),'Workflow Status')]";
 		String closeIconInWFStatusWindow = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
 		String selectTerminationReason = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";

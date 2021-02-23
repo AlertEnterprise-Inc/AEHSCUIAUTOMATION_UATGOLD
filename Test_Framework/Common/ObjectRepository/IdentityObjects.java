@@ -38,6 +38,7 @@ public interface IdentityObjects {
 	String collapseContactInfoSection = "//fieldset[@aria-label='Contact Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";
 	String collapseOrganisationInfoSection = "//fieldset[@aria-label='Organisation Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";
 	String employeeTypeLnk = "//*[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
+	String idmProfileUserIdTxt = "//*[contains(@id,'baseText') and @placeholder='Enter User ID']";
 	String jobTitleLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Job Title']";
 	String validFromLnk = "//*[contains(@id,'baseDateTime') and @placeholder='Select Valid From']";
 	String validToLnk = "//*[contains(@id,'baseDateTime') and @placeholder='Select Valid To']";
@@ -65,5 +66,7 @@ public interface IdentityObjects {
 	String reloadOption = "//*[contains(@id,'menuitem') and text()='Reload']";
 	String leftPaneExpansionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburgerexpand ']";
 	String leftPaneContractionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburger ']";
-	
+	String idmAddAssetSelectDdn = "(//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Asset'])[4]";
+	String idmAddAssetStatusDdn = "(//input[contains(@id,'baseComboBox') and @placeholder='Select Status'])[4]";
+	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
 }

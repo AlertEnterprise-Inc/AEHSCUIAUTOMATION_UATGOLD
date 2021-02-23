@@ -47,10 +47,10 @@ public class ByAttributeAngular extends BrowserSelection  {
 		 
 		try {
 
-//			Utility.connectToLatestFrame(driver);
-//			WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
-//			WebElement iframe=driver.findElement(By.xpath("//iframe[contains(@id,'baseTextAreaMce')]"));
-//			driver.switchTo().frame(iframe);
+	//		Utility.connectToLatestFrame(driver);
+	//		WebElement iframe=driver.findElement(By.xpath("//iframe[@class='Invi-frame ng-scope']"));
+	//		WebElement iframe=driver.findElement(By.xpath("//iframe[contains(@id,'baseTextAreaMce')]"));
+	//		driver.switchTo().frame(iframe);
 			
 //			find the object based on attribute
 			switch (attribute.toLowerCase()) {

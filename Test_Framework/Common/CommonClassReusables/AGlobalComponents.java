@@ -42,7 +42,8 @@ public class AGlobalComponents {
 	public static boolean wellnessCheckCase=false;
 	public static boolean contractorToPermanentEmployeeConversion = false;
 	public static boolean tempWorkerOnboarding=false;
-	public static boolean tempWorkerModification=false;
+	public static boolean tempWorkerModificationDepartment=false;
+	public static boolean tempWorkerModificationLastName=false;
 	public static boolean tempWorkerOffboardingRehireTermination=false;
 	public static boolean requestLocationAccessOthers = false;
 	public static String asstCode= "";

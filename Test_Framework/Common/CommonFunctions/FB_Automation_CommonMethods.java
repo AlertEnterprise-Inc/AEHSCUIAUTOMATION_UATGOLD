@@ -40,6 +40,7 @@ import CommonClassReusables.TestDataEngine;
 import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import ObjectRepository.AccessObjects;
+import ObjectRepository.HomeObjects;
 import ObjectRepository.IdentityObjects;
 import ObjectRepository.ReconObjects;
 
@@ -1118,7 +1119,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
 				Utility.pause(2);
 				fillAccessesInfo();
-					
+			
 				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
 				Utility.pause(2);
 				fillPrerequisitesInfo();
@@ -1127,22 +1128,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(40);
 
 				logger.log(LogStatus.PASS, "identity created");	
-//				
-//				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
-//				Utility.pause(2);
-//				fillAssetsInfo(AGlobalComponents.assetCode);
-//				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-//				Utility.pause(10);
-//				logger.log(LogStatus.INFO, "Created asset assigned to the user");
-//				
-//				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-//				Utility.pause(1);
-//				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-//				Utility.pause(5);
-//				
-//				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
-//				if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
-//						logger.log(LogStatus.INFO, "System is assigned to the user");
+				
+				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+				Utility.pause(2);
+				fillAssetsInfo(AGlobalComponents.assetCode);
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
+				Utility.pause(20);
+				logger.log(LogStatus.INFO, "Created asset assigned to the user");
+				
+				searchIdentity(firstName,lastName);
+				
+				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+				if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
+					logger.log(LogStatus.INFO, "System is assigned to the user");
+				else
+					logger.log(LogStatus.FAIL, "System is not assigned to the user");
+				
+				
 			}
 			catch(Exception e)
 			{		
@@ -1328,11 +1330,22 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			{
 				Actions action = new Actions(driver);
 				action.click().build().perform();
-				ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-				Utility.pause(30);
-				
+				if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(15);
+				}
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(15);
+					
+				}
+				if(driver.findElements(By.xpath("//*[contains(@class,'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus ')]")).size()>=2)
+					System.out.println("Identity is already searched in IDM");
+				else{
 				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
 				Utility.pause(3);
 				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");
@@ -1358,7 +1371,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		//		Actions action = new Actions(driver);
 				action.sendKeys(Keys.ENTER).build().perform();
 				Utility.pause(5);
-			
+				}
 		
 			if(driver.findElements(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
@@ -1998,6 +2011,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
 				Utility.pause(2);
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, firstName+"."+lastName, "Enter user id");
+				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
 				Utility.pause(2);
 //				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
@@ -2444,15 +2459,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(5);
 				
-				String dropdownArrow="//*[@class='x-form-trigger x-form-trigger-default x-form-arrow-trigger x-form-arrow-trigger-default ']";
-				                      
-				ByAttributeAngular.click("xpath", dropdownArrow, "click on dropdown to select asset code");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.assetName, "Enter the asset ");
+				Thread.sleep(1000);
+				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
+				Utility.pause(2);
+				
+				Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "Active", "Enter the status of the asset ");
+				Thread.sleep(1000);
+				ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='Active']", " select status");
 				Utility.pause(2);
 		
-				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+assetCode+"']", " select asset code");
-				Utility.pause(2);
-		
-				ByAttribute.click("xpath", IdentityObjects.confirmButton, " Click confirm ");
+				ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
 				Utility.pause(5);
 			}
 			catch(Exception e){
