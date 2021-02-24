@@ -1,2 +1,2 @@
 FirstName,LastName,ValidFrom,ValidTo,EmployeeType,Email
-UDS|FirstName|String|10,UDS|LastName|String|10,AUTO|Date|Date,AUTO|Date|Date,Contractor,autouser2@aeqaind.corp
+UDS|FirstName|String|10,UDS|LastName|String|10,AUTO|Date|Date,AUTO|Date|Date,Employee,autouser2@aeqaind.corp

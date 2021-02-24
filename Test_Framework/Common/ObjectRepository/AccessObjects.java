@@ -18,4 +18,16 @@ public interface AccessObjects {
 
 	String sourceIdLnk = "(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[9]";
 	
+	String saveBtn = "//span[text()='Save']";
+
+	String IdentityNewRadioButton = "//*[text()='IdentityNew']";
+
+	String clickToEnterIdentityName = "//*[text()='Search or Filter by Identity Users']";
+	
+	String SaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Save']";
+
+	String IdentityExistingRadioButton = "//*[text()='IdentityExistinng']";
+
+	String removeAccessLnk = "//*[contains(@class,'aegrid-noaccess ')]";
+	
 }

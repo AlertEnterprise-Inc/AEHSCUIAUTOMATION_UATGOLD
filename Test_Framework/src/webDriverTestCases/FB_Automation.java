@@ -1,5 +1,7 @@
 package webDriverTestCases;
 
+import java.util.ArrayList;
+
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -452,5 +454,43 @@ public class FB_Automation extends BrowserSelection {
 				logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
 			}	
 		}
+	}
+	
+	@Test(priority=12)
+	public void FB_Automation_TC012() throws Throwable 
+	{
+		logger =report.startTest("FB_Automation_TC012","Area Admin Cases");
+		System.out.println("[INFO]--> Area Admin Cases - TestCase Execution Begins");
+		
+		String accessName = "RLCM_Test10";
+		ArrayList<String> firstNames=new ArrayList<String>();
+		ArrayList<String> lastNames= new ArrayList<String>();
+		
+		/* Login as Manager */
+		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
+		
+		if(loginStatus){
+			logger.log(LogStatus.PASS, "Login Successful");
+			for(int i=0;i<1;i++) {
+				firstNames.add("Test"+Utility.getRandomString(4));
+				lastNames.add("AreaAdmin");
+				
+				/**creating asset for the user**/
+				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG1");
+				
+				/** Create Identities **/
+				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i));
+			}
+			
+			if (FB_Automation_CommonMethods.addIdentities(firstNames, lastNames, accessName)) 
+				FB_Automation_CommonMethods.removeIdentities(firstNames, lastNames, accessName);
+			else
+				logger.log(LogStatus.FAIL, "Unable to add Identity");
+					
+			LoginPage.logout();		
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+		}			
 	}
 }

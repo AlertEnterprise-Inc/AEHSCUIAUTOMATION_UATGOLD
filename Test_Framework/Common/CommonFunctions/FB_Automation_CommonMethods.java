@@ -4319,4 +4319,274 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			return false;		
 		}
 	}
+
+	public static void addIdentitiesToAccess(ArrayList<String> firstNames, ArrayList<String> lastNames,String accessName) throws Throwable {
+		if(unhandledException==false)
+		{
+			try
+			{		
+				ByAttribute.click("xpath", AccessObjects.accessTabLnk, "Click on Access tab");
+				Utility.pause(20);
+				
+				ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+				Utility.pause(2);
+				ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,accessName, "Enter the first field value for Filtering");
+				Utility.pause(2);
+	
+				Actions action = new Actions(driver);
+				action.sendKeys(Keys.ENTER);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement record=driver.findElement(By.xpath("((//div[text()='"+accessName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+				action.doubleClick(record).perform();
+				Utility.pause(5);
+				
+				ByAttribute.click("xpath", AccessObjects.IdentityNewRadioButton, "Selected Identity New radio button");
+				
+				for(String firstName:firstNames) {
+					ByAttribute.click("xpath", AccessObjects.clickToEnterIdentityName,"click to enter first name for search");
+					action.sendKeys(firstName);
+					action.build().perform();
+					Utility.pause(5);
+					
+					WebElement selectIdentity=driver.findElement(By.xpath("//*[@class='x-list-plain']/div[1]/div/span[2]"));
+					action.click(selectIdentity);
+					action.build().perform();
+					Utility.pause(5);
+					if(Utility.verifyElementPresentReturn("//div[@class='x-grid-cell-inner ' and contains(text(),'"+firstName+"')]",firstName,true,false)){
+						logger.log(LogStatus.PASS, "Successfully added User" +firstName);
+					}
+					else {
+						logger.log(LogStatus.FAIL, "Unable to add user "+firstName);
+					}
+				}
+				ByAttribute.click("xpath", AccessObjects.SaveBtn, "click on save button");
+				Utility.pause(2);
+				
+				
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	public static boolean validateAssignedAccessOnUI(String accessName) throws Throwable {
+		logger.log(LogStatus.INFO, "Validate Assigned Access On UI");
+		System.out.println("***************************** Validate Assigned Access On UI *********************************");
+		try
+		{	
+			ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Assets Tab ");
+			Utility.pause(2);
+			
+			if(Utility.verifyElementPresentReturn("//div[text()='"+accessName+"']",accessName,true,false)){
+				logger.log(LogStatus.PASS,"Access Name: "+accessName+ " successfully assigned to user");
+				return true;
+			}
+			else {
+				logger.log(LogStatus.FAIL,"Access Name: "+accessName+ " not assigned to user");	
+				return false;
+			}
+		}
+		catch(Exception e){
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+			return false;
+		}
+	}
+
+	public static void validateAssignedAccessInDB(String firstName,String lastName,String accessName) throws Throwable {
+		logger.log(LogStatus.INFO, "validate Assigned Access In DB");
+		System.out.println("***************************** Add Identities *********************************");
+		try
+		{
+			String userId=firstName+"."+lastName;
+			String identityId=DBValidations.getIdentityIdOfUser(userId);
+			String accessId=DBValidations.getAccessIdFromMasterTable(identityId);
+			String accessNameInDB=DBValidations.geAccessNameFromMasterTable(accessId);
+			if(accessNameInDB.equalsIgnoreCase(accessName)) {
+				logger.log(LogStatus.PASS,"Assigned access "+accessName+" is present in DB");
+			}
+		}
+		catch(Exception e){
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+			Utility.recoveryScenario(nameofCurrMethod, e);
+		}
+	}
+
+	public static boolean addIdentities(ArrayList<String> firstNames, ArrayList<String> lastNames, String accessName) throws Throwable {
+	
+		boolean flag=false;
+		if(unhandledException==false)
+		{
+			
+			logger.log(LogStatus.INFO, "***************************** Add Identities *********************************");
+			System.out.println("***************************** Add Identities *********************************");
+			try
+			{
+				/** Launch New Private Browser **/
+				Utility.switchToNewBrowserDriver();
+		
+				/* Login as Manager */
+				boolean loginStatus = LoginPage.loginAEHSC("area.admin", "Alert1234");
+
+				if(loginStatus){
+					logger.log(LogStatus.PASS, "Login Successful");
+			
+					FB_Automation_CommonMethods.addIdentitiesToAccess(firstNames,lastNames,accessName);
+			
+					/* Logout from application */
+					LoginPage.logout();	
+			
+					/** Switch to Default Browser **/
+					Utility.switchToDefaultBrowserDriver();
+			
+					for(int i=0;i<1;i++) {
+						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i), lastNames.get(i));
+						if(FB_Automation_CommonMethods.validateAssignedAccessOnUI(accessName)) 
+							flag=true;
+						
+				        FB_Automation_CommonMethods.validateAssignedAccessInDB(firstNames.get(i), lastNames.get(i),accessName);
+					}					 		
+				}
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+				flag=false;
+			}
+		}
+		return flag;
+	}
+
+	public static void removeIdentities(ArrayList<String> firstNames, ArrayList<String> lastNames, String accessName) throws Throwable {
+
+		if(unhandledException==false)
+		{
+			
+			logger.log(LogStatus.INFO, "***************************** Remove Identities *********************************");
+			System.out.println("***************************** Remove Identities *********************************");
+			try
+			{
+				/** Launch New Private Browser **/
+				Utility.switchToNewBrowserDriver();
+		
+				/* Login as Manager */
+				boolean loginStatus = LoginPage.loginAEHSC("area.admin", "Alert1234");
+
+				if(loginStatus){
+					logger.log(LogStatus.PASS, "Login Successful");
+			
+					FB_Automation_CommonMethods.removeIdentitiesFromAccess(firstNames,lastNames,accessName);
+			
+					/* Logout from application */
+					LoginPage.logout();	
+			
+					/** Switch to Default Browser **/
+					Utility.switchToDefaultBrowserDriver();
+			
+					for(int i=0;i<1;i++) {
+						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i), lastNames.get(i));
+						FB_Automation_CommonMethods.validateRemovedAccessOnUI(accessName);
+//				        FB_Automation_CommonMethods.validateAssignedAccessInDB(firstNames.get(i), lastNames.get(i),accessName);
+					}					 		
+				}
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	
+	}
+
+	private static void removeIdentitiesFromAccess(ArrayList<String> firstNames, ArrayList<String> lastNames,
+			String accessName) throws Throwable {
+
+		if(unhandledException==false)
+		{
+			try
+			{		
+				ByAttribute.click("xpath", AccessObjects.accessTabLnk, "Click on Access tab");
+				Utility.pause(20);
+				
+				ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
+				Utility.pause(3);
+				ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+				Utility.pause(2);
+				ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
+				Utility.pause(2);
+				ByAttribute.click("xpath", AccessObjects.clickFieldValue1, "click to enter the value");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", AccessObjects.enterFieldValue1,accessName, "Enter the first field value for Filtering");
+				Utility.pause(2);
+	
+				Actions action = new Actions(driver);
+				action.sendKeys(Keys.ENTER);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement record=driver.findElement(By.xpath("((//div[text()='"+accessName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+				action.doubleClick(record).perform();
+				Utility.pause(5);
+				
+				ByAttribute.click("xpath", AccessObjects.IdentityExistingRadioButton, "Selected Identity Existing radio button");
+				
+				for(String firstName:firstNames) {
+					WebElement checkBox=driver.findElement(By.xpath("//div[text()='"+firstName+"']/parent::td/preceding-sibling::td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-checkcolumn')]"));
+					if(checkBox!=null) {
+						checkBox.click();
+						logger.log(LogStatus.INFO, "User "+firstName+" is selected ");
+						Utility.verifyElementPresentByScrollView(AccessObjects.removeAccessLnk, "Remove Access", true, false);
+						driver.findElement(By.xpath(AccessObjects.removeAccessLnk)).click();
+						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[7]/div/label";
+						String checkStatus=driver.findElement(By.xpath(checkStatusLocator)).getText();
+						if(checkStatus.equalsIgnoreCase("REMOVED")) {
+							Utility.verifyElementPresentByScrollView(checkStatusLocator, "Removed Status", true, false);
+							logger.log(LogStatus.PASS,"User: "+firstName+" "+lastNames.get(firstNames.indexOf(firstName))+" successfully selected for removal");
+						}
+					}
+					else {
+						logger.log(LogStatus.FAIL,"Failed to select  "+firstName+" "+lastNames.get(firstNames.indexOf(firstName))+ " for removal");	
+					}		
+				}
+				ByAttribute.click("xpath", AccessObjects.SaveBtn, "click on save button");
+				Utility.pause(2);		
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+	}
+
+	private static void validateRemovedAccessOnUI(String accessName) throws Throwable {
+
+		logger.log(LogStatus.INFO, "Validate Removed Access OnUI");
+		System.out.println("***************************** Validate Removed Access On UI *********************************");
+		try
+		{	
+			ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
+			Utility.pause(2);
+			
+			WebElement accessNameLocator=driver.findElement(By.xpath("//div[text()='"+accessName+"']"));
+			if(accessNameLocator!=null) {
+				logger.log(LogStatus.FAIL,"Not able to remove Access Name: "+accessName);	
+			}
+		}
+		catch(Exception e){
+			logger.log(LogStatus.PASS,"Access Name: "+accessName+ " successfully removed from user");
+		}
+	}
 }
+
