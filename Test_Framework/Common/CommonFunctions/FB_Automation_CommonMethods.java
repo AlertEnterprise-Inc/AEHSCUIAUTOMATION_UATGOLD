@@ -1092,10 +1092,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		if(unhandledException==false)
 		{
 			
-			logger.log(LogStatus.INFO, "Create new Identity");
+			
 			System.out.println("***************************** Create Identity *********************************");
 			try
 			{
+				System.out.println("**************************** createNewIdentity ********************************");
+				logger.log(LogStatus.INFO,"**************************** createNewIdentity ********************************");
 				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
 					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 					Utility.pause(2);
@@ -1116,11 +1118,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 				fillProfileInfo(firstName,lastName);
 				
-				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
+				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "*********Click on Accesses Tab********** ");
 				Utility.pause(2);
 				fillAccessesInfo();
 			
-				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
+				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "***********Click on Prerequisites Tab************ ");
 				Utility.pause(2);
 				fillPrerequisitesInfo();
 				
@@ -1129,7 +1131,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
-				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "********Click on Assets Tab*********** ");
 				Utility.pause(2);
 				fillAssetsInfo(AGlobalComponents.assetCode);
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
@@ -1138,7 +1140,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 				searchIdentity(firstName,lastName);
 				
-				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "**************Click on Systems Tab ***************");
 				if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
 					logger.log(LogStatus.INFO, "System is assigned to the user");
 				else
@@ -1324,10 +1326,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 		if(unhandledException==false)
 		{
-			logger.log(LogStatus.INFO, "Search the  Identity");
+			logger.log(LogStatus.INFO, "********************Search the  Identity*******************************");
 			System.out.println("***************************** Search Identity*********************************");
 			try
 			{
+				
+				
 				Actions action = new Actions(driver);
 				action.click().build().perform();
 				if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
@@ -2453,7 +2457,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 			System.out.println("*****************Fill Assets Info*****************");
 			try{
-						
+				System.out.println("******************assign asset to the user**************************");
+				logger.log(LogStatus.INFO,"**************assign asset to the user**************************");		
 								
 				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
@@ -2507,7 +2512,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	action.moveToElement(addIcon).click();
 	}
 	else
-	ByAttribute.click("xpath",IdentityObjects.addRowLnk,"Click on Add icon to initiate Recon");
+	ByAttribute.click("xpath",IdentityObjects.addRowLnk,"Click on Add icon to insert new training");
 
 	action.sendKeys(prerequisiteTypeList.get(i));
 	action.build().perform();

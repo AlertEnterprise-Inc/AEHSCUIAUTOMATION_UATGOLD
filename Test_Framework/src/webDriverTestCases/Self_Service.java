@@ -880,7 +880,7 @@ public void Self_Service_Automation_TC012() throws Throwable
 		Utility.switchToDefaultBrowserDriver();
 			
 		/** checking status of access assigned in IDM **/
-		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,"");	
+		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,accessName);	
 		
 		/** Logout from Application **/
 		LoginPage.logout();

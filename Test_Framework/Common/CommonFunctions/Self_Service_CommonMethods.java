@@ -1287,14 +1287,19 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
 						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
 						int size = noOfAccessRows.size();
-						for (int i=1;i<=size;i++){
+						boolean flag=true;
+						for (int i=1;i<=size && flag;i++){
 							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
 							String accessAssigned = accessName.getText();
-							if(Utility.compareStringValues(accessAssigned, accessAdded))
+							if(Utility.compareStringValues(accessAssigned, accessAdded)){
 								logger.log(LogStatus.PASS, "Access is successfully assigned to the user");
-							else
-								logger.log(LogStatus.FAIL, "access assignment failed");
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", "Newly assigned access", false);
+								flag=false;
+							}
+							
 						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Access is not assigned to the user");
 					}
 					
 					//Access Validation 
@@ -1982,6 +1987,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.PASS, "Provisioning successful");
 							flag=false;
 							Utility.verifyElementPresent("//div[text()='Provisioning Done for :']", "Provisioning message", false);
+							Utility.pause(2);
 						}
 						else{
 							ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
@@ -3103,10 +3109,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.INFO, "Navigation to Access Page Successful");
 							
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchAccessTxt, access, "Search Access in Location");
-							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
+							
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchAccessTxt, "", "Clear Search Filter");
 							Thread.sleep(1000);
 							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Location");
+							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
 							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
