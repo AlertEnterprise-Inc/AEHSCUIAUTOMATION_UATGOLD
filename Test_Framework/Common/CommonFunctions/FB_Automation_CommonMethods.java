@@ -1062,7 +1062,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
 					Utility.pause(2);
 					fillSystemsInfo();
-					ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 					Utility.pause(2);
 					fillAssetsInfo();
 					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
@@ -1131,7 +1131,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
-				ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "********Click on Assets Tab*********** ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "********Click on Assets Tab*********** ");
 				Utility.pause(2);
 				fillAssetsInfo(AGlobalComponents.assetCode);
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
@@ -3757,7 +3757,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
 					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
 						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
-						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 						Utility.pause(2);
 					
 						logger.log(LogStatus.INFO, "Navigated to Existing asset screen");
@@ -4094,7 +4094,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
 					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
 						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
-						ByAttribute.click("xpath", IdentityObjects.assetsTabLnk, "Click on Assets Tab ");
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 						Utility.pause(2);
 					
 						logger.log(LogStatus.INFO, "Navigated to Existing asset screen");

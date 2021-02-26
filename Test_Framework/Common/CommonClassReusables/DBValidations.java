@@ -618,4 +618,20 @@ public class DBValidations extends BrowserSelection{
 			return false;
 		}
 	}
+	
+	public static String checkAssetStatusInAMAG(String cardNumber) throws ClassNotFoundException {
+		String query = "Select Inactive from [multiMAX].[dbo].[CardInfoTable] where CardNumberDisplay='"+cardNumber+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromAMAGDatabase(query));
+		//System.out.println("result set of query is: "+rs);
+		//System.out.println("result set of query 1 is: "+rs.get(0));
+		System.out.println("status is: "+rs.get(0).get(0));
+		String status =rs.get(0).get(0);	
+		if(status!=null) {
+			System.out.println("status of asset is: "+status);
+		}
+		else {
+			System.out.println("Unable to fetch status");
+		}
+		return status;
+	}
 }

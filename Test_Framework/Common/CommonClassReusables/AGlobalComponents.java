@@ -46,9 +46,15 @@ public class AGlobalComponents {
 	public static boolean tempWorkerModificationLastName=false;
 	public static boolean tempWorkerOffboardingRehireTermination=false;
 	public static boolean requestLocationAccessOthers = false;
-	public static String asstCode= "";
 	public static String badgeId="";
 	public static String assetName="";
+	
+	public static String amagDbName = "multiMaxExport";
+	public static String amagDbUsername = "sa";
+	public static String amagDbPassword = "Alert1234";
+	public static String amagDbIP="66.2.49.189:1433";
+	public static String amagDbUrl = "jdbc:sqlserver://"+ amagDbIP;
+	public static String amagDbConString =amagDbUrl+";user="+amagDbUsername+";password="+amagDbPassword+";database="+amagDbName+";portNumber=1433";	
 		
 	public static String browserName ="GC";
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";

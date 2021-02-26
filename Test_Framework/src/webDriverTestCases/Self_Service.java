@@ -1,13 +1,11 @@
 package webDriverTestCases;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.util.ArrayList;
-
-import org.openqa.selenium.By;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.sql.ResultSet;
+import CommonClassReusables.MsSql;
 
 import com.relevantcodes.extentreports.LogStatus;
 
@@ -28,8 +26,8 @@ public class Self_Service extends BrowserSelection {
 	{
 		unhandledException = false;	
 		testName = method.getName();
-	//	AGlobalComponents.applicationURL = "http://aepdemo.alertenterprise.com/";
-		AGlobalComponents.applicationURL = "http://devhsc.alertenterprise.com/";
+		AGlobalComponents.applicationURL = "http://aepdemo.alertenterprise.com/";
+	//	AGlobalComponents.applicationURL = "http://devhsc.alertenterprise.com/";
 		AGlobalComponents.takeScreenshotIfPass = true;
 		driver.navigate().refresh();
 	}
@@ -51,8 +49,20 @@ public void Self_Service_Automation_TC001() throws Throwable
 	logger =report.startTest("Self_Service_Automation_TC001","AEAP-9 : Physical Access - Case1(Submission flow and validations)");
 	System.out.println("[INFO]--> Self_Service_Automation_TC001 - TestCase Execution Begins");
 	
+//	ResultSet res = MsSql.getDataFromSource("Self_Service_Automation_TC001");
+//	
+//    System.out.println(res.getString("firstname"));
+//    System.out.println(res.getString("lastname"));
+//  
+//	
+//	res = MsSql.getDataFromSource("Self_Service_Automation_TC002");
+//	
+//    System.out.println(res.getString("manageruserid"));
+//    System.out.println(res.getString("managerpassword"));
+  
+	
 	String locationName = "Plaza, Financial Center";
-	String accessName = "SC RBNSPL NONR STOCK RM";
+	String accessName = "SC RIPPSU RLY GENERAL ACCESS SECURE";
 	
 	/** Login as Requester User **/
 	boolean loginStatus = LoginPage.loginAEHSC("john.payne", "Alert1234");
@@ -73,11 +83,24 @@ public void Self_Service_Automation_TC001() throws Throwable
 			/** Approve Access Request **/
 			Self_Service_CommonMethods.approveAccessRequest(accessName,requestNumber,"john.payne");
 			
+			/** Logout from Application **/
+			LoginPage.logout();
+			
+			/** Login as Admin User **/
+			LoginPage.loginAEHSC("admin", "Alert@783");
+			
+			/** Validate Provisioning Monitor Status **/
+			Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"ASSIGN_ROLES_SUCCESS","john.payne");
+			
+			/** Validate IDM User Status **/
+			Self_Service_CommonMethods.idmUserValidation("john.payne","Accesses",accessName,"Active");
+			
+			
 			/** Switch to Default Browser **/
 			Utility.switchToDefaultBrowserDriver();
 			
 			/** Validate Access Request Status **/
-			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved");
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","John Payne");
 		}else{
 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
 		}
@@ -129,7 +152,7 @@ public void Self_Service_Automation_TC002() throws Throwable
 			Utility.switchToDefaultBrowserDriver();
 			
 			/** Validate Access Request Status **/
-			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Rejected");
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Rejected","John Payne");
 		}else{
 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
 		}
@@ -185,7 +208,7 @@ public void Self_Service_Automation_TC003() throws Throwable
 			Utility.switchToDefaultBrowserDriver();
 			
 			/** Validate Access Request Status **/
-			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved");
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","John Payne");
 		}else{
 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
 		}
@@ -241,7 +264,7 @@ public void Self_Service_Automation_TC004() throws Throwable
 			Utility.switchToDefaultBrowserDriver();
 			
 			/** Validate Access Request Status **/
-			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved");
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","John Payne");
 		}else{
 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
 		}
@@ -303,7 +326,7 @@ public void Self_Service_Automation_TC005() throws Throwable
 			Utility.switchToDefaultBrowserDriver();
 			
 			/** Validate Access Request Status **/
-			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved");
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","John Payne");
 		}else{
 			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
 		}
@@ -551,9 +574,6 @@ public void Self_Service_Automation_TC009() throws Throwable
 			/** temp worker onboarding**/
  			requestNumber=Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
 		
- 			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
- 			
  			/** Switch to Default Browser **/
  	 		Utility.switchToDefaultBrowserDriver();
  		}
@@ -582,13 +602,15 @@ public void Self_Service_Automation_TC009() throws Throwable
  	 			/** approve request By badge admin **/
  	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
  	 			
+ 	 			/** checkStatusInMyRequestInbox**/
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
+ 	 			
  	 		}
  		}
 	
  		/** Switch to Default Browser **/
  		Utility.switchToDefaultBrowserDriver();
  		
-
  		/** Validate  created temp worker in IDM after  request approved**/
  		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,"");
  		
@@ -1018,5 +1040,553 @@ public void Self_Service_Automation_TC013() throws Throwable
  	}	
 }
 
+/*
+ * TC014 : AEAP-17 : Self Service - New Badge
+ */
+
+@Test(priority=14)
+public void Self_Service_Automation_TC014() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC014","AEAP-17 : Self Service - New Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC014 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Access Request **/
+		String requestNumber = Self_Service_CommonMethods.createNewBadgeRequest("New Badge","Others","Keith","InActive");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Admin User **/
+		LoginPage.loginAEHSC("admin", "Alert@783");
+		
+		/** Create New Badge **/
+		String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG"); //CCURE 9000,AMAG,etc.
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Stage 1 Approver User **/
+		LoginPage.loginAEHSC("badge.admin", "Alert1234");
+		
+		if(loginStatus){
+			
+			/** Approve Badge Request Stage 1 **/
+			Self_Service_CommonMethods.approveBadgeRequest(1,requestNumber,"InActive",badgeName,"keith.ledger");
+			
+			/** Logout from Application **/
+			LoginPage.logout();
+			
+			/** Login as Stage 2 Approver User **/
+			LoginPage.loginAEHSC("rebecca.bell", "Alert1234");
+			
+			/** Approve Badge Request Stage 2 **/
+			Self_Service_CommonMethods.approveBadgeRequest(2,requestNumber,"InActive",badgeName,"keith.ledger");
+			
+			/** Switch to Default Browser **/
+			Utility.switchToDefaultBrowserDriver();
+			
+			/** Validate Self Approval Request Status **/
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "InActive", "Keith Ledger");
+			
+			/** Validate Provisioning Monitor Status **/
+			Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CHANGE_USER_SUCCESS","keith.ledger");
+			
+			/** Validate IDM User Status **/
+			Self_Service_CommonMethods.idmUserValidation("keith.ledger","Assets","","InActive");
+			
+		}else{
+			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
+		}
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+/*
+ * TC015 : AEAP-18 : Self Service - ACTIVATE Badge
+ */
+
+@Test(priority=15)
+public void Self_Service_Automation_TC015() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC015","AEAP-18 : Self Service - ACTIVATE Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC015 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("john.payne", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Activate Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createActivateDeactivateBadgeRequest("Activate Badge","Others","Treppy");
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Activate", "Treppy Terry");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"UNLOCK_USER_SUCCESS","Treppy.terry");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("Treppy.terry","Assets","","Active");		
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+/*
+ * TC016 : AEAP-19 : Self Service - DEACTIVATE Badge
+*/
+
+@Test(priority=16)
+public void Self_Service_Automation_TC016() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC016","AEAP-19 : Self Service - DEACTIVATE Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC016 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("john.payne", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Deactivate Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createActivateDeactivateBadgeRequest("Deactivate Badge","Others","Treppy");
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Deactivate", "Treppy Terry");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","Treppy.terry");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("Treppy.terry","Assets","","InActive");	
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+/*
+ * TC017 : Self Service - IT Access
+*/
+	
+@Test(priority=17)
+public void Self_Service_Automation_TC017() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC017","Self Service - IT Access");
+	System.out.println("[INFO]--> Self_Service_Automation_TC017 - TestCase Execution Begins");
+	
+	String systemName = "CCURE 9000";
+	String accessName = "JAPAN-TOKYO-MIN251-MINATO-KU";
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Access Request **/
+		String requestNumber = Self_Service_CommonMethods.createAccessRequestOthers("IT Access",systemName,accessName,"sihana");
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Approver User **/
+		LoginPage.loginAEHSC("carol.payne", "Alert1234");
+		
+		if(loginStatus){
+
+			/** Approve Access Request **/
+			Self_Service_CommonMethods.approveAccessRequest(accessName,requestNumber,"sihana.gomez");
+			
+			/** Switch to Default Browser **/
+			Utility.switchToDefaultBrowserDriver();
+			
+			/** Validate Access Request Status **/
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","sihana.gomez");
+		}else{
+			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
+		}
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+
+/*
+ * TC018 : Self Service - Application Access
+*/
+	
+@Test(priority=18)
+public void Self_Service_Automation_TC018() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018","Self Service - Application Access");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018 - TestCase Execution Begins");
+	
+	String systemName = "McAfee";
+	String accessName = "SC NWPTIE NONR GATE ACCESS";
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Access Request **/
+		String requestNumber = Self_Service_CommonMethods.createAccessRequestOthers("Application Access",systemName,accessName,"Sihana");
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Approver User **/
+		LoginPage.loginAEHSC("rebecca.bell", "Alert1234");
+		
+		if(loginStatus){
+
+			/** Approve Access Request **/
+			Self_Service_CommonMethods.approveAccessRequest(accessName,requestNumber,"sihana.gomez");
+			
+			/** Switch to Default Browser **/
+			Utility.switchToDefaultBrowserDriver();
+			
+			/** Validate Access Request Status **/
+			Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Approved","sihana.gomez");
+		}else{
+			logger.log(LogStatus.FAIL, "Unable to Login as Approver. Plz Check Application");
+		}
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+
+/*
+ * TC019 : Self Service - Report Lost or Stolen Badge
+*/
+
+@Test(priority=19)
+public void Self_Service_Automation_TC019() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC019","Self Service - Report Lost or Stolen Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC019 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("john.payne", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Deactivate Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createLostOrStolenBadgeRequest("Lost or Stolen Badge","Others","Harry");
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Deactivate", "Treppy Terry");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","Treppy.terry");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("Treppy.terry","Assets","","InActive");	
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+
+/*
+ * TC020 : Self Service - Request Replacement Badge DAMAGED
+*/
+
+@Test(priority=20)
+public void Self_Service_Automation_TC020() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC020","Self Service - Request Replacement Badge DAMAGED");
+	System.out.println("[INFO]--> Self_Service_Automation_TC020 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Replace Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createReplaceBadgeRequest("Replace Badge","Others","kerry","DAMAGED");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Admin User **/
+		LoginPage.loginAEHSC("admin", "Alert@783");
+		
+		/** Create New Badge **/
+		String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG"); //CCURE 9000,AMAG,etc.
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Manager User **/
+		LoginPage.loginAEHSC("carol.payne", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 1 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(1,requestNumber,"DAMAGED",badgeName,"jackson.kerry");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Stage 2 Approver User **/
+		LoginPage.loginAEHSC("rebecca.bell", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 2 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(2,requestNumber,"DAMAGED",badgeName,"jackson.kerry");
+		
+		/** Switch to Default Browser **/
+		Utility.switchToDefaultBrowserDriver();
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Active", "Jackson kerry");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","jackson.kerry");
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CREATE_USER_SUCCESS","jackson.kerry");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("jackson.kerry","Assets","","DAMAGED");
+		Self_Service_CommonMethods.idmUserValidation("jackson.kerry","Assets","","ASSIGNED");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+
+/*
+ * TC021 : Self Service - Return Temporary Badge
+*/
+
+@Test(priority=21)
+public void Self_Service_Automation_TC021() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC021","Self Service - Return Temporary Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC021 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
+
+	if(loginStatus){
+		
+		/** Create Return Badge Request **/
+		Self_Service_CommonMethods.returnTempBadge("keith.ledger");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
+/*
+ * TC022 : Self Service - Request Replacement Badge LOST
+*/
+
+@Test(priority=22)
+public void Self_Service_Automation_TC022() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC022","Self Service - Request Replacement Badge LOST");
+	System.out.println("[INFO]--> Self_Service_Automation_TC022 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Replace Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createReplaceBadgeRequest("Replace Badge","Others","kerry","LOST");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Admin User **/
+		LoginPage.loginAEHSC("admin", "Alert@783");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("jackson.kerry","Assets","","LOST");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","jackson.kerry");
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CHANGE_USER_SUCCESS","jackson.kerry");
+		
+		/** Create New Badge **/
+		String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG"); //CCURE 9000,AMAG,etc.
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Manager User **/
+		LoginPage.loginAEHSC("carol.payne", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 1 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(1,requestNumber,"LOST",badgeName,"jackson.kerry");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Stage 2 Approver User **/
+		LoginPage.loginAEHSC("rebecca.bell", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 2 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(2,requestNumber,"LOST",badgeName,"jackson.kerry");
+		
+		/** Switch to Default Browser **/
+		Utility.switchToDefaultBrowserDriver();
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Active", "Jackson kerry");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","jackson.kerry");
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CREATE_USER_SUCCESS","jackson.kerry");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("jackson.kerry","Assets","","LOST");
+		Self_Service_CommonMethods.idmUserValidation("jackson.kerry","Assets","","ASSIGNED");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+		
+
+
+/*
+ * TC023: Self Service - Request Replacement Badge STOLEN
+*/
+
+@Test(priority=23)
+public void Self_Service_Automation_TC023() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC023","Self Service - Request Replacement Badge STOLEN");
+	System.out.println("[INFO]--> Self_Service_Automation_TC023 - TestCase Execution Begins");
+	
+	/** Login as Requester User **/
+	boolean loginStatus = LoginPage.loginAEHSC("ruth.parson", "Alert1234");
+
+	if(loginStatus){
+		
+		/** Create Replace Badge Request **/
+		String requestNumber = Self_Service_CommonMethods.createReplaceBadgeRequest("Replace Badge","Others","Jonathan","STOLEN");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Admin User **/
+		LoginPage.loginAEHSC("admin", "Alert@783");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("jonathan.carl","Assets","","LOST");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","jonathan.carl");
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CHANGE_USER_SUCCESS","jonathan.carl");
+		
+		/** Create New Badge **/
+		String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG"); //CCURE 9000,AMAG,etc.
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Manager User **/
+		LoginPage.loginAEHSC("carol.payne", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 1 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(1,requestNumber,"STOLEN",badgeName,"jonathan.carl");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+		/** Login as Stage 2 Approver User **/
+		LoginPage.loginAEHSC("rebecca.bell", "Alert1234");
+		
+		/** Approve Replace Badge Request Stage 2 **/
+		Self_Service_CommonMethods.approveReplaceBadgeRequest(2,requestNumber,"STOLEN",badgeName,"jonathan.carl");
+		
+		/** Switch to Default Browser **/
+		Utility.switchToDefaultBrowserDriver();
+		
+		/** Validate Self Approval Request Status **/
+		Self_Service_CommonMethods.validateAccessRequestStatus(requestNumber, "Active", "Jonathan Carl");
+		
+		/** Validate Provisioning Monitor Status **/
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"LOCK_USER_SUCCESS","jonathan.carl");
+		Self_Service_CommonMethods.provisioningMonitorValidation(requestNumber,"CREATE_USER_SUCCESS","jonathan.carl");
+		
+		/** Validate IDM User Status **/
+		Self_Service_CommonMethods.idmUserValidation("jonathan.carl","Assets","","STOLEN");
+		Self_Service_CommonMethods.idmUserValidation("jonathan.carl","Assets","","ASSIGNED");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
 
 }

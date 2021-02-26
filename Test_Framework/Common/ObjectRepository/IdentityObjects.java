@@ -9,6 +9,7 @@ public interface IdentityObjects {
 	String idmManageIdentitiesLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identities']";
 	String idmManageIdentityLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
 	String idmManageIdentitySearchFieldTxt =".//input[@name='searchField']";
+	String idmManageIdentityIsUnlockPermBadgeChk =".//div[contains(@id,'header-title-textEl') and text()='Do you want to return badge?']//ancestor::div[@class='x-window x-layer x-window-default x-closable x-window-closable x-window-default-closable x-border-box']//input[contains(@id,'inputEl') and @type='checkbox']";
 	String idmManageIdentityAccessesTabBtn =".//*[@data-ref='btnInnerEl' and text()='Accesses']";
 	String createIdentityHeader = "//div[contains(@class,'x-box-target')]//label[text()='Create Identity Management']";
 	String identityManagementHeader = "//div[contains(@class,'x-box-target')]//label[text()='Identity Management']";
@@ -26,7 +27,7 @@ public interface IdentityObjects {
 	String profileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
 	String accessTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
 	String systemsTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Systems']";
-	String assetsTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Assets']";
+	String idmManageIdentityAssetsTabBtn =".//*[@data-ref='btnInnerEl' and text()='Assets']";
 	String prerequisitesTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Prerequisites']";
 	String firstNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
 	String lastNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";	
@@ -70,4 +71,9 @@ public interface IdentityObjects {
 	String idmAddAssetSelectDdn = "(//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Asset'])[4]";
 	String idmAddAssetStatusDdn = "(//input[contains(@id,'baseComboBox') and @placeholder='Select Status'])[4]";
 	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
+	String actionBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[4]";
+	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";
+	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Badge Operations']";
+	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
+	
 }

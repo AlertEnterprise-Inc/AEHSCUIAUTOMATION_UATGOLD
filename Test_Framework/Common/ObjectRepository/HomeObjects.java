@@ -31,6 +31,7 @@ public interface HomeObjects {
 		String homeAccessRequestOthersRdb =".//span[@data-ref='labelTextEl' and text()='Request For:']//ancestor::div[@class='x-container x-form-checkboxgroup x-form-item x-form-item-default x-box-item x-container-default x-vbox-form-item']//label[@data-ref='boxLabelEl' and text()='Others']";
 		String homeAccessRequestSearchLocationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
 		String homeAccessRequestSearchAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
+		String homeAccessRequestSearchITAccessLbl =".//label[contains(@id,'placeholderLabel') and text()='Search or Filter by IT Access']";
 		String homeAccessRequestCreateNextBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Next')]";
 		String homeAccessRequestCreatePreviousBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Previous')]";
 		String homeAccessRequestAddLocationBtn =".//*[contains(@id,'baseAccessLocationBox')]//div[@class='selecteditem btnadd' and text()='Add']";
@@ -48,7 +49,7 @@ public interface HomeObjects {
 		String homeAccessRequestAddLocationReasonTxt =".//*[contains(@id,'baseComboBox') and @placeholder='Select Reason for request']";
 		String homeAccessRequestAddLocationBusinessJustificationTxt =".//textarea[contains(@id,'baseTextArea')]";
 		String homeAccessRequestAddLocationJustificationTxt =".//*[text()='Justification']//following::div//input[contains(@id,'baseText')]";
-		String homeAccessRequestAddLocationGroupNameTxt = ".//*[text()='Group Name *']//following::div//input[contains(@id,'baseComboBox')]";
+		String homeAccessRequestAddLocationGroupNameTxt =".//*[contains(@id,'fieldset') and @data-ref='tbody']//input[contains(@id,'baseComboBox')]";
 		String homeAccessRequestAddLocationConfirmBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
 		
 		String homeInboxRequestApproveBtn = ".//button[contains(@data-qtip,'Approve')]";
@@ -60,6 +61,7 @@ public interface HomeObjects {
 		String homeInboxRequestWorkflowRejectedLbl = ".//td[@data-columnid='workflowActionColumn']//div[text()='Rejected']";
 		String homeInboxRequestWorkflowViewStatusCancelBtn = ".//div[contains(@class,'window')]//span[@data-ref='btnInnerEl' and text()='Cancel']";
 		String homeInboxRequestInboxExpandBtn = ".//span[contains(@class,'hamburgerexpand')]";
+		String homeInboxRequestInboxCollapseBtn = ".//span[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburger ']";
 		String homeInboxRequestInboxCompletedBtn = ".//span[@class='x-tree-node-text ' and text()='Completed']";
 		String homeGenericRemoveRowBtn = ".//*[@data-ref='btnIconEl' and @class='x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus ']";
 		String homeGenericAddRowBtn = ".//*[@data-ref='btnIconEl' and @class='x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd ']";
