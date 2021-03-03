@@ -107,7 +107,8 @@ public interface HomeObjects {
 		String homeAccessRequestWorkFlowBtn = "//td[contains(@class,' x-grid-cell-workflowActionColumn x-grid-cell-last')]//button[@class='aegrid-view']";
 		String workflowStatusHeaderInWFPopupWindow = "//div[contains(@id,'header-title') and contains(text(),'Workflow Status')]";
 		String closeIconInWFStatusWindow = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
-		String selectTerminationReason = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";
+		String homeAccessRequestSelectTerminationReasonTxt = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";
+		String homeAccessRequestValidToDate = "//*[contains(@id,'baseDateTime') and @placeholder='Select Valid To']";
 	
 }
 

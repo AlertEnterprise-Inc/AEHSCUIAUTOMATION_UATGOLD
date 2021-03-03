@@ -924,12 +924,12 @@ public void Self_Service_Automation_TC012() throws Throwable
 public void Self_Service_Automation_TC013() throws Throwable 
 {
 	
-	logger =report.startTest("Self_Service_Automation_TC012","Manager Login Scenarios:Temp Worker Modification , Rehire and Termination");
-	System.out.println("[INFO]--> Self_Service_Automation_TC012 - TestCase Execution Begins");
+	logger =report.startTest("Self_Service_Automation_TC013","Manager Login Scenarios:Temp Worker Offboarding , Rehire and Termination");
+	System.out.println("[INFO]--> Self_Service_Automation_TC013 - TestCase Execution Begins");
 	AGlobalComponents.ManagerLogin = true ;
 	AGlobalComponents.tempWorkerOffboardingRehireTermination=true;
 //	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Offboard",  requestNumber="" ;
-	String firstName="Temp9ue6",lastName="Onboard",requestNumber="";
+	String firstName="Raphel",lastName="Onboard",requestNumber="";
 		
 			
 	/** Login as admin **/
@@ -999,11 +999,8 @@ public void Self_Service_Automation_TC013() throws Throwable
  		if(loginStatus){
  			logger.log(LogStatus.PASS, "Login Successful");
  		
- 			/** Modifying the last name of the temp worker**/
+ 			/** temp worker onboarding**/
  			requestNumber=Self_Service_CommonMethods.tempWorkerOffboarding(firstName,lastName);
- 			
- 			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
  			
  			/** Switch to Default Browser **/
  	 		Utility.switchToDefaultBrowserDriver();
@@ -1020,6 +1017,21 @@ public void Self_Service_Automation_TC013() throws Throwable
 		
  			/** approve request  by manager**/
  			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
+ 			
+ 			LoginPage.logout();
+ 			
+ 			/* Login as admin user to approve the request */
+ 	 		loginStatus = LoginPage.loginAEHSC("carol.payne", "Alert1234");
+
+ 	 		if(loginStatus){
+ 	 			/** approve request  by manager**/
+ 	 			Self_Service_CommonMethods.approveRequest("admin_user",requestNumber,"");
+ 	 			
+ 	 			/** checkStatusInMyRequestInbox**/
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
+ 	 			
+ 	 		}
+ 			
  			
  		}
  		/** Switch to Default Browser **/

@@ -1380,8 +1380,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(driver.findElements(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
 				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
-				action.doubleClick(record).perform();
-				Utility.pause(5);
+				action.doubleClick(record).build().perform();
+				Utility.pause(10);
 				String searchResult= "//*[contains(text(),'"+identityCode+"')]";
 				if(driver.findElements(By.xpath(searchResult)).size()>0){
 					Utility.verifyElementPresent(searchResult,"Identity",false);
