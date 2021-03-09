@@ -44,7 +44,8 @@ public class AGlobalComponents {
 	public static boolean tempWorkerOnboarding=false;
 	public static boolean tempWorkerModificationDepartment=false;
 	public static boolean tempWorkerModificationLastName=false;
-	public static boolean tempWorkerOffboardingRehireTermination=false;
+	public static boolean tempWorkerOffboardingRehire=false;
+	public static boolean emergencyTermination=false;
 	public static boolean requestLocationAccessOthers = false;
 	public static String badgeId="";
 	public static String assetName="";

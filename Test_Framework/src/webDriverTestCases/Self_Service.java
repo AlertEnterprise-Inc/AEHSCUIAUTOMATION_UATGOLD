@@ -26,8 +26,8 @@ public class Self_Service extends BrowserSelection {
 	{
 		unhandledException = false;	
 		testName = method.getName();
-		AGlobalComponents.applicationURL = "http://aepdemo.alertenterprise.com/";
-	//	AGlobalComponents.applicationURL = "http://devhsc.alertenterprise.com/";
+	//	AGlobalComponents.applicationURL = "http://aepdemo.alertenterprise.com/";
+		AGlobalComponents.applicationURL = "http://autodevhsc.alertenterprise.com/";
 		AGlobalComponents.takeScreenshotIfPass = true;
 		driver.navigate().refresh();
 	}
@@ -559,7 +559,7 @@ public void Self_Service_Automation_TC009() throws Throwable
 	if(loginStatus){
 		
 		/**creating asset for the user**/
-		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG");
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
 		
 			
 		/** Launch New Private Browser **/
@@ -710,10 +710,10 @@ public void Self_Service_Automation_TC010() throws Throwable
  			logger.log(LogStatus.PASS, "Login Successful");
  		
  			/** Modifying the department of the temp worker**/
- 			Self_Service_CommonMethods.tempWorkerModification(firstName,lastName);
+ 			String requestNumber=Self_Service_CommonMethods.tempWorkerModification(firstName,lastName);
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,accessName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,accessName,requestNumber);
  			
  		}
  		/** Switch to Default Browser **/
@@ -748,47 +748,61 @@ public void Self_Service_Automation_TC011() throws Throwable
 	System.out.println("[INFO]--> Self_Service_Automation_TC011 - TestCase Execution Begins");
 	AGlobalComponents.ManagerLogin = true;
 	AGlobalComponents.tempWorkerModificationLastName=true;
-//	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Onboard" , modifiedLastName = "Modify",requestNumber="";
-	String firstName="Ron",lastName="Junior",modifiedLastName = "Reynolds",requestNumber="";	
+	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Onboard" , modifiedLastName = "Modify",requestNumber="";
+//	String firstName="Ron",lastName="Junior",modifiedLastName = "Reynolds",requestNumber="";	
 			
 	/** Login as admin **/
 	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
 	if(loginStatus){
 		
-	
-//		/** Launch New Private Browser **/
-// 		Utility.switchToNewBrowserDriver();
-//		
-// 		/* Login as Manager */
-// 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
-//
-// 		if(loginStatus){
-// 			logger.log(LogStatus.PASS, "Login Successful");
-//		
-//			/** temp worker onboarding**/
-// 			requestNumber = Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
-//		
-// 			/** approve request  by manager**/
-// 			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
-// 			
-// 			/* Logout from application */
-// 	 		LoginPage.logout();
-// 		
-// 			/* Login as Badge Admin */
-// 	 		loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
-//
-// 	 		if(loginStatus){
-// 	 			logger.log(LogStatus.PASS, "Login Successful");
-// 	 			
-// 	 			/** approve request By badge admin **/
-// 	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
-// 	 			
-// 	 		}
-// 		}
-//	
-// 		/** Switch to Default Browser **/
-// 		Utility.switchToDefaultBrowserDriver();
+		/**creating asset for the user**/
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
+			
+		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+		
+			/** temp worker onboarding**/
+ 			requestNumber = Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
+ 			
+ 			/** Switch to Default Browser **/
+ 	 		Utility.switchToDefaultBrowserDriver();
+ 		}
  		
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+ 		
+ 		/* Login as Manager to approve the request */
+ 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+ 		
+ 		if(loginStatus){
+	 		logger.log(LogStatus.PASS, "Login Successful");
+ 			/** approve request  by manager**/
+ 			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
+ 			
+ 			/* Logout from application */
+ 	 		LoginPage.logout();
+ 		
+ 			/* Login as Badge Admin */
+ 	 		loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+
+ 	 		if(loginStatus){
+ 	 			logger.log(LogStatus.PASS, "Login Successful");
+ 	 			
+ 	 			/** approve request By badge admin **/
+ 	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
+ 	 			
+ 	 		}
+ 		}
+	
+ 		/** Switch to Default Browser **/
+ 		Utility.switchToDefaultBrowserDriver();
+	
 
  		/** checking current last name of temp worker in IDM **/
  		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(firstName,lastName,modifiedLastName);
@@ -803,10 +817,10 @@ public void Self_Service_Automation_TC011() throws Throwable
  			logger.log(LogStatus.PASS, "Login Successful");
  		
  			/** Modifying the last name of the temp worker**/
- 			Self_Service_CommonMethods.tempWorkerModification(firstName,modifiedLastName);
+ 			requestNumber =Self_Service_CommonMethods.tempWorkerModification(firstName,modifiedLastName);
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,modifiedLastName,"");
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,modifiedLastName,requestNumber);
  			
  		}
  		/** Switch to Default Browser **/
@@ -841,10 +855,10 @@ public void Self_Service_Automation_TC012() throws Throwable
 	logger =report.startTest("Self_Service_Automation_TC012"," Physical Access - Request Location access for Others");
 	System.out.println("[INFO]--> Self_Service_Automation_TC012 - TestCase Execution Begins");
 	
-//	String locationName = "Market Square, Bank of America Advanced Center";
-//	String accessName = "CH-CA-SECURITY_ACCESS";
-	String locationName = "Plaza, Financial Center";
-	String accessName = "SC RBNSPL NONR STOCK RM";
+	String locationName = "Market Square, Bank of America Advanced Center";
+	String accessName = "CH-CA-SECURITY_ACCESS";
+//	String locationName = "Plaza, Financial Center";
+//	String accessName = "SC RBNSPL NONR STOCK RM";
 	AGlobalComponents.requestLocationAccessOthers=true;
 	
 	String firstName ="Test"+Utility.getRandomString(4);
@@ -857,7 +871,7 @@ public void Self_Service_Automation_TC012() throws Throwable
 		
 		/**create new asset **/
 	//	AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "Lenel");
-		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG1");
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
 		
 		/**create identity **/
 		FB_Automation_CommonMethods.createIdentity(firstName,lastName);
@@ -874,8 +888,8 @@ public void Self_Service_Automation_TC012() throws Throwable
  		if(loginStatus){
 		
  			/** Request new location and add access Request **/
- 		//	requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Pittsburgh","430 Market St",firstName,lastName);
- 			requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Las Vegas","300 S 4th St",firstName,lastName);
+ 			requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Pittsburgh","430 Market St",firstName,lastName);
+ 		//	requestNumber=Self_Service_CommonMethods.requestNewLocation("Physical Access",locationName,accessName,"Las Vegas","300 S 4th St",firstName,lastName);
 		
  			/** logout from the application **/
  	 		LoginPage.logout();
@@ -927,64 +941,64 @@ public void Self_Service_Automation_TC013() throws Throwable
 	logger =report.startTest("Self_Service_Automation_TC013","Manager Login Scenarios:Temp Worker Offboarding , Rehire and Termination");
 	System.out.println("[INFO]--> Self_Service_Automation_TC013 - TestCase Execution Begins");
 	AGlobalComponents.ManagerLogin = true ;
-	AGlobalComponents.tempWorkerOffboardingRehireTermination=true;
-//	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Offboard",  requestNumber="" ;
-	String firstName="Raphel",lastName="Onboard",requestNumber="";
+	AGlobalComponents.tempWorkerOffboardingRehire=true;
+	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Offboard",  requestNumber="" ;
+//	String firstName="Raphel",lastName="Onboard",requestNumber="";
 		
 			
 	/** Login as admin **/
 	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
 	if(loginStatus){
 		
-//		/**creating asset for the user**/
-//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
-//		
-//		/** Launch New Private Browser **/
-// 		Utility.switchToNewBrowserDriver();
-//		
-// 		/* Login as Manager to raise the request for temp worker onboarding*/
-// 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
-//
-// 		if(loginStatus){
-// 			logger.log(LogStatus.PASS, "Login Successful");
-//		
-//			/** temp worker onboarding**/
-// 			requestNumber = Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
-// 			
-// 			/** Switch to Default Browser **/
-// 	 		Utility.switchToDefaultBrowserDriver();
-// 		}
-// 		
-// 		/** Launch New Private Browser **/
-// 		Utility.switchToNewBrowserDriver();
-// 		
-// 		/* Login as Manager to approve the request */
-// 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
-//
-// 		if(loginStatus){
-// 			logger.log(LogStatus.PASS, "Login Successful");
-//		
-// 			/** approve request  by manager**/
-// 			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
-// 			
-// 			/* Logout from application */
-// 	 		LoginPage.logout();
-// 		
-// 			/* Login as Badge Admin */
-// 	 		loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
-//
-// 	 		if(loginStatus){
-// 	 			logger.log(LogStatus.PASS, "Login Successful");
-// 	 			
-// 	 			/** approve request By badge admin **/
-// 	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
-// 	 			
-// 	 		}
-// 		}
-//	
-// 		/** Switch to Default Browser **/
-// 		Utility.switchToDefaultBrowserDriver();
-// 		
+		/**creating asset for the user**/
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
+		
+		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager to raise the request for temp worker onboarding*/
+ 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+		
+			/** temp worker onboarding**/
+ 			requestNumber = Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
+ 			
+ 			/** Switch to Default Browser **/
+ 	 		Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+ 		
+ 		/* Login as Manager to approve the request */
+ 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+		
+ 			/** approve request  by manager**/
+ 			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
+ 			
+ 			/* Logout from application */
+ 	 		LoginPage.logout();
+ 		
+ 			/* Login as Badge Admin */
+ 	 		loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+
+ 	 		if(loginStatus){
+ 	 			logger.log(LogStatus.PASS, "Login Successful");
+ 	 			
+ 	 			/** approve request By badge admin **/
+ 	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
+ 	 			
+ 	 		}
+ 		}
+	
+ 		/** Switch to Default Browser **/
+ 		Utility.switchToDefaultBrowserDriver();
+ 		
 
  		/** checking the access , system and assets assigned to the user in IDM 
  		 *  Status of user and assets , access and systems assigned to him will be active at this time**/
@@ -999,7 +1013,7 @@ public void Self_Service_Automation_TC013() throws Throwable
  		if(loginStatus){
  			logger.log(LogStatus.PASS, "Login Successful");
  		
- 			/** temp worker onboarding**/
+ 			/** temp worker offboarding**/
  			requestNumber=Self_Service_CommonMethods.tempWorkerOffboarding(firstName,lastName);
  			
  			/** Switch to Default Browser **/
@@ -1024,7 +1038,7 @@ public void Self_Service_Automation_TC013() throws Throwable
  	 		loginStatus = LoginPage.loginAEHSC("carol.payne", "Alert1234");
 
  	 		if(loginStatus){
- 	 			/** approve request  by manager**/
+ 	 			/** approve request  by admin user**/
  	 			Self_Service_CommonMethods.approveRequest("admin_user",requestNumber,"");
  	 			
  	 			/** checkStatusInMyRequestInbox**/
@@ -1041,6 +1055,57 @@ public void Self_Service_Automation_TC013() throws Throwable
  		/** checking status of access , assets , system in IDM **/
  		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,"");
  		
+ 		/** now rehiring the the user offboared above 
+ 		 **/
+ 		
+// 		/* Login as Manager to raise request for rehiring*/
+// 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+//
+// 		if(loginStatus){
+// 			logger.log(LogStatus.PASS, "Login Successful");
+// 		
+// 			/** temp worker Rehiring**/
+// 			requestNumber=Self_Service_CommonMethods.tempWorkerRehiring(firstName,lastName);
+// 			
+// 			/** Switch to Default Browser **/
+// 	 		Utility.switchToDefaultBrowserDriver();
+// 		}
+// 		
+// 		/** Launch New Private Browser **/
+// 		Utility.switchToNewBrowserDriver();
+// 		
+// 		/* Login as Manager to approve the request */
+// 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+//
+// 		if(loginStatus){
+// 			logger.log(LogStatus.PASS, "Login Successful");
+//		
+// 			/** approve request  by manager**/
+// 			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
+// 			
+// 			LoginPage.logout();
+// 			
+// 			/* Login as badge admin  to approve the request */
+// 	 		loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+//
+// 	 		if(loginStatus){
+// 	 			/** approve request  by manager**/
+// 	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
+// 	 			
+// 	 			/** checkStatusInMyRequestInbox**/
+// 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",requestNumber);
+// 	 			
+// 	 		}
+// 			
+// 			
+// 		}
+// 		/** Switch to Default Browser **/
+// 		Utility.switchToDefaultBrowserDriver();
+// 		
+//
+// 		/** checking status of access , assets , system in IDM **/
+// 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,"");
+// 		
  		
  		/** Logout from Application **/
  		LoginPage.logout();
@@ -1600,5 +1665,70 @@ public void Self_Service_Automation_TC023() throws Throwable
 	}
 	
 }
+
+/*
+ * TC024 :  emergency Termination
+*/
+	
+@Test(priority=24)
+public void Self_Service_Automation_TC024() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC024"," Emergency Termination");
+	System.out.println("[INFO]--> Self_Service_Automation_TC024 - TestCase Execution Begins");
+	
+	AGlobalComponents.emergencyTermination=true;
+	
+	String firstName ="Test"+Utility.getRandomString(4);
+	String lastName ="EmergencyTermination";
+	String requestNumber="";
+		
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+	if(loginStatus){
+		
+		/**create new asset **/
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "CCURE 9000");
+		
+		/**create identity **/
+		FB_Automation_CommonMethods.createIdentity(firstName,lastName);
+		
+		/** check accesses assigned to the user in IDM **/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(firstName,lastName,"");
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+	
+ 		/** Login as manager **/
+ 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+
+ 		if(loginStatus){
+		
+ 			/** Request for emergency termination **/
+ 			requestNumber=Self_Service_CommonMethods.emergencyTermination(firstName,lastName);
+ 		
+ 		 	/** Validate Access Request Status **/
+ 	 		Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName, lastName,"",requestNumber);
+ 	 		
+ 	 	}else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as Manager. Plz Check Application");
+ 	 	}
+ 		
+ 		/** Switch to Default Browser **/
+		Utility.switchToDefaultBrowserDriver();
+			
+		/** checking status of access assigned in IDM **/
+		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,lastName,"");
+		
+		/** Logout from Application **/
+		LoginPage.logout();
+		
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+	
+}
+
+
 
 }

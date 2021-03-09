@@ -1945,14 +1945,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			String createIdentityTemplateFile ,createIdentityDataFile;
 			System.out.println("********************Fill Profile Info********************");
 			try{
-				if(AGlobalComponents.ManagerLogin){
-					createIdentityTemplateFile = ManagerCasesTestDataDirectory + "/CreateIdentity_Template.csv";
-					createIdentityDataFile=ManagerCasesTestDataDirectory+ "/CreateIdentity.csv";
-				}
-				else{
-					createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
-					createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
-				}
+				createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
+				createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
+				
 				TestDataInterface.compileTwoRowDataTemplate(createIdentityTemplateFile, createIdentityDataFile);
 		
 				ArrayList<String> headers = Utility.getCSVRow(createIdentityDataFile, 1);
@@ -1968,13 +1963,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 						switch (header.toLowerCase()) {
 						case "firstname":
-							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers))
+							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers)||(AGlobalComponents.emergencyTermination))
 								firstName = fName;
 							else
 								firstName = Utility.getIndexValue(userData, index);
 							break;
 						case "lastname":
-							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers))
+							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers)||(AGlobalComponents.emergencyTermination))
 								lastName = lName;
 							else
 								lastName = Utility.getIndexValue(userData, index);

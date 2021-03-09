@@ -1,3 +1,2 @@
 Type,Prerequisite,ValidFrom,ValidTo
 Training,IT Security Training 2020,AUTO|ValidFrom|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidTo:1
-Training,Background Check,AUTO|ValidFrom|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidFrom:1,AUTO|ValidTo|File||Test_Data//IdentityManagement//CreateIdentity.csv:ValidTo:1

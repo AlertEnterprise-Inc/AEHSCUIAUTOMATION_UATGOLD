@@ -78,7 +78,7 @@ public interface HomeObjects {
 		String questionOneYes = "//*[@class='x-form-item-label-text' and contains(text(),'tested positive')]//ancestor::label//following-sibling::div//label[text()='Yes']//preceding-sibling::span//input";
 		String userRequestHeader = "//div[@class='x-box-target']//label[text()='User Request']";
 		String requestNoLnk = "(//tr[@class='  x-grid-row'])[1]//*[contains(text(),'ACR-')]";
-		String otherRequestsLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Other Requests']";
+		String homeAccessRequestOtherRequestsPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Other Requests']";
 		String selectRequestType = "//*[contains(@id,'baseComboBoxRemote') and @placeholder ='Select Request Type']";
 		String uploadImgBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Upload']";
 		String cropAndSaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Crop & Save']";
@@ -103,11 +103,12 @@ public interface HomeObjects {
 		String TempWorkerOffboardingLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Temp Worker Offboarding']";
 		String TempWorkerRehireLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Temp Worker Rehire']";
 		String ComparisonButton = "//*[@class='x-btn-inner x-btn-inner-aebtnSmallSecondary-small' and text()='Comparison']";
-		String MyRequestsHeader = "//*[@class='x-box-target']//label[text()='My Requests']";
+		String homeMyRequestsHeader = "//*[@class='x-box-target']//label[text()='My Requests']";
 		String homeAccessRequestWorkFlowBtn = "//td[contains(@class,' x-grid-cell-workflowActionColumn x-grid-cell-last')]//button[@class='aegrid-view']";
 		String workflowStatusHeaderInWFPopupWindow = "//div[contains(@id,'header-title') and contains(text(),'Workflow Status')]";
 		String closeIconInWFStatusWindow = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
 		String homeAccessRequestSelectTerminationReasonTxt = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";
+		String homeAccessRequestSelectRehireReasonTxt = "//input[contains(@id,'baseText') and @class='x-form-field x-form-text x-form-text-default  x-form-empty-field x-form-empty-field-default']";
 		String homeAccessRequestValidToDate = "//*[contains(@id,'baseDateTime') and @placeholder='Select Valid To']";
 	
 }
