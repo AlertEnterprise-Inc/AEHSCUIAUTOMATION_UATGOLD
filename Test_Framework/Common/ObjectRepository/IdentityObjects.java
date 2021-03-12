@@ -11,6 +11,7 @@ public interface IdentityObjects {
 	String idmManageIdentitySearchFieldTxt =".//input[@name='searchField']";
 	String idmManageIdentityIsUnlockPermBadgeChk =".//div[contains(@id,'header-title-textEl') and text()='Do you want to return badge?']//ancestor::div[@class='x-window x-layer x-window-default x-closable x-window-closable x-window-default-closable x-border-box']//input[contains(@id,'inputEl') and @type='checkbox']";
 	String idmManageIdentityAccessesTabBtn =".//*[@data-ref='btnInnerEl' and text()='Accesses']";
+	String idmAddAssetConfirmBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
 	String createIdentityHeader = "//div[contains(@class,'x-box-target')]//label[text()='Create Identity Management']";
 	String identityManagementHeader = "//div[contains(@class,'x-box-target')]//label[text()='Identity Management']";
 	String cancelButtonLnk = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Cancel']";

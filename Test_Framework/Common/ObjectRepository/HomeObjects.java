@@ -48,7 +48,7 @@ public interface HomeObjects {
 		
 		String homeAccessRequestAddLocationReasonTxt =".//*[contains(@id,'baseComboBox') and @placeholder='Select Reason for request']";
 		String homeAccessRequestAddLocationBusinessJustificationTxt =".//textarea[contains(@id,'baseTextArea')]";
-		String homeAccessRequestAddLocationJustificationTxt =".//*[text()='Justification']//following::div//input[contains(@id,'baseText')]";
+		String homeAccessRequestAddLocationJustificationTxt =".//*[text()='Justification']//following::div[contains(@id,'baseTextArea') and @class='x-form-text-wrap x-form-text-wrap-default']//textarea";
 		String homeAccessRequestAddLocationGroupNameTxt =".//*[contains(@id,'fieldset') and @data-ref='tbody']//input[contains(@id,'baseComboBox')]";
 		String homeAccessRequestAddLocationConfirmBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
 		

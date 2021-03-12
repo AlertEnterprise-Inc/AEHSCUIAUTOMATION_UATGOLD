@@ -1981,7 +1981,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							validTo=Utility.getIndexValue(userData, index);
 							break;
 						case "employeetype":
-							empType = Utility.getIndexValue(userData, index);
+							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
+								empType = "Contractor";
+							else
+								empType = Utility.getIndexValue(userData, index);
 							break;
 						case "email":
 							emailId = Utility.getIndexValue(userData, index);
@@ -2469,9 +2472,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Thread.sleep(1000);
 				ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='Active']", " select status");
 				Utility.pause(2);
-		
-				ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
-				Utility.pause(5);
+				
+				if (driver.findElements(By.xpath(IdentityObjects.idmAddAssetSaveBtn)).size()>0){
+					ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
+					Utility.pause(5);
+				}
+				if (driver.findElements(By.xpath(IdentityObjects.idmAddAssetConfirmBtn)).size()>0){
+					ByAttribute.click("xpath", IdentityObjects.idmAddAssetConfirmBtn, " Click confirm to add the asset ");
+					Utility.pause(5);
+				}
+				
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 

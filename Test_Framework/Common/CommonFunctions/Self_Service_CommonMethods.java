@@ -38,9 +38,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="",requestorName="",assetStatusBeforeOffboarding="";
 	private static ArrayList<String> contractorAccessNames = new ArrayList<String>();
 	private static ArrayList<String> permanentAccessNames = new ArrayList<String>();
-	private static String access1ForTempOnboarding = "CCURE_NEW_TEST18" , access2ForTempOnboarding = "End User";
+	private static String access1ForTempOnboarding = "Server Room" , access2ForTempOnboarding = "EndUserRole",access3ForTempOnboarding="Common_Area_Access";
 	private static String access1ForPermanentEmp = "SC CHRWLS NONR CONST GATE" , access2ForPermanentEmp = "SC LEEXSS NONR GENERAL ACCESS";
-	private static String system1ForTempOnboarding = "CCURE 9000",system2ForTempOnboarding = "HR System",departmentName="Finance";
+	private static String system2ForTempOnboarding = "CCURE 9000",system1ForTempOnboarding = "Database Connector",departmentName="Finance";
 	private static String access1ForEmpOnboarding = "CCURE_NEW_TEST18" , access2ForEmpOnboarding = "New Admin Role";
 	private static ArrayList<String> accessesAssignedToUser = new ArrayList<String>();
 	private static ArrayList<String> systemsAssignedToUser = new ArrayList<String>();
@@ -2126,10 +2126,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							List<WebElement> noOfRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container']//tr"));
 							size=noOfRows.size();
 							noOfAccess = size;
-							if(noOfAccess==2){
-								logger.log(LogStatus.INFO, "2 accesses are assigned to the onboarded user");
+							if(noOfAccess>0){
+								logger.log(LogStatus.INFO, "3 accesses are assigned to the onboarded user");
 								Utility.verifyElementPresent("//*[text()='"+access1ForTempOnboarding+"']", access1ForTempOnboarding, false);
 								Utility.verifyElementPresent("//*[text()='"+access2ForTempOnboarding+"']", access2ForTempOnboarding, false);
+								Utility.verifyElementPresent("//*[text()='"+access3ForTempOnboarding+"']", access3ForTempOnboarding, false);
 								logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
 							}
 							else
@@ -2138,19 +2139,25 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 							
 						/*
-						 * checking for Systems added on the basis of Accesses
+						 * checking for Systems added 
 						 */
 						ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
 						List<WebElement> noOfRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container']//tr"));
 						size = noOfRows.size();
 						noOfSystem=size-noOfAccess;
 						int index=noOfAccess+1;
-						if(noOfSystem==2){
-							logger.log(LogStatus.INFO, "2 systems are assigned to the onboarded user");
-							Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system1ForTempOnboarding+"']", system1ForTempOnboarding, false);
+						if(noOfSystem>0){
+							logger.log(LogStatus.INFO, "systems are assigned to the onboarded user");
+							if(driver.findElements(By.xpath("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system1ForTempOnboarding+"']")).size()>0)
+								Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system1ForTempOnboarding+"']", system1ForTempOnboarding, false);
+							if(driver.findElements(By.xpath("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system2ForTempOnboarding+"']")).size()>0)
+								Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system2ForTempOnboarding+"']", system2ForTempOnboarding, false);
 							index++;
-							Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system2ForTempOnboarding+"']", system2ForTempOnboarding, false);
-							logger.log(LogStatus.PASS, "Systems are successfully assigned to the user");
+							if(driver.findElements(By.xpath("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system1ForTempOnboarding+"']")).size()>0)
+								Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system1ForTempOnboarding+"']", system1ForTempOnboarding, false);
+							if(driver.findElements(By.xpath("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system2ForTempOnboarding+"']")).size()>0)
+								Utility.verifyElementPresent("(//div[@class='x-action-col-icon x-action-col-0  aegrid-rowAdd'])["+index+"]//ancestor::tr//*[text()='"+system2ForTempOnboarding+"']", system2ForTempOnboarding, false);
+								logger.log(LogStatus.PASS, "Systems are successfully assigned to the user");
 						}
 						else
 							logger.log(LogStatus.FAIL, "Systems are not assigned to the onboarded user as expected");
@@ -2177,7 +2184,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 						Utility.pause(5);
 						
-					//	String newLastName = ByAttribute.getText("xpath", HomeObjects.homeAccessRequestLastNameTxt, "Fetching Last name value");
 						String newLastName = driver.findElement(By.xpath(HomeObjects.homeAccessRequestLastNameTxt)).getAttribute("value");
 						boolean flag=true;
 						for(int i=0;i<5 && flag;i++){
@@ -2185,6 +2191,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								logger.log(LogStatus.PASS, "Last name modified successfully ");
 								Utility.verifyElementPresent(HomeObjects.homeAccessRequestLastNameTxt, "Modified last name", false);
 								flag=false;
+								
 							}
 							else{
 								ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
@@ -2213,8 +2220,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							deptName = driver.findElement(By.xpath(".//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']")).getAttribute("value");
 							
 							if(Utility.compareStringValues(deptName, departmentName)){
-								logger.log(LogStatus.PASS, "Department of temp worker is modified to : "+deptName);
 								Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestDepartmentDdn, "Modified department",true, false);
+								logger.log(LogStatus.PASS, "Department of temp worker is modified to : "+deptName);
 								flag=false;
 							}
 							else{
@@ -2439,7 +2446,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				//checking the last name of user before modification
 				if (AGlobalComponents.tempWorkerModificationLastName){
 					Utility.verifyElementPresent(HomeObjects.homeAccessRequestLastNameTxt, "last name", false);
-				//	String currentLastName = ByAttribute.getText("xpath", HomeObjects.homeAccessRequestLastNameTxt, "Fetching Last name value");
 					String currentLastName = driver.findElement(By.xpath(HomeObjects.homeAccessRequestLastNameTxt)).getAttribute("value");
 					logger.log(LogStatus.INFO, "Current last name of temp worker is : "+currentLastName);
 				}
@@ -2465,6 +2471,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						for (int i=1;i<=size;i++){
 							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' ]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
 							String accessAssigned = accessName.getText();
+							accessesAssignedToUser.add(i-1, accessAssigned);
 							Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", accessAssigned, false);
 							if(!(Utility.compareStringValues(accessAssigned, accessAdded))){
 								logger.log(LogStatus.INFO, "Access to be added :"+accessAdded+" is not assigned to the user before");
@@ -2876,7 +2883,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					action.doubleClick(requestNo);
 					action.build().perform();
 					Utility.pause(5);
-				}else if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsHeader)).size()>0){
+				}else {
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+					Utility.pause(1);
+					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests");
+					Utility.pause(5);
 					List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 					WebElement latestRequestNumber = requestNumberElements.get(0);
 					
@@ -2922,7 +2933,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						if(driver.findElements(By.xpath("//div[contains(text(),' assignment successful for user ')]")).size()>0){
 							logger.log(LogStatus.PASS, "Provisioning successful");
 							flag=false;
-							Utility.verifyElementPresent("//div[text()='Provisioning Done for :']", "Provisioning message", false);
+							Utility.verifyElementPresent("//div[contains(text(),' assignment successful for user ')]", "Provisioning message", false);
 							Utility.pause(2);
 						}
 						else{
@@ -2964,10 +2975,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 */
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestAccessListGrid)).size()>0){
 						Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
-						if((driver.findElements(By.xpath("//*[text()='"+access1ForTempOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForTempOnboarding+"']")).size()>0)){
-							logger.log(LogStatus.PASS, "2 accesses :" +access1ForTempOnboarding +","+access2ForTempOnboarding+ " are assigned to the user");
+						if((driver.findElements(By.xpath("//*[text()='"+access1ForTempOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForTempOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access3ForTempOnboarding+"']")).size()>0)){
+							logger.log(LogStatus.PASS, "3 accesses :" +access1ForTempOnboarding +","+access2ForTempOnboarding+ ","+access3ForTempOnboarding+" are assigned to the user");
 							Utility.verifyElementPresent("//*[text()='"+access1ForTempOnboarding+"']", access1ForTempOnboarding,false);
 							Utility.verifyElementPresent("//*[text()='"+access2ForTempOnboarding+"']", access2ForTempOnboarding,false);
+							Utility.verifyElementPresent("//*[text()='"+access3ForTempOnboarding+"']", access3ForTempOnboarding, false);
 						}
 						else
 							logger.log(LogStatus.FAIL, "2 accesses :" +access1ForTempOnboarding +","+access2ForTempOnboarding+ " are not assigned to the user while onboarding");
@@ -3037,10 +3049,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
 					boolean flag=true;
 					for(int i=0;i<10 && flag;i++){
-						if(driver.findElements(By.xpath("//div[text()='Provisioning Done for Identity :']")).size()>0){
+						WebElement provisioningMessage = driver.findElement(By.xpath("(//div[text()='Provisioning Done for :']//parent::div//div)[2]"));
+						String provMessage = provisioningMessage.getText();
+						if((provMessage.contains("removal successful"))||(provMessage.contains("assignment successful"))){
 							logger.log(LogStatus.PASS, "Provisioning successful");
 							flag=false;
-							Utility.verifyElementPresent("//div[text()='Provisioning Done for Identity :']", "Provisioning message", false);
+							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
 						}
 						else{
 							ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
@@ -3054,7 +3068,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(flag)
 						logger.log(LogStatus.FAIL, "Provisioning Unsuccessful");
 					ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
-					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "Access List Grid",true, false);
 					if((driver.findElements(By.xpath("//*[text()='"+accessName+"']")).size()>0)){
 						WebElement accessStatus = driver.findElement(By.xpath("//div[text()='"+accessName+"']//ancestor::td//following-sibling::td//label"));
 						String status = accessStatus.getText();
@@ -3063,6 +3077,16 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.INFO, "New access is added when department is modified");
 						else
 							logger.log(LogStatus.FAIL, "Access is not added on department change");
+						
+					}
+					for (int i=0;i<accessesAssignedToUser.size();i++){
+						String accessAssignedName=accessesAssignedToUser.get(i);
+						WebElement accessStatus = driver.findElement(By.xpath("//label[text()='Access List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//*[text()='"+accessAssignedName+"']//ancestor::td//following-sibling::td//label"));
+						String status = accessStatus.getText();
+						if(Utility.compareStringValues(status, "REMOVED")) 
+							logger.log(LogStatus.PASS, "status of existing  access :" +accessAssignedName+ " is removed when department is modified");
+						else
+							logger.log(LogStatus.FAIL, "Access status is not removed");
 						
 					}
 				}
@@ -3077,10 +3101,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
 					boolean flag=true;
 					for(int i=0;i<10 && flag;i++){
-						if(driver.findElements(By.xpath("//div[text()='Provisioning Done for Identity :']")).size()>0){
+						WebElement provisioningMessage = driver.findElement(By.xpath("(//div[text()='Provisioning Done for :']//parent::div//div)[2]"));
+						String provMessage = provisioningMessage.getText();
+						if(provMessage.contains("changed successfully")){
 							logger.log(LogStatus.PASS, "Provisioning successful");
 							flag=false;
-							Utility.verifyElementPresent("//div[text()='Provisioning Done for Identity :']", "Provisioning message", false);
+							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
 						}
 						else{
 							ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
@@ -3693,18 +3719,27 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "Request  is  present in approvers inbox");
 						requestPresent=true;
 					}
-					else{
-						ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "mouse hover on Home tab");
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests Link to open the request");
+				} else if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsHeader)).size()>0){
+					WebElement reqNo= driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]"));
+					if(Utility.verifyElementPresentReturn(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]", "Request",true, false)){
+						requestPresent=true;
+						Actions action = new Actions(driver);
+						action.doubleClick(reqNo).build().perform();
 						Utility.pause(5);
-						WebElement reqNo= driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]"));
-						if(Utility.verifyElementPresentReturn(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]", "Request",true, false)){
-							requestPresent=true;
-							Actions action = new Actions(driver);
-							action.doubleClick(reqNo).build().perform();
-							Utility.pause(5);
-						}
-						else
+					}
+				}
+				else{
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "mouse hover on Home tab");
+					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests Link to open the request");
+					Utility.pause(5);
+					WebElement reqNo= driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]"));
+					if(Utility.verifyElementPresentReturn(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]", "Request",true, false)){
+						requestPresent=true;
+						Actions action = new Actions(driver);
+						action.doubleClick(reqNo).build().perform();
+						Utility.pause(5);
+					}
+					else{
 							logger.log(LogStatus.FAIL, "request number not present in approvers inbox");
 					}
 				}
@@ -3830,10 +3865,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
-
 		}
-		
-	}
+}		
+	
 	
 	
 	
@@ -4309,38 +4343,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							Thread.sleep(1000);
 							ByAttribute.click("xpath", ".//li[text()='General Access Required']", "Select Reason Option");
 							Thread.sleep(1000);
-							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationGroupNameTxt, "mca-crar-group1", "Enter Group Name");
-							Thread.sleep(1000);
-							ByAttribute.click("xpath", ".//li[text()='mca-crar-group1']", "Select Group Name");
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestAddLocationGroupNameTxt)).size()>0){
+								ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationGroupNameTxt, "mca-crar-group1", "Enter Group Name");
+								Thread.sleep(1000);
+								ByAttribute.click("xpath", ".//li[text()='mca-crar-group1']", "Select Group Name");
+							}
 							Thread.sleep(1000);
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationJustificationTxt, "Automation Test", "Enter Business Justification");
 							Thread.sleep(1000);
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddLocationConfirmBtn, "Click Confirm Button");
 							Thread.sleep(10000);
 							
-							ByAttribute.click("xpath", HomeObjects.homeMyDashboardBtn, "Click on My Dashboard");
-							Thread.sleep(2000);
-							ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests");
-							Thread.sleep(5000);
-							
-							String identityName = firstName +" "+ lastName;
-							WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
-							WebElement requestFor = driver.findElement(By.xpath("//div[normalize-space(text())='Request For']//parent::div//span[@class='tagorange identityBox']"));
-							String requestedFor = requestFor.getText();
-							String requestedBy= requestBy.getText();
-							if((Utility.compareStringValues(requestedBy, requestorName))  && (Utility.compareStringValues(requestedFor, identityName.toUpperCase()))){
-								logger.log(LogStatus.INFO ,"Request opened successfully ");
-							}else
-								logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
-							
-							WebElement requestNumber = driver.findElement(By.xpath("//div[@class='x-component x-component-activitySubtext' and text()='Request Number']//following-sibling::div"));
-							reqNum=requestNumber.getText();
-							
+							List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+							WebElement latestRequestNumber = requestNumberElements.get(0);
+							reqNum = latestRequestNumber.getText();
 							AGlobalComponents.RequestSubmit=true;
-//							List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
-//							WebElement latestRequestNumber = requestNumberElements.get(0);
-//							
-//							reqNum = latestRequestNumber.getText();
 						}else{
 							System.out.println("Navigation to Access Page NOT Successful");
 							logger.log(LogStatus.FAIL, "Navigation to Access Page NOT Successful");
