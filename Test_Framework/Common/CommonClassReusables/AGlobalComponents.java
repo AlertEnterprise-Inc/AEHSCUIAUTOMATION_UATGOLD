@@ -38,6 +38,7 @@ public class AGlobalComponents {
 	public static boolean ManagerLogin = false;
 	public static boolean createIdentityPermanent = false;
 	public static boolean createIdentityContractor = false;
+	public static boolean modifyIdentity = false;
 	public static boolean updatePhoto = false;
 	public static boolean wellnessCheckCase=false;
 	public static boolean contractorToPermanentEmployeeConversion = false;
@@ -49,6 +50,7 @@ public class AGlobalComponents {
 	public static boolean requestLocationAccessOthers = false;
 	public static String badgeId="";
 	public static String assetName="";
+	public static String systemNameOfAsset="";
 	
 	public static String amagDbName = "multiMaxExport";
 	public static String amagDbUsername = "sa";
@@ -85,7 +87,7 @@ public class AGlobalComponents {
 	public static String postgresqlDbName="aehscdb";
 	public static String postgresqlDbUserName="alert";
 	public static String postgresqlDbPassword="alert123";
-	public static String postgresqlDbIP="44.237.132.34";
+	public static String postgresqlDbIP="44.236.46.102";
 	public static String postgresqlDbUrl="jdbc:postgresql://"+ postgresqlDbIP+":5432/"+postgresqlDbName;
 	
 	public static String applicantFirstName = "";
@@ -101,5 +103,6 @@ public class AGlobalComponents {
 	public static String badgeName="";
 	public static boolean EmpOnboardingthroughHRDb=false;
 	public static boolean EmpChangeJobTitlethroughHRDb=false;
+	public static String userId="";
 	
 }

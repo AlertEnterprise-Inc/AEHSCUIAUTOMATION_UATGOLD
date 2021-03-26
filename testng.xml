@@ -3,8 +3,8 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
     <classes>
-       <class name="webDriverTestCases.FB_Automation"/>
-       <class name="webDriverTestCases.Self_Service"/>
+       <class name="webDriverTestCases.QA_Demo"/>
+       
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

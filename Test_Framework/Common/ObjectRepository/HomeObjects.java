@@ -82,10 +82,12 @@ public interface HomeObjects {
 		String selectRequestType = "//*[contains(@id,'baseComboBoxRemote') and @placeholder ='Select Request Type']";
 		String uploadImgBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Upload']";
 		String cropAndSaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Crop & Save']";
+		String homeMyRequestsActualPhotoLnk = "//div[@class='jcrop-tracker']";
 		String employeeType = "//input[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
-		String deleteAttachmentBtnLnk = "//*[contains(@id,'button') and @data-qtip='Delete Image']";
+		String homeMyRequestsUploadedImageLnk = "//*[contains(@id,'label') and text()='Photo']";
 		String homeAccessRequestFirstNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
 		String homeAccessRequestLastNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";
+		String homeAccessRequestEmpTypeTxt = "//*[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
 		String homeAccessRequestCountryDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Country']";
 		String homeAccessRequestDepartmentDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']";
 		String homeAccessRequestLocationDdn = "//*[contains(@class,'x-placeholder-label') and text()='Select Location']";
@@ -110,7 +112,12 @@ public interface HomeObjects {
 		String homeAccessRequestSelectTerminationReasonTxt = "//*[contains(@id,'baseComboBox') and @ placeholder='Select Termination Reason']";
 		String homeAccessRequestSelectRehireReasonTxt = "//input[contains(@id,'baseText') and @class='x-form-field x-form-text x-form-text-default  x-form-empty-field x-form-empty-field-default']";
 		String homeAccessRequestValidToDate = "//*[contains(@id,'baseDateTime') and @placeholder='Select Valid To']";
-	
+		String homeRequestInboxCloseHistoryWindowIcn = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
+		String homeRequestInboxMenuIcn = "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]";
+	    String homeRequestInboxHistoryMenuLnk = "(//*[text()='History'])[2]";
+	    String homeRequestInboxUserIdTxt = "//input[contains(@id,'baseText') and @placeholder='Enter User ID']";
+	    String homeMyRequestsActionMenuBtn = "//*[contains(@id,'button') and text()='Actions']";
+	    String homeMyRequestsApprovalMenuItemLnk = "//*[contains(@id,'menuitem') and text()='Approve']";
 }
 
 

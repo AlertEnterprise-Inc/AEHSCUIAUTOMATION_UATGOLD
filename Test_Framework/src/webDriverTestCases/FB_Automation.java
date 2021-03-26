@@ -28,6 +28,7 @@ public class FB_Automation extends BrowserSelection {
 	{
 		unhandledException = false;	
 		testName = method.getName();
+		AGlobalComponents.applicationURL = "http://autodevhsc.alertenterprise.com/";
 		AGlobalComponents.takeScreenshotIfPass = true;
 		driver.navigate().refresh();
 	}
@@ -396,8 +397,10 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> SuccessFactors HR System Usecases E01 - TestCase Execution Begins");
 		AGlobalComponents.EmpOnboardingthroughHRDb=true;
 		AGlobalComponents.DBUserRecon=true;
-		AGlobalComponents.applicationURL="http://aepdemo.alertenterprise.com/";
-		if(FB_Automation_CommonMethods.createUserInHRDb()) {
+		String firstName=Utility.getRandomString(5);
+		String lastName=Utility.getRandomString(5);
+		
+		if(FB_Automation_CommonMethods.createUserInHRDb(firstName,lastName)) {
 			boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
 
 			if(loginStatus){
@@ -479,7 +482,7 @@ public class FB_Automation extends BrowserSelection {
 				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG1");
 				
 				/** Create Identities **/
-				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i));
+				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"");
 			}
 			
 			if (FB_Automation_CommonMethods.addIdentities(firstNames, lastNames, accessName)) 

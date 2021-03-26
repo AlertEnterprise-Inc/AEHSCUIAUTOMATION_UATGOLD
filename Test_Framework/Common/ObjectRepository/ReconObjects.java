@@ -61,7 +61,9 @@ public interface ReconObjects {
 		
 		String confirmPopUpLnk = "//span[contains(text(),'Confirm')]" ;
 		
-		String checkboxLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]";
+	//	String checkboxLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[contains(@class,'checkbox') and contains(@aria-describedby,'cell-description-selected')]";
+		
+		String checkboxLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[contains(@class,'checkbox')]";
 		
 		String elementConnector = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[7]";
 		
@@ -75,11 +77,13 @@ public interface ReconObjects {
 		
 		String fetchEntity="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[11]";
 		
-		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[12]";
+		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[14]";
 		
 		String sequence="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[4]";
 		
 		String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
+		
+		//String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
 		
 //		String reconJobStatus = ".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.jobName+"']//ancestor::tr//td["+AGlobalComponents.statusIndex+"]";
 		

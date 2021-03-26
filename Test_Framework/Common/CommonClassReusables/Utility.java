@@ -1,5 +1,6 @@
 package CommonClassReusables;
 
+
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -15,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.Connection;
@@ -55,6 +57,8 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.Assert;
 
+import java.sql.ResultSetMetaData;
+import java.sql.Clob;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
@@ -1692,4 +1696,145 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		driver = default_driver;
 		logger.log(LogStatus.INFO, "Switched Back to Default Browser Driver");
 	}
+	
+
+	 /**
+	 * <h1>getDataFromDatasource</h1>
+	 * This is a Method to Get Data from Database Table for Script Execution
+	 * @author  	Jiten Khanna
+	 * @modified 
+	 * @version 	1.0
+	 * @since   	03-03-2021
+	 * @param   	String scriptName
+	 * @return  	HashMap
+	 **/
+
+	 public static HashMap<String, Comparable> getDataFromDatasource(String scriptName) throws ClassNotFoundException, SQLException
+	 {
+		 logger.log(LogStatus.INFO, "Getting data from Source for Script: " + scriptName);
+			Connection con = null;
+			Statement st = null;
+			ResultSet rs = null;
+			ResultSetMetaData resmd = null;
+			HashMap<String, Comparable> resRecord = null;
+			try {
+				String columnType = null;
+				String className = null;
+				
+				String dbURL = "jdbc:postgresql://44.236.46.102:5432/aehscdb";
+				String dbUsername = "alert";
+				String dbPassword = "alert123";
+				con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+				String dbQuery = "select * from public.hscautomation where script_name = '"+scriptName+"'";
+				Class.forName("org.postgresql.Driver");
+				
+				if (con != null) {
+					st = con.createStatement();
+					rs = st.executeQuery(dbQuery);
+					resmd = rs.getMetaData();
+					int columns = resmd.getColumnCount();
+					while (rs.next()) {
+						resRecord = new HashMap<String, Comparable>();
+						for (int i = 1; i <= columns; i++) {
+							columnType = resmd.getColumnClassName(i);
+							className = resmd.getColumnTypeName(i);
+							if (columnType.toLowerCase().indexOf("string") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getString(i));
+							} else if (columnType.toLowerCase().indexOf("integer") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getInt(i));
+							} else if (columnType.toLowerCase().indexOf("date") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getDate(i));
+							} else if (columnType.toLowerCase().indexOf("bigdecimal") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getBigDecimal(i));
+							} else if (columnType.toLowerCase().indexOf("timestamp") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getTimestamp(i));
+							} else if (columnType.toLowerCase().indexOf("boolean") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getBoolean(i));
+							} else if (columnType.toLowerCase().indexOf("byte") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getByte(i));
+							} else if (columnType.toLowerCase().indexOf("double") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getDouble(i));
+							} else if (columnType.toLowerCase().indexOf("float") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getFloat(i));
+							} else if (columnType.toLowerCase().indexOf("long") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getLong(i));
+							} else if (columnType.toLowerCase().indexOf("short") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getShort(i));
+							} else if (className.toLowerCase().indexOf("image") >= 0) {
+								resRecord.put(resmd.getColumnName(i), rs.getString(i));
+							} else if (columnType.toLowerCase().indexOf("clob") >= 0) {
+								Clob clob = rs.getClob(i);
+								Reader r = clob.getCharacterStream();
+						        StringBuffer buffer = new StringBuffer();
+						        int ch;
+						         try {
+									while ((ch = r.read())!=-1) {
+									    buffer.append(""+(char)ch);
+									 }
+								resRecord.put(resmd.getColumnName(i), buffer.toString());
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							
+						}
+					}
+					st.close();
+					rs.close();
+				} else {
+					System.err.println("Database connection not set");
+				}
+			} catch (SQLException se) {
+				System.out.println(se);
+				logger.log(LogStatus.ERROR, se);
+			}
+			System.out.println("Data retrieved from Data Source :  " + resRecord);
+			return resRecord;
+	 }
+
+	 
+
+	 /**
+	 * <h1>getDataFromDatasource</h1>
+	 * This is a Method to Update Data in Database Table for Script Execution
+	 * @author  	Jiten Khanna
+	 * @modified 
+	 * @version 	1.0
+	 * @since   	03-15-2021
+	 * @param   	String scriptName
+	 * @return  	HashMap
+	 **/
+
+	 public static boolean updateDataInDatasource(String scriptName, String columnName, String columnValue) throws ClassNotFoundException, SQLException
+	 {
+		 logger.log(LogStatus.INFO, "Getting data from Source for Script: " + scriptName);
+			Connection con = null;
+			Statement st = null;
+			ResultSet rs = null;
+			boolean flag = false;
+			
+			try {
+
+					String dbURL = "jdbc:postgresql://44.236.46.102:5432/aehscdb";
+					String dbUsername = "alert";
+					String dbPassword = "alert123";
+					con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
+					String dbQuery = "update public.hscautomation set "+columnName+" ='"+columnValue+"' where script_name ='"+scriptName+"'";
+					Class.forName("org.postgresql.Driver");
+					
+					if (con != null) {
+						st = con.createStatement();
+						st.executeQuery(dbQuery);
+						flag = true;
+						st.close();
+					} else {
+						System.err.println("Database connection not set");
+					}
+			} catch (SQLException se) {
+				System.out.println(se);
+			}
+			return flag;
+	 }
+
+
 }

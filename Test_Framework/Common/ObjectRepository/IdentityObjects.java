@@ -1,6 +1,9 @@
 package ObjectRepository;
 
+import CommonClassReusables.ByAttribute;
+
 public interface IdentityObjects {
+	
 	
 	//String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
 	String idmTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='IDM']";
@@ -14,7 +17,7 @@ public interface IdentityObjects {
 	String idmAddAssetConfirmBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
 	String createIdentityHeader = "//div[contains(@class,'x-box-target')]//label[text()='Create Identity Management']";
 	String identityManagementHeader = "//div[contains(@class,'x-box-target')]//label[text()='Identity Management']";
-	String cancelButtonLnk = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Cancel']";
+	String idmManageIdentityCancelBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Cancel']";
 	String filterIconLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter')]";
 	String addFilterLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd')]";
 	String enterFieldName1ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
@@ -24,14 +27,15 @@ public interface IdentityObjects {
 	String clickFieldValue2 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
 	String enterFieldValue2 = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
 	String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
-	String addRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]";
-	String profileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
-	String accessTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
-	String systemsTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Systems']";
+	String idmManageIdentityaddRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[1]";
+	String idmManageIdentityProfileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
+	String idmManageIdentityAccessTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
+	String idmManageIdentitySystemsTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Systems']";
 	String idmManageIdentityAssetsTabBtn =".//*[@data-ref='btnInnerEl' and text()='Assets']";
 	String prerequisitesTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Prerequisites']";
-	String firstNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
-	String lastNameLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";	
+	String idmManageIdentityProfileInfoFirstNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
+	String idmManageIdentityProfileInfoLastNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";	
+	String idmManageIdentityProfileInfoPhoneNoTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Phone Number']";
 	String collapseBasicInfoSection = "//fieldset[@aria-label='Basic Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";
 	String emailIdLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Email ID']";
 	String phoneNumberLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Phone Number']";
@@ -76,5 +80,6 @@ public interface IdentityObjects {
 	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";
 	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Badge Operations']";
 	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
+	String idmMAnageIdentityExpandLeftViewLnk = ".//span[contains(@class,'hamburgerexpand')]";
 	
 }

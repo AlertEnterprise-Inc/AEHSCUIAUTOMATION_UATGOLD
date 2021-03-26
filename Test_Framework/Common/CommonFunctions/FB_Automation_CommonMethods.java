@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -977,7 +977,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String temp = dateFormat.format(c.getTime());  
 			
 				date = new SimpleDateFormat("MM-dd-yy hh:mm:ss").parse(temp);
-				endDate = new SimpleDateFormat("M/d/yy hh:mm a").format(date); 
+				endDate = new SimpleDateFormat("dd.MM.yy hh:mm a").format(date);
 					
 				ByAttribute.click("xpath", ReconObjects.endDateToRerunTheJob, "Click to enter end date");
 				ByAttribute.setText("xpath", ReconObjects.endDateToRerunTheJob, endDate, "Enter end date to rerun the job");
@@ -1056,10 +1056,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 				fillProfileInfo();
 				if(!AGlobalComponents.deleteSingleIdentityFlag){
-					ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Accesses Tab ");
-					Utility.pause(2);
-					fillAccessesInfo();
-					ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "Click on Systems Tab ");
+		//			ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Accesses Tab ");
+		//			Utility.pause(2);
+		//			fillAccessesInfo();
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
 					Utility.pause(2);
 					fillSystemsInfo();
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
@@ -1067,14 +1067,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					fillAssetsInfo();
 					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
 					Utility.pause(10);
-					fillPrerequisitesInfo();
+		//			fillPrerequisitesInfo();
 				}
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 				Utility.pause(20);
-
 				logger.log(LogStatus.PASS, "identity created");	
 				
-
 			}
 			catch(Exception e)
 			{		
@@ -1086,18 +1084,17 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 	
 	
-	public static void createIdentity(String firstName,String lastName) throws Throwable
+	public static void createIdentity(String firstName,String lastName, String scriptName) throws Throwable
 	{
 		
 		if(unhandledException==false)
 		{
-			
-			
-			System.out.println("***************************** Create Identity *********************************");
+		
 			try
 			{
 				System.out.println("**************************** createNewIdentity ********************************");
 				logger.log(LogStatus.INFO,"**************************** createNewIdentity ********************************");
+				
 				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
 					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 					Utility.pause(2);
@@ -1116,18 +1113,18 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
 				Utility.pause(2);
 				
-				fillProfileInfo(firstName,lastName);
+				fillProfileInfo(firstName,lastName,scriptName);
 				
-				ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "*********Click on Accesses Tab********** ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "*********Click on Accesses Tab********** ");
 				Utility.pause(2);
-				fillAccessesInfo();
+				fillAccessesInfo(scriptName);
 			
 				ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "***********Click on Prerequisites Tab************ ");
 				Utility.pause(2);
-				fillPrerequisitesInfo();
+				fillPrerequisitesInfo(scriptName);
 				
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(20);
+				Utility.pause(10);
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
@@ -1135,16 +1132,41 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				fillAssetsInfo(AGlobalComponents.assetCode);
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(20);
-				logger.log(LogStatus.INFO, "Created asset assigned to the user");
+				Utility.pause(10);
+				logger.log(LogStatus.PASS, "Created asset assigned to the user");
 				
-				searchIdentity(firstName,lastName);
+				//commenting below lines untill the reload option starts working
 				
-				ByAttribute.click("xpath", IdentityObjects.systemsTabLnk, "**************Click on Systems Tab ***************");
-				if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
-					logger.log(LogStatus.INFO, "System is assigned to the user");
-				else
-					logger.log(LogStatus.FAIL, "System is not assigned to the user");
+//				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+//				Utility.pause(1);
+//				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+//				Utility.pause(10);
+//				String fName = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt)).getAttribute("value");
+//				if(fName=="" || fName== null){
+//					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
+//				
+//					if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
+//						logger.log(LogStatus.PASS, "System is assigned to the user");
+//					else
+//						logger.log(LogStatus.FAIL, "System is not assigned to the user");
+//				}
+//				else{
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+					Thread.sleep(3000);
+					if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+						WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+						Actions action = new Actions(driver);
+						action.doubleClick(record).build().perform();
+						Utility.pause(10);
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
+						
+						if(driver.findElements(By.xpath("//*[text()='"+AGlobalComponents.systemNameOfAsset+"']")).size()>0)
+							logger.log(LogStatus.INFO, "System is assigned to the user");
+						else
+							logger.log(LogStatus.FAIL, "System is not assigned to the user");
+					}
+		//		}
 				
 				
 			}
@@ -1321,7 +1343,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	
 	
 	
-	public static void searchIdentity(String firstName,String lastName) throws Throwable
+	public static void searchIdentity(String userId) throws Throwable
 	{
 		
 		if(unhandledException==false)
@@ -1338,7 +1360,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 					Utility.pause(5);
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-					Utility.pause(15);
+					Utility.pause(5);
 				}
 				else{
 					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
@@ -1350,43 +1372,17 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(driver.findElements(By.xpath("//*[contains(@class,'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus ')]")).size()>=2)
 					System.out.println("Identity is already searched in IDM");
 				else{
-				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
-				Utility.pause(3);
-				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");
-				ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,"First Name", "Enter the field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,firstName, "Enter the first name");
-				Utility.pause(2);
-		
-				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.enterFieldName2ToFilter, "click to enter field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldName2ToFilter,"Last Name", "Enter the field name for Filtering");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.clickFieldValue2, "click to enter the second value");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,lastName, "Enter the last name");
-		
-		//		Actions action = new Actions(driver);
-				action.sendKeys(Keys.ENTER).build().perform();
-				Utility.pause(5);
+				
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, userId, "Enter User ID in Search field");
+					Thread.sleep(3000);
 				}
 		
-			if(driver.findElements(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
-				WebElement record=driver.findElement(By.xpath("((//div[text()='"+firstName+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+			if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and contains(text(),'"+userId+"')]")).size()>0){
+				Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and contains(text(),'"+userId+"')]", "User", false);
+				WebElement record=driver.findElement(By.xpath("(//div[contains(text(),'"+userId+"')]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
 				action.doubleClick(record).build().perform();
 				Utility.pause(10);
-				String searchResult= "//*[contains(text(),'"+identityCode+"')]";
-				if(driver.findElements(By.xpath(searchResult)).size()>0){
-					Utility.verifyElementPresent(searchResult,"Identity",false);
-					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
-				}
 				logger.log(LogStatus.PASS, "Search Identity successful");
 			}
 			else{
@@ -1504,7 +1500,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO, "Create Identity  screen is loaded ");
 				}
 				
-				ByAttribute.click("xpath", IdentityObjects.cancelButtonLnk, "Click on cancel button ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on cancel button ");
 				Utility.pause(10);
 				
 				if(driver.findElements(By.xpath(IdentityObjects.identityManagementHeader)).size()>0){
@@ -1907,11 +1903,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
 				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.firstNameLnk, "Enter first Name");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "Enter first Name");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, firstName, "Enter first Name");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lastName, "Enter Last Name");
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 				Utility.pause(2);
@@ -1937,7 +1933,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 	
-	public static void fillProfileInfo(String fName,String lName) throws Throwable 
+	public static void fillProfileInfo(String fName,String lName,String scriptName) throws Throwable 
 	{
 		
 		if(unhandledException==false)
@@ -1945,82 +1941,51 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			String createIdentityTemplateFile ,createIdentityDataFile;
 			System.out.println("********************Fill Profile Info********************");
 			try{
-				createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
-				createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
+				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+				String validFrom= null,validTo = null;
+				String empType = (String) testData.get("employee_type");
 				
-				TestDataInterface.compileTwoRowDataTemplate(createIdentityTemplateFile, createIdentityDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(createIdentityDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(createIdentityDataFile, 0);
-				int len = headers.size();
-				String firstName=null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header,jobTitle;
+				Calendar c = Calendar.getInstance();
+				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+				Date date = new Date();
+				String currentDate= dateFormat.format(date);
+				validFrom=currentDate;
+				System.out.println(currentDate);
 				
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-				
-						switch (header.toLowerCase()) {
-						case "firstname":
-							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers)||(AGlobalComponents.emergencyTermination))
-								firstName = fName;
-							else
-								firstName = Utility.getIndexValue(userData, index);
-							break;
-						case "lastname":
-							if((AGlobalComponents.contractorToPermanentEmployeeConversion)||(AGlobalComponents.requestLocationAccessOthers)||(AGlobalComponents.emergencyTermination))
-								lastName = lName;
-							else
-								lastName = Utility.getIndexValue(userData, index);
-							break;
-						case "validfrom":
-							validFrom=Utility.getIndexValue(userData, index);
-							break;
-						case "validto":
-							validTo=Utility.getIndexValue(userData, index);
-							break;
-						case "employeetype":
-							if(AGlobalComponents.contractorToPermanentEmployeeConversion)
-								empType = "Contractor";
-							else
-								empType = Utility.getIndexValue(userData, index);
-							break;
-						case "email":
-							emailId = Utility.getIndexValue(userData, index);
-							break;
-						case "jobtitle":
-							jobTitle = Utility.getIndexValue(userData, index);
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
+				try{
+					   //Setting the date to the given date
+					   c.setTime(dateFormat.parse(currentDate));
+					}catch(Exception e){
+						e.printStackTrace();
 					}
-				}
+					   
+					//Number of Days to add
+					c.add(Calendar.DAY_OF_MONTH, 365);  
+					//Date after adding the days to the given date
+					validTo = dateFormat.format(c.getTime());  
+					//Displaying the new Date after addition of Days
+					System.out.println("Date after Addition: "+validTo);
 				
+			
+				AGlobalComponents.userId= fName+"."+lName;
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
 				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.firstNameLnk, "Enter first Name");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "Enter first Name");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, fName, "Enter first Name");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lName, "Enter Last Name");
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.emailIdLnk, emailId, "Enter email Id");
-				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
 				Utility.pause(2);
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, firstName+"."+lastName, "Enter user id");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, AGlobalComponents.userId, "Enter user id");
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
 				Utility.pause(2);
 //				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
 //				Utility.pause(2);
-
-
 //				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
 				
 			}
@@ -2155,9 +2120,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.firstNameLnk, firstName, "Enter first Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, firstName, "Enter first Name");
 				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.lastNameLnk, lastName, "Enter Last Name");
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lastName, "Enter Last Name");
 				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 				Utility.pause(2);
@@ -2174,64 +2139,28 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 	
 	
-	public static void fillAccessesInfo() throws Throwable 
+	public static void fillAccessesInfo(String scriptName) throws Throwable 
 	{
 		if(unhandledException==false)
 		{
 			index++;
 			System.out.println("****************Fill Access Info******************");
 			try{
-				String accessName= null,validFrom= null,validTo = null,header,temp,accessTemplateFile,accessDataFile;
+				String accessName= null,validFrom= null,validTo = null;
 				Date date;
 				
-				accessTemplateFile = createIdentityTestDataDirectory + "/Accesses_Template.csv";
-				accessDataFile=createIdentityTestDataDirectory+ "/Accesses.csv";
-				
-				TestDataInterface.compileTwoRowDataTemplate(accessTemplateFile, accessDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(accessDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(accessDataFile, 0);
-				int len = headers.size();
-		
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-				
-						switch (header.toLowerCase()) {
-						case "accessname":
-							accessName = Utility.getIndexValue(userData, index);
-							break;
-						case "validfrom":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-							}
-							break;
-						case "validto":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-							}
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
+				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+				String accessToBeAssigned1=(String) testData.get("access_name_2");
+				String accessToBeAssigned2=	(String) testData.get("access_name_3");	
 				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(5);
 		
 				Actions action = new Actions(driver);		
-				action.sendKeys(accessName);
+				action.sendKeys(accessToBeAssigned1);
 				action.build().perform();
 				Utility.pause(5);
-				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessName+"')]"));
+				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned1+"')]"));
 				action.moveToElement(accessValue).click();
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Access Value selected");
@@ -2239,6 +2168,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 				WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
 				ele.click();
+				
+//				ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");	
+//				action.sendKeys(accessToBeAssigned2);
+//				action.build().perform();
+//				Utility.pause(5);
+//				accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned2+"')]"));
+//				action.moveToElement(accessValue).click();
+//				action.build().perform();
+//				logger.log(LogStatus.INFO, "Access Value selected");
+//				Utility.pause(2);
+//		
+//				ele=driver.findElement(By.xpath("//span[text()='Description']"));
+//				ele.click();
 		
 //				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
 //				action.moveToElement(validFromDate).click();
@@ -2315,12 +2257,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 				}
-				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
+				String addRecordsIcon = "//a[normalize-space(text())='Click here to Add']";
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new system");
 				
 				Utility.pause(5);
 		
 				Actions action = new Actions(driver);
+				WebElement system=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-baseComboColumn')])[1]"));
+				action.moveToElement(system).click();
 				action.sendKeys(systemName);
 				action.build().perform();
 				Utility.pause(5);
@@ -2467,12 +2411,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
 				Utility.pause(2);
 				
-				Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "Active", "Enter the status of the asset ");
-				Thread.sleep(1000);
-				ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='Active']", " select status");
-				Utility.pause(2);
-				
+		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
+				if(AGlobalComponents.tempWorkerOnboarding){
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "InActive", "set the status of the asset active/inactive");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='InActive']", " select status");
+					Utility.pause(2);
+				}
+				else{
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "Active", "set the status of the asset active/inactive");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='Active']", " select status");
+					Utility.pause(2);
+				}
 				if (driver.findElements(By.xpath(IdentityObjects.idmAddAssetSaveBtn)).size()>0){
 					ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
 					Utility.pause(5);
@@ -2490,74 +2441,69 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 	
-	public static void fillPrerequisitesInfo() throws Throwable
+	public static void fillPrerequisitesInfo(String scriptName) throws Throwable
 	{
-	if(unhandledException==false)
-	{
-	index++;
-	System.out.println("**************Fill prerequisite info***********");
-	try{
-	String type= null,prerequisite=null,validFrom= null,validTo = null,header,prerequisiteTemplateFile,prerequisiteDataFile;
+		if(unhandledException==false)	
+		{
+			index++;
+			System.out.println("**************Fill prerequisite info***********");
+			try{
+				
+				int prerequisiteTypeIndex = 0;
+				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+				String prerequisiteName=(String) testData.get("prerequisite_name");
+				String prerequisiteType=(String) testData.get("prerequisite_type");
+				
+				ByAttribute.click("xpath", "(//a[normalize-space(text())='Click here to Add'])","Click on Click here to Add" );
+				Utility.pause(5);
 
-	prerequisiteTemplateFile = createIdentityTestDataDirectory + "/Prerequisite_Template.csv";
-	prerequisiteDataFile=createIdentityTestDataDirectory+ "/Prerequisite.csv";
-
-	TestDataInterface.compileTwoRowDataTemplate(prerequisiteTemplateFile, prerequisiteDataFile);
-
-	ArrayList<String> prerequisiteTypeList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "Type");
-	ArrayList<String> prerequisiteNameList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "Prerequisite");
-	ArrayList<String> prerequisiteValidFromList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "ValidFrom");
-	ArrayList<String> prerequisiteValidToList=Utility.getCSVColumnPerHeader(prerequisiteDataFile, "ValidTo");
-
-	for(int i=0;i<prerequisiteNameList.size();i++) {
-	Actions action = new Actions(driver);
-	if(i==0) {
-	String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
-	WebElement addIcon = driver.findElement(By.xpath(addRecordsIcon));
-	action.moveToElement(addIcon).click();
-	}
-	else
-	ByAttribute.click("xpath",IdentityObjects.addRowLnk,"Click on Add icon to insert new training");
-
-	action.sendKeys(prerequisiteTypeList.get(i));
-	action.build().perform();
-	Utility.pause(5);
-	WebElement typeValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteTypeList.get(i)+"']"));
-	action.moveToElement(typeValue).click();
-	action.build().perform();
-	logger.log(LogStatus.INFO, "prerequisite type Value selected");
-	Utility.pause(4);
-
-	action.sendKeys(Keys.TAB);
-	action.sendKeys(prerequisiteNameList.get(i));
-	action.build().perform();
-	Utility.pause(5);
-	WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteNameList.get(i)+"']"));
-	action.moveToElement(prerequisiteValue).click();
-	action.build().perform();
-	logger.log(LogStatus.INFO, "Entered the Prerequisite Name");
-
-	// WebElement validFromDate=driver.findElement(By.xpath("(//div[text()='"+prerequisiteTypeList.get(prerequisiteNameList.indexOf(name))+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[2]"));
-	// action.moveToElement(validFromDate).click();
-	action.sendKeys(Keys.TAB);
-	action.sendKeys(prerequisiteValidFromList.get(i));
-	action.build().perform();
-	Utility.pause(5);
-	logger.log(LogStatus.INFO, "Entered prerequiste valid from");
-
-	// WebElement validToDate=driver.findElement(By.xpath("(//div[text()='"+prerequisiteTypeList.get(prerequisiteNameList.indexOf(name))+"']/parent::td[contains(@class,'x-grid-cell-baseComboColumn')]/following-sibling::td//div[@class='x-grid-cell-inner '])[3]"));
-	// action.moveToElement(validToDate).click();
-	action.sendKeys(Keys.TAB);
-	action.sendKeys(prerequisiteValidToList.get(i));
-	action.build().perform();
-	logger.log(LogStatus.INFO, "Entered prerequiste valid to");
-	}
-	}
-	catch(Exception e){
-	String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
-	Utility.recoveryScenario(nameofCurrMethod, e);
-	}
-	}
+				List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
+				int size = headers.size(),j=1;
+			
+				for (int i=1;i<size;i++){
+					WebElement header= headers.get(i);
+					String heading = header.getText();
+					System.out.println(i);
+					System.out.println(j);
+					System.out.println("heading "+ (i) +" "+ heading);
+							
+					switch (heading.toLowerCase()) {
+					case "type":
+						prerequisiteTypeIndex = j;
+						j++;
+						break;
+					case "":
+						
+						break;
+					default: 
+						System.out.println("Need to skip this header : "+ heading);
+						j++;
+					}
+				}
+				
+				Actions action = new Actions(driver);	
+				Utility.pause(5);
+				List<WebElement> preRequesitiesTypeList=driver.findElements(By.xpath("//*[contains(@class,'x-grid-cell x-grid-td x-grid-cell-baseComboColumn')]"));
+				WebElement preRequisiteLocator = preRequesitiesTypeList.get(prerequisiteTypeIndex);
+				action.click(preRequisiteLocator);
+				action.sendKeys(prerequisiteType);
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Entered the Prerequisite Type");
+				
+				action.sendKeys(Keys.TAB);
+				action.sendKeys(prerequisiteType);
+				action.build().perform();
+				Utility.pause(5);
+				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteName+"']"));
+				action.moveToElement(prerequisiteValue).click();
+				action.build().perform();
+				logger.log(LogStatus.INFO, "Entered the Prerequisite Name");
+			}
+			catch(Exception e){
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
 	}
 
 	private static void verifyRoleReconData() throws Throwable{
@@ -3559,10 +3505,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
 					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 					//FirstName Validation
-					String firstName=driver.findElement(By.xpath(IdentityObjects.firstNameLnk)).getAttribute("value");
+					String firstName=driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt)).getAttribute("value");
 					if(firstName!=null) {
 						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
-							Utility.verifyElementPresentByScrollView(IdentityObjects.firstNameLnk, "FirstName", true, false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "FirstName", true, false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "FirstName " +firstName+" on UI is not same as expected");
@@ -3572,10 +3518,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.FAIL, "Not able to see firstName "+firstNameList.get(i)+"on UI ");
 					}
 					//LastName validation
-					String lastName=driver.findElement(By.xpath(IdentityObjects.lastNameLnk)).getAttribute("value");
+					String lastName=driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt)).getAttribute("value");
 					if(lastName!=null) {
 						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
-							Utility.verifyElementPresentByScrollView(IdentityObjects.lastNameLnk, "LastName", true, false);
+							Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, "LastName", true, false);
 						}
 						else {
 							logger.log(LogStatus.FAIL, "LastName " +lastName+" on UI is not same as expected");
@@ -4390,7 +4336,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		System.out.println("***************************** Validate Assigned Access On UI *********************************");
 		try
 		{	
-			ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Assets Tab ");
+			ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 			Utility.pause(2);
 			
 			if(Utility.verifyElementPresentReturn("//div[text()='"+accessName+"']",accessName,true,false)){
@@ -4456,7 +4402,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.switchToDefaultBrowserDriver();
 			
 					for(int i=0;i<1;i++) {
-						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i), lastNames.get(i));
+						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i)+"."+lastNames.get(i));
 						if(FB_Automation_CommonMethods.validateAssignedAccessOnUI(accessName)) 
 							flag=true;
 						
@@ -4500,7 +4446,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.switchToDefaultBrowserDriver();
 			
 					for(int i=0;i<1;i++) {
-						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i), lastNames.get(i));
+						FB_Automation_CommonMethods.searchIdentity(firstNames.get(i)+"."+lastNames.get(i));
 						FB_Automation_CommonMethods.validateRemovedAccessOnUI(accessName);
 //				        FB_Automation_CommonMethods.validateAssignedAccessInDB(firstNames.get(i), lastNames.get(i),accessName);
 					}					 		
@@ -4581,7 +4527,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		System.out.println("***************************** Validate Removed Access On UI *********************************");
 		try
 		{	
-			ByAttribute.click("xpath", IdentityObjects.accessTabLnk, "Click on Access Tab ");
+			ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 			Utility.pause(2);
 			
 			WebElement accessNameLocator=driver.findElement(By.xpath("//div[text()='"+accessName+"']"));
@@ -4593,5 +4539,73 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.PASS,"Access Name: "+accessName+ " successfully removed from user");
 		}
 	}
+	
+	
+public static boolean createUserInHRDb(String firstName,String lastName) throws ClassNotFoundException, SQLException {
+		
+		ArrayList<String> userIds=new ArrayList<String>();
+		ArrayList<String> firstNameList=new ArrayList<String>();
+		ArrayList<String> lastNameList=new ArrayList<String>();
+		ArrayList<String> validFroms=new ArrayList<String>();
+		ArrayList<String> validTos=new ArrayList<String>();
+		ArrayList<String> jobTitle=new ArrayList<String>();
+		ArrayList<String> identityType=new ArrayList<String>();
+		ArrayList<String> managerId=new ArrayList<String>();
+		ArrayList<String> payStatus= new ArrayList<String>();
+		
+		String hrUserDataFile = reconTestDataDirectory + "/HRDbCreateUser.csv"; 
+		String validFrom=Utility.getCurrentDateTime("MM-dd-yyyy hh:mm:ss");
+		String validTo=Utility.getDate("MM-dd-yyyy hh:mm:ss", 4, "years");
+		String userId=Utility.UniqueNumber(6);
+		
+		String name=firstName+" "+lastName;
+		
+		if(DBValidations.createUserInHRDb(userId,firstName,lastName,name,validFrom,validTo,"Software Engineer","Employee","Hire","anna.mordeno","218 2nd Ave S, Nashville","United States of America")) {
+				
+			AGlobalComponents.userId=userId;
+			userIds.add(userId);
+			firstNameList.add(firstName);
+			lastNameList.add(lastName);
+			validFroms.add(validFrom);
+			validTos.add(validTo);
+			jobTitle.add("Software Engineer");
+			identityType.add("Employee");
+			managerId.add("anna.mordeno");
+			payStatus.add("Hire");
+			
+			ArrayList<ArrayList<String>> userData = new ArrayList<ArrayList<String>>();
+			String detailsHeaderArray []= {"UserId","FirstName","LastName","ValidFrom","ValidTo","JobTitle","IdentityType","ManagerId","PayStatus"};
+			
+			ArrayList<String> userDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+			
+			userData = Utility.appendColumnDataAtEnd(userData, userIds);
+			userData = Utility.appendColumnDataAtEnd(userData, firstNameList);
+			userData = Utility.appendColumnDataAtEnd(userData, lastNameList );
+			userData = Utility.appendColumnDataAtEnd(userData, validFroms );
+			userData = Utility.appendColumnDataAtEnd(userData, validTos);
+			userData = Utility.appendColumnDataAtEnd(userData, jobTitle);
+			userData = Utility.appendColumnDataAtEnd(userData, identityType);
+			userData = Utility.appendColumnDataAtEnd(userData, managerId);
+			userData = Utility.appendColumnDataAtEnd(userData, payStatus);
+			
+			if(Utility.checkIfListIsNotNullAndNotEmpty(userData)) {
+				
+				userData.add(0, userDataFileHeaders);
+				if(FileOperations.createFileIfDoesNotExist(hrUserDataFile)) {
+					ReadDataFromPropertiesFile.writeTestDataInFile(hrUserDataFile, userData, false);
+					return true;
+				}
+			}
+			return true;
+		}	
+		else {
+			logger.log(LogStatus.FAIL, "Failed to create user in HR Db");
+			return false;		
+		}
+	}
+	
 }
+
+
+
 
