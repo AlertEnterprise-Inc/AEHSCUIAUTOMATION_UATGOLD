@@ -589,11 +589,11 @@ public class DBValidations extends BrowserSelection{
 	}
 
 	public static boolean createUserInHRDb(String userId, String firstName, String lastName, String name,
-			String validFrom, String validTo, String jobTitle, String identityType,String payStatus, String managerId) throws ClassNotFoundException {
+			String validFrom, String validTo, String jobTitle, String identityType,String payStatus, String managerId,String workLocation,String country,String created_date) throws ClassNotFoundException, SQLException {
 
 		int noOfRecordsUpdated=-1;
-		String query="insert into aepdemo.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto)" + 
-				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"');";
+		String query="insert into autodevhsc.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto,worklocation,country,created_date)" + 
+				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"','218 2nd Ave S, Nashville','United States of America','"+created_date+"')";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -605,9 +605,9 @@ public class DBValidations extends BrowserSelection{
 		}	
 	}
 
-	public static boolean updateUserInHrdb(String userId, String jobTitle) throws ClassNotFoundException {
+	public static boolean updateUserInHrdb(String userId, String jobTitle) throws ClassNotFoundException, SQLException {
 		int noOfRecordsUpdated=-1;
-		String query="update aepdemo.hr_data set jobtitle ='"+jobTitle+"' where user_id='"+userId+"'";
+		String query="update autodevhsc.hr_data set jobtitle ='"+jobTitle+"' where user_id='"+userId+"'";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -617,6 +617,64 @@ public class DBValidations extends BrowserSelection{
 			System.out.println("failed to update user in HR DB");
 			return false;
 		}
+	}
+
+	public static String getAccessRequestNoFromDB(String userId) throws ClassNotFoundException, SQLException {
+
+		String query="select ext_id from autodevhsc.Access_request where id=(select access_request_id from autodevhsc.access_request_identity_field_new where master_identity_id='"+userId+"' FETCH FIRST 1 ROW ONLY)";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
+
+	public static boolean terminateUserInHrdb(String userId) throws ClassNotFoundException, SQLException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autodevhsc.hr_data set paystatus = 'Terminate' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	
+	}
+
+	public static String getAccessRequestOfProfileChangeFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autodevhsc.Access_request where type='profileChange' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
+
+	public static String getAccessRequestOfTerminateFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autodevhsc.Access_request where type='EmpOffboarding' order by 1 desc fetch first row only;";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;		
 	}
 	
 	public static String checkAssetStatusInAMAG(String cardNumber) throws ClassNotFoundException {
@@ -633,36 +691,5 @@ public class DBValidations extends BrowserSelection{
 			System.out.println("Unable to fetch status");
 		}
 		return status;
-	}
-
-	public static boolean createUserInHRDb(String userId, String firstName, String lastName, String name,
-			String validFrom, String validTo, String jobTitle, String identityType,String payStatus, String managerId,String workLocation,String country) throws ClassNotFoundException, SQLException {
-
-		int noOfRecordsUpdated=-1;
-		String query="insert into autodevhsc.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto,worklocation,country,created_date)" + 
-				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"','218 2nd Ave S, Nashville','United States of America','"+validFrom+"')";
-				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
-		if(noOfRecordsUpdated>0) {		
-			System.out.println(noOfRecordsUpdated+" rows affected");
-			return true;
-		}
-		else {
-			System.out.println("failed to create user in HR DB");
-			return false;
-		}	
-	}
-	
-	public static String getAccessRequestNoFromDB(String userId) throws ClassNotFoundException, SQLException {
-
-		String query="select ext_id from autodevhsc.Access_request where id=(select access_request_id from autodevhsc.access_request_identity_field_new where master_identity_id='"+userId+"' FETCH FIRST 1 ROW ONLY)";
-		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
-		String requestNo =rs.get(0).get(0);
-		if(requestNo!=null) {
-			System.out.println("RequestNo: "+requestNo);
-		}
-		else {
-			System.out.println("Unable to fetch RequestNo");
-		}
-		return requestNo;	
 	}
 }

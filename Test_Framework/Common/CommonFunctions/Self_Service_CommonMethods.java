@@ -51,8 +51,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	private static String access1ForTempOnboarding = "Server Room" , access2ForTempOnboarding = "EndUserRole",access3ForTempOnboarding="Common_Area_Access";
 	private static String access1ForPermanentEmp = "SC CHRWLS NONR CONST GATE" , access2ForPermanentEmp = "SC LEEXSS NONR GENERAL ACCESS";
 	private static String system2ForTempOnboarding = "CCURE 9000",system1ForTempOnboarding = "Database Connector",departmentName="Finance",newLastName="";
-	private static String access1ForEmpOnboarding = "CCURE_NEW_TEST18" , access2ForEmpOnboarding = "New Admin Role";
-	private static String system1ForEmpOnboarding= "CCURE 9000",system2ForEmpOnboarding="Alert IDM";
+	private static String access1ForEmpOnboarding,access2ForEmpOnboarding,accessNewForChangeJobTitle,jobTitle,system1ForEmpOnboarding,system2ForEmpOnboarding,system3ForEmpOnboarding;
 	private static ArrayList<String> accessesAssignedToUser = new ArrayList<String>();
 	private static ArrayList<String> systemsAssignedToUser = new ArrayList<String>();
 	private static File fileInput ;
@@ -2024,9 +2023,151 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO, "Checking status of the user after request submission");
 									
 					
-					if(AGlobalComponents.EmpOnboardingthroughHRDb){
+					if(requestType.equalsIgnoreCase("Employee Offboarding")){
 						
-						FB_Automation_CommonMethods.searchIdentity(AGlobalComponents.userId);
+//						IDM Validation
+						if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
+							ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+						}
+						else{
+							ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+							
+						}
+						ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+						Thread.sleep(3000);
+						Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']", "User Available in IDM", false);
+						
+						Actions actions = new Actions(driver);
+						WebElement elementLocator = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']"));
+						actions.doubleClick(elementLocator).perform();
+						Thread.sleep(3000);
+						
+						logger.log(LogStatus.PASS, "User is present in IDM");
+						
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						Utility.pause(5);
+						
+						/*system tab*/
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
+			/*			 for (int i=1;i<=tempWorkerSystemNames.size();i++){
+								WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr["+i+"]/td["+systemIndex+"]/div"));
+								String systemAssigned = systemName.getText();
+								logger.log(LogStatus.PASS,"Systems assigned to the Employee : "+systemAssigned+ " and status is inactive");
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr["+i+"]/td["+systemIndex+"]/div[text()='"+systemAssigned+"']", systemAssigned, false);
+							} */
+						
+						 /*access tab*/
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Navigate to access tab");
+							List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+							int size = noOfAccessRows.size();
+							if(size>0)
+								logger.log(LogStatus.FAIL, "Accesses are still assigned to the Employee");
+							else{
+								logger.log(LogStatus.PASS, "Accesses are removed");
+								Utility.verifyElementPresent("//*[@class='emptyGridMsg' and text()='No records found ']", "No records found", false);
+							}
+							
+							/*Assets tab*/
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Navigate to Assets tab");
+							
+							if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0){
+								WebElement assetStatus = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr[1]/td["+assignmentStatusIndex+"]/div"));
+								String assetAssignmentStatus = assetStatus.getText();
+								logger.log(LogStatus.INFO,"current assignment status of asset is : "+assetAssignmentStatus);
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr[1]/td["+assignmentStatusIndex+"]/div[text()='"+assetAssignmentStatus+"']", "asset status", false);
+								if(Utility.compareStringValues(assetAssignmentStatus, "INACTIVE"))
+									logger.log(LogStatus.PASS, "asset status is inactive after offboarding");			
+							}	
+					}
+					
+					else if(requestType.equalsIgnoreCase("Profile Change")){
+						
+//						IDM Validation
+						if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
+							ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+						}
+						else{
+							ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+							
+						}
+						ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+						Thread.sleep(3000);
+						Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']", "User Available in IDM", false);
+						
+						Actions actions = new Actions(driver);
+						WebElement elementLocator = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']"));
+						actions.doubleClick(elementLocator).perform();
+						Thread.sleep(3000);
+						
+						logger.log(LogStatus.PASS, "User is present in IDM");
+						
+						String modifiedJobTitle=attribute;
+						String newJobTitle = driver.findElement(By.xpath(HomeObjects.homeAccessRequestJobTitle)).getAttribute("value");
+						boolean flag=true;
+						for(int i=0;i<5 && flag;i++){
+							if(Utility.compareStringValues(newJobTitle, modifiedJobTitle)){
+								logger.log(LogStatus.PASS, "JobTitle changed successfully ");
+								Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestJobTitle, "JobTitle", true, false);
+//								Utility.verifyElementPresent(HomeObjects.homeAccessRequestJobTitle, "Changed JobTitle ", false);
+								flag=false;
+							}
+							else{
+								ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+								Utility.pause(1);
+								ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+								Utility.pause(5);
+								newJobTitle = driver.findElement(By.xpath("HomeObjects.homeAccessRequestJobTitle")).getAttribute("value");
+							}
+							
+							/*Validating access assigned to the user*/
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+							Utility.verifyElementPresent("//*[text()='"+accessNewForChangeJobTitle+"']", accessNewForChangeJobTitle, false);
+							logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
+							
+						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Change JobTitle failed ");
+					}
+					
+					if(requestType.equalsIgnoreCase("EmpOnboarding")){
+						
+//						IDM Validation
+						if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
+							ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+						}
+						else{
+							ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+							Utility.pause(5);
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+							Utility.pause(15);
+							
+						}
+						ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+						Thread.sleep(3000);
+						Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']", "User Available in IDM", false);
+						
+						Actions actions = new Actions(driver);
+						WebElement elementLocator = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']"));
+						actions.doubleClick(elementLocator).perform();
+						Thread.sleep(3000);
+						
 						logger.log(LogStatus.PASS, "Employee Onboardidng done is successful , user is present in IDM");
 						
 						/*Validating access assigned to the user*/
@@ -2046,9 +2187,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						 * checking for Systems CCURE and IDM added on the basis of Accesses
 						 */
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
-						Utility.verifyElementPresent(IdentityObjects.idmManageIdentitySystemsTabBtn, "CCURE and IDM System", false);
-						logger.log(LogStatus.PASS, "Systems are successfully assigned to the user");		
-					}
+						Utility.verifyElementPresent(IdentityObjects.idmManageIdentitySystemsTabBtn, "Systems", false);
+								
+					}			
 					
 					
 					//modified identity validation
@@ -4387,28 +4528,45 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 }		
 	
 	
-	
-	
-public static void checkRequestInManagerInbox() throws Throwable {
+	public static void checkRequestInManagerInbox(String requestType,String firstName,String lastName) throws Throwable {
 		
 		if (unhandledException == false) {
-			System.out.println("**************************** Checking the status in the Request ********************************");
-			logger.log(LogStatus.INFO,"************** Checking the status in the Request ********************************");
+			System.out.println("***************************** Checking the status in the Request *********************************");
+			logger.log(LogStatus.INFO,"*************** Checking the status in the Request *********************************");
 			try{		
-				String requestNumber="",firstName="",lastName="",requestType="";
+				String requestNumber="";
 				if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
 					ByAttribute.mouseHover("xpath",HomeObjects.homeTabBtn,"Mouse hover on Home tab to open My Requests");
 					ByAttribute.click("xpath",HomeObjects.homeInboxLnk,"click on Inbox");
 					Utility.pause(5);
 				}
-				String hrUserDataFile = "Test_Data/Recon/HRDbCreateUser.csv"; 
-				String userId=Utility.getCSVCellValue(hrUserDataFile, "UserId", 1);
-				firstName=Utility.getCSVCellValue(hrUserDataFile, "FirstName", 1);
-				lastName=Utility.getCSVCellValue(hrUserDataFile, "LastName", 1);
 				
-				if(AGlobalComponents.EmpOnboardingthroughHRDb) {						
-					requestNumber=DBValidations.getAccessRequestNoFromDB(userId);
-					requestType="EmpOnboarding";
+				if(requestType.equalsIgnoreCase("Employee Offboarding")){
+					requestNumber=DBValidations.getAccessRequestOfTerminateFromDB();
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC012");
+					accessNewForChangeJobTitle = (String) testData.get("access_name_1");					
+					HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
+					system1ForEmpOnboarding= (String) testData1.get("system_name");
+					system2ForEmpOnboarding= (String) testData1.get("system_name2");
+					system3ForEmpOnboarding= (String) testData1.get("system_name3");
+				}
+				if(requestType.equalsIgnoreCase("Profile Change")){
+					requestNumber=DBValidations.getAccessRequestOfProfileChangeFromDB();
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC012");
+					accessNewForChangeJobTitle = (String) testData.get("access_name_1");
+					jobTitle= (String) testData.get("job_title");				
+					HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
+					access1ForEmpOnboarding= (String) testData1.get("access_name_1");
+					access2ForEmpOnboarding= (String) testData1.get("access_name_2");
+				}
+				if(requestType.equalsIgnoreCase("EmpOnboarding")) {						
+					requestNumber=DBValidations.getAccessRequestNoFromDB(AGlobalComponents.userId);
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC011");
+					access1ForEmpOnboarding= (String) testData.get("access_name_1");
+					access2ForEmpOnboarding= (String) testData.get("access_name_2");
+					system1ForEmpOnboarding= (String) testData.get("system_name");
+					system2ForEmpOnboarding= (String) testData.get("system_name2");
+					system3ForEmpOnboarding= (String) testData.get("system_name3");				
 				}
 				
 				List<WebElement> requestNumberElements = driver.findElements(By.xpath("//div[@class='x-grid-cell-inner ']/descendant::div"));
@@ -4431,14 +4589,77 @@ public static void checkRequestInManagerInbox() throws Throwable {
 				
 				WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
 				String requesterName= requestBy.getText();
-				if(Utility.compareStringValues(requesterName, "ADMIN USER")&& (AGlobalComponents.EmpOnboardingthroughHRDb||AGlobalComponents.EmpChangeJobTitlethroughHRDb)) {
+				if(Utility.compareStringValues(requesterName, "ADMIN USER")&& (requestType.equalsIgnoreCase("EmpOnboarding")||requestType.equalsIgnoreCase("Profile Change")||requestType.equalsIgnoreCase("Employee Offboarding"))) {
 					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
 					Utility.verifyElementPresent("//div[text()='Request By']//parent::div//label", "Request By: '"+requesterName+"'", false);
 				}
 				else
 					logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");	
+					
+				if(requestType.equalsIgnoreCase("Employee Offboarding")) {
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+accessNewForChangeJobTitle+"']")).size()>0)){
+						WebElement access1Status = driver.findElement(By.xpath("//div[text()='"+accessNewForChangeJobTitle+"']//ancestor::td//following-sibling::td//label"));
+						String status1 = access1Status.getText();
+						if((Utility.compareStringValues(status1, "REMOVED")))
+							logger.log(LogStatus.INFO, "Access :" +accessNewForChangeJobTitle +" is removed ");
+						else
+							logger.log(LogStatus.FAIL, "Access status is not removed");			
+					}
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestSystemListGrid, "SystemList Grid", true,false);
+					if((driver.findElements(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system3ForEmpOnboarding+"']")).size()>0)){
+						WebElement system1Status = driver.findElement(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']//ancestor::td//following-sibling::td//label"));
+						WebElement system2Status = driver.findElement(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']//ancestor::td//following-sibling::td//label"));
+						WebElement system3Status = driver.findElement(By.xpath("//*[text()='"+system3ForEmpOnboarding+"']//ancestor::td//following-sibling::td//label"));
+						String status1 = system1Status.getText();
+						String status2 = system2Status.getText();
+						String status3 = system3Status.getText();
+						if((Utility.compareStringValues(status1, "LOCK")) && (Utility.compareStringValues(status2, "LOCK")) && (Utility.compareStringValues(status3, "LOCK")))
+							logger.log(LogStatus.INFO, "status of 3 systems :" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ ","+system2ForEmpOnboarding+ "is LOCKED ");
+						else
+							logger.log(LogStatus.FAIL, "Systems status is not LOCKED");			
+					}
+				}
 				
-				if(AGlobalComponents.EmpOnboardingthroughHRDb){
+				else if(requestType.equalsIgnoreCase("Profile Change")) {
+					
+					WebElement requestFor = driver.findElement(By.xpath("//div[normalize-space(text())='Request For']//parent::div//span[@class='tagorange identityBox']"));
+					String requestedFor = requestFor.getText();
+					if(Utility.compareStringValues(requestedFor, firstName+" "+lastName.toUpperCase())){
+						Utility.verifyElementPresent("//div[normalize-space(text())='Request For']//parent::div//span[@class='tagorange identityBox']", "Request for: "+requestedFor , false);
+						logger.log(LogStatus.INFO ,"Request opened successfully ");
+					}else
+						logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
+					
+
+					ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Click on comparison button to verify the modifications");
+					Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+jobTitle+"']", "JobTitle", false);
+					logger.log(LogStatus.PASS,"Changed Job Title is present in comparison tab for Employee :"+jobTitle);
+					
+					/*
+					 * checking for accesses status after change of jobtitle rquest
+					 */
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
+					if((driver.findElements(By.xpath("//*[text()='"+access1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForEmpOnboarding+"']")).size()>0)){
+						WebElement access1Status = driver.findElement(By.xpath("//div[text()='"+access1ForEmpOnboarding+"']//ancestor::td//following-sibling::td//label"));
+						WebElement access2Status = driver.findElement(By.xpath("//div[text()='"+access2ForEmpOnboarding+"']//ancestor::td//following-sibling::td//label"));
+						String status1 = access1Status.getText();
+						String status2 = access2Status.getText();
+						if((Utility.compareStringValues(status1, "REMOVED")) && (Utility.compareStringValues(status2, "REMOVED")))
+							logger.log(LogStatus.INFO, "Status of 2 accesses :" +access1ForEmpOnboarding +","+access2ForEmpOnboarding+ " is removed ");
+						else
+							logger.log(LogStatus.FAIL, "Accesses status is not removed");			
+					}
+					if(driver.findElements(By.xpath("//*[text()='"+accessNewForChangeJobTitle+"']")).size()>0){
+						Utility.verifyElementPresent("//*[text()='"+accessNewForChangeJobTitle+"']", accessNewForChangeJobTitle, false);
+						logger.log(LogStatus.INFO, "Access :" +accessNewForChangeJobTitle +", are assigned to the user");	
+					}
+				}
+				
+				else if(requestType.equalsIgnoreCase("EmpOnboarding")){
 					
 					String firstNameOnUI = driver.findElement(By.xpath(HomeObjects.homeAccessRequestFirstNameTxt)).getAttribute("value");
 					if(firstNameOnUI.equalsIgnoreCase(firstName))
@@ -4457,9 +4678,8 @@ public static void checkRequestInManagerInbox() throws Throwable {
 					 */
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestAccessListGrid)).size()>0){
 						Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
-						if((driver.findElements(By.xpath("//*[text()='"+access1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+access2ForEmpOnboarding+"']")).size()>0)){
-							logger.log(LogStatus.INFO, "2 accesses :" +access1ForEmpOnboarding +","+access2ForEmpOnboarding+ " are assigned to the user");
-						}
+						Utility.verifyElementPresent("//*[text()='"+access1ForEmpOnboarding+"']", access1ForEmpOnboarding, false);
+						Utility.verifyElementPresent("//*[text()='"+access2ForEmpOnboarding+"']", access2ForEmpOnboarding, false);
 					}
 					else
 						logger.log(LogStatus.INFO, "Access Grid is not present");
@@ -4489,14 +4709,12 @@ public static void checkRequestInManagerInbox() throws Throwable {
 						logger.log(LogStatus.INFO, "Prerequisite Grid is not present");
 					
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestSystemListGrid, "SystemList Grid", true,false);
-					if((driver.findElements(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']")).size()>0)){
-						if((driver.findElements(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']")).size()>0)){
-							logger.log(LogStatus.INFO, "Systems:" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ " are assigned to the user");
-						}
-					}
+					Utility.verifyElementPresent("//*[text()='"+system1ForEmpOnboarding+"']", system1ForEmpOnboarding, false);
+					Utility.verifyElementPresent("//*[text()='"+system2ForEmpOnboarding+"']", system2ForEmpOnboarding, false);
+					Utility.verifyElementPresent("//*[text()='"+system3ForEmpOnboarding+"']", system3ForEmpOnboarding, false);
+					logger.log(LogStatus.PASS, "Systems are successfully assigned to the user");		
+									
 				}	
-				
-				
 			}catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);
@@ -5780,10 +5998,10 @@ public static void checkRequestInManagerInbox() throws Throwable {
 	return reqNum;	
 }		
 	
-	public static void checkRequestInCompletedInbox(String firstName, String lastName, String modifiedAttribute) throws Throwable {
+	public static void checkRequestInCompletedInbox(String requestType,String firstName, String lastName, String modifiedAttribute) throws Throwable {
 		if (unhandledException == false) {
-			System.out.println("**************************** Checking the request in completed inbox ********************************");
-			logger.log(LogStatus.INFO,"************** Checking the request in completed inbox ********************************");
+			System.out.println("***************************** Checking the request in completed inbox *********************************");
+			logger.log(LogStatus.INFO,"*************** Checking the request in completed inbox *********************************");
 			try{
 				String identityName = firstName +" "+ lastName;
 				int index=0;
@@ -5793,7 +6011,8 @@ public static void checkRequestInManagerInbox() throws Throwable {
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
 					Utility.pause(2);
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
-				
+					Utility.pause(5);
+					
 					List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 					WebElement requestNo=null;
 					
@@ -5821,12 +6040,41 @@ public static void checkRequestInManagerInbox() throws Throwable {
 					else
 						logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
 				
-					if(AGlobalComponents.EmpOnboardingthroughHRDb || AGlobalComponents.EmpChangeJobTitlethroughHRDb){
+					if(requestType.equalsIgnoreCase("Employee Offboarding")) {
+		
+						/*checking the history of request */
+						ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+						Utility.pause(1);
+						ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+						boolean flag=true;
+						for(int i=0;i<10 && flag;i++){
+							if(driver.findElements(By.xpath("//div[contains(text(),' removal successful for user ')]")).size()>0){
+								logger.log(LogStatus.PASS, "Removal successful");
+								flag=false;
+								Utility.verifyElementPresent("//div[contains(text(),' removal successful for user ')]", "Removal Successful Message", false);
+							}else if(driver.findElements(By.xpath("//div[contains(text(),' removal failed for user ')]")).size()>0){
+								Utility.verifyElementPresent("//div[contains(text(),' removal failed for user ')]", "Removal failed message", false);
+								break;
+							}
+							else{
+								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								Utility.pause(20);
+								ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+								Utility.pause(1);
+								ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+							}							
+						}	
+						if(flag)
+							logger.log(LogStatus.FAIL, "Removal Unsuccessful");					
+					}
+					
+					if(requestType.equalsIgnoreCase("EmpOnboarding") || requestType.equalsIgnoreCase("Profile Change")){
 					
 						/*checking the history of request */
 						ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
 						Utility.pause(1);
 						ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+						Utility.pause(5);
 						boolean flag=true;
 						for(int i=0;i<10 && flag;i++){
 							if(driver.findElements(By.xpath("//div[contains(text(),' assignment successful for user ')]")).size()>0){
@@ -5854,8 +6102,6 @@ public static void checkRequestInManagerInbox() throws Throwable {
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
 		}
-	}	
-	
-	
+	}
 }
 

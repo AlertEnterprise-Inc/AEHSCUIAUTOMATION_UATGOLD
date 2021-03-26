@@ -19,10 +19,11 @@ import io.restassured.response.Response;
 public class ApiMethods extends BrowserSelection{
 	
 	public static String reconTestDataDirectory= "Test_Data/Recon";
-	public static boolean generateAccessToken() {
+	
+	public static boolean generateAccessToken(String username,String password) {
 		
-		RestAssured.baseURI=AGlobalComponents.baseURI;
-		String requestBody=Payload.accessTokenJson("admin", "Alert@783");
+		RestAssured.baseURI=AGlobalComponents.applicationURL;
+		String requestBody=Payload.accessTokenJson(username, password);
 		if(requestBody!=null) {
 			logger.log(LogStatus.PASS, "Generate access token json: "+requestBody);
 			Response response=given().log().all().queryParam("grant_type", "password").header("Content-Type","application/Json")

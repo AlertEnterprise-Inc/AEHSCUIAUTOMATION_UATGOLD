@@ -89,6 +89,7 @@ public interface HomeObjects {
 		String homeAccessRequestLastNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";
 		String homeAccessRequestEmpTypeTxt = "//*[contains(@id,'baseBusObjType') and @placeholder='Select Employee Type']";
 		String homeAccessRequestCountryDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Country']";
+		String homeAccessRequestJobTitle = "//*[contains(@id,'baseText') and @placeholder='Enter Job Title']";
 		String homeAccessRequestDepartmentDdn = "//*[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']";
 		String homeAccessRequestLocationDdn = "//*[contains(@class,'x-placeholder-label') and text()='Select Location']";
 		String homeAccessRequestAccessListGrid = "//*[@class='x-box-target']//label[text()='Access List']";
@@ -118,6 +119,7 @@ public interface HomeObjects {
 	    String homeRequestInboxUserIdTxt = "//input[contains(@id,'baseText') and @placeholder='Enter User ID']";
 	    String homeMyRequestsActionMenuBtn = "//*[contains(@id,'button') and text()='Actions']";
 	    String homeMyRequestsApprovalMenuItemLnk = "//*[contains(@id,'menuitem') and text()='Approve']";
+
 }
 
 
