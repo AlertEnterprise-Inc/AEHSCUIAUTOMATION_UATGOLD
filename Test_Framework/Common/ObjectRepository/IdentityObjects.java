@@ -27,6 +27,8 @@ public interface IdentityObjects {
 	String clickFieldValue2 = "//input[contains(@class,'x-form-field x-form-text x-form-text-default  x-form-empty-field')]";
 	String enterFieldValue2 = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";
 	String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
+	String idmManageIdentityClickToAddLnk = "//a[normalize-space(text())='Click here to Add']";
+	String idmManageIdentityAssetTabAssignAsetWindow = "//div[contains(@id,'ext-comp') and @class='x-window-bodyWrap']";
 	String idmManageIdentityaddRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[1]";
 	String idmManageIdentityProfileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
 	String idmManageIdentityAccessTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
@@ -74,7 +76,7 @@ public interface IdentityObjects {
 	String leftPaneExpansionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburgerexpand ']";
 	String leftPaneContractionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburger ']";
 	String idmAddAssetSelectDdn = "(//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Asset'])[4]";
-	String idmAddAssetStatusDdn = "(//input[contains(@id,'baseComboBox') and @placeholder='Select Status'])[4]";
+	String idmAddAssetStatusDdn = "(//input[contains(@id,'baseComboBox') and @placeholder='Select Status'])[3]";
 	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
 	String actionBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[4]";
 	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";

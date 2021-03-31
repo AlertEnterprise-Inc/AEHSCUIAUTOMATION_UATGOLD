@@ -1106,16 +1106,27 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				fillPrerequisitesInfo(scriptName);
 				
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(10);
+				Utility.pause(5);
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+				Thread.sleep(3000);
+				if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+					WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+					Actions action = new Actions(driver);
+					action.doubleClick(record).build().perform();
+					Utility.pause(10);
+				}
+				
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "********Click on Assets Tab*********** ");
 				Utility.pause(2);
-				fillAssetsInfo(AGlobalComponents.assetCode);
-				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(10);
-				logger.log(LogStatus.PASS, "Created asset assigned to the user");
+				if (Utility.checkIfStringIsNotNull(AGlobalComponents.assetCode)){
+					fillAssetsInfo(AGlobalComponents.assetCode);
+					ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
+					Utility.pause(10);
+					logger.log(LogStatus.PASS, "Created asset assigned to the user");
 				
 				//commenting below lines untill the reload option starts working
 				
@@ -1149,7 +1160,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.FAIL, "System is not assigned to the user");
 					}
 		//		}
-				
+				}	
 				
 			}
 			catch(Exception e)
@@ -1926,7 +1937,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
 				String validFrom= null,validTo = null;
 				String empType = (String) testData.get("employee_type");
-				
+								
 				Calendar c = Calendar.getInstance();
 				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 				Date date = new Date();
@@ -2132,24 +2143,26 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Date date;
 				
 				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
-				String accessToBeAssigned1=(String) testData.get("access_name_2");
-				String accessToBeAssigned2=	(String) testData.get("access_name_3");	
-				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
-				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
-				Utility.pause(5);
+				String accessToBeAssigned1=(String) testData.get("pre_assigned_access_1");
+				String accessToBeAssigned2=	(String) testData.get("pre_assigned_access_2");	
+				
+				if(accessToBeAssigned1!= null){
+					String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
+					ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+					Utility.pause(5);
+					Actions action = new Actions(driver);		
+					action.sendKeys(accessToBeAssigned1);
+					action.build().perform();
+					Utility.pause(5);
+					WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned1+"')]"));
+					action.moveToElement(accessValue).click();
+					action.build().perform();
+					logger.log(LogStatus.INFO, "Access Value selected");
+					Utility.pause(2);
 		
-				Actions action = new Actions(driver);		
-				action.sendKeys(accessToBeAssigned1);
-				action.build().perform();
-				Utility.pause(5);
-				WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned1+"')]"));
-				action.moveToElement(accessValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Access Value selected");
-				Utility.pause(2);
-		
-				WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
-				ele.click();
+					WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+					ele.click();
+				}
 				
 //				ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");	
 //				action.sendKeys(accessToBeAssigned2);
@@ -2417,7 +2430,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 			}
 			catch(Exception e){
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+ 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
 		}
@@ -2436,50 +2449,52 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String prerequisiteName=(String) testData.get("prerequisite_name");
 				String prerequisiteType=(String) testData.get("prerequisite_type");
 				
-				ByAttribute.click("xpath", "(//a[normalize-space(text())='Click here to Add'])","Click on Click here to Add" );
-				Utility.pause(5);
+				if (prerequisiteName!=null){
+					ByAttribute.click("xpath", "(//a[normalize-space(text())='Click here to Add'])","Click on Click here to Add" );
+					Utility.pause(5);
 
-				List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
-				int size = headers.size(),j=1;
+					List<WebElement> headers = driver.findElements(By.xpath(".//div[@class='x-column-header-text']//span"));
+					int size = headers.size(),j=1;
 			
-				for (int i=1;i<size;i++){
-					WebElement header= headers.get(i);
-					String heading = header.getText();
-					System.out.println(i);
-					System.out.println(j);
-					System.out.println("heading "+ (i) +" "+ heading);
+					for (int i=1;i<size;i++){
+						WebElement header= headers.get(i);
+						String heading = header.getText();
+						System.out.println(i);
+						System.out.println(j);
+						System.out.println("heading "+ (i) +" "+ heading);
 							
-					switch (heading.toLowerCase()) {
-					case "type":
-						prerequisiteTypeIndex = j;
-						j++;
+						switch (heading.toLowerCase()) {
+						case "type":
+							prerequisiteTypeIndex = j;
+							j++;
 						break;
-					case "":
+						case "":
 						
-						break;
-					default: 
-						System.out.println("Need to skip this header : "+ heading);
-						j++;
+							break;
+						default: 
+							System.out.println("Need to skip this header : "+ heading);
+							j++;
+						}
 					}
+				
+					Actions action = new Actions(driver);	
+					Utility.pause(5);
+					List<WebElement> preRequesitiesTypeList=driver.findElements(By.xpath("//*[contains(@class,'x-grid-cell x-grid-td x-grid-cell-baseComboColumn')]"));
+					WebElement preRequisiteLocator = preRequesitiesTypeList.get(prerequisiteTypeIndex);
+					action.click(preRequisiteLocator);
+					action.sendKeys(prerequisiteType);
+					action.build().perform();
+					logger.log(LogStatus.INFO, "Entered the Prerequisite Type");
+				
+					action.sendKeys(Keys.TAB);
+					action.sendKeys(prerequisiteType);
+					action.build().perform();
+					Utility.pause(5);
+					WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteName+"']"));
+					action.moveToElement(prerequisiteValue).click();
+					action.build().perform();
+					logger.log(LogStatus.INFO, "Entered the Prerequisite Name");
 				}
-				
-				Actions action = new Actions(driver);	
-				Utility.pause(5);
-				List<WebElement> preRequesitiesTypeList=driver.findElements(By.xpath("//*[contains(@class,'x-grid-cell x-grid-td x-grid-cell-baseComboColumn')]"));
-				WebElement preRequisiteLocator = preRequesitiesTypeList.get(prerequisiteTypeIndex);
-				action.click(preRequisiteLocator);
-				action.sendKeys(prerequisiteType);
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered the Prerequisite Type");
-				
-				action.sendKeys(Keys.TAB);
-				action.sendKeys(prerequisiteType);
-				action.build().perform();
-				Utility.pause(5);
-				WebElement prerequisiteValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct x-unselectable x-scroller')]//li[text()='"+prerequisiteName+"']"));
-				action.moveToElement(prerequisiteValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered the Prerequisite Name");
 			}
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();

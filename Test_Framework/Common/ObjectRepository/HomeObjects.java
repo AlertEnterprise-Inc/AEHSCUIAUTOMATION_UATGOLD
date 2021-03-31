@@ -30,9 +30,14 @@ public interface HomeObjects {
 		String homeAccessRequestSelfRdb =".//span[@data-ref='labelTextEl' and text()='Request For:']//ancestor::div[@class='x-container x-form-checkboxgroup x-form-item x-form-item-default x-box-item x-container-default x-vbox-form-item']//label[@data-ref='boxLabelEl' and text()='Self']";
 		String homeAccessRequestOthersRdb =".//span[@data-ref='labelTextEl' and text()='Request For:']//ancestor::div[@class='x-container x-form-checkboxgroup x-form-item x-form-item-default x-box-item x-container-default x-vbox-form-item']//label[@data-ref='boxLabelEl' and text()='Others']";
 		String homeAccessRequestSearchLocationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
+		String homeAccessRequestSearchPositionTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
+		String homeAccessRequestSearchApplicationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
 		String homeAccessRequestSearchAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
+		String homeAccessRequestSearchPositionAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
+		String homeAccessRequestSearchApplicationAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
 		String homeAccessRequestSearchITAccessLbl =".//label[contains(@id,'placeholderLabel') and text()='Search or Filter by IT Access']";
 		String homeAccessRequestCreateNextBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Next')]";
+		String homeAccessRequestCreateAddBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Add')]";
 		String homeAccessRequestCreatePreviousBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Previous')]";
 		String homeAccessRequestAddLocationBtn =".//*[contains(@id,'baseAccessLocationBox')]//div[@class='selecteditem btnadd' and text()='Add']";
 		String homeAccessRequestReviewTab =".//*[@data-ref='btnInnerEl' and text()='Review']";
@@ -42,6 +47,8 @@ public interface HomeObjects {
 		String homeAccessRequestAddCommentBtn =".//*[@data-ref='btnInnerEl' and text()='Add Comment']";
 		String homeAccessRequestCloseDialogBtn =".//div[@data-qtip='Close Dialog']/div";
 		String homeAccessRequestAddLocationSubmitBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
+		String homeAccessRequestAddPositionSubmitBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
+		String homeAccessRequestAddApplicationSubmitBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String homeAccessRequestAddLocationCancelBtn =".//a[@data-qtip='Cancel' and @aria-hidden='false']";
 		String homeAccessRequestAddLocationChangesWillBeLostMsgLbl =".//*[contains(@id,'messagebox') and text()='You request changes will lost, do you want to proceed?']";
 		String homeAccessRequestHistoryBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnSmallSecondary-small' and text()='History']";
@@ -70,6 +77,8 @@ public interface HomeObjects {
 		String wellnessCheckLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Wellness Check']";
 		String physicalAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Physical Access']";
 		String requestLocationAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Request Location Access']";
+		String homeCreateRequestPositionAccessPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Position Access']";
+		String homeCreateRequestApplicationAccessPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Application Access']";
 		String acknowledgementCheckbox = "(//input[@type='checkbox'])[1]";
 		String submitBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String questionOneNo = "//*[@class='x-form-item-label-text' and contains(text(),'tested positive')]//ancestor::label//following-sibling::div//label[text()='No']//preceding-sibling::span//input";
@@ -119,6 +128,7 @@ public interface HomeObjects {
 	    String homeRequestInboxUserIdTxt = "//input[contains(@id,'baseText') and @placeholder='Enter User ID']";
 	    String homeMyRequestsActionMenuBtn = "//*[contains(@id,'button') and text()='Actions']";
 	    String homeMyRequestsApprovalMenuItemLnk = "//*[contains(@id,'menuitem') and text()='Approve']";
+	    String homeMyRequestsRequesterNameLnk = ".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']";
 
 }
 

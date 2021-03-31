@@ -2197,8 +2197,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						String parameterToBeUpdated=attribute;
 						switch(parameterToBeUpdated){
 						case "photo":
@@ -2318,8 +2331,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(Utility.compareStringValues(requestType,"Wellness Check")){	
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 						WebElement assetStatus = driver.findElement(By.xpath("//tr//td["+assignmentStatusIndex+"]//div[@class='x-grid-cell-inner ']//label"));
 						newAssetStatus=assetStatus.getText();
@@ -2335,8 +2361,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
 						int size = noOfAccessRows.size();
@@ -2355,13 +2394,110 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.FAIL, "Access is not assigned to the user");
 					}
 					
-					//Access Validation 
+					
+					/*
+					 *  Validation after Position Access
+					 */
+					if(Utility.compareStringValues(requestType,"Position Access")){
+						String accessAdded=attribute;
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+						int size = noOfAccessRows.size();
+						boolean flag=true;
+						for (int i=1;i<=size && flag;i++){
+							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+							String accessAssigned = accessName.getText();
+							if(Utility.compareStringValues(accessAssigned, accessAdded)){
+								logger.log(LogStatus.PASS, "Access is successfully assigned to the user");
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", "Newly assigned access", false);
+								flag=false;
+							}
+							
+						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Access is not assigned to the user");
+					}
+					
+					/*
+					 *  Validation after Application Access
+					 */
+					if(Utility.compareStringValues(requestType,"Application Access")){
+						String accessAdded=attribute;
+						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
+						Utility.pause(1);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+						int size = noOfAccessRows.size();
+						boolean flag=true;
+						for (int i=1;i<=size && flag;i++){
+							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+							String accessAssigned = accessName.getText();
+							if(Utility.compareStringValues(accessAssigned, accessAdded)){
+								logger.log(LogStatus.PASS, "Access is successfully assigned to the user");
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", "Newly assigned access", false);
+								flag=false;
+							}
+							
+						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Access is not assigned to the user");
+					}
+					
+					
+					/*
+					 *  Validation after employment type conversion
+					 */
 					if(Utility.compareStringValues(requestType, "Employment Type Conversion")){
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						String newEmpType = driver.findElement(By.xpath(HomeObjects.homeAccessRequestEmpTypeTxt)).getAttribute("value");
 						if(Utility.compareStringValues(newEmpType, "Permanent")){
 							Utility.verifyElementPresent(HomeObjects.homeAccessRequestEmpTypeTxt, "New Emp Type", false);
@@ -2477,8 +2613,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						
 						switch(parameterToBeModified.toLowerCase()){
 						case "lastname":
@@ -2520,8 +2669,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if (Utility.compareStringValues(requestType, "Temp Worker Offboarding")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
@@ -2574,8 +2736,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if (Utility.compareStringValues(requestType, "Temp Worker Rehire")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
@@ -2636,8 +2811,21 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(Utility.compareStringValues(requestType, "Emergency Termination")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-						Utility.pause(5);
+						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+							Utility.pause(5);
+						}
+						else{
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+							ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
+							Thread.sleep(3000);
+							if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
+								WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+								Actions action = new Actions(driver);
+								action.doubleClick(record).build().perform();
+								Utility.pause(10);
+							}
+						}
 						
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
@@ -2775,6 +2963,56 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				//Checking the  assigned access to the user  in IDM
 				if (Utility.compareStringValues(requestType, "Request Location Access")){
+					String accessAdded=attribute;
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+					getIndexOfAccessHeaders();
+					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
+						logger.log(LogStatus.INFO, "No Access is assigned to the user ");
+					else{
+						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+						int size = noOfAccessRows.size();
+						for (int i=1;i<=size;i++){
+							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+							String accessAssigned = accessName.getText();
+							if(!(Utility.compareStringValues(accessAssigned, accessAdded))){
+								logger.log(LogStatus.INFO, "Access to be added is not assigned to the user before");
+							}
+						}
+					}
+				}
+				
+				/*
+				 * checking the previously assigned accesses to the user before raising request for Position access
+				 * 
+				 */
+				
+				//Checking the  assigned access to the user  in IDM
+				if (Utility.compareStringValues(requestType, "Position Access")){
+					String accessAdded=attribute;
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+					getIndexOfAccessHeaders();
+					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
+						logger.log(LogStatus.INFO, "No Access is assigned to the user ");
+					else{
+						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+						int size = noOfAccessRows.size();
+						for (int i=1;i<=size;i++){
+							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+							String accessAssigned = accessName.getText();
+							if(!(Utility.compareStringValues(accessAssigned, accessAdded))){
+								logger.log(LogStatus.INFO, "Access to be added is not assigned to the user before");
+							}
+						}
+					}
+				}
+				
+				/*
+				 * checking the previously assigned accesses to the user before raising request for Application access
+				 * 
+				 */
+				
+				//Checking the  assigned access to the user  in IDM
+				if (Utility.compareStringValues(requestType, "Application Access")){
 					String accessAdded=attribute;
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 					getIndexOfAccessHeaders();
@@ -2974,15 +3212,19 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					size = noOfRows.size();
 					noOfSystem=size-noOfAccess;
 					int index=noOfAccess+1;
+					String systemStatus = "";
 					if(noOfSystem>0){
 						logger.log(LogStatus.INFO, "Getting the list of systems assigned to the temporary worker");
 						gettingIndexOfIDMSystemsTab();
 						for (int i=1;i<=noOfSystem;i++){
 							WebElement systemName = driver.findElement(By.xpath("(//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]/div)["+index+"]"));
 							String systemAssigned = systemName.getText();
-							String systemStatus = driver.findElement(By.xpath("(//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]//following-sibling::td//img)["+index+"]")).getAttribute("src");			
+							if (driver.findElements(By.xpath("//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]//following-sibling::td//img")).size()>0)
+								systemStatus = driver.findElement(By.xpath("(//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]//following-sibling::td//img)["+index+"]")).getAttribute("src");
+							if (driver.findElements(By.xpath("//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]//following-sibling::td//label")).size()>0)
+								systemStatus = driver.findElement(By.xpath("(//div[@class='x-grid-item-container' ]//tr[1]/td["+systemIndex+"]//following-sibling::td//label)["+index+"]")).getText();
 							systemsAssignedToUser.add(i-1,systemAssigned);
-							if(systemStatus.contains("redcircle")){
+							if((systemStatus.contains("redcircle"))||(Utility.compareStringValues(systemStatus, "INACTIVE"))){
 								logger.log(LogStatus.INFO,"system assigned to the temporary worker : "+systemAssigned+ " and status is inactive");
 								Utility.verifyElementPresent("//div[@class='x-grid-item-container']//tr[1]/td["+systemIndex+"]/div[text()='"+systemAssigned+"']", systemAssigned, false);
 							}
@@ -2994,6 +3236,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			
 					/*Assets tab*/
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Navigate to Assets tab");
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC022");
+					String asstCode = (String) testData.get("asset_code");
+					String asstName = (String) testData.get("badge_name");
 					noOfRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container']//tr"));
 					size = noOfRows.size();
 					noOfAsset=size-(noOfAccess+noOfSystem);
@@ -3002,15 +3247,15 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "Getting the list of assets assigned to the temporary worker");
 						getIndexOfIDMAssetsHeaders();
 						for (int i=1;i<=noOfAsset;i++){
-							WebElement assetStatus = driver.findElement(By.xpath("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div"));
+							WebElement assetStatus = driver.findElement(By.xpath("//div[text()='"+asstCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div"));
 							assetStatusBeforeOffboarding = assetStatus.getText();
 							if(Utility.compareStringValues(assetStatusBeforeOffboarding, "INACTIVE")){
 								logger.log(LogStatus.INFO, "Status is already Inactive");
-								Utility.verifyElementPresent("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div", "asset status", false);
+								Utility.verifyElementPresent("//div[text()='"+asstCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div", "asset status", false);
 							}
 							else{
 								logger.log(LogStatus.INFO,"current assignment status of asset is : "+assetStatusBeforeOffboarding);
-								Utility.verifyElementPresent("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div", "asset status", false);
+								Utility.verifyElementPresent("//div[text()='"+asstCode+"']//ancestor::table["+i+"]//tr[1]//td["+assignmentStatusIndex+"]/div", "asset status", false);
 								index++;
 							}
 						}
@@ -3327,16 +3572,22 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			try{
 				String identityName = firstName +" "+ lastName;
 				int index=0;
-				List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+				List<WebElement> requestNumberElements = null;
 				WebElement requestNo=null;
-				if((driver.findElements(By.xpath(HomeObjects.homeInboxRequestInboxExpandBtn)).size()>0)){
+				
+				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+				Utility.pause(2);
+				ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox");
+				Utility.pause(5);
+				if(driver.findElements(By.xpath(HomeObjects.homeInboxRequestInboxExpandBtn)).size()>0){
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
 					Utility.pause(2);
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
-					Utility.pause(2);
+					Utility.pause(5);
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
-					
+					Utility.pause(5);
 					boolean reqFlag=true;
+					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 					for (int i=0;i<requestNumberElements.size() && reqFlag;i++){
 						requestNo = requestNumberElements.get(i);
 						reqNum = requestNo.getText();
@@ -3351,16 +3602,14 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					action.doubleClick(requestNo);
 					action.build().perform();
 					Utility.pause(5);
-				}else if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsHeader)).size()>0){
-					
-					WebElement latestRequestNumber = requestNumberElements.get(0);
-					reqNum = latestRequestNumber.getText();
-					if(Utility.compareStringValues(reqNum, requestNumber)){
-						Actions action = new Actions(driver);
-						action.doubleClick(latestRequestNumber);
-						action.build().perform();
-						Utility.pause(5);
+					WebElement reqNo = driver.findElement(By.xpath("//div[text()='Request Number']//following-sibling::div"));
+					String requestNum= reqNo.getText();
+					if(Utility.compareStringValues(requestNum, requestNumber)){
+						logger.log(LogStatus.PASS, "Request openend successfully");
 					}
+					else
+						logger.log(LogStatus.FAIL, "correct request not opened");
+				
 				}
 				else{	
 					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
@@ -3375,23 +3624,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						action.doubleClick(latestRequestNumber);
 						action.build().perform();
 						Utility.pause(5);
+						logger.log(LogStatus.INFO ,"Request "+requestNumber+" opened successfully in completed inbox");
 					}
 					else
 						logger.log(LogStatus.FAIL, "Request not present in completed inbox");
 				}
-				WebElement requestBy = driver.findElement(By.xpath("//div[text()='Request By']//parent::div//label"));
-				String requestedBy= requestBy.getText();
-				if(Utility.compareStringValues(requestedBy, requestorName)){
-					
-					logger.log(LogStatus.INFO ,"Request "+requestNumber+" opened successfully in  inbox");
-					if(driver.findElements(By.xpath(HomeObjects.homeRequestInboxUserIdTxt)).size()>0)
-						AGlobalComponents.userId=driver.findElement(By.xpath(HomeObjects.homeRequestInboxUserIdTxt)).getAttribute("value");
-				}
-				else if(Utility.compareStringValues(requestedBy, identityName.toUpperCase())){
-					logger.log(LogStatus.INFO ,"Request opened successfully in my request inbox");
-				}else
-					logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
-				
+						
 				
 				if(Utility.compareStringValues(requestType, "Modify Identity")){
 					String parameterToBeUpdated = modifiedAttribute;
@@ -3489,9 +3727,86 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}
 					if(flag)
 						logger.log(LogStatus.FAIL, "Provisioning Unsuccessful");
-						
-					
 				}
+				
+				
+				/* 
+				 * validating request in completed inbox for Position Access
+				 */
+				if(Utility.compareStringValues(requestType, "Position Access")){
+					
+					  if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
+						  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
+					  else{
+						  ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+						  Utility.pause(1);
+						  ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Click on History");
+					  }
+						boolean flag=true;
+						for(int i=0;i<10 && flag;i++){
+							if(driver.findElements(By.xpath("//div[contains(text(),' assignment successful for user ')]")).size()>0){
+								logger.log(LogStatus.PASS, "Provisioning successful");
+								flag=false;
+								Utility.verifyElementPresent("//div[contains(text(),' assignment successful for user ')]", "Provisioning message", false);
+								Utility.pause(2);
+							}
+							else{
+								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								Utility.pause(20);
+								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
+									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
+								 else{
+									  ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+									  Utility.pause(1);
+									  ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+								  }
+							}
+						
+						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Provisioning Unsuccessful");
+				}
+				
+				/* 
+				 * validating request in completed inbox for Application Access
+				 */
+				if(Utility.compareStringValues(requestType, "Application Access")){
+					
+					  if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
+						  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
+					  else{
+						  ByAttribute.click("xpath", HomeObjects.homeMyRequestsMenuIconLnk, "Clickon menu");
+						  Utility.pause(1);
+						  ByAttribute.click("xpath", HomeObjects.homeMyRequestsHistoryOptionInMenuLnk, "Click on History");
+					  }
+						boolean flag=true;
+						for(int i=0;i<10 && flag;i++){
+							if(driver.findElements(By.xpath("//div[contains(text(),'Skip Provisioning Successful')]")).size()>0){
+								logger.log(LogStatus.PASS, "Provisioning successful");
+								flag=false;
+								Utility.verifyElementPresent("//div[contains(text(),'Skip Provisioning Successful')]", "Provisioning message", false);
+								Utility.pause(2);
+							}
+							else{
+								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								Utility.pause(20);
+								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
+									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
+								 else{
+									  ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+									  Utility.pause(1);
+									  ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+								  }
+							}
+						
+						}
+						if(flag)
+							logger.log(LogStatus.FAIL, "Provisioning Unsuccessful");
+				}
+				
+				/* 
+				 * validating request in completed inbox for Employment Type Conversion
+				 */
 				
 				if(Utility.compareStringValues(requestType, "Employment Type Conversion")){
 					String accessName = modifiedAttribute;
@@ -3936,7 +4251,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				
 			}catch (Exception e) {
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+ 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
 		}
@@ -4379,7 +4694,34 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}
 				}
 				if(Utility.compareStringValues("manager", WfActor)){
-					System.out.println("Approving the temp onboarding request by : "+WfActor);
+					System.out.println("Approving the request by : "+WfActor);
+					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+					}
+					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+					{
+						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+						Utility.pause(1);
+						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+						Utility.pause(5);
+						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+					}else{
+						System.out.println("Approve button not visible");
+						logger.log(LogStatus.FAIL, "Approve button not visible");
+					}
+					
+						
+				}
+				
+				if(Utility.compareStringValues("access_owner", WfActor)){
+					System.out.println("Approving the request by : "+WfActor);
 					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
 						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
@@ -4437,9 +4779,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 				}
 				if(Utility.compareStringValues("areaAdmin", WfActor)){
-					System.out.println("Approving the location access request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the location access request by ******: "+WfActor);
-					Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+accessName+"']", "Access Name Matching with Location Selected by Manager", false);
+					System.out.println("Approving the  request by : "+WfActor);
+					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
+	//				Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+accessName+"']", "Access Name Selected by Manager", false);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
 						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
 						Utility.pause(5);
@@ -5008,7 +5350,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", HomeObjects.TempWorkerOffboardingLnk, "Click on Temp worker offboarding");
 					Utility.pause(5);
 					
-					logger.log(LogStatus.INFO, "Search the user to be modified");
+					logger.log(LogStatus.INFO, "Search the user to be offboarded");
 					WebElement identity = driver.findElement(By.xpath(".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']"));
 					Actions action = new Actions(driver);
 					action.sendKeys(identity, firstName);
@@ -5017,16 +5359,16 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
 					Utility.pause(5);
 					
-//					ByAttribute.setText("xpath", HomeObjects.homeAccessRequestSelectTerminationReasonTxt, terminationReason, "Enter the termination Reason ");
-//					Utility.pause(2);
-//					ByAttribute.click("xpath","//div[@class='x-boundlist-list-ct x-unselectable x-scroller']//li[contains(text(),'Misconduct')]" , "Select termination reason from dropdown ");
+					ByAttribute.setText("xpath", HomeObjects.homeAccessRequestSelectTerminationReasonTxt, terminationReason, "Enter the termination Reason ");
+					Utility.pause(2);
+					ByAttribute.click("xpath","//div[@class='x-boundlist-list-ct x-unselectable x-scroller']//li[contains(text(),'Misconduct')]" , "Select termination reason from dropdown ");
 					
-//					ByAttribute.setText("xpath", HomeObjects.homeAccessRequestValidToDate, currentDate, "Enter the date on which offboarding will be done ");
-//					Utility.pause(2);
+					ByAttribute.setText("xpath", HomeObjects.homeAccessRequestValidToDate, currentDate, "Enter the date on which offboarding will be done ");
+					Utility.pause(2);
 					
 					
 					ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
-		            Utility.pause(20);
+		            Utility.pause(10);
 		            action.click().build().perform();
 		            if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
 						ByAttribute.mouseHover("xpath",HomeObjects.homeTabBtn,"Mouse hover on Home tab to open My Requests");
@@ -5064,7 +5406,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	 * @return String
 	 **/
 
-	public static String requestNewLocation(String requestType, String location, String access, String locCity, String locBuilding,String firstName,String lastName) throws Throwable {
+	public static String requestNewLocation( String location, String access, String locCity, String locBuilding,String firstName,String lastName) throws Throwable {
 
 		String reqNum="";
 		if (unhandledException == false) {
@@ -6102,6 +6444,194 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.recoveryScenario(nameofCurrMethod, e);
 			}
 		}
+	}
+
+
+
+
+	public static String positionAccess( String position, String access, String firstName,String lastName) throws Throwable {
+		String reqNum="";
+		if (unhandledException == false) {
+			System.out.println("***************************** Position Access*********************************");
+			logger.log(LogStatus.INFO,"***************************** Position Access *********************************");
+			try {
+				WebElement requestor=driver.findElement(By.xpath(".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']"));
+				requestorName = requestor.getText();
+				if(driver.findElements(By.xpath(HomeObjects.myRequestsTabBtn)).size()>0)
+				{
+					ByAttribute.click("xpath", HomeObjects.myRequestsTabBtn, "Click on Access Request Link");
+					Utility.pause(5);
+				}else{
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests Link");
+					Utility.pause(5);
+				}
+
+				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) {
+					System.out.println("Access Request Page Loaded Successfully");
+					logger.log(LogStatus.PASS, "Access Request Page Loaded Successfully");
+					
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
+					
+					ByAttribute.click("xpath", HomeObjects.homeCreateRequestPositionAccessPod, "Click on Position Access pod ");
+					Utility.pause(5);
+					
+					ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchPositionTxt, position, "Search Position");
+					Thread.sleep(1000);
+					Utility.verifyElementPresent(".//*[contains(@data-qtip,'"+position+"') and contains(text(),'"+position+"')]", "Searched Position", false);
+		
+					
+					ByAttribute.click("xpath", ".//*[contains(@data-qtip,'"+position+"') and contains(text(),'"+position+"')]", "Click Position: "+position);
+					Thread.sleep(1000);
+					
+					logger.log(LogStatus.INFO, "Search the user to be modified");
+					WebElement identity = driver.findElement(By.xpath(".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']"));
+					Actions action = new Actions(driver);
+					action.sendKeys(identity, firstName);
+					action.build().perform();
+					Utility.pause(2);;
+					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
+					Utility.pause(5);
+					
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateNextBtn)).size() > 0)
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateNextBtn, "Click Next Button");
+					else
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateAddBtn, "Click Add Button");
+					Thread.sleep(1000);
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestSearchPositionAccessTxt)).size() > 0)
+						{
+							System.out.println("Navigation to Access Page Successful");
+							logger.log(LogStatus.INFO, "Navigation to Access Page Successful");
+							
+							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchPositionAccessTxt, access, "Search Access based on Position");
+							
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
+							Thread.sleep(1000);
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Position");
+							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
+							
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
+							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
+							
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddPositionSubmitBtn, "Click Submit Button");
+							Thread.sleep(5000);
+														
+							List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+							WebElement latestRequestNumber = requestNumberElements.get(0);
+							reqNum = latestRequestNumber.getText();
+							AGlobalComponents.RequestSubmit=true;
+						}else{
+							System.out.println("Navigation to Access Page NOT Successful");
+							logger.log(LogStatus.FAIL, "Navigation to Access Page NOT Successful");
+						}
+					}
+					
+
+				
+
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		return reqNum;
+	}
+
+
+
+
+	public static String applicationAccess(String application_name, String access, String firstName,String lastName) throws Throwable {
+		String reqNum="";
+		if (unhandledException == false) {
+			System.out.println("***************************** Application Access*********************************");
+			logger.log(LogStatus.INFO,"***************************** Application Access *********************************");
+			try {
+				WebElement requestor=driver.findElement(By.xpath(HomeObjects.homeMyRequestsRequesterNameLnk));
+				requestorName = requestor.getText();
+				if(driver.findElements(By.xpath(HomeObjects.myRequestsTabBtn)).size()>0)
+				{
+					ByAttribute.click("xpath", HomeObjects.myRequestsTabBtn, "Click on Access Request Link");
+					Utility.pause(5);
+				}else{
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests Link");
+					Utility.pause(5);
+				}
+
+				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) {
+					System.out.println("Access Request Page Loaded Successfully");
+					logger.log(LogStatus.PASS, "Access Request Page Loaded Successfully");
+					
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateBtn, "Click Create Button");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestOthersRdb, "Click on Others Radio Button");
+					
+					ByAttribute.click("xpath", HomeObjects.homeCreateRequestApplicationAccessPod, "Click on Application Access pod ");
+					Utility.pause(5);
+					
+					ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchApplicationTxt, application_name, "Search Application");
+					Thread.sleep(1000);
+					Utility.verifyElementPresent(".//*[contains(@data-qtip,'"+application_name+"') and contains(text(),'"+application_name+"')]", "Searched Application", false);
+		
+					
+					ByAttribute.click("xpath", ".//*[contains(@data-qtip,'"+application_name+"') and contains(text(),'"+application_name+"')]", "Click Application: "+application_name);
+					Thread.sleep(1000);
+					
+					logger.log(LogStatus.INFO, "Search the user to be modified");
+					WebElement identity = driver.findElement(By.xpath(".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']"));
+					Actions action = new Actions(driver);
+					action.sendKeys(identity, firstName);
+					action.build().perform();
+					Utility.pause(2);;
+					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
+					Utility.pause(5);
+					
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateNextBtn)).size() > 0)
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateNextBtn, "Click Next Button");
+					else
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateAddBtn, "Click Add Button");
+					Thread.sleep(1000);
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestSearchApplicationAccessTxt)).size() > 0)
+						{
+							System.out.println("Navigation to Access Page Successful");
+							logger.log(LogStatus.INFO, "Navigation to Access Page Successful");
+							
+							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchApplicationAccessTxt, access, "Search Access based on Application");
+							
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
+							Thread.sleep(1000);
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Access");
+							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
+							
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
+							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
+							
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddApplicationSubmitBtn, "Click Submit Button");
+							Thread.sleep(5000);
+														
+							List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+							WebElement latestRequestNumber = requestNumberElements.get(0);
+							reqNum = latestRequestNumber.getText();
+							AGlobalComponents.RequestSubmit=true;
+						}else{
+							System.out.println("Navigation to Access Page NOT Successful");
+							logger.log(LogStatus.FAIL, "Navigation to Access Page NOT Successful");
+						}
+					}
+					
+
+				
+
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
+		}
+		return reqNum;
 	}
 }
 
