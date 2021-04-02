@@ -2406,9 +2406,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(5);
 				
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.assetName, "Enter the asset ");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.badgeName, "Enter the asset ");
 				Thread.sleep(1000);
-				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
+				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.badgeName+"']", " select asset code");
 				Utility.pause(2);
 				
 		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
@@ -2568,15 +2568,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
 				Utility.pause(10);
-	    
-
-				WebElement userId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[10]//div"));
-				String usrId = userId.getText();
-				if(usrId!=null) {
-					logger.log(LogStatus.PASS, "UserId" +usrId+ "successfully reconciled");
-				}
-				else {
-					logger.log(LogStatus.FAIL, "There might exists error for the userId "+usrId);
+				
+				if(!AGlobalComponents.userId.isEmpty()) {
+					String userIdLocator = "//*[text()='"+AGlobalComponents.userId+"']";
+					if(Utility.verifyElementPresentReturn(userIdLocator, "UserID:", true, false) ){
+						AGlobalComponents.RequestSubmit=true;
+						logger.log(LogStatus.PASS, "User is successfully reconciled");
+					}
+					else {
+						logger.log(LogStatus.FAIL, "There might exists error for the user ");
+					}
 				}
 				
 				WebElement syncId = driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[9]//div"));
@@ -2584,7 +2585,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 				if(!AGlobalComponents.createRequest) {
 					logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
-					verifyUserReconDataFromUI(usrId);
+					verifyUserReconDataFromUI("612003");
 					logger.log(LogStatus.INFO, "verify recon data from DB");
 					String query = "select count(*) from aehscnew.stg_user_data where sync_id = '"+syncID+"' and int_status='0'";
 					verifyReconDataFromDB(query);
@@ -4430,7 +4431,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 		String name=firstName+" "+lastName;
 		
-		if(DBValidations.createUserInHRDb(userId,firstName,lastName,name,validFrom,validTo,"HR Executive","Employee","Hire","anna.mordeno","218 2nd Ave S, Nashville","United States of America",created_date)) {
+		if(DBValidations.createUserInHRDb(userId,firstName,lastName,name,validFrom,validTo,"HR Executive","Permanent","Hire","anna.mordeno","218 2nd Ave S, Nashville","United States of America",created_date)) {
 				
 			AGlobalComponents.userId=userId;
 			logger.log(LogStatus.PASS, "User creation successful in HR Db");
@@ -4464,6 +4465,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.FAIL, "Failed to change job title of user in HR Db");
 			return false;		
 		}
+	}
+
+	public static boolean empTypeConversionThroughHRDB(String userId, String employeeType) throws ClassNotFoundException {
+
+		if(DBValidations.empTyepConversionInHrDb(userId,employeeType)) {
+			AGlobalComponents.userId=userId;
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change job title of user in HR Db");
+			return false;		
+		}
+	
 	}
 }
 

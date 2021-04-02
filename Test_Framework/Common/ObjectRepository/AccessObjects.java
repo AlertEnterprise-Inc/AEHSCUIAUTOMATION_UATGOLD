@@ -20,9 +20,9 @@ public interface AccessObjects {
 	
 	String saveBtn = "//span[text()='Save']";
 
-	String IdentityNewRadioButton = "//*[text()='IdentityNew']";
+	String IdentityNewRadioButton = "//*[text()='New']";
 
-	String clickToEnterIdentityName = "//*[text()='Search or Filter by Identity Users']";
+	String clickToEnterIdentityName = "//*[@placeholder='Search or Filter by Identity Users']";
 	
 	String SaveBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Save']";
 

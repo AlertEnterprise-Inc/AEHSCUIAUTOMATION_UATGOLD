@@ -692,4 +692,19 @@ public class DBValidations extends BrowserSelection{
 		}
 		return status;
 	}
+
+	public static boolean empTyepConversionInHrDb(String userId,String employeeType) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autodevhsc.hr_data set identityType = '"+employeeType+"' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	}
 }

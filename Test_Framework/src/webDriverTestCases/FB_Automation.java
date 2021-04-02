@@ -413,7 +413,7 @@ public class FB_Automation extends BrowserSelection {
 				FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
 						
 				/**creating asset for the user**/
-			 	AGlobalComponents.badgeName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+			 	AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				Utility.pause(10);	
 				/** Launch New Private Browser **/
 				Utility.switchToNewBrowserDriver();
@@ -450,13 +450,13 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  created User in IDM after  request approved**/
-				Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("request_type"));
+				Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC011");
 			 	
 				Utility.updateDataInDatasource("FB_Automation_TC011", "first_name", firstName);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "last_name", lastName);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "user_id", userId);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("FB_Automation_TC011", "badge_name", AGlobalComponents.badgeName);
+				Utility.updateDataInDatasource("FB_Automation_TC011", "badge_name", AGlobalComponents.assetName);
 				
 				/** Logout from Application **/
 				LoginPage.logout();		
@@ -521,7 +521,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","",jobTitle,(String) testData.get("request_type"));
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","",jobTitle,"FB_Automation_TC012");
 	
 				/** Logout from Application **/
 				LoginPage.logout();		
@@ -532,9 +532,68 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
-
 	@Test(priority=13)
 	public void FB_Automation_TC013() throws Throwable 
+	{
+
+		logger =report.startTest("SuccessFactors HR System Usecases E04","Employee Type Conversion From Permanent To Temporary from HR DB Connector");
+		System.out.println("[INFO]--> SuccessFactors HR System Usecases E04 - TestCase Execution Begins");
+
+		HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
+		String userId = (String) testData1.get("user_id");
+		String firstName=(String) testData1.get("first_name");
+		String lastName=(String) testData1.get("last_name");
+		
+		if(userId==null||userId.equals(""))
+		{
+			logger.log(LogStatus.INFO, "UserId doesn't exists in Db,Executing EmpOnboarding");
+			FB_Automation_TC011();
+		}
+		
+		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC013");
+		AGlobalComponents.applicationURL = (String) testData.get("application_url");
+		String employeeType =  (String) testData.get("employee_type");
+		String accessName =  (String) testData.get("access_name_1");
+		
+		if(FB_Automation_CommonMethods.empTypeConversionThroughHRDB(userId,employeeType)) {
+			boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
+
+			if(loginStatus){
+				logger.log(LogStatus.PASS, "Login Successful");
+				
+				/* Create Recon Job */
+				FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
+							
+				/** Launch New Private Browser **/
+				Utility.switchToNewBrowserDriver();
+				
+				/* Login as Manager */
+				loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+				if(loginStatus){
+					logger.log(LogStatus.PASS, "Login Successful");
+					
+					Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),"","",accessName);
+			 		
+				}
+				
+				/** Switch to Default Browser **/
+				Utility.switchToDefaultBrowserDriver();
+			 		
+				/** Validate  Changed Job Title in IDM after  request approved**/
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC013");
+		 		
+		 		/** Logout from Application **/
+				LoginPage.logout();	
+			}
+			else {
+				logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+			}	
+		}
+	}
+	
+	@Test(priority=14)
+	public void FB_Automation_TC014() throws Throwable 
 	{
 
 		logger =report.startTest("SuccessFactors HR System Usecases E03","Employee Offboarding from HR DB Connector");
@@ -544,6 +603,7 @@ public class FB_Automation extends BrowserSelection {
 		String userId = (String) testData1.get("user_id");
 		String firstName=(String) testData1.get("first_name");
 		String lastName=(String) testData1.get("last_name");
+		AGlobalComponents.assetName=(String) testData1.get("badge_name");
 		
 		if(userId==null||userId.equals(""))
 		{
@@ -551,7 +611,7 @@ public class FB_Automation extends BrowserSelection {
 			FB_Automation_TC012();
 		}
 		
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC013");
+		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC014");
 		AGlobalComponents.applicationURL = (String) testData.get("application_url");
 		
 		if(FB_Automation_CommonMethods.empTerminateThroughHRDB(userId)) {
@@ -586,7 +646,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("request_type"));
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC014");
 		 		
 		 		/** Logout from Application **/
 				LoginPage.logout();	
