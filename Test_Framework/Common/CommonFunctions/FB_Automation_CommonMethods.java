@@ -1937,6 +1937,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
 				String validFrom= null,validTo = null;
 				String empType = (String) testData.get("employee_type");
+				String position = (String) testData.get("pre_assigned_position");
 								
 				Calendar c = Calendar.getInstance();
 				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -1966,17 +1967,21 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "Enter first Name");
 				Utility.pause(2);
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, fName, "Enter first Name");
-				Utility.pause(2);
+				Utility.pause(1);
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lName, "Enter Last Name");
-				Utility.pause(2);
+				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-				Utility.pause(2);
+				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-				Utility.pause(2);
+				Utility.pause(1);
 				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, AGlobalComponents.userId, "Enter user id");
-				Utility.pause(2);
+				Utility.pause(1);
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileTabPositionTxt, position, "Enter position");
+				Utility.pause(1);
+				ByAttribute.click("xpath","//div[contains(@id,'-listWrap')]//*[ text()='"+position+"']", "Select Position");
+				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
-				Utility.pause(2);
+				Utility.pause(1);
 //				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
 //				Utility.pause(2);
 //				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
@@ -2423,8 +2428,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
 					Utility.pause(5);
 				}
-				if (driver.findElements(By.xpath(IdentityObjects.idmAddAssetConfirmBtn)).size()>0){
-					ByAttribute.click("xpath", IdentityObjects.idmAddAssetConfirmBtn, " Click confirm to add the asset ");
+				if (driver.findElements(By.xpath(IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn)).size()>0){
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn, " Click confirm to add the asset ");
 					Utility.pause(5);
 				}
 				

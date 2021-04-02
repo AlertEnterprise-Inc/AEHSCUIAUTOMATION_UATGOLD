@@ -101,8 +101,10 @@ public class AGlobalComponents {
 	public static String reviewName="";
 	public static boolean createRequest=false;
 	public static String badgeName="";
+	public static String systemName="";
 	public static boolean EmpOnboardingthroughHRDb=false;
 	public static boolean EmpChangeJobTitlethroughHRDb=false;
 	public static String userId="";
 	
 }
+

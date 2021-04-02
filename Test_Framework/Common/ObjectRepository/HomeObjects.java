@@ -32,6 +32,7 @@ public interface HomeObjects {
 		String homeAccessRequestSearchLocationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
 		String homeAccessRequestSearchPositionTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
 		String homeAccessRequestSearchApplicationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
+		String homeAccessRequestSearchITSystemTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by IT System']";
 		String homeAccessRequestSearchAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
 		String homeAccessRequestSearchPositionAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
 		String homeAccessRequestSearchApplicationAccessTxt =".//span[@data-ref='btnInnerEl' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
@@ -72,6 +73,9 @@ public interface HomeObjects {
 		String homeInboxRequestInboxCompletedBtn = ".//span[@class='x-tree-node-text ' and text()='Completed']";
 		String homeGenericRemoveRowBtn = ".//*[@data-ref='btnIconEl' and @class='x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus ']";
 		String homeGenericAddRowBtn = ".//*[@data-ref='btnIconEl' and @class='x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd ']";
+		String homeInboxRequestMenuIconLnk = "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]";
+		String homeInboxRequestHistoryOptionInMenuLnk = "(//*[text()='History'])[2]";
+		String homeInboxRequestCloseHistoryPopUpWindowLnk = "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
 		
 		String createBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Create']";
 		String wellnessCheckLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Wellness Check']";
@@ -79,6 +83,7 @@ public interface HomeObjects {
 		String requestLocationAccessLnk = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Request Location Access']";
 		String homeCreateRequestPositionAccessPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Position Access']";
 		String homeCreateRequestApplicationAccessPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='Application Access']";
+		String homeCreateRequestITAccessPod = "//div[@class='x-component location-chooser-view x-box-item x-component-default x-scroller']//p[text()='IT Access']";
 		String acknowledgementCheckbox = "(//input[@type='checkbox'])[1]";
 		String submitBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Submit']";
 		String questionOneNo = "//*[@class='x-form-item-label-text' and contains(text(),'tested positive')]//ancestor::label//following-sibling::div//label[text()='No']//preceding-sibling::span//input";
@@ -129,6 +134,7 @@ public interface HomeObjects {
 	    String homeMyRequestsActionMenuBtn = "//*[contains(@id,'button') and text()='Actions']";
 	    String homeMyRequestsApprovalMenuItemLnk = "//*[contains(@id,'menuitem') and text()='Approve']";
 	    String homeMyRequestsRequesterNameLnk = ".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']";
+	    String homeMyRequestSearchUserTxt = ".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']";
 
 }
 
