@@ -6321,9 +6321,26 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		if (unhandledException == false) {
 			try {
 				logger.log(LogStatus.INFO, "Approving the request ");
-				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
-				ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
-				Utility.pause(4);
+				if(driver.findElements(By.xpath("//div[contains(@class,'x-component') and text()='"+reqNum+"']")).size()>0) {
+					Utility.verifyElementPresent("//*[text()='"+reqNum+"']",reqNum , false);
+				}
+				else {
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+					ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
+					Utility.pause(4);
+					
+					if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
+						ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests Link to open the request");
+						Utility.pause(5);
+					}
+				}
+				
+				Actions action = new Actions(driver);
+				action.doubleClick(driver.findElement(By.xpath("//*[text()='"+reqNum+"']")));
+				action.build().perform();
+				Utility.pause(5);
+
+				Utility.verifyElementPresent("//div[contains(@class,'x-component') and text()='"+reqNum+"']", "Request", false);
 				
 				if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
 					ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests Link to open the request");
@@ -6366,7 +6383,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/*Giving badge to the user */
 						
 						ByAttribute.click("xpath",HomeObjects.homeAccessRequestSelectBadgeDDn,"Enter the  asset created to the user");
-						Actions action = new Actions(driver);
 						action.sendKeys(AGlobalComponents.assetName).build().perform();
 						Utility.pause(2);
 						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+AGlobalComponents.badgeName+"')]" , "Select the asset name");

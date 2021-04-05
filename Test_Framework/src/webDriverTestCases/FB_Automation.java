@@ -659,7 +659,7 @@ public class FB_Automation extends BrowserSelection {
 	
 	@Test(priority=16)
 	public void FB_Automation_TC016() throws Throwable 	{
-		logger =report.startTest("FB_Automation_TC014","Area Admin Cases");
+		logger =report.startTest("Area Admin Cases","Add Identities,Remove Identities");
 		System.out.println("[INFO]--> Area Admin Cases - TestCase Execution Begins");
 		
 		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC016");
@@ -679,7 +679,7 @@ public class FB_Automation extends BrowserSelection {
 				lastNames.add("AreaAdmin");
 				
 				/**creating asset for the user**/
-				AGlobalComponents.badgeName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 				/** Create Identities **/
 				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");

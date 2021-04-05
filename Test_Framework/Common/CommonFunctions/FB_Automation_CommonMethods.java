@@ -875,13 +875,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 				}
 				
-				if(fetchEntity) {
+	/*			if(fetchEntity) {
 				WebElement fetchEntityLocator=driver.findElement(By.xpath(ReconObjects.fetchEntity));
 				action.moveToElement(fetchEntityLocator).click();
 				action.build().perform();
 				logger.log(LogStatus.INFO, "Fetch Entity checkbox selected");
 				Utility.pause(5);
-				}
+				} */
 				if(preFeedRule!=null) {
 					WebElement preFeedRuleLocator=driver.findElement(By.xpath(ReconObjects.preFeedRule));
 					action.click(preFeedRuleLocator);
