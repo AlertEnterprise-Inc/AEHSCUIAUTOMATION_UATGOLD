@@ -1452,6 +1452,16 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		}
 		return accumulator;
 	}
+    
+    public static int getRandomIntNumber(int numberOfDigits) {
+		Random randomGenerator = new Random();
+		int accumulator = 1 + randomGenerator.nextInt(9);
+		for (int i = 0; i < (numberOfDigits - 1); i++) {
+			accumulator *= 10L;
+			accumulator += randomGenerator.nextInt(10);
+		}
+		return accumulator;
+	}
 
     public static Properties loadPropertyFile(String path) {
 		Properties _props = new Properties();

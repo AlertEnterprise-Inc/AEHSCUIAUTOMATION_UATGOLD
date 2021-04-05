@@ -53,8 +53,8 @@ import CommonClassReusables.TestDataEngine;
 
 public class Self_Service_CommonMethods extends BrowserSelection{
 	
-	private static int assignmentStatusIndex,accessIndex,actionIndex,assetCodeIndex = 0,systemIndex;
-	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="",requestorName="",assetStatusBeforeOffboarding="",oldPhotoSrc=null;
+	private static int assignmentStatusIndex,accessIndex,actionIndex,assetCodeIndex = 0,systemIndex,modifiedPhoneNumber=0;
+	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="",requestorName="",assetStatusBeforeOffboarding="",oldPhotoSrc=null,modifiedLastName="";
 	private static ArrayList<String> contractorAccessNames = new ArrayList<String>();
 	private static ArrayList<String> permanentAccessNames = new ArrayList<String>();
 	private static String access1ForTempOnboarding = "Server Room" , access2ForTempOnboarding = "EndUserRole",access3ForTempOnboarding="Common_Area_Access";
@@ -3369,59 +3369,31 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			                fileOutPut.delete();
 			            	break;
 						case "lastName":
-							String modifiedLastName="";
-							ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-							Utility.pause(1);
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-							Utility.pause(5);
-							
+													
 							String newLastName = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt)).getAttribute("value");
-							boolean flag=true;
-							for(int i=0;i<5 && flag;i++){
-								if(Utility.compareStringValues(newLastName, modifiedLastName)){
-									logger.log(LogStatus.PASS, "Last name modified successfully ");
-									Utility.verifyElementPresent(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, "Modified last name", false);
-									flag=false;
-									
-								}
-								else{
-									ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-									Utility.pause(1);
-									ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-									Utility.pause(5);
-									newLastName = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt)).getAttribute("value");
-								}
-							}
-							if(flag)
-								logger.log(LogStatus.FAIL, "Last name modification failed ");
 							
+							if(Utility.compareStringValues(newLastName, modifiedLastName)){
+								logger.log(LogStatus.PASS, "Last name modified successfully ");
+								Utility.verifyElementPresent(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, "Modified last name", false);
+							}
+							else{
+									logger.log(LogStatus.FAIL, "Last name modification failed ");
+							}
 			            	break;
-						case "phoneNo":
-							String modifiedPhoneNo="";
-							ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-							Utility.pause(1);
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-							Utility.pause(5);
-							
+						case "phoneno":
+																	
 							String newPhoneNo = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt)).getAttribute("value");
-							flag=true;
-							for(int i=0;i<5 && flag;i++){
-								if(Utility.compareStringValues(newPhoneNo, modifiedPhoneNo)){
-									logger.log(LogStatus.PASS, "Last name modified successfully ");
-									Utility.verifyElementPresent(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, "Modified last name", false);
-									flag=false;
-									
-								}
-								else{
-									ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-									Utility.pause(1);
-									ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-									Utility.pause(5);
-									newPhoneNo = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt)).getAttribute("value");
-								}
+							
+							if(Utility.compareStringValues(newPhoneNo, String.valueOf(modifiedPhoneNumber))){
+								logger.log(LogStatus.PASS, "phone number modified successfully ");
+								Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, "Modified phone number",true, false);
+								
 							}
-							if(flag)
+							else{
 								logger.log(LogStatus.FAIL, "Phone number modification failed ");
+							}
+							
+							
 			            	break;
 			            default:
 			            	System.out.println("No parameter updation request is received");
@@ -4075,7 +4047,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "Current last name of employee is : "+currentLastName);
 		            	break;
 		            case "phoneno":
-		            	Utility.verifyElementPresent(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, "last name", false);
+		            	Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, "Phone number",true, false);
 						String currentPhoneNo = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt)).getAttribute("value");
 						logger.log(LogStatus.INFO, "Current last name of employee is : "+currentPhoneNo);
 		            	break;
@@ -4743,69 +4715,86 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource(scriptName);
 				String requestType = (String) testData1.get("request_type");
 				List<WebElement> requestNumberElements = null;
-				WebElement requestNo=null;int index=0;
+				WebElement requestNo=null,latestRequestNumber=null;int index=0;
+				boolean reqFlag=true;
 				
 				Actions action = new Actions(driver);
 				action.click().build().perform();
 				Thread.sleep(2000);
-				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
-				Utility.pause(3);
-				ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox");
-				Utility.pause(5);
-				if(driver.findElements(By.xpath(HomeObjects.homeInboxRequestInboxExpandBtn)).size()>0){
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
-					Utility.pause(2);
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
-					Utility.pause(5);
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
-					Utility.pause(5);
-					boolean reqFlag=true;
-					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
-					for (int i=0;i<requestNumberElements.size() && reqFlag;i++){
-						requestNo = requestNumberElements.get(i);
-						reqNum = requestNo.getText();
-						if(reqNum.contains(requestNumber)){
-							index=i+1;
-							reqFlag=false;
-						}
-					}
-					if (reqFlag)
-						logger.log(LogStatus.FAIL, "Request not present in completed inbox");
-	//		Actions action = new Actions(driver);
-					action.doubleClick(requestNo);
-					action.build().perform();
-					Utility.pause(5);
-					WebElement reqNo = driver.findElement(By.xpath("//div[text()='Request Number']//following-sibling::div"));
-					String requestNum= reqNo.getText();
-					if(Utility.compareStringValues(requestNum, requestNumber)){
-						logger.log(LogStatus.PASS, "Request openend successfully");
-					}
-					else
-						logger.log(LogStatus.FAIL, "correct request not opened");
 				
-				}
-				else{	
-					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
-					Utility.pause(1);
-					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests");
+				if(driver.findElements(By.xpath(HomeObjects.myRequestsTabBtn)).size()>0){
+					ByAttribute.click("xpath", HomeObjects.myRequestsTabBtn, "Click on My Requests");
 					Utility.pause(5);
-					WebElement latestRequestNumber = requestNumberElements.get(0);
+					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+					latestRequestNumber = requestNumberElements.get(0);
 					
 					reqNum = latestRequestNumber.getText();
 					if(Utility.compareStringValues(reqNum, requestNumber)){
-	//			Actions action = new Actions(driver);
 						action.doubleClick(latestRequestNumber);
 						action.build().perform();
 						Utility.pause(5);
 						logger.log(LogStatus.INFO ,"Request "+requestNumber+" opened successfully in completed inbox");
+						reqFlag=false;
 					}
-					else
-						logger.log(LogStatus.FAIL, "Request not present in completed inbox");
-				}
+				}else if (driver.findElements(By.xpath(HomeObjects.homeTabBtn)).size()>0){
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+					Utility.pause(3);
+					ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox");
+					Utility.pause(5);
+					if(driver.findElements(By.xpath(HomeObjects.homeInboxRequestInboxExpandBtn)).size()>0){
+						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
+						Utility.pause(2);
+						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
+						Utility.pause(5);
+						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
+						Utility.pause(5);
 						
+						requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+						for (int i=0;i<requestNumberElements.size() && reqFlag;i++){
+							requestNo = requestNumberElements.get(i);
+							reqNum = requestNo.getText();
+							if(reqNum.contains(requestNumber)){
+								index=i+1;
+								reqFlag=false;
+								action.doubleClick(requestNo);
+								action.build().perform();
+								Utility.pause(5);
+								WebElement reqNo = driver.findElement(By.xpath("//div[text()='Request Number']//following-sibling::div"));
+								String requestNum= reqNo.getText();
+								if(Utility.compareStringValues(requestNum, requestNumber))
+									logger.log(LogStatus.PASS, "Request openend successfully");
+								else
+									logger.log(LogStatus.FAIL, "Incorrect  request opened");
+							}
+						}
+						
+					}
+				}
+				if(reqFlag){
+					if (driver.findElements(By.xpath(HomeObjects.homeTabBtn)).size()>0){	
+						ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+						Utility.pause(1);
+						ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests");
+						Utility.pause(5);
+						requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+						latestRequestNumber = requestNumberElements.get(0);
+					
+						reqNum = latestRequestNumber.getText();
+						if(Utility.compareStringValues(reqNum, requestNumber)){
+							action.doubleClick(latestRequestNumber);
+							action.build().perform();
+							Utility.pause(5);
+							logger.log(LogStatus.INFO ,"Request "+requestNumber+" opened successfully in completed inbox");
+							reqFlag=false;
+						}
+						else
+							logger.log(LogStatus.FAIL, "Request not present in completed inbox");
+					}
+				}
 				
+						
 				if(Utility.compareStringValues(requestType, "Modify Identity")){
-					String parameterToBeUpdated = modifiedAttribute;
+					String parameterToBeUpdated = parameterToBeModified;
 					switch(parameterToBeUpdated){
 					case "photo":
 						break;
@@ -4815,8 +4804,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedLastName+"']", "modifiedLastName", false);
 						logger.log(LogStatus.PASS,"Last name is modified for the employee");
 						break;
-					case "phoneNo":
-						String modifiedPhoneNumber = ""; ;
+					case "phoneno":
+						
 						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
 						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedPhoneNumber+"']", "modified Phone number", false);
 						logger.log(LogStatus.PASS,"Phone number is modified for the employee");
@@ -5414,12 +5403,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 */
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
 					int statusIndex=getBadgeListGridHeadersInRequest();
-					WebElement badgeStatus = driver.findElement(By.xpath("//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//td["+statusIndex+"]//label"));
+					WebElement badgeStatus = driver.findElement(By.xpath("(//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//*//label)[2]"));
 					String status = badgeStatus.getText();
-					if(Utility.compareStringValues(status, "DEACTIVATE"))
-						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
+					if(Utility.compareStringValues(status, "LOCK"))
+						logger.log(LogStatus.INFO, "status of  asset is : "+ status);
 					else
-						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE");
+						logger.log(LogStatus.FAIL, "status of  asset is locked or deactivated");
 					
 					
 					/**checking the history of the request **/
@@ -5814,13 +5803,13 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			            }
 		            	break;
 		            case "lastname":
-		            	String modifiedLastName = "";
+		            	String modifiedLastName = "Newlastname";
 		            	ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, modifiedLastName, "Enter the value of modified last name ");
 						Utility.pause(2);
 		            	break;
 		            case "phoneno":
-		            	String modifiedPhonNumber = "";
-		            	ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, modifiedPhonNumber, "Enter the value of modified phone number ");
+		            	modifiedPhoneNumber = Utility.getRandomIntNumber(5);
+		            	ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, String.valueOf(modifiedPhoneNumber), "Enter the value of modified phone number ");
 						Utility.pause(2);
 		            	break;
 		            default: 
@@ -6587,8 +6576,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(2);;
 					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
 					Utility.pause(5);
-					
-					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateNextBtn, "Click Next Button");
+					try{
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateNextBtn, "Click Next Button");
+					}catch(Exception e){
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateAddBtn, "Click Add Button");
+					}
 					Thread.sleep(1000);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestSearchAccessTxt)).size() > 0)
 						{
@@ -6617,8 +6609,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								ByAttribute.click("xpath", ".//li[text()='mca-crar-group1']", "Select Group Name");
 							}
 							Thread.sleep(1000);
-							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationJustificationTxt, "Automation Test", "Enter Business Justification");
-							Thread.sleep(1000);
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestAddLocationJustificationTxt)).size()>0){
+								ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationJustificationTxt, "Automation Test", "Enter Business Justification");
+								Thread.sleep(1000);
+							}
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddLocationConfirmBtn, "Click Confirm Button");
 							Thread.sleep(10000);
 							
@@ -6720,7 +6714,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 
 	public static String emergencyTermination(String firstName, String lastName) throws Throwable {
-		String reqNum="",terminationReason="Death";
+		String reqNum="",terminationReason="Misconduct";
 		if (unhandledException == false) {
 			System.out.println("***************************** Emergency Termination of Employee *********************************");
 			logger.log(LogStatus.INFO,"***************************** Emergency Termination of Employee ***********************");
@@ -6770,7 +6764,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					action.sendKeys(Keys.TAB);
 					action.sendKeys(terminationReason);
 					action.build().perform();
-					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+terminationReason+"')]" , "Select termination reason ");
+					ByAttribute.click("xpath","//div[@class='x-boundlist-list-ct x-unselectable x-scroller']//li[text()='"+terminationReason+"']" , "Select termination reason ");
 					Utility.pause(5);
 						         	            
 		            ByAttribute.click("xpath",HomeObjects.submitBtn, "Click on submit button");
@@ -7203,13 +7197,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							System.out.println("Navigation to Access Page Successful");
 							logger.log(LogStatus.INFO, "Navigation to Access Page Successful");
 							
-							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchITAccessLbl, access, "Search Access based on IT system");
-							
-							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestSearchITAccessLbl, "Search Access based on IT system");
 							Thread.sleep(1000);
-														
+							ByAttribute.click("xpath","//div[@class='idmlistitem']//span[text()='"+access+"']", "Select Access ");
+							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
-							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
+							Utility.verifyElementPresent("(.//tbody//td[2]/div[text()='"+access+"'])[2]", "Added Access: "+access, false);
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
 							Thread.sleep(1000);
@@ -7259,6 +7252,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				            Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Attachments']", "Attachment", false);
 				            ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
 				            
+				            ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddApplicationSubmitBtn, "Click Submit Button");
+							Thread.sleep(5000);
+				            
 				            ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestAddLocationReasonTxt, "Need Temporary Access for System", "Enter Reason Code");
 							Thread.sleep(1000);
 							ByAttribute.click("xpath", ".//li[text()='Need Temporary Access for System']", "Select Reason Option");
@@ -7266,8 +7262,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddLocationConfirmBtn, "Click Confirm Button");
 							Thread.sleep(10000);
 							
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddApplicationSubmitBtn, "Click Submit Button");
-							Thread.sleep(5000);
+							
 														
 							List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 							WebElement latestRequestNumber = requestNumberElements.get(0);

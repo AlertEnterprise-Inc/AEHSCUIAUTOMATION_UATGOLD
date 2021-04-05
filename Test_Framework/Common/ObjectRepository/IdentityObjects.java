@@ -21,7 +21,7 @@ public interface IdentityObjects {
 	String identityManagementHeader = "//div[contains(@class,'x-box-target')]//label[text()='Identity Management']";
 	String idmManageIdentityCancelBtn = ".//*[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Cancel']";
 	String filterIconLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter')]";
-	String idmManageIdentityProfileTabPositionTxt = "//*[contains(@id,'baseComboBox') and @placeholder='Select Position']";
+	String idmManageIdentityProfileTabPositionTxt = "//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Position']";
 	String addFilterLnk = "//*[contains(@id,'button') and contains(@class,'x-btn-icon-el-aebtnSecondary-medium aegrid-rowAdd')]";
 	String enterFieldName1ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
 	String enterFieldName2ToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default ')]";

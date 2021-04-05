@@ -1938,7 +1938,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				String validFrom= null,validTo = null;
 				String empType = (String) testData.get("employee_type");
 				String position = (String) testData.get("pre_assigned_position");
-								
+																
 				Calendar c = Calendar.getInstance();
 				DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 				Date date = new Date();
@@ -1970,13 +1970,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(1);
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lName, "Enter Last Name");
 				Utility.pause(1);
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, (String.valueOf(Utility.getRandomIntNumber(5))), "Enter Phone Number");
+				Utility.pause(1);
+				
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
 				Utility.pause(1);
 				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, AGlobalComponents.userId, "Enter user id");
 				Utility.pause(1);
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileTabPositionTxt, position, "Enter position");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileTabPositionTxt,position, "Enter position");
 				Utility.pause(1);
 				ByAttribute.click("xpath","//div[contains(@id,'-listWrap')]//*[ text()='"+position+"']", "Select Position");
 				Utility.pause(1);
@@ -2406,9 +2409,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(5);
 				
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.badgeName, "Enter the asset ");
+				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.assetName, "Enter the asset ");
 				Thread.sleep(1000);
-				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.badgeName+"']", " select asset code");
+				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
 				Utility.pause(2);
 				
 		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
@@ -4300,7 +4303,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						if(FB_Automation_CommonMethods.validateAssignedAccessOnUI(accessName)) 
 							flag=true;
 						
-				        FB_Automation_CommonMethods.validateAssignedAccessInDB(firstNames.get(i), lastNames.get(i),accessName);
+//				        FB_Automation_CommonMethods.validateAssignedAccessInDB(firstNames.get(i), lastNames.get(i),accessName);
 					}					 		
 			}
 			catch(Exception e){
@@ -4374,7 +4377,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.doubleClick(record).perform();
 				Utility.pause(5);
 				
-				ByAttribute.click("xpath", AccessObjects.IdentityExistingRadioButton, "Selected Identity Existing radio button");
+//				ByAttribute.click("xpath", AccessObjects.IdentityExistingRadioButton, "Selected Identity Existing radio button");
 				
 				for(String firstName:firstNames) {
 					WebElement checkBox=driver.findElement(By.xpath("//div[text()='"+firstName+"']/parent::td/preceding-sibling::td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-checkcolumn')]"));
@@ -4383,7 +4386,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "User "+firstName+" is selected ");
 						Utility.verifyElementPresentByScrollView(AccessObjects.removeAccessLnk, "Remove Access", true, false);
 						driver.findElement(By.xpath(AccessObjects.removeAccessLnk)).click();
-						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[7]/div/label";
+						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[6]/div/label";
 						String checkStatus=driver.findElement(By.xpath(checkStatusLocator)).getText();
 						if(checkStatus.equalsIgnoreCase("REMOVED")) {
 							Utility.verifyElementPresentByScrollView(checkStatusLocator, "Removed Status", true, false);
