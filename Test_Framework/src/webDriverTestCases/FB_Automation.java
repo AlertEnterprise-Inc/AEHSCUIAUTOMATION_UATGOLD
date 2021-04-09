@@ -62,10 +62,10 @@ public class FB_Automation extends BrowserSelection {
 			FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
 				
 			/** Rerun the role recon job **/
-			FB_Automation_CommonMethods.rerunReconRecord((String) testData.get("recon_entity"));
+//			FB_Automation_CommonMethods.rerunReconRecord((String) testData.get("recon_entity"));
 			
 			/** Deleting the Recon Record **/
-			FB_Automation_CommonMethods.deleteReconRecord((String) testData.get("recon_entity"));
+//			FB_Automation_CommonMethods.deleteReconRecord((String) testData.get("recon_entity"));
 			
 				
 			/** Logout from Application **/
@@ -366,8 +366,8 @@ public class FB_Automation extends BrowserSelection {
 	@Test(priority=10)
 	public void FB_Automation_TC010() throws Throwable 
 	{
-		logger =report.startTest("FB_Automation_TC001","Role Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality, incremental recon");
-		System.out.println("[INFO]--> FB_Automation_TC001 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC010","Role Recon Job Execution ,Add Record , Delete Record , check filter functionality , search functionality , settings icon functionality, incremental recon");
+		System.out.println("[INFO]--> FB_Automation_TC010 - TestCase Execution Begins");
 		AGlobalComponents.DBUserRecon=true;
 		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC010");
 		
@@ -393,8 +393,8 @@ public class FB_Automation extends BrowserSelection {
 	@Test(priority=11)
 	public void FB_Automation_TC011() throws Throwable 
 	{
-		logger =report.startTest("SuccessFactors HR System Usecases E01","Employee Onboarding from HR DB Connector");
-		System.out.println("[INFO]--> SuccessFactors HR System Usecases E01 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC011","Employee Onboarding from HR DB Connector");
+		System.out.println("[INFO]--> FB_Automation_TC011 - TestCase Execution Begins");
 
 		String firstName=Utility.getRandomString(5);
 		String lastName="Onboard";
@@ -471,8 +471,8 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC012() throws Throwable 
 	{
 
-		logger =report.startTest("SuccessFactors HR System Usecases E02","Change Job Title from HR DB Connector");
-		System.out.println("[INFO]--> SuccessFactors HR System Usecases E02 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC012","Change Job Title from HR DB Connector");
+		System.out.println("[INFO]--> FB_Automation_TC012 - TestCase Execution Begins");
 	
 		HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
 		String userId = (String) testData1.get("user_id");
@@ -536,8 +536,8 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC013() throws Throwable 
 	{
 
-		logger =report.startTest("SuccessFactors HR System Usecases E04","Employee Type Conversion From Permanent To Temporary from HR DB Connector");
-		System.out.println("[INFO]--> SuccessFactors HR System Usecases E04 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC013","Employee Type Conversion From Permanent To Temporary from HR DB Connector");
+		System.out.println("[INFO]--> FB_Automation_TC013 - TestCase Execution Begins");
 
 		HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
 		String userId = (String) testData1.get("user_id");
@@ -596,8 +596,8 @@ public class FB_Automation extends BrowserSelection {
 	public void FB_Automation_TC014() throws Throwable 
 	{
 
-		logger =report.startTest("SuccessFactors HR System Usecases E03","Employee Offboarding from HR DB Connector");
-		System.out.println("[INFO]--> SuccessFactors HR System Usecases E03 - TestCase Execution Begins");
+		logger =report.startTest("FB_Automation_TC014","Employee Offboarding from HR DB Connector");
+		System.out.println("[INFO]--> FB_Automation_TC014 - TestCase Execution Begins");
 
 		HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
 		String userId = (String) testData1.get("user_id");
@@ -657,9 +657,74 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
+	@Test(priority=14)
+	public void FB_Automation_TC015() throws Throwable 
+	{
+
+		logger =report.startTest("FB_Automation_TC015","Employee Offboarding from HR DB Connector");
+		System.out.println("[INFO]--> FB_Automation_TC015 - TestCase Execution Begins");
+
+		HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
+		String userId = (String) testData1.get("user_id");
+		String firstName=(String) testData1.get("first_name");
+		String lastName=(String) testData1.get("last_name");
+		AGlobalComponents.assetName=(String) testData1.get("badge_name");
+		
+		if(userId==null||userId.equals(""))
+		{
+			logger.log(LogStatus.INFO, "UserId doesn't exists in Db,Executing Change Of JobTitle");
+			FB_Automation_TC012();
+		}
+		
+		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC015");
+		AGlobalComponents.applicationURL = (String) testData.get("application_url");
+		
+		if(FB_Automation_CommonMethods.empTerminateThroughHRDB(userId)) {
+			boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
+
+			if(loginStatus){
+				logger.log(LogStatus.PASS, "Login Successful");
+				
+				/* Create Recon Job */
+				FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
+							
+				/** Launch New Private Browser **/
+				Utility.switchToNewBrowserDriver();
+				
+				/* Login as Manager */
+				loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+				if(loginStatus){
+					logger.log(LogStatus.PASS, "Login Successful");
+					
+					/** checkStatusInMyRequestInbox**/
+					Self_Service_CommonMethods.checkRequestInManagerInbox((String) testData.get("request_type"),firstName,lastName);
+			 		
+					/** approve request  by manager**/
+					Self_Service_CommonMethods.approveRequestInInbox((String) testData.get("workflow_stage"));
+					
+					Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),"","","");
+			 		
+				}
+				
+				/** Switch to Default Browser **/
+				Utility.switchToDefaultBrowserDriver();
+			 		
+				/** Validate  Changed Job Title in IDM after  request approved**/
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC014");
+		 		
+		 		/** Logout from Application **/
+				LoginPage.logout();	
+			}
+			else {
+				logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+			}	
+		}
+	}
+	
 	@Test(priority=16)
 	public void FB_Automation_TC016() throws Throwable 	{
-		logger =report.startTest("Area Admin Cases","Add Identities,Remove Identities");
+		logger =report.startTest("FB_Automation_TC016","Area Admin Cases(Add Identities,Remove Identities)");
 		System.out.println("[INFO]--> Area Admin Cases - TestCase Execution Begins");
 		
 		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC016");

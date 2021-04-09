@@ -6251,7 +6251,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 * checking for prerequisites added through pre feed rule while onboarding
 					 */
 					String prerequisite1 = "IT Security Training 2020";
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestBadgeListGrid)).size()>0){
+					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestPrerequisiteList)).size()>0){
 						Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestPrerequisiteList, "PrerequisiteList Grid",true, false);
 						if((driver.findElements(By.xpath("//*[text()='"+prerequisite1+"']")).size()>0)){
 							logger.log(LogStatus.INFO, " prerquisite  :" +prerequisite1 +",assigned to the user");
@@ -6342,11 +6342,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 				Utility.verifyElementPresent("//div[contains(@class,'x-component') and text()='"+reqNum+"']", "Request", false);
 				
-				if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
-					ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests Link to open the request");
-					Utility.pause(5);
-					Utility.verifyElementPresent("//div[contains(@class,'x-component') and text()='"+reqNum+"']", "Request", false);
-					
 					if(Utility.compareStringValues("manager", WfActor)){
 						WfActor="Manager";
 						System.out.println("Approving the Employee onboarding request by : "+WfActor);
@@ -6380,15 +6375,33 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/**creating asset for the user**/
 //						String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG");
 						
-						/*Giving badge to the user */
 						
-						ByAttribute.click("xpath",HomeObjects.homeAccessRequestSelectBadgeDDn,"Enter the  asset created to the user");
-						action.sendKeys(AGlobalComponents.assetName).build().perform();
-						Utility.pause(2);
-						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+AGlobalComponents.badgeName+"')]" , "Select the asset name");
-						Utility.pause(2);
+						/*Giving badge to the user */
+						Utility.pause(5);
+						ByAttribute.click("xpath", HomeObjects.homeAccessRequestSelectBadgeDDn, "Select Asset from list");
+						Thread.sleep(5000);
+						
+						Robot robot = new Robot();
+						
+						StringSelection ss = new StringSelection(AGlobalComponents.assetName);
+			            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+
+			            robot.keyPress(KeyEvent.VK_CONTROL);
+			            robot.keyPress(KeyEvent.VK_V);
+			            robot.keyRelease(KeyEvent.VK_V);
+			            robot.keyRelease(KeyEvent.VK_CONTROL);
+			            Thread.sleep(5000);
+			            robot.keyPress(KeyEvent.VK_ENTER);
+			            robot.keyRelease(KeyEvent.VK_ENTER);
+			            Thread.sleep(500);
+						robot.keyPress(KeyEvent.VK_TAB);
+						robot.keyRelease(KeyEvent.VK_TAB);
+						
+						Thread.sleep(2000);
+						Utility.pause(5);
+						
 						ByAttribute.click("xpath",HomeObjects.homeAccessRequestBadgeListGrid,"Asset assigned");
-						Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", AGlobalComponents.badgeId, false);
+						Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", "badgeId", false);
 						if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
 							ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click approve button ");
 							Utility.pause(5);
@@ -6407,7 +6420,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						Utility.pause(5);
 						logger.log(LogStatus.PASS,"Request successfully approved by badge admin");		
 					}	
-				}
 			} catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);

@@ -2540,7 +2540,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				verifyRoleReconDataFromUI(description);
 		
 				logger.log(LogStatus.INFO, "verify recon data from DB using sync id : " +syncID);
-				String query = "select count(*) from aehscnew.stg_role_data where sync_id = '"+syncID+"'";
+				String query = "select count(*) from autodevhsc.stg_role_data where sync_id = '"+syncID+"'";
 				verifyReconDataFromDB(query);
 			}
 			catch(Exception e)
@@ -2652,7 +2652,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			System.out.println("**********Verify Recon Data from DB*********");
 			try{
 					
-					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromDatabase(query));
+					ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 					String dbRecords = rs.get(0).get(0);
 					logger.log(LogStatus.INFO, "total no. of records in staging table after trial job are : " +dbRecords);
 					if(Utility.compareStringValues(dbRecords, activeReconRecords)){
@@ -2679,16 +2679,16 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", AccessObjects.manageAccessLnk, "Click on Manage Access ");
 					Utility.pause(10);
 		
-					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-					settingsIcon.click();
-					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
-					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
-					Utility.pause(10);
+//					WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+//					settingsIcon.click();
+//					ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for role recon data");
+//					ByAttribute.click("xpath",ReconObjects.roleReconViewLnk, "click on role recon view");
+//					Utility.pause(10);
 	    
 					ByAttribute.click("xpath", AccessObjects.filterIconLnk, "Click on Filter icon ");
 					Utility.pause(3);
-			//		ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
-			//		Utility.pause(2);
+					ByAttribute.click("xpath", AccessObjects.addFilterLnk, "Click on Add icon to enter the filter");
+					Utility.pause(2);
 					ByAttribute.click("xpath", AccessObjects.enterFieldNameToFilter, "click to enter field name for Filtering");
 					Utility.pause(2);
 					ByAttribute.setText("xpath", AccessObjects.enterFieldNameToFilter,"Name", "Enter the field name for Filtering");
@@ -4206,6 +4206,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.doubleClick(record).perform();
 				Utility.pause(5);
 				
+				ByAttribute.click("xpath", AccessObjects.identityTabLnk, "Click on Identity tab");
+				Utility.pause(5);
+				
 				ByAttribute.click("xpath", AccessObjects.IdentityNewRadioButton, "Selected Identity New radio button");
 				
 				for(String firstName:firstNames) {
@@ -4377,6 +4380,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.doubleClick(record).perform();
 				Utility.pause(5);
 				
+				ByAttribute.click("xpath", AccessObjects.identityTabLnk, "Click on Identity tab");
+				Utility.pause(5);
+				
 //				ByAttribute.click("xpath", AccessObjects.IdentityExistingRadioButton, "Selected Identity Existing radio button");
 				
 				for(String firstName:firstNames) {
@@ -4386,7 +4392,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "User "+firstName+" is selected ");
 						Utility.verifyElementPresentByScrollView(AccessObjects.removeAccessLnk, "Remove Access", true, false);
 						driver.findElement(By.xpath(AccessObjects.removeAccessLnk)).click();
-						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[6]/div/label";
+						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[7]/div/label";
 						String checkStatus=driver.findElement(By.xpath(checkStatusLocator)).getText();
 						if(checkStatus.equalsIgnoreCase("REMOVED")) {
 							Utility.verifyElementPresentByScrollView(checkStatusLocator, "Removed Status", true, false);

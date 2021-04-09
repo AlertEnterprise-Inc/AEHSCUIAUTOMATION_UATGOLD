@@ -29,5 +29,7 @@ public interface AccessObjects {
 	String IdentityExistingRadioButton = "//*[text()='IdentityExistinng']";
 
 	String removeAccessLnk = "//*[contains(@class,'aegrid-noaccess ')]";
+
+	String identityTabLnk = ".//*[text()='Identity']";
 	
 }
