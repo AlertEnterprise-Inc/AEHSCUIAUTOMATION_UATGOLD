@@ -33,6 +33,7 @@ public interface IdentityObjects {
 	String idmManageIdentityClickToAddLnk = "//a[normalize-space(text())='Click here to Add']";
 	String idmManageIdentityAssetTabAssignAsetWindow = "//div[contains(@id,'ext-comp') and @class='x-window-bodyWrap']";
 	String idmManageIdentityaddRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[1]";
+	String idmManageIdentityDeleteRowLnk = "(//div[contains(@class,'x-action-col-1  aegrid-rowMinus')])[1]";
 	String idmManageIdentityProfileTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Profile Info']";
 	String idmManageIdentityAccessTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Accesses']";
 	String idmManageIdentitySystemsTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Systems']";
@@ -79,12 +80,34 @@ public interface IdentityObjects {
 	String leftPaneExpansionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburgerexpand ']";
 	String leftPaneContractionLnk = "//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-hamburger ']";
 	String idmAddAssetSelectDdn = "(//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Asset'])[4]";
-	String idmAddAssetStatusDdn = "(//input[contains(@id,'baseComboBox') and @placeholder='Select Status'])[3]";
+	String idmAddAssetStatusDdn = ".//span[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']//ancestor::tr//preceding-sibling::tr//*[contains(@id,'baseComboBox') and @placeholder='Select Status']";
 	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
 	String actionBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[4]";
 	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";
 	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Badge Operations']";
 	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
 	String idmMAnageIdentityExpandLeftViewLnk = ".//span[contains(@class,'hamburgerexpand')]";
+	
+
+	String identityRowAdderLnk = "//div[contains(@class,'x-action-col-icon x-action-col-0  aegrid-rowAdd')]";
+	String identityAssignAssetLbl = "(//div[text()='Assign Assets'])[2]";
+	String identitySelectAssetDnd = "(//input[@placeholder= 'Select Asset'])[4]//parent::div//following-sibling::div";
+	String identitySelectAssetValueTxt = "(//span//following::b[text()='Code']//following::div//following::span[1])[1]";
+	String identityConfirmAssetBtn = "//span[text()='Confirm' and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
+	String identityResetPinBtn = "(//div[@data-qtip='Reset Pin' and @class = 'x-action-col-icon x-action-col-0  aegrid-passwordUpdate'])[1]";
+	String identityResetPinYesBtn = "//span[contains(text(),'Yes') and contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small')]";
+	String identitypopUpToast = "//div[contains(@id,'toast') and @class='x-autocontainer-innerCt']";
+	String identityReplaceBadgeBtn = "(//label[text()='Active'])[1]//parent::div//parent::div//parent::td//following-sibling::td[5]//div[@class='x-action-col-icon x-action-col-0  aegrid-replaceasset']";
+	String identityReplaceBadgeLbl = "//div[text()='Replace Badge']";
+	String identityReplacementReason = "//input[@placeholder = 'Enter Replacement Reason']";
+	String identitySelectStatusDnd = "(//input[@placeholder= 'Select Status'])[4]//parent::div//following-sibling::div";
+	String identityDamagedStatusTxt = "//li[text()='DAMAGED']";
+	String identitySelectBadgetDnd = "(//input[@placeholder= 'Select Asset'])[5]//parent::div//following-sibling::div";
+	String identityReplaceSaveBtn = "(.//span[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Save'])[2]";
+	String identityValidTo = "(//input[@placeholder='Select Valid To' and @class = 'x-form-field x-form-text x-form-text-default '])[4]";
+	String identityAdvancedSearchBtn = "//span[text()='Advanced Search']";
+	String activateActionBtn = "//div[@class='x-action-col-icon x-action-col-0  aegrid-active3']";
+	String deactivateActionBtn = "//div[@class='x-action-col-icon x-action-col-0  aegrid-inactive2']";
+	String badgeTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Badges']";
 	
 }

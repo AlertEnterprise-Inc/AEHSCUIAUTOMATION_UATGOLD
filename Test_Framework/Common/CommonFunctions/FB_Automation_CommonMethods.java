@@ -18,8 +18,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -56,10 +60,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static boolean dupIdentity=false;
 	private static String identityCode = null;
 	private static String entityType= null;
-	private static String activeReconRecords = null;
-	private static int assetCodeIndex,badgeValidFromIndex, badgeValidToIndex,badgeTypeIndex,index=0;
+	private static String activeReconRecords = null,oldPhotoSrc=null;
+	private static int assetCodeIndex,badgeValidFromIndex, badgeValidToIndex,badgeTypeIndex,index=0,accessIndex,modifiedPhoneNumber;
 	private static String jobName ="";
-
+	private static File fileInput ;
+	private static File fileOutPut ;
 	
 	
 	
@@ -1110,16 +1115,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
-				Thread.sleep(3000);
-				if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){
-					WebElement record=driver.findElement(By.xpath("(//div[text()='"+AGlobalComponents.userId+"']/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
-					Actions action = new Actions(driver);
-					action.doubleClick(record).build().perform();
-					Utility.pause(10);
-				}
-				
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "********Click on Assets Tab*********** ");
 				Utility.pause(2);
 				if (Utility.checkIfStringIsNotNull(AGlobalComponents.assetCode)){
@@ -1128,22 +1123,6 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					Utility.pause(10);
 					logger.log(LogStatus.PASS, "Created asset assigned to the user");
 				
-				//commenting below lines untill the reload option starts working
-				
-//				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
-//				Utility.pause(1);
-//				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
-//				Utility.pause(10);
-//				String fName = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt)).getAttribute("value");
-//				if(fName=="" || fName== null){
-//					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
-//				
-//					if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr")).size()>0)
-//						logger.log(LogStatus.PASS, "System is assigned to the user");
-//					else
-//						logger.log(LogStatus.FAIL, "System is not assigned to the user");
-//				}
-//				else{
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
 					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
 					Thread.sleep(3000);
@@ -1153,15 +1132,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						action.doubleClick(record).build().perform();
 						Utility.pause(10);
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
-						
 						if(driver.findElements(By.xpath("//*[text()='"+AGlobalComponents.systemNameOfAsset+"']")).size()>0)
 							logger.log(LogStatus.INFO, "System is assigned to the user");
 						else
 							logger.log(LogStatus.FAIL, "System is not assigned to the user");
+						}
+					
 					}
-		//		}
-				}	
-				
+					
 			}
 			catch(Exception e)
 			{		
@@ -1391,23 +1369,152 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 	
-	public static void modifyIdentity() throws Throwable
+	public static void modifyIdentityIDM(String parameterToBeModified,String scriptName) throws Throwable
 	{
 
 		if(unhandledException==false)
 		{
 			
-			logger.log(LogStatus.INFO, "edit the job title of created identity");
-			System.out.println("***************************** Edit Identity *********************************");
-			logger.log(LogStatus.INFO, "Edit Identity and add Job title");
+			logger.log(LogStatus.INFO, "*********************Modify  identity************************");
+			System.out.println("***************************** Modify  Identity *********************************");
+			
 			try
 			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
+				HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC017");
+				AGlobalComponents.userId=(String) testData.get("user_id");
+				
+				WebElement image=null ;
+				if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
+					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
+					Utility.pause(5);
+				}
+				else{
+					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
+					Utility.pause(5);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
+					Utility.pause(15);
+					
+				}
+				searchIdentity(AGlobalComponents.userId);
 				
-				editProfileInfo();
+				String parameterToBeUpdated = parameterToBeModified;
 				
-			}
+				switch (parameterToBeUpdated.toLowerCase()) {
+				case "photo":
+					if(AGlobalComponents.updatePhoto)
+						logger.log(LogStatus.INFO,"***************************** Modifying existing photo*********************************");
+					else
+						logger.log(LogStatus.INFO,"***************************** UPloading photo first time*********************************");
+			
+					String photoFilePath="";
+					if(AGlobalComponents.updatePhoto)
+						photoFilePath=System.getProperty("user.dir") + "\\Browser_Files\\UpdatedUserImage.png";
+					else
+						photoFilePath=System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
+
+					ByAttribute.click("xpath", IdentityObjects.idmMAnageIdentityExpandLeftViewLnk, "Expand left view ");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath",IdentityObjects.addImageLnk, "Click on existing image to modify it");
+					Thread.sleep(1000);
+								
+					StringSelection ss = new StringSelection(photoFilePath);
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+	            
+					Robot robot = new Robot();
+					robot.keyPress(KeyEvent.VK_CONTROL);
+					robot.keyPress(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_CONTROL);
+					robot.keyPress(KeyEvent.VK_ENTER);
+					robot.keyRelease(KeyEvent.VK_ENTER);
+					Utility.pause(10);
+					ByAttribute.click("xpath",HomeObjects.homeMyRequestsActualPhotoLnk, "Click on Actual Photo to crop");
+					ByAttribute.click("xpath",HomeObjects.cropAndSaveBtn, "Click on Crop and Save button");
+					Utility.pause(4);
+					
+					break;
+				case "lastname":
+					String modifiedLastName = "Newlastname";
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, modifiedLastName, "Enter the value of modified last name ");
+					Utility.pause(2);
+					break;
+				case "phoneno":
+					modifiedPhoneNumber = Utility.getRandomIntNumber(5);
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, String.valueOf(modifiedPhoneNumber), "Enter the value of modified phone number ");
+					Utility.pause(2);
+					break;
+				case "addaccess":
+					String accessAdded=(String) testData.get("access_name_1");
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0){
+						String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
+						ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+						Utility.pause(5);
+						Actions action = new Actions(driver);		
+						action.sendKeys(accessAdded);
+						action.build().perform();
+						Utility.pause(5);
+						WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessAdded+"')]"));
+						action.moveToElement(accessValue).click();
+						action.build().perform();
+						logger.log(LogStatus.INFO, "Access Value selected");
+						Utility.pause(2);
+			
+						WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+						ele.click();
+					}
+					else{
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityaddRowLnk, "click on add icon to insert new access");
+						Thread.sleep(1000);
+						Actions action = new Actions(driver);		
+						action.sendKeys(accessAdded);
+						action.build().perform();
+						Utility.pause(5);
+						WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessAdded+"')]"));
+						action.moveToElement(accessValue).click();
+						action.build().perform();
+						logger.log(LogStatus.INFO, "Access Value selected");
+						Utility.pause(2);
+			
+						WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+						ele.click();
+					}
+					
+					break;
+				case "removeaccess":
+					String accessToBeRemoved=(String) testData.get("pre_assigned_access_1");
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0){
+						logger.log(LogStatus.FAIL, "No access is assigned to the user");
+					}
+					else{
+						List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+						int size = noOfAccessRows.size();
+						for (int i=1;i<=size;i++){
+							int accessIndex=Self_Service_CommonMethods.getIndexOfAccessHeaders();
+							WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+							String accessAssigned = accessName.getText();
+							if(Utility.compareStringValues(accessAssigned, accessToBeRemoved)){
+								logger.log(LogStatus.INFO, "Access to be removed is assigned to the user before");
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", "Access to be removed", false);
+								ByAttribute.click("xpath", IdentityObjects.idmManageIdentityDeleteRowLnk, "click on delete icon to delete existing  access");
+								Thread.sleep(1000);
+								break;
+							}
+						}
+						
+					}
+					break;
+				default: 
+					System.out.println("No parameter updation request is received");
+           	
+				}
+				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
+				Utility.pause(5);
+				AGlobalComponents.RequestSubmit=true;
+	    	}
 			catch(Exception e)
 			{		
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -1963,7 +2070,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			
 				AGlobalComponents.userId= fName+"."+lName;
 				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
-				Utility.pause(5);
+				Utility.pause(2);
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "Enter first Name");
 				Utility.pause(2);
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, fName, "Enter first Name");
@@ -1979,10 +2086,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				Utility.pause(1);
 				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, AGlobalComponents.userId, "Enter user id");
 				Utility.pause(1);
-				ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileTabPositionTxt,position, "Enter position");
-				Utility.pause(1);
-				ByAttribute.click("xpath","//div[contains(@id,'-listWrap')]//*[ text()='"+position+"']", "Select Position");
-				Utility.pause(1);
+				if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityProfileTabPositionTxt)).size()>0){
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileTabPositionTxt,position, "Enter position");
+					Utility.pause(1);
+					ByAttribute.click("xpath","//div[contains(@id,'-listWrap')]//*[ text()='"+position+"']", "Select Position");
+					Utility.pause(1);
+				}
 				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
 				Utility.pause(1);
 //				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
@@ -2172,19 +2281,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ele.click();
 				}
 				
-//				ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");	
-//				action.sendKeys(accessToBeAssigned2);
-//				action.build().perform();
-//				Utility.pause(5);
-//				accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned2+"')]"));
-//				action.moveToElement(accessValue).click();
-//				action.build().perform();
-//				logger.log(LogStatus.INFO, "Access Value selected");
-//				Utility.pause(2);
-//		
-//				ele=driver.findElement(By.xpath("//span[text()='Description']"));
-//				ele.click();
+				if(accessToBeAssigned2!= null){
+					ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");
+					Utility.pause(5);
+					Actions action = new Actions(driver);
+					action.sendKeys(accessToBeAssigned2);
+					action.build().perform();
+					Utility.pause(5);
+					WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned2+"')]"));
+					action.moveToElement(accessValue).click();
+					action.build().perform();
+					logger.log(LogStatus.INFO, "Access Value selected");
+					Utility.pause(2);
 		
+					WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+					ele.click();
+				}
+				
 //				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[1]"));
 //				action.moveToElement(validFromDate).click();
 //				action.build().perform();
@@ -2407,14 +2520,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 								
 				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
-				Utility.pause(5);
-				
+				Utility.pause(2);
+				for (int i=0;i<4;i++){
+					if(driver.findElements(By.xpath("//div[@class='x-component x-fieldset-header-text x-fieldset-header-text-collapsible x-component-default' and text()='Assign Assets']")).size()>1){
+						break;
+					}
+					else{
+						ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+						Utility.pause(2);
+					}
+				}
 				ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetSelectDdn, AGlobalComponents.assetName, "Enter the asset ");
 				Thread.sleep(1000);
 				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
 				Utility.pause(2);
 				
-		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
+			//	Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
+		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn, "status field", false, false);
 				if(AGlobalComponents.tempWorkerOnboarding){
 					ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "InActive", "set the status of the asset active/inactive");
 					Thread.sleep(1000);

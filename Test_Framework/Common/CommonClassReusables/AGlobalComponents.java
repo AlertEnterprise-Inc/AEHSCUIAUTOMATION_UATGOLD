@@ -38,6 +38,7 @@ public class AGlobalComponents {
 	public static boolean ManagerLogin = false;
 	public static boolean createIdentityPermanent = false;
 	public static boolean createIdentityContractor = false;
+	public static boolean badgeAdminLogin = false;
 	public static boolean modifyIdentity = false;
 	public static boolean updatePhoto = false;
 	public static boolean wellnessCheckCase=false;
@@ -90,12 +91,21 @@ public class AGlobalComponents {
 	public static String postgresqlDbIP="44.236.46.102";
 	public static String postgresqlDbUrl="jdbc:postgresql://"+ postgresqlDbIP+":5432/"+postgresqlDbName;
 	
+	public static String lenelDbName = "AccessControl";
+	public static String lenelDbUsername = "sa";
+	public static String lenelDbPassword = "Alert1234";
+	public static String lenelDbIP="172.16.34.195";
+	public static String lenelDbUrl = "jdbc:sqlserver://"+ lenelDbIP;
+	public static String lenelConString =lenelDbUrl+";user="+lenelDbUsername+";password="+lenelDbPassword+";database="+lenelDbName+";portNumber=1433";
+	
+	
 	public static String applicantFirstName = "";
 //	public static String applicantFirstName = "AUTOUJES";
 	public static String applicantSSN = "";
 	public static int  RANDOM_DATA_GEN_LEN = 10;
 	public static boolean RANDOM_DATA_GEN_FLAG = true;
-	public static String baseURI="http://aepdemo.alertenterprise.com/";
+//	public static String baseURI="http://aepdemo.alertenterprise.com/";
+	public static String baseURI="http://autodevhsc.alertenterprise.com";
 	public static String access_token="";
 	public static String assetCode="";
 	public static String reviewName="";

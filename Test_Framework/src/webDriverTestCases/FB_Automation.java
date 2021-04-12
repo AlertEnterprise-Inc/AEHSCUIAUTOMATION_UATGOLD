@@ -115,6 +115,8 @@ public class FB_Automation extends BrowserSelection {
 		
 		logger =report.startTest("FB_Automation_TC003","Create Identity,search Identity ,edit Identity ,Duplicate check identity");
 		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
+		
+		
 	
 		/** Login as AS User **/
 		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
@@ -132,7 +134,7 @@ public class FB_Automation extends BrowserSelection {
 			FB_Automation_CommonMethods.updatePhoto();
 			
 			/** Modify Identity **/
-			FB_Automation_CommonMethods.modifyIdentity();
+			FB_Automation_CommonMethods.modifyIdentityIDM("","");
 			
 			/** Create Duplicate Identity **/
 			FB_Automation_CommonMethods.createDuplicateIdentity();
@@ -782,4 +784,70 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
 		}			
 	}
+	
+	/*
+	 * TC017 : Modify Identity through IDM
+	 */
+	
+	@Test(priority=17)
+	public void FB_Automation_TC017() throws Throwable 
+	{
+		
+		logger =report.startTest("FB_Automation_TC017","***************Modify Identity**************");
+		System.out.println("[INFO]--> FB_Automation_TC017 - TestCase Execution Begins");
+		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC017");
+		
+		AGlobalComponents.applicationURL = (String) testData.get("application_url");
+		String firstName ="Test"+Utility.getRandomString(4);
+		String lastName =Utility.getRandomString(4);
+		String scriptName = (String) testData.get("script_name");
+		AGlobalComponents.userId=firstName+"."+lastName;
+		String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
+		/** Login as admin User **/
+		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+		if(loginStatus){
+			
+			/**create new asset **/
+			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+			
+			/**create identity **/
+			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+			
+			/** check details of user before modifying identity **/
+	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+		
+	 		/** Launch New Private Browser **/
+	 		Utility.switchToNewBrowserDriver();
+			
+	 		/* Login as Manager */
+	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+	 		if(loginStatus){
+	 			logger.log(LogStatus.PASS, "Login Successful");
+					
+	 			/** Modify Identity **/
+	 			FB_Automation_CommonMethods.modifyIdentityIDM(parameterToBeModified,scriptName);
+	 				 		
+	 				
+	 			/** Switch to Default Browser **/
+	 			Utility.switchToDefaultBrowserDriver();
+	 		}
+	 		else{
+	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+	 		}
+
+	 		/** Validate  status in IDM after  request approved**/
+	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,"",scriptName);
+	 		
+	 		/** Logout from Application **/
+	 		LoginPage.logout();
+		
+	 	}
+	 	else {
+	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	 	}	
+		
+	}
+	
 }

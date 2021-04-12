@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import CommonClassReusables.MsSql;
@@ -1341,7 +1342,7 @@ public void Self_Service_Automation_TC018() throws Throwable
  			}
 
  			/** Validate  status in IDM after  request approved**/
- 			Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 			Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,"",scriptName);
  			Utility.updateDataInDatasource("Self_Service_Automation_TC018", "first_name", "");
 			Utility.updateDataInDatasource("Self_Service_Automation_TC018", "last_name", "");
 			Utility.updateDataInDatasource("Self_Service_Automation_TC018", "full_name", "");
@@ -1370,10 +1371,13 @@ public void Self_Service_Automation_TC019() throws Throwable
 	
 	logger =report.startTest("Self_Service_Automation_TC019","Manager Login Scenarios :Temp Worker Onboarding ");
 	System.out.println("[INFO]--> Self_Service_Automation_TC019 - TestCase Execution Begins");
+	AGlobalComponents.tempWorkerOnboarding = true;
 	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC019");
 	
 	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String scriptName = (String) testData.get("script_name");
 	String firstName ="Temp" + Utility.getRandomString(4),lastName ="Onboard";
+	
 	String requestNumber = "";
 	
 	/** Login as admin **/
@@ -1394,11 +1398,8 @@ public void Self_Service_Automation_TC019() throws Throwable
  			logger.log(LogStatus.PASS, "Login Successful");
 		
 			/** temp worker onboarding**/
- 			if(requestNumber==null||requestNumber.equals("")){
  				requestNumber=Self_Service_CommonMethods.temporaryWorkerOnboarding(firstName,lastName);
- 				Utility.updateDataInDatasource("Self_Service_Automation_TC019", "request_number", requestNumber);
- 			}
-		
+ 						
  			/** Switch to Default Browser **/
  	 		Utility.switchToDefaultBrowserDriver();
  		}
@@ -1428,7 +1429,7 @@ public void Self_Service_Automation_TC019() throws Throwable
  	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
  	 			
  	 			/** checkStatusInMyRequestInbox**/
- 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("request_type"));
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,scriptName);
  	 			
  	 		}
  		}
@@ -1437,7 +1438,7 @@ public void Self_Service_Automation_TC019() throws Throwable
  		Utility.switchToDefaultBrowserDriver();
  		
  		/** Validate  created temp worker in IDM after  request approved**/
- 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",scriptName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC020", "first_name", firstName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC020", "last_name", lastName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC020", "full_name", firstName+" "+lastName);
@@ -1486,7 +1487,9 @@ public void Self_Service_Automation_TC020() throws Throwable
 	String firstName =(String) testData.get("first_name"),lastName =(String) testData.get("last_name"); 
 	String requestNumber = (String) testData.get("request_number");
 	String accessName = (String) testData.get("access_name_1") ;
-	String parameterToBeModified=(String) testData.get("parameterToBeModified");
+	String scriptName = (String) testData.get("script_name") ;
+	AGlobalComponents.userId = (String) testData.get("user_id") ;
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
 				
 	/** Login as admin **/
 	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
@@ -1494,6 +1497,7 @@ public void Self_Service_Automation_TC020() throws Throwable
 		
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
 			firstName="Temp"+Utility.getRandomString(4);lastName="WorkerModification";
+			
 			/**creating asset for the user**/
 			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 	
@@ -1564,7 +1568,7 @@ public void Self_Service_Automation_TC020() throws Throwable
 		}
  
  		/** checking details of temp worker in IDM before request submission**/
- 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,scriptName);
  		
  		/** Launch New Private Browser **/
  		Utility.switchToNewBrowserDriver();
@@ -1576,13 +1580,12 @@ public void Self_Service_Automation_TC020() throws Throwable
  			logger.log(LogStatus.PASS, "Login Successful");
  		
  			/** Modifying the details of temp worker**/
- 			if(requestNumber==null||requestNumber.equals("")){
  				requestNumber=Self_Service_CommonMethods.tempWorkerModification(firstName,lastName,parameterToBeModified);
- 				Utility.updateDataInDatasource("Self_Service_Automation_TC020", "request_number", requestNumber);
- 			}
+ 				
+ 			
  			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,accessName,requestNumber,(String) testData.get("request_type"));
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,accessName,requestNumber,scriptName);
  			
  		}
  		/** Switch to Default Browser **/
@@ -1590,7 +1593,7 @@ public void Self_Service_Automation_TC020() throws Throwable
  		
 
  		/** checking modified last name of temp worker in IDM **/
- 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,accessName,(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,accessName,scriptName);
  		
  		
  		/** Logout from Application **/
@@ -2381,6 +2384,243 @@ public void Self_Service_Automation_TC027() throws Throwable
 	}
 	
 }
+
+/*
+ * TC028 : 5.0 Use cases . Badge Admin Login Scenarios : Activate Badge
+ */
+
+@Test(priority=28)
+public void Self_Service_Automation_TC028() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC0028","Badge Admin login scenarios - Activate Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC028 - TestCase Execution Begins");
+	String firstName ="George";
+	String lastName ="Martin";
+		
+	/** Login as badge admin User **/
+
+ 	logger.log(LogStatus.PASS, "Login Successful");
+ 	boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+ 	if (loginStatus) {
+ 		Self_Service_CommonMethods.activatedeactivateBadge(firstName,lastName,"activate");
+ 	 }
+ 		
+ 	Utility.switchToNewBrowserDriver();
+ 	/** Login as admin User **/
+ 		loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+ 		if(loginStatus){
+ 			Self_Service_CommonMethods.checkProvisioningLogs("UNLOCK_USER_SUCCESS","CCURE9000");
+ 			
+ 		}
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	}
+	
+
+/*
+ * TC029 : 5.0 Use cases . Badge Admin Login Scenarios : Deactivate Badge
+ */
+
+@Test(priority=29)
+public void Self_Service_Automation_TC029() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC029","Badge Admin login scenarios - Deactivate Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC029 - TestCase Execution Begins");
+	String firstName ="George";
+	String lastName ="Martin";
+		
+	/** Login as badge admin User **/
+
+ 	logger.log(LogStatus.PASS, "Login Successful");
+ 	boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+ 	if (loginStatus) {
+ 		Self_Service_CommonMethods.activatedeactivateBadge(firstName,lastName,"deactivate");
+ 	 }
+ 		
+ 	Utility.switchToNewBrowserDriver();
+ 	/** Login as admin User **/
+ 		loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+ 		if(loginStatus){
+ 			Self_Service_CommonMethods.checkProvisioningLogs("LOCK_USER_SUCCESS","CCURE9000");
+ 			
+ 		}
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	}
+	
+
+/*
+ * TC030 : 5.0 Use cases . Badge Admin Login Scenarios : Request Replacement Badge
+ */
+
+@Test(priority=30)
+public void Self_Service_Automation_TC030() throws Throwable 
+	{
+		String firstName ="Mike";
+		String lastName ="Rodi";
+		logger =report.startTest("Self_Service_Automation_TC030","Badge Admin login scenarios - Request Replacement badge");
+		System.out.println("[INFO]--> Self_Service_Automation_TC030 - TestCase Execution Begins");
+		boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+ 			Self_Service_CommonMethods.requestReplacementBadge(firstName, lastName);
+ 			}
+		
+		Utility.switchToNewBrowserDriver();
+	 	/** Login as admin User **/
+	 		loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+	 		if(loginStatus){
+	 			Self_Service_CommonMethods.checkProvisioningLogs("LOCK_USER_SUCCESS","CCURE9000");
+	 			Self_Service_CommonMethods.checkProvisioningLogs("CREATE_USER_SUCCESS","AMAG");
+	 			
+	 		}
+	 		
+	 		/** Logout from Application **/
+	 		LoginPage.logout();
+	}
+
+/*
+ * TC031 : 5.0 Use cases . Badge Admin Login Scenarios : Request new badge
+ */
+
+@Test(priority=31)
+public void Self_Service_Automation_TC031() throws Throwable 
+	{
+		
+	logger =report.startTest("Self_Service_Automation_TC031","Badge Admin login scenarios - Request New Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC031- TestCase Execution Begins");
+	String firstName ="Mike";
+	String lastName ="Rodi";
+		
+	/** Login as badge admin User **/
+
+ 	logger.log(LogStatus.PASS, "Login Successful");
+ 	boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+ 	if (loginStatus) {
+ 		Self_Service_CommonMethods.requestNewBadge(firstName,lastName);
+ 	 	}
+ 		
+ 	Utility.switchToNewBrowserDriver();
+ 	/** Login as admin User **/
+ 		loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+ 		if(loginStatus){
+ 			Self_Service_CommonMethods.checkProvisioningLogs("CREATE_USER_SUCCESS","CCURE9000");
+ 			
+ 		}
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	}
+
+/*
+ * TC032 : 5.0 Use cases . Badge Admin Login Scenarios : Reset Pin
+ */
+
+@Test(priority=32)
+public void Self_Service_Automation_TC032() throws Throwable 
+	{
+		
+	logger =report.startTest("Self_Service_Automation_TC032","Badge Admin login scenarios - Reset Pin");
+	System.out.println("[INFO]--> Self_Service_Automation_TC032 - TestCase Execution Begins");
+	String firstName ="Scott";
+	String lastName ="Carter";
+		
+	/** Login as badge admin User **/
+
+ 	logger.log(LogStatus.PASS, "Login Successful");
+ 	boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+ 	if (loginStatus) {
+ 		Self_Service_CommonMethods.resetBadgePin(firstName, lastName);
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+ 	 	}
+	}
+
+/*
+ * TC033 : Self Service - Return Temporary Badge
+*/
+
+@Test(priority=33)
+public void Self_Service_Automation_TC033() throws Throwable 
+{
+
+	logger =report.startTest("Self_Service_Automation_TC033","Self Service - Return Temporary Badge");
+	System.out.println("[INFO]--> Self_Service_Automation_TC033 - TestCase Execution Begins");
+	
+	String firstName ="Ujjwal";
+	String lastName ="Mishra";
+
+	/** Login as badge admin **/
+	boolean loginStatus = LoginPage.loginAEHSC("badge.admin", "Alert1234");
+
+	if(loginStatus){
+
+		/** Create Return Badge Request **/
+		Self_Service_CommonMethods.returnTemporaryBadge(firstName, lastName);
+
+		Utility.switchToNewBrowserDriver();
+	 	/** Login as admin User **/
+	 		loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");	
+	 		if(loginStatus){
+	 			Self_Service_CommonMethods.checkProvisioningLogs("DELETE_USER_SUCCESS","LENEL");
+	 			
+	 		}
+	 		/** Logout from Application **/
+	 		LoginPage.logout();
+
+	}else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+
+}
+
+/*
+ * TC034 : Self Service - Access Review Identity Expiring in X days
+*/
+
+@Test(priority=34)
+public void Self_Service_Automation_TC034() throws Throwable 
+{
+	logger =report.startTest("Self_Service_Automation_TC034","Self Service - Access Review Identity Expiring in X days");
+	System.out.println("[INFO]--> Self_Service_Automation_TC034 - TestCase Execution Begins");
+	
+	/** Login as  admin **/
+	boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
+	
+	if(loginStatus){
+		ArrayList<String> arr = Self_Service_CommonMethods.checkIdentityExpiring("CCTV_ROOM", "abc@gmail.com", "New York", "employee", "SYS-000002","QA Manager");
+		String reqNo =  arr.remove(arr.size() - 1);
+		System.out.println("the array is "+arr);
+		System.out.println("the req no is "+reqNo);
+		
+		/** Launch New Private Browser **/
+		Utility.switchToNewBrowserDriver();
+		
+		/** Login as Manager User **/
+		LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+		HashMap<String, String> map = Self_Service_CommonMethods.checkIdentityExpiringRequestInManagerInbox(arr, reqNo,"ADMIN USER","CCTV_ROOM");
+		
+		/** Switch to Default Browser **/
+		Utility.switchToDefaultBrowserDriver();
+		
+		for(int i=0;i<arr.size();i++)
+		{	
+		Self_Service_CommonMethods.checkUserStatusInIDM(arr.get(i),map,"CCTV_ROOM");
+		}
+		Self_Service_CommonMethods.checkRequestStatusInMyRequest(reqNo);
+		/** Logout from Application **/
+ 		LoginPage.logout();
+	}
+	else{
+		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+	}
+}
+
 
 
 }

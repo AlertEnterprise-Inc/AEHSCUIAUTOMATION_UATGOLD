@@ -6,6 +6,8 @@ public interface AccessObjects {
 	
 	String manageAccessLnk = "//span[text()='Manage Access']";
 	
+	String accessReviewLnk = "//span[text()='Access Review']";
+	
 	String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
 	
 	String enterFieldNameToFilter = "//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default')]";
@@ -31,5 +33,17 @@ public interface AccessObjects {
 	String removeAccessLnk = "//*[contains(@class,'aegrid-noaccess ')]";
 
 	String identityTabLnk = ".//*[text()='Identity']";
+	
+	String accessSceduleDetailsLnk = "//span[contains(text(),'Schedule Details')]";
+	
+	String accessReviewScheduleBtn = "//span[contains(@id,'button') and contains(@class,'x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-schedule')]";
+	
+	String accessReviewSceduleTypeDnd = "//input[@placeholder= 'Select Schedule Type']";
+	
+	String accessReviewTimeZoneDnd = "//input[@placeholder= 'Select Time Zone']";
+	
+	String accessReviewStartTimeDnd = "//input[@placeholder= 'Enter Start Date / Time']";
+	
+	String accessReviewConfirmBtn = "//span[text()='Confirm']";
 	
 }

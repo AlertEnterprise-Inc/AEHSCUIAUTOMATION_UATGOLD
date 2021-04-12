@@ -11,5 +11,7 @@ public interface AdminObjects {
 	String adminProvMonitorChooseFieldTxt =".//input[@data-ref='inputEl' and @placeholder='Choose Field']";
 	
 	String adminProvMonitorReloadBtn =".//*[@data-ref='btnIconEl' and contains(@style,'reload')]";
+	
+	String adminProvManageJobsLnk = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Jobs']";
 
 }

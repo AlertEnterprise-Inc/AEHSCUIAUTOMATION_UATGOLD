@@ -707,4 +707,46 @@ public class DBValidations extends BrowserSelection{
 			return false;
 		}
 	}
+	
+	public static String checkAssetStatusInCCURE(String cardNumber) throws ClassNotFoundException {
+		String query = "Select Disabled from [ACVSCore].[Access].[Credential] where CardNumber ='"+cardNumber+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
+		System.out.println("status is: "+rs.get(0).get(0));
+		String status =rs.get(0).get(0);	
+		if(status!=null) {
+			System.out.println("disable status of asset is: "+status);
+		}
+		else {
+			System.out.println("Unable to fetch status");
+		}
+		return status;
+	}
+	
+	public static int checkRecordInCCURE(String cardNumber) throws ClassNotFoundException {
+		String query = "Select count(*) from [ACVSCore].[Access].[Credential] where CardNumber='"+cardNumber+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
+		System.out.println("status is: "+rs.get(0).get(0));
+		int status = Integer.parseInt(rs.get(0).get(0));	
+		if(status!=0) {
+			System.out.println("status of asset is: "+status);
+		}
+		else {
+			System.out.println("Unable to fetch status");
+		}
+		return status;
+	}
+	
+	public static String getResetPinInLenel(String cardNumber) throws ClassNotFoundException {
+		String query = "SELECT CONVERT(VARCHAR(1000), PIN, 2) from AccessControl.dbo.BADGE where id='"+cardNumber+"'";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromLenelDatabase(query));
+		System.out.println("pin is: "+rs.get(0).get(0));
+		String pin = rs.get(0).get(0);	
+		if(pin!=null) {
+			System.out.println("pin is: "+pin);
+		}
+		else {
+			System.out.println("Unable to fetch the pin");
+		}
+		return pin;
+	}
 }
