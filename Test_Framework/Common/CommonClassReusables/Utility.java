@@ -36,6 +36,18 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
+import javax.mail.BodyPart;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.internet.ContentType;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.search.FlagTerm;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -1845,6 +1857,181 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 			}
 			return flag;
 	 }
+	 
+
+/**
+* <h1>verifyMail</h1>
+* This is Method to Verify Email Notifications
+* @author Jiten Khanna
+* @modified
+* @version 1.0
+* @since 02-15-2021
+* @param String userName, String password, String mailSubject, String mailbody
+* @return boolean
+**/
+
+public static boolean verifyMail(String userName, String password, String mailSubject, String mailBody, String reqNum) { 
+	Folder folder = null; 
+	Store store = null; 
+	System.out.println("***READING MAILBOX..."); 
+	logger.log(LogStatus.INFO, "***READING MAILBOX...");
+	try { 
+		Properties props = new Properties(); 
+		props.put("mail.store.protocol", "imaps"); 
+		Session session = Session.getInstance(props); 
+		store = session.getStore("imaps"); 
+		store.connect("imap.gmail.com", userName, password); 
+		folder = store.getFolder("INBOX"); 
+		folder.open(Folder.READ_WRITE); 
+		Message[] messages = folder.getMessages(); //CHANGE
+		
+//		Message[] messages = folder.search(new FlagTerm(new Flags(Flags.Flag.SEEN), false));
+//
+//        // Sort messages from recent to oldest
+//        Arrays.sort( messages, ( m1, m2 ) -> {
+//	          try {
+//	            return m2.getSentDate().compareTo( m1.getSentDate() );
+//	          } catch ( MessagingException e ) {
+//	            throw new RuntimeException( e );
+//	          }
+//        	} );
+
+
+		System.out.println("No of Messages : " + folder.getMessageCount()); 
+		logger.log(LogStatus.INFO, "No of Messages : " + folder.getMessageCount());
+		System.out.println("No of Unread Messages : " + folder.getUnreadMessageCount()); 
+		logger.log(LogStatus.INFO, "No of Unread Messages : " + folder.getUnreadMessageCount());
+		for (int i = 8100; i < messages.length; i++) { 
+			System.out.println("Reading MESSAGE # " + (i + 1) + "..."); 
+			Message msg = messages[i]; 
+			String strMailSubject = "", strMailBody = ""; 
+			// Getting mail subject 
+			Object subject = msg.getSubject(); 
+			// Casting objects of mail subject into String 
+			strMailSubject = (String) subject; 
+			// Getting mail body and Casting objects of mail body into String
+		    if (msg.isMimeType("text/plain")) {
+		    	strMailBody = msg.getContent().toString();
+		    } else if (msg.isMimeType("multipart/*")) {
+		        MimeMultipart mimeMultipart = (MimeMultipart) msg.getContent();
+		        strMailBody = getTextFromMimeMultipart(mimeMultipart);
+		    }
+	
+			if (strMailSubject.contains(mailSubject)) {
+				if(strMailBody.contains(reqNum) && strMailBody.contains(mailBody)){
+					System.out.println("Mail Found in Inbox with Subject: "+strMailSubject);
+					logger.log(LogStatus.PASS, "Mail Found in Inbox with Subject: "+strMailSubject);
+					System.out.println("Mail Found in Inbox for Request Number: "+reqNum);
+					logger.log(LogStatus.PASS, "Mail Found in Inbox for Request Number: "+reqNum);
+					System.out.println("Mail Found in Inbox with Mail Content: "+mailBody);
+					logger.log(LogStatus.PASS, "Mail Found in Inbox with Mail Content: "+mailBody);
+					break; 
+				}
+			} 
+		} 
+		return true; 
+	} catch (MessagingException messagingException) { 
+		messagingException.printStackTrace(); 
+	} catch (IOException ioException) { 
+		ioException.printStackTrace(); 
+	} finally { 
+		if (folder != null) { 
+			try { 
+				folder.close(true); 
+			} catch (MessagingException e) { 
+				e.printStackTrace(); 
+			} 
+		} 
+		if (store != null) { 
+			try { 
+				store.close(); 
+			} catch (MessagingException e) { 
+				e.printStackTrace(); 
+			} 
+		} 
+	} 
+	return false; 
+} 
+
+
+/**
+* <h1>getTextFromMimeMultipart</h1>
+* This is a Method to Get Text from Mime Multipart
+* @author  	Jiten Khanna
+* @modified 
+* @version 	1.0
+* @since   	03-02-2021
+* @param   	String scriptName
+* @return  	String
+**/
+
+private static String getTextFromMimeMultipart(MimeMultipart mimeMultipart) throws IOException, MessagingException 
+{
+
+    int count = mimeMultipart.getCount();
+    if (count == 0)
+        throw new MessagingException("Multipart with no body parts not supported.");
+    boolean multipartAlt = new ContentType(mimeMultipart.getContentType()).match("multipart/alternative");
+    if (multipartAlt)
+        // alternatives appear in an order of increasing 
+        // faithfulness to the original content. Customize as req'd.
+        return getTextFromBodyPart(mimeMultipart.getBodyPart(count - 1));
+    String result = "";
+    for (int i = 0; i < count; i++) {
+        BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+        result += getTextFromBodyPart(bodyPart);
+    }
+    return result;
+}
+
+
+/**
+* <h1>getTextFromBodyPart</h1>
+* This is a Method to Get Text from Email Body
+* @author  	Jiten Khanna
+* @modified 
+* @version 	1.0
+* @since   	03-02-2021
+* @param   	String scriptName
+* @return  	String
+**/
+
+private static String getTextFromBodyPart(BodyPart bodyPart) throws IOException, MessagingException {
+    
+    String result = "";
+    if (bodyPart.isMimeType("text/plain")) {
+        result = (String) bodyPart.getContent();
+    } else if (bodyPart.isMimeType("text/html")) {
+        String html = (String) bodyPart.getContent();
+        result = org.jsoup.Jsoup.parse(html).text();
+    } else if (bodyPart.getContent() instanceof MimeMultipart){
+        result = getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+    }
+    return result;
+}
+
+/**
+* <h1>handle announcement popup</h1>
+* This is a Method to close the announcement popup 
+* @author  	Jiten Khanna
+* @modified 
+* @version 	1.0
+* @since   	13-04-2021
+* @param   	
+* @return  	
+**/
+
+public static void handleAnnouncementPopup() throws InterruptedException {
+	
+	if(driver.findElements(By.xpath(".//div[contains(@id,'header-title-textEl') and text()='Announcement']")).size()>0)
+	{
+		driver.findElement(By.xpath(".//div[contains(@id,'header-title-textEl') and text()='Announcement']//parent::div//following-sibling::div[contains(@id,'tool') and @data-qtip='Close Dialog']")).click();
+		Thread.sleep(1000);
+	}
+	
+}
+
+
 
 
 }

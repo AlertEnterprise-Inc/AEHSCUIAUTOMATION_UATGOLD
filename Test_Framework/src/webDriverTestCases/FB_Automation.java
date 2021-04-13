@@ -689,6 +689,7 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
+
 	@Test(priority=16)
 	public void FB_Automation_TC016() throws Throwable 	{
 		logger =report.startTest("FB_Automation_TC016","Area Admin Cases(Add Identities,Remove Identities)");
@@ -707,17 +708,17 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			for(int i=0;i<1;i++) {
-				firstNames.add("Test"+Utility.getRandomString(4));
-				lastNames.add("AreaAdmin");
+				firstNames.add((String) testData.get("first_name"));
+				lastNames.add((String) testData.get("last_name"));
 				
 				/**creating asset for the user**/
-				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+//				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
-				/** Create Identities **/
-				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");
+				/* Create Identities */
+//				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");
 			}
 			
-			/** Launch New Private Browser **/
+			/* Launch New Private Browser */
 			Utility.switchToNewBrowserDriver();
 			
 			/* Login as Area Admin */
@@ -728,7 +729,7 @@ public class FB_Automation extends BrowserSelection {
 		
 				if (FB_Automation_CommonMethods.addIdentities(firstNames, lastNames, accessName)) 
 				{
-					/** Launch New Private Browser **/
+					/* Launch New Private Browser */
 					Utility.switchToNewBrowserDriver();
 		
 					/* Login as Manager */
@@ -749,6 +750,7 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
 		}			
 	}
+	
 	
 	/*
 	 * TC017 : Modify Identity through IDM
