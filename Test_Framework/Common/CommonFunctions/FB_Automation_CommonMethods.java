@@ -1127,7 +1127,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					fillAssetsInfo(AGlobalComponents.assetCode);
 					ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 					Utility.pause(10);
-					logger.log(LogStatus.PASS, "Created asset assigned to the user");
+					
 				
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
 					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
@@ -1137,15 +1137,23 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						Actions action = new Actions(driver);
 						action.doubleClick(record).build().perform();
 						Utility.pause(10);
-						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
-						if(driver.findElements(By.xpath("//*[text()='"+AGlobalComponents.systemNameOfAsset+"']")).size()>0)
-							logger.log(LogStatus.INFO, "System is assigned to the user");
-						else
-							logger.log(LogStatus.FAIL, "System is not assigned to the user");
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+						if(driver.findElements(By.xpath("//*[text()='"+AGlobalComponents.assetCode+"']")).size()>0){
+							logger.log(LogStatus.PASS, "Created asset assigned to the user");
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
+							if(driver.findElements(By.xpath("//*[text()='"+AGlobalComponents.systemNameOfAsset+"']")).size()>0)
+								logger.log(LogStatus.INFO, "System is assigned to the user");
+							else
+								logger.log(LogStatus.FAIL, "System is not assigned to the user");
+							
 						}
+						else{
+							logger.log(LogStatus.FAIL, "Asset is not assigned to the user");
+						}
+						
 					
 					}
-					
+				}	
 			}
 			catch(Exception e)
 			{		

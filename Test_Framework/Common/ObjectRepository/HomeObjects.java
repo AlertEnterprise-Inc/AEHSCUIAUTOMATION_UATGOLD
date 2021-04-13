@@ -15,6 +15,7 @@ public interface HomeObjects {
 	
 	//*********** NEW PLATFORM ***********
 	
+		String homeAnnouncementPopUpCloseLnk ="//div[text()='Announcement']//parent::div//following-sibling::div//div[@class='x-tool-tool-el x-tool-img x-tool-close ']";
 		String homeTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Home']";
 		String myRequestsTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Requests']";
 		String inboxTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Inbox']";

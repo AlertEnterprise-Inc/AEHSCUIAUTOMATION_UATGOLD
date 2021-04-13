@@ -44,7 +44,6 @@ public class Golden_Suite  extends BrowserSelection {
 	}
 
 
-
 	/*
 	 * TC017 : 5.0 Use cases . Manager Login Scenarios :Employment Type Conversion
 	 */
@@ -442,7 +441,6 @@ public class Golden_Suite  extends BrowserSelection {
 	}
 	
 }
-
 /*
  * TC025 :  Position Access
 */
@@ -785,210 +783,8 @@ public void Self_Service_Automation_TC027() throws Throwable
 	
 }
 
-//@Test(priority=11)
-//public void FB_Automation_TC011() throws Throwable 
-//{
-//	logger =report.startTest("SuccessFactors HR System Usecases E01","Employee Onboarding from HR DB Connector");
-//	System.out.println("[INFO]--> SuccessFactors HR System Usecases E01 - TestCase Execution Begins");
-//
-//	String firstName=Utility.getRandomString(5);
-//	String lastName="Onboard";
-//	String userId=Utility.UniqueNumber(6);
-//	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC011");
-//
-//	AGlobalComponents.applicationURL = (String) testData.get("application_url");
-//
-//	if(FB_Automation_CommonMethods.createUserInHRDb(firstName,lastName,userId)) {
-//		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
-//
-//		if(loginStatus){
-//			logger.log(LogStatus.PASS, "Login Successful");
-//
-//			/* Create Recon Job */
-//			FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
-//
-//			/**creating asset for the user**/
-//			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-//			Utility.pause(10);	
-//			/** Launch New Private Browser **/
-//			Utility.switchToNewBrowserDriver();
-//
-//			/* Login as Manager */
-//			loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-//
-//			if(loginStatus){
-//				logger.log(LogStatus.PASS, "Login Successful");
-//
-//				/** checkStatusInMyRequestInbox**/
-//				Self_Service_CommonMethods.checkRequestInManagerInbox((String) testData.get("request_type"),firstName,lastName);
-//
-//				/** approve request  by manager**/
-//				Self_Service_CommonMethods.approveRequestInInbox((String) testData.get("workflow_stage"));
-//
-//				/* Logout from application */
-//				LoginPage.logout();
-//
-//				/* Login as Badge Admin */
-//				loginStatus = LoginPage.loginAEHSC((String) testData.get("badge_admin_username"), (String) testData.get("badge_admin_password"));
-//
-//				if(loginStatus){
-//					logger.log(LogStatus.PASS, "Login Successful");
-//
-//					/** approve request By badge admin **/
-//					Self_Service_CommonMethods.approveRequestInInbox((String) testData.get("workflow_stage2"));
-//
-//					Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),firstName,lastName,"");	
-//				}
-//			}
-//
-//			/** Switch to Default Browser **/
-//			Utility.switchToDefaultBrowserDriver();
-//
-//			/** Validate  created User in IDM after  request approved**/
-//			Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC011");
-//
-//			Utility.updateDataInDatasource("FB_Automation_TC011", "first_name", firstName);
-//			Utility.updateDataInDatasource("FB_Automation_TC011", "last_name", lastName);
-//			Utility.updateDataInDatasource("FB_Automation_TC011", "user_id", userId);
-//			Utility.updateDataInDatasource("FB_Automation_TC011", "full_name", firstName+" "+lastName);
-//			Utility.updateDataInDatasource("FB_Automation_TC011", "badge_name", AGlobalComponents.assetName);
-//
-//			/** Logout from Application **/
-//			LoginPage.logout();		
-//		}
-//		else {
-//			logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-//		}
-//	} 
-//}
-//
-//@Test(priority=12)
-//public void FB_Automation_TC012() throws Throwable 
-//{
-//
-//	logger =report.startTest("SuccessFactors HR System Usecases E02","Change Job Title from HR DB Connector");
-//	System.out.println("[INFO]--> SuccessFactors HR System Usecases E02 - TestCase Execution Begins");
-//
-//	HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
-//	String userId = (String) testData1.get("user_id");
-//	String firstName=(String) testData1.get("first_name");
-//	String lastName=(String) testData1.get("last_name");
-//
-//	if(userId==null||userId.equals(""))
-//	{
-//		logger.log(LogStatus.INFO, "UserId doesn't exists in Db,Executing EmployeeOnboarding");
-//		FB_Automation_TC011();
-//	}
-//
-//	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC012");
-//	AGlobalComponents.applicationURL = (String) testData.get("application_url");
-//	String jobTitle = (String) testData.get("job_title");
-//
-//	if(FB_Automation_CommonMethods.changeEmpJobTitleThroughHRDB(userId,jobTitle)) {
-//		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
-//
-//		if(loginStatus){
-//			logger.log(LogStatus.PASS, "Login Successful");
-//
-//			/* Create Recon Job */
-//			FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
-//
-//			/** Launch New Private Browser **/
-//			Utility.switchToNewBrowserDriver();
-//
-//			/* Login as Manager */
-//			loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-//
-//			if(loginStatus){
-//				logger.log(LogStatus.PASS, "Login Successful");
-//
-//				/** checkStatusInMyRequestInbox**/
-//				Self_Service_CommonMethods.checkRequestInManagerInbox((String) testData.get("request_type"),firstName,lastName);
-//
-//				/** approve request  by manager**/
-//				Self_Service_CommonMethods.approveRequestInInbox((String) testData.get("workflow_stage"));
-//
-//				Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),"","","");
-//
-//			}
-//
-//			/** Switch to Default Browser **/
-//			Utility.switchToDefaultBrowserDriver();
-//
-//			/** Validate  Changed Job Title in IDM after  request approved**/
-//			Self_Service_CommonMethods.checkStatusAfterRequestApproval("","",jobTitle,"FB_Automation_TC012");
-//
-//			/** Logout from Application **/
-//			LoginPage.logout();		
-//		}
-//		else {
-//			logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-//		}	
-//	}
-//}
-//
-//@Test(priority=16)
-//public void FB_Automation_TC016() throws Throwable 	{
-//	logger =report.startTest("Area Admin Cases","Add Identities,Remove Identities");
-//	System.out.println("[INFO]--> Area Admin Cases - TestCase Execution Begins");
-//
-//	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC016");
-//	AGlobalComponents.applicationURL = (String) testData.get("application_url"); 
-//	String accessName = (String) testData.get("access_name_1");
-//
-//	ArrayList<String> firstNames=new ArrayList<String>();
-//	ArrayList<String> lastNames= new ArrayList<String>();
-//
-//	/* Login as Manager */
-//	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
-//
-//	if(loginStatus){
-//		logger.log(LogStatus.PASS, "Login Successful");
-//		for(int i=0;i<1;i++) {
-//			firstNames.add("Test"+Utility.getRandomString(4));
-//			lastNames.add("AreaAdmin");
-//
-//			/**creating asset for the user**/
-//			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-//
-//			/** Create Identities **/
-//			FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");
-//		}
-//
-//		/** Launch New Private Browser **/
-//		Utility.switchToNewBrowserDriver();
-//
-//		/* Login as Area Admin */
-//		loginStatus = LoginPage.loginAEHSC((String) testData.get("area_admin_username"), (String) testData.get("area_admin_password"));	
-//
-//		if(loginStatus){
-//			logger.log(LogStatus.PASS, "Login Successful");
-//
-//			if (FB_Automation_CommonMethods.addIdentities(firstNames, lastNames, accessName)) 
-//			{
-//				/** Launch New Private Browser **/
-//				Utility.switchToNewBrowserDriver();
-//
-//				/* Login as Manager */
-//				loginStatus = LoginPage.loginAEHSC((String) testData.get("area_admin_username"), (String) testData.get("area_admin_password"));	
-//
-//				if(loginStatus){
-//					logger.log(LogStatus.PASS, "Login Successful");
-//
-//					FB_Automation_CommonMethods.removeIdentities(firstNames, lastNames, accessName);
-//				}
-//			}
-//			else
-//				logger.log(LogStatus.FAIL, "Unable to add Identity");
-//		}	
-//		LoginPage.logout();		
-//	}
-//	else {
-//		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-//	}			
-//}
-}
 
+}
 
 
 

@@ -1900,7 +1900,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			System.out.println("**************************** createNewAsset ********************************");
 			logger.log(LogStatus.INFO,"**************************** createNewAsset ********************************");
 			try {
-				
+				if(driver.findElements(By.xpath(HomeObjects.homeAnnouncementPopUpCloseLnk)).size()>0)
+					ByAttribute.click("xpath", HomeObjects.homeAnnouncementPopUpCloseLnk, "Close announcement pop up");
 				if(driver.findElements(By.xpath(AssetObjects.assetTabBtn)).size()>0)
 				{
 					ByAttribute.mouseHover("xpath", AssetObjects.assetTabBtn, "Mouse Hover on Asset Tab Link");
@@ -3343,7 +3344,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								Utility.pause(10);
 							}
 						}
-						String parameterToBeUpdated=parameterToBeModified;
+						String parameterToBeUpdated=(String) testData1.get("parameter_tobemodified");
 						switch(parameterToBeUpdated.toLowerCase()){
 						case "photo":
 							ByAttribute.click("xpath", IdentityObjects.idmMAnageIdentityExpandLeftViewLnk, "Expand left view");
@@ -3396,7 +3397,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			                fileInput.delete();
 			                fileOutPut.delete();
 			            	break;
-						case "lastName":
+						case "lastname":
 													
 							String newLastName = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt)).getAttribute("value");
 							
@@ -5774,6 +5775,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			System.out.println("******** Employment Type conversion from contractor to Permanent By Manager*********");
 			logger.log(LogStatus.INFO,"*********Employment Type conversion from contractor to Permanent By Manager**************");
 			try {
+				if(driver.findElements(By.xpath(HomeObjects.homeAnnouncementPopUpCloseLnk)).size()>0)
+					ByAttribute.click("xpath", HomeObjects.homeAnnouncementPopUpCloseLnk, "Close announcement pop up");
+				
 				WebElement requestor=driver.findElement(By.xpath(".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']"));
 				requestorName = requestor.getText();
 				
@@ -5849,6 +5853,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.INFO,"***************************** Modify Identity By Manager*********************************");
 			
 			try {
+				if(driver.findElements(By.xpath(HomeObjects.homeAnnouncementPopUpCloseLnk)).size()>0)
+					ByAttribute.click("xpath", HomeObjects.homeAnnouncementPopUpCloseLnk, "Close announcement pop up");
 				 WebElement requestor=driver.findElement(By.xpath(".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']"));
 				requestorName = requestor.getText();
 				
@@ -6202,7 +6208,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				if(requestType.equalsIgnoreCase("Employee Offboarding")){
 					requestNumber=DBValidations.getAccessRequestOfTerminateFromDB();
-					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC013");
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC014");
 					accessNewForChangeJobTitle = (String) testData.get("access_name_1");					
 					HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
 					system1ForEmpOnboarding= (String) testData1.get("system_name");

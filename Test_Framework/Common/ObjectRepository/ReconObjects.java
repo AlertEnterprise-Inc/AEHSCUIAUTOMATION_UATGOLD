@@ -5,6 +5,8 @@ import CommonClassReusables.AGlobalComponents;
 public interface ReconObjects {
 
 		/** Recon **/
+	
+		String announcementLnk = "//*[text()='Announcement']/parent::div/following-sibling::div";
 		String reconTabLnk ="//span[contains(@class,'x-btn-inner-aeTopMenuButton-small') and contains(text(),'Recon')]";
 		
 		String reconSetUpLnk = "//span[contains(text(),'Recon setup')]";
@@ -155,6 +157,6 @@ public interface ReconObjects {
 
 		String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
 
-		String announcementLnk = "//*[contains(@class,'x-tool-pressed')]";
+		
 		
 }

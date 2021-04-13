@@ -749,4 +749,18 @@ public class DBValidations extends BrowserSelection{
 		}
 		return pin;
 	}
+	
+	public static String getAccessRequestOfEmpTypeConvPermanentToTemp() throws ClassNotFoundException {
+
+		String query="select ext_id from autodevhsc.Access_request where type='employmentTypeConversionPermanentToTemp' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
 }
