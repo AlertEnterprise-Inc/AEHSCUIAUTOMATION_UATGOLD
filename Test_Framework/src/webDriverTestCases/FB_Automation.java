@@ -452,7 +452,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  created User in IDM after  request approved**/
-				Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC011");
+				Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("script_name"));
 			 	
 				Utility.updateDataInDatasource("FB_Automation_TC011", "first_name", firstName);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "last_name", lastName);
@@ -523,7 +523,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","",jobTitle,"FB_Automation_TC012");
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","",jobTitle,(String) testData.get("script_name"));
 	
 				/** Logout from Application **/
 				LoginPage.logout();		
@@ -568,7 +568,7 @@ public class FB_Automation extends BrowserSelection {
 				Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),"","",accessName);
 			 			
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC013");
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("script_name"));
 		 		
 		 		/** Logout from Application **/
 				LoginPage.logout();	
@@ -613,7 +613,7 @@ public class FB_Automation extends BrowserSelection {
 				Self_Service_CommonMethods.checkRequestInCompletedInbox((String) testData.get("request_type"),"","",accessName);
 			 			
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC013");
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("script_name"));
 		 		
 		 		/** Logout from Application **/
 				LoginPage.logout();	
@@ -678,7 +678,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.switchToDefaultBrowserDriver();
 			 		
 				/** Validate  Changed Job Title in IDM after  request approved**/
-		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","","FB_Automation_TC014");
+		 		Self_Service_CommonMethods.checkStatusAfterRequestApproval("","","",(String) testData.get("script_name"));
 		 		
 		 		/** Logout from Application **/
 				LoginPage.logout();	
