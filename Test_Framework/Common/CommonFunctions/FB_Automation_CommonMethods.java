@@ -495,6 +495,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", ReconObjects.reconMonitorLnk,"click on Recon Monitor");
 				Utility.pause(10);
 				
+				//Close announcement dialog if present
+				
+				if(driver.findElements(By.xpath(ReconObjects.announcementLnk)).size()>0){
+					ByAttribute.click("xpath", ReconObjects.announcementLnk, "Close the announcement dialog");
+				}
+				
 				if(AGlobalComponents.trialReconJob){
 					ByAttribute.click("xpath", ReconObjects.trialJobRadioButton, "click on trial job radio button");
 					logger.log(LogStatus.INFO, "Navigated to Trial tab on Recon monitor screen");
@@ -4514,7 +4520,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "User "+firstName+" is selected ");
 						Utility.verifyElementPresentByScrollView(AccessObjects.removeAccessLnk, "Remove Access", true, false);
 						driver.findElement(By.xpath(AccessObjects.removeAccessLnk)).click();
-						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[7]/div/label";
+						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[6]/div/label";
 						String checkStatus=driver.findElement(By.xpath(checkStatusLocator)).getText();
 						if(checkStatus.equalsIgnoreCase("REMOVED")) {
 							Utility.verifyElementPresentByScrollView(checkStatusLocator, "Removed Status", true, false);

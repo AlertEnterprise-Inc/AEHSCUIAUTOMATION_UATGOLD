@@ -154,5 +154,7 @@ public interface ReconObjects {
 		String reconRemediationViewLnk = "//span[contains(@class,'x-menu-item-indent-no-separator') and text()='Recon Remediation View']";
 
 		String jobNameLocator = "//div[text()='"+AGlobalComponents.jobName+"']";
+
+		String announcementLnk = "//*[contains(@class,'x-tool-pressed')]";
 		
 }

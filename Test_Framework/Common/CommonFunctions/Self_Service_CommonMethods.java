@@ -3086,8 +3086,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			logger.log(LogStatus.INFO,"******Check status in IDM After request Approval************");
 			
 			try {
-				WebElement image=null ;
-														
+				WebElement image=null ;										
 				if(AGlobalComponents.RequestSubmit){
 					logger.log(LogStatus.INFO, "Checking status of the user after request submission");
 									
@@ -3162,7 +3161,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Navigate to Assets tab");
 							
 						getIndexOfIDMAssetsHeaders();
-						if(driver.findElements(By.xpath("//div[text()='"+AGlobalComponents.assetCode+"']")).size()>0){
+						if(driver.findElements(By.xpath("//div[text()='"+AGlobalComponents.assetName+"']")).size()>0){
 							WebElement assetStatus = driver.findElement(By.xpath("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::tr//td["+assignmentStatusIndex+"]/div"));
 							String assetAssignmentStatus = assetStatus.getText();
 							logger.log(LogStatus.INFO,"current assignment status of asset is : "+assetAssignmentStatus);
@@ -3283,6 +3282,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 					if(Utility.compareStringValues(requestType, "Employement Type Conversion Permanent To Temp")) {
 						
+						String employeeType =  (String) testData1.get("employee_type");
+						String accessName =  (String) testData1.get("access_name_1");
+						
 //						IDM Validation
 						if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
 							ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
@@ -3306,6 +3308,18 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						actions.doubleClick(elementLocator).perform();
 						Thread.sleep(3000);
 						
+						String newEmpType = driver.findElement(By.xpath(HomeObjects.homeAccessRequestEmpTypeTxt)).getAttribute("value");
+						if(Utility.compareStringValues(newEmpType, employeeType)){
+							Utility.verifyElementPresent(HomeObjects.homeAccessRequestEmpTypeTxt, "Employee Type", false);
+							logger.log(LogStatus.PASS, "Employee Type Modified to "+employeeType);
+						}
+						else
+							logger.log(LogStatus.FAIL, "Employee Type not modified to Permanent");
+						
+						/*Validating access assigned to the user*/
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+						Utility.verifyElementPresent("//*[text()='"+accessName+"']", accessName, false);
+						logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
 						
 					}
 					
@@ -6188,7 +6202,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				if(requestType.equalsIgnoreCase("Employee Offboarding")){
 					requestNumber=DBValidations.getAccessRequestOfTerminateFromDB();
-					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC012");
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC013");
 					accessNewForChangeJobTitle = (String) testData.get("access_name_1");					
 					HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource("FB_Automation_TC011");
 					system1ForEmpOnboarding= (String) testData1.get("system_name");
@@ -6241,6 +6255,15 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 				if(requestType.equalsIgnoreCase("Employee Offboarding")) {
 					
+					WebElement requestFor = driver.findElement(By.xpath("//div[normalize-space(text())='Request For']//parent::div//span[@class='tagorange identityBox']"));
+					String requestedFor = requestFor.getText();
+					if(Utility.compareStringValues(requestedFor, firstName+" "+lastName.toUpperCase())){
+						Utility.verifyElementPresent("//div[normalize-space(text())='Request For']//parent::div//span[@class='tagorange identityBox']", "Request for: "+requestedFor , false);
+						logger.log(LogStatus.INFO ,"RequestFor "+requestedFor+" is present");
+					}else
+						logger.log(LogStatus.FAIL ,"RequestFor "+requestedFor+" is not present");
+					
+					
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
 					if((driver.findElements(By.xpath("//*[text()='"+accessNewForChangeJobTitle+"']")).size()>0)){
 						WebElement access1Status = driver.findElement(By.xpath("//div[text()='"+accessNewForChangeJobTitle+"']//ancestor::td//following-sibling::td//label"));
@@ -6260,7 +6283,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String status2 = system2Status.getText();
 		//				String status3 = system3Status.getText();
 						if((Utility.compareStringValues(status1, "LOCK")) && (Utility.compareStringValues(status2, "LOCK")))
-							logger.log(LogStatus.INFO, "status of 3 systems :" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ ","+system2ForEmpOnboarding+ "is LOCKED ");
+							logger.log(LogStatus.INFO, "status of  systems :" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ ","+system2ForEmpOnboarding+ "is LOCKED ");
 						else
 							logger.log(LogStatus.FAIL, "Systems status is not LOCKED");			
 					}
@@ -6272,10 +6295,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					int statusIndex=getBadgeListGridHeadersInRequest();
 					WebElement badgeStatus = driver.findElement(By.xpath("//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//td["+statusIndex+"]//label"));
 					String status = badgeStatus.getText();
-					if(Utility.compareStringValues(status, "DEACTIVATE"))
+					if(Utility.compareStringValues(status, "LOCK"))
 						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
 					else
-						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE");
+						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE"); 
 					
 				}
 				
@@ -6427,7 +6450,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO, "Approving the request ");
 				if(driver.findElements(By.xpath("//div[contains(@class,'x-component') and text()='"+reqNum+"']")).size()>0) {
 					Utility.verifyElementPresent("//*[text()='"+reqNum+"']",reqNum , false);
-				}
+						}
 				else {
 					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
 					ByAttribute.click("xpath",HomeObjects.homeDashboardLnk, "Click on Dashboard");
@@ -6479,7 +6502,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/**creating asset for the user**/
 //						String badgeName = Self_Service_CommonMethods.createNewAsset("Permanent Badge", "SRSeries_10And12Digit", "AMAG");
 						
-						
 						/*Giving badge to the user */
 						Utility.pause(5);
 						ByAttribute.click("xpath", HomeObjects.homeAccessRequestSelectBadgeDDn, "Select Asset from list");
@@ -6504,8 +6526,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						Thread.sleep(2000);
 						Utility.pause(5);
 						
-						ByAttribute.click("xpath",HomeObjects.homeAccessRequestBadgeListGrid,"Asset assigned");
-						Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", "badgeId", false);
 						if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
 							ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click approve button ");
 							Utility.pause(5);
@@ -6927,8 +6947,25 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			System.out.println("***************************** Checking the request in completed inbox *********************************");
 			logger.log(LogStatus.INFO,"*************** Checking the request in completed inbox *********************************");
 			try{
-				String identityName = firstName +" "+ lastName;
-				int index=0;
+				List<WebElement> requestNumberElements = null;
+				WebElement requestNo=null,latestRequestNumber=null;int index=0;
+				boolean reqFlag=true;	
+				String identityName = firstName +" "+ lastName,reqNo;
+				
+				if(requestType.equalsIgnoreCase("Employement Type Conversion Permanent To Temp")) {						
+					reqNum=DBValidations.getAccessRequestOfEmpTypeConvPermanentToTemp();
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC013");
+					access1ForEmpOnboarding= (String) testData.get("access_name_1");
+//					system1ForEmpOnboarding= (String) testData.get("system_name");
+//					system2ForEmpOnboarding= (String) testData.get("system_name2");			
+				}
+				
+				if(requestType.equalsIgnoreCase("Employement Type Conversion Temporary To Permanent")) {						
+					reqNum=DBValidations.getAccessRequestOfEmpTypeConvPermanentToTemp();
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC014");
+					access1ForEmpOnboarding= (String) testData.get("access_name_1");		
+				}
+				
 				if((driver.findElements(By.xpath(HomeObjects.homeInboxRequestInboxExpandBtn)).size()>0)){
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
 					Utility.pause(2);
@@ -6937,18 +6974,38 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
 					Utility.pause(5);
 					
-					List<WebElement> requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
-					WebElement requestNo=null;
+					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+					requestNo=null;
 					
-					boolean reqFlag=true;
+					 reqFlag=true;
 					for (int i=0;i<requestNumberElements.size() && reqFlag;i++){
 						requestNo = requestNumberElements.get(i);
-						String reqNo = requestNo.getText();
+						reqNo = requestNo.getText();
 						if(reqNo.contains(reqNum)){
 							index=i+1;
 							reqFlag=false;
 						}
 					}
+				}
+				else if (driver.findElements(By.xpath(HomeObjects.homeTabBtn)).size()>0){
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
+					Utility.pause(3);
+					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests");
+					Utility.pause(5);
+					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
+					latestRequestNumber = requestNumberElements.get(0);
+					
+					 reqFlag=true;
+						for (int i=0;i<requestNumberElements.size() && reqFlag;i++){
+							requestNo = requestNumberElements.get(i);
+							reqNo = requestNo.getText();
+							if(reqNo.contains(reqNum)){
+								index=i+1;
+								reqFlag=false;
+							}
+						}
+				}
+				
 					if (reqFlag)
 						logger.log(LogStatus.FAIL, "Request not present in completed inbox");
 					Actions action = new Actions(driver);
@@ -7025,21 +7082,22 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 						String accessName = modifiedAttribute;
 						
-						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Click on comparison button to verify the modifications");
-						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='Permanent']", "modifiedEmployeeType", false);
-						logger.log(LogStatus.PASS,"New and Old Employee Type can be seen in comparison");
+			//			ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Click on comparison button to verify the modifications");
+			//			Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='Permanent']", "modifiedEmployeeType", false);
+			//			logger.log(LogStatus.PASS,"New and Old Employee Type can be seen in comparison");
 						
 						ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
 						Utility.pause(1);
 						ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
 						boolean flag=true;
 						for(int i=0;i<10 && flag;i++){
-							WebElement provisioningMessage = driver.findElement(By.xpath("(//div[text()='Provisioning Done for :']//parent::div//div)[2]"));
-							String provMessage = provisioningMessage.getText();
-							if(provMessage.contains("assignment successful")){
+							if(driver.findElements(By.xpath("//div[contains(text(),' assignment successful for user ')]")).size()>0){
 								logger.log(LogStatus.PASS, "Provisioning successful");
 								flag=false;
-								Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
+								Utility.verifyElementPresent("//div[contains(text(),' assignment successful for user ')]", "Provisioning message", false);
+							}else if(driver.findElements(By.xpath("//div[contains(text(),' assignment failed for user ')]")).size()>0){
+								Utility.verifyElementPresent("//div[contains(text(),' assignment failed for user ')]", "Provisioning failed message", false);
+								break;
 							}
 							else{
 								ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
@@ -7072,8 +7130,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	//					if(Utility.compareStringValues(status, "REMOVED")) {
 	//						logger.log(LogStatus.PASS, "status of existing  access  is removed when employment type is modified");
 	//					}				
-					}
-				}				
+					}				
 			}catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);
