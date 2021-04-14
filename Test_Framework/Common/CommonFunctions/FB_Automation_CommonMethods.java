@@ -844,10 +844,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				action.moveToElement(elementConnector).click();
 				action.sendKeys(connectorName);
 				action.build().perform();
-				WebElement connectorValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+connectorName+"')]"));
-				action.moveToElement(connectorValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Connector Value selected");
+//				WebElement connectorValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+connectorName+"')]"));
+//				action.moveToElement(connectorValue).click();
+//				action.build().perform();
+//				logger.log(LogStatus.INFO, "Connector Value selected");
 				Utility.pause(5);
 			
 				WebElement elementDesc=driver.findElement(By.xpath(ReconObjects.elementDesc));
@@ -1154,6 +1154,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					
 					}
 				}	
+				
 			}
 			catch(Exception e)
 			{		
@@ -4528,7 +4529,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						logger.log(LogStatus.INFO, "User "+firstName+" is selected ");
 						Utility.verifyElementPresentByScrollView(AccessObjects.removeAccessLnk, "Remove Access", true, false);
 						driver.findElement(By.xpath(AccessObjects.removeAccessLnk)).click();
-						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[6]/div/label";
+						String checkStatusLocator="//div[text()='"+firstName+"']/parent::td/following-sibling::td[7]/div/label";
 						String checkStatus=driver.findElement(By.xpath(checkStatusLocator)).getText();
 						if(checkStatus.equalsIgnoreCase("REMOVED")) {
 							Utility.verifyElementPresentByScrollView(checkStatusLocator, "Removed Status", true, false);
