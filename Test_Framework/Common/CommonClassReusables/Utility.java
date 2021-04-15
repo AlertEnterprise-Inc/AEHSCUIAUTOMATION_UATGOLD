@@ -98,20 +98,20 @@ public class Utility extends BrowserSelection {
 	
 	public static void recoveryScenario (String methodName, Exception exception) throws Throwable
 	{
-		System.out.println("\n******************** RECOVERY SCENARIO INVOKED FOR METHOD :       { " +methodName+ " } ********************");
-		System.out.println("******************** RECOVERY SCENARIO INVOKED FOR EXCEPTION :       { " +exception+ " } ********************");
-		logger.log(LogStatus.FAIL, "\n******************** RECOVERY SCENARIO INVOKED FOR METHOD :       { " +methodName+ " } ********************");	
-		logger.log(LogStatus.FAIL, "******************** RECOVERY SCENARIO INVOKED FOR EXCEPTION :       { " +exception+ " } ********************");
-		
-		unhandledException = true;	
+		System.out.println("\n****************** RECOVERY SCENARIO INVOKED FOR METHOD : { " +methodName+ " } ******************");
+		System.out.println("****************** RECOVERY SCENARIO INVOKED FOR EXCEPTION : { " +exception+ " } ******************");
+		logger.log(LogStatus.FAIL, "\n****************** RECOVERY SCENARIO INVOKED FOR METHOD : { " +methodName+ " } ******************");
+		logger.log(LogStatus.FAIL, "****************** RECOVERY SCENARIO INVOKED FOR EXCEPTION : { " +exception+ " } ******************");
+
+		unhandledException = true;
 		Utility.takeScreenshot("bug screnshot1");
 		logger.log(LogStatus.ERROR, "Screenshort of page where Exception Invoked : " + imgeHtmlPath);
-		WebDriver driver2=Utility.openPrivateBrowser();
-		default_driver=driver2;
+		WebDriver recoveryDriver=Utility.openPrivateBrowser();
+		default_driver=recoveryDriver;
 		driver.close();
-		driver=default_driver;  
+		driver=default_driver;
 		driver.get(AGlobalComponents.applicationURL);
-		
+
 		if(ByAttribute.getListSize("xpath",".//h3[text()='Sign In']","Recovery Scenario : Sign In page is present")==1)
 		{
 			driver.get(AGlobalComponents.applicationURL);
@@ -135,11 +135,11 @@ public class Utility extends BrowserSelection {
 			}
 			System.out.println("RECOVERY SCENARIO : Successfully new Driver launched and Logged In.");
 			logger.log(LogStatus.INFO, "RECOVERY SCENARIO : Successfully new Driver launched and Logged In.");
-		} else	{
+		} else {
 			System.out.println("Recovery Scenario : Sign In is not present.");
-			logger.log(LogStatus.FAIL, "RECOVERY SCENARIO : Sign In is not present.");		
-		}	
-		exception = null;	
+			logger.log(LogStatus.FAIL, "RECOVERY SCENARIO : Sign In is not present.");
+		}
+		exception = null;
 	}
 
 	

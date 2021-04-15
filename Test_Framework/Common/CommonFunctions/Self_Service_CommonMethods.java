@@ -2887,6 +2887,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			ByAttribute.click("xpath", AdminObjects.adminProvMonitorLnk, "Click on Provisioning Monitor Link");
 			Utility.pause(10);
 			
+			Utility.handleAnnouncementPopup();
+			
 			if(!system.equalsIgnoreCase("AMAG")) {
 				ByAttribute.click("xpath", "(//span[@class = 'x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-rowMinus '])[1]", "clickking on remove filter");
 			}
@@ -3166,7 +3168,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
 						gettingIndexOfIDMSystemsTab();
-						for (int i=1;i<=systemsAssignedToUser.size();i++){
+						for (int i=1;i<=3;i++){
 							WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 							String systemAssigned = systemName.getText();
 							if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div")).size()>0){
@@ -6254,6 +6256,17 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					system1ForEmpOnboarding= (String) testData1.get("system_name");
 					system2ForEmpOnboarding= (String) testData1.get("system_name2");
 	//				system3ForEmpOnboarding= (String) testData1.get("system_name3");
+					
+					/*
+					 * checking for Asset status after offboarding request
+					 */
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
+					WebElement badgeStatus = driver.findElement(By.xpath("//*[text()='"+AGlobalComponents.assetName+"']//ancestor::td//following-sibling::td//label"));
+					String status = badgeStatus.getText();
+					if(Utility.compareStringValues(status, "LOCK"))
+						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
+					else
+						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE"); 
 				}
 				if(requestType.equalsIgnoreCase("Profile Change")){
 					requestNumber=DBValidations.getAccessRequestOfProfileChangeFromDB();
@@ -7045,7 +7058,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse hover on Home Tab");
 					Utility.pause(3);
 					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests");
-					Utility.pause(15);
+					Utility.pause(5);
 					requestNumberElements = driver.findElements(By.xpath(".//tr[1]/td[2]/div"));
 					latestRequestNumber = requestNumberElements.get(0);
 					
@@ -7606,14 +7619,14 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				
-				WebElement assetStatusNew = driver.findElement(By.xpath("(//div[@class='x-grid-cell-inner ']//label)[2]"));
+				WebElement assetStatusNew = driver.findElement(By.xpath("//div[@class='x-grid-cell-inner ']//label"));
 				newAssetStatus=assetStatusNew.getText();
 				if(action.equalsIgnoreCase("activate"))
 					{
@@ -7628,7 +7641,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					else
 						logger.log(LogStatus.FAIL, "status after is not inactive");
 					}
-				Utility.verifyElementPresent("(//div[@class='x-grid-cell-inner ']//label)[2]", "Asset Assignemnt status", false);
+				Utility.verifyElementPresent("//div[@class='x-grid-cell-inner ']//label", "Asset Assignemnt status", false);
 				getIndexOfAccessIdHeaders();
 				WebElement card = driver.findElement(By.xpath("//tr//td["+badgeaccessIndex+"]"));
 				String cardNumber = card.getText();
@@ -7670,7 +7683,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				System.out.println("heading "+ (i) +" "+ heading);
 						
 					switch (heading.toLowerCase()) {
-		            case "asset access id":
+		            case "access id":
 		            	badgeaccessIndex = j+1;
 		            	j++;
 		            	flag=false;
@@ -7813,12 +7826,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab");
 				Utility.pause(3);
 				WebElement inactiveStatus = driver.findElement(By.xpath("//div[text()='"+replaceAccessId+"']//parent::td//following-sibling::td[2]//child::div//label"));
 				String inactiveStatusText = inactiveStatus.getText();
@@ -7930,12 +7943,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
 				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 				Utility.pause(10);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				Utility.pause(3);
 				if(Utility.verifyElementPresentReturn("//div[text()='"+identityCode+"']","New record added", true, false))
 					logger.log(LogStatus.PASS, "record is added in CCURE");
@@ -8019,7 +8032,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(1);
 					ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
 					Utility.pause(10);
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
+					ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab");
 					
 					Thread.sleep(3000);
 					ByAttribute.click("xpath", ".//*[@data-ref='btnInnerEl' and text()='Assets']", "Click Assets Tab");
@@ -8183,6 +8196,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(2);
 				ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on inbox");
 				Utility.pause(5);
+				
+				Utility.handleAnnouncementPopup();
+				
 				WebElement req=driver.findElement(By.xpath("//div[text()='"+reqNo+"']"));
 				Actions action = new Actions(driver);
 				action.doubleClick(req).perform();
@@ -8348,6 +8364,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(8);
 				}
 				
+				Utility.handleAnnouncementPopup();
+								
 				Utility.pause(10);
 				if((driver.findElements(By.xpath("//input[@placeholder='Choose Field']")).size()>0)){
 					ByAttribute.click("xpath", "//input[@placeholder='Choose Field']", "click to enter the value");
@@ -8557,6 +8575,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(5);
 				ByAttribute.click("xpath", IdentityObjects.cardHolders, "Click on Card Holders ");
 				Utility.pause(30);
+				
+				Utility.handleAnnouncementPopup();
+				
 				ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
 				Utility.pause(3);
 				ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");

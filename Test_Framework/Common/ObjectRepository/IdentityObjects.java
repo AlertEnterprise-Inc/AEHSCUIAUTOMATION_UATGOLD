@@ -84,13 +84,13 @@ public interface IdentityObjects {
 	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
 	String actionBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[4]";
 	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";
-	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Badge Operations']";
-	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
+	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Manage Entities']";
+	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Cardholders']";
 	String idmMAnageIdentityExpandLeftViewLnk = ".//span[contains(@class,'hamburgerexpand')]";
 	
 
 	String identityRowAdderLnk = "//div[contains(@class,'x-action-col-icon x-action-col-0  aegrid-rowAdd')]";
-	String identityAssignAssetLbl = "(//div[text()='Assign Assets'])[2]";
+	String identityAssignAssetLbl = "(//div[text()='Assign Badges'])[2]";
 	String identitySelectAssetDnd = "(//input[@placeholder= 'Select Asset'])[4]//parent::div//following-sibling::div";
 	String identitySelectAssetValueTxt = "(//span//following::b[text()='Code']//following::div//following::span[1])[1]";
 	String identityConfirmAssetBtn = "//span[text()='Confirm' and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";

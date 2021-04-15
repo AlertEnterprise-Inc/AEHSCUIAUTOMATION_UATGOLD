@@ -392,7 +392,7 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.FAIL, "Login failed");	
 	}	
 	
-	@Test(priority=11)
+	@Test(priority=35)
 	public void FB_Automation_TC011() throws Throwable 
 	{
 		logger =report.startTest("FB_Automation_TC011","Employee Onboarding from HR DB Connector");
@@ -469,7 +469,7 @@ public class FB_Automation extends BrowserSelection {
 		} 
 	}
 	
-	@Test(priority=12)
+	@Test(priority=36)
 	public void FB_Automation_TC012() throws Throwable 
 	{
 
@@ -534,7 +534,7 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
-	@Test(priority=13)
+	@Test(priority=37)
 	public void FB_Automation_TC013() throws Throwable 
 	{
 
@@ -579,7 +579,7 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
-	@Test(priority=14)
+	@Test(priority=38)
 	public void FB_Automation_TC014() throws Throwable 
 	{
 
@@ -624,7 +624,7 @@ public class FB_Automation extends BrowserSelection {
 		}
 	}
 	
-	@Test(priority=15)
+	@Test(priority=39)
 	public void FB_Automation_TC015() throws Throwable 
 	{
 
@@ -690,7 +690,7 @@ public class FB_Automation extends BrowserSelection {
 	}
 	
 
-	@Test(priority=16)
+	@Test(priority=40)
 	public void FB_Automation_TC016() throws Throwable 	{
 		logger =report.startTest("FB_Automation_TC016","Area Admin Cases(Add Identities,Remove Identities)");
 		System.out.println("[INFO]--> Area Admin Cases - TestCase Execution Begins");
@@ -708,14 +708,14 @@ public class FB_Automation extends BrowserSelection {
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			for(int i=0;i<1;i++) {
-				firstNames.add((String) testData.get("first_name"));
-				lastNames.add((String) testData.get("last_name"));
+				firstNames.add("Test"+Utility.getRandomString(5));
+				lastNames.add("AreaAdmin");
 				
 				/**creating asset for the user**/
-//				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 				/* Create Identities */
-//				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");
+				FB_Automation_CommonMethods.createIdentity(firstNames.get(i), lastNames.get(i),"FB_Automation_TC016");
 			}
 			
 			/* Launch New Private Browser */
