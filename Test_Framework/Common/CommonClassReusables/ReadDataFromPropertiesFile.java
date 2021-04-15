@@ -576,7 +576,7 @@ public class ReadDataFromPropertiesFile {
 						List<String[]> contents = null;
 						String[] row = null;
 						CSVReader reader = new CSVReader(new FileReader(badgesDataFile));
-						int colNum = TestDataEngine.getColumnNumberOfHeader(badgesDataFile, columnHeader);
+						int colNum = Utility.getColumnNumberOfHeader(badgesDataFile, columnHeader);
 						contents = reader.readAll();
 						reader.close();
 						row = contents.get(rowNum);

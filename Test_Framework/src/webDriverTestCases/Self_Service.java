@@ -2004,7 +2004,7 @@ public void Self_Service_Automation_TC022() throws Throwable
 				
 		/** checking the access , system and assets assigned to the user in IDM 
  		 *  Status of user and assets , access and systems assigned to him will be inactive at this time**/
- 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"","",(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"","",(String) testData.get("script_name"));
  		
  		/** Launch New Private Browser **/
  		Utility.switchToNewBrowserDriver();
@@ -2047,7 +2047,7 @@ public void Self_Service_Automation_TC022() throws Throwable
  	 			Self_Service_CommonMethods.approveRequest("badgeAdmin",requestNumber,"");
  	 			
  	 			/** checkStatusInMyRequestInbox**/
- 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("request_type"));
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("script_name"));
  	 			Utility.updateDataInDatasource("Self_Service_Automation_TC022", "first_name", "");
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "last_name", "");
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "full_name", "");
@@ -2607,8 +2607,8 @@ public void Self_Service_Automation_TC028() throws Throwable
 	
 	logger =report.startTest("Self_Service_Automation_TC0028","Badge Admin login scenarios - Activate Badge");
 	System.out.println("[INFO]--> Self_Service_Automation_TC028 - TestCase Execution Begins");
-	String firstName ="George";
-	String lastName ="Martin";
+	String firstName ="Amberd";
+	String lastName ="Root";
 		
 	/** Login as badge admin User **/
 
@@ -2641,8 +2641,8 @@ public void Self_Service_Automation_TC029() throws Throwable
 	
 	logger =report.startTest("Self_Service_Automation_TC029","Badge Admin login scenarios - Deactivate Badge");
 	System.out.println("[INFO]--> Self_Service_Automation_TC029 - TestCase Execution Begins");
-	String firstName ="George";
-	String lastName ="Martin";
+	String firstName ="Amberd";
+	String lastName ="Root";
 		
 	/** Login as badge admin User **/
 

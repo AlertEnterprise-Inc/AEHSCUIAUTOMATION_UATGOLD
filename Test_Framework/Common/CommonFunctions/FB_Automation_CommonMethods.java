@@ -18,12 +18,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -34,14 +30,10 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
-import CommonClassReusables.ByAttributeAngular;
 import CommonClassReusables.DBValidations;
 import CommonClassReusables.FileOperations;
 import CommonClassReusables.MsSql;
-
 import CommonClassReusables.ReadDataFromPropertiesFile;
-import CommonClassReusables.TestDataEngine;
-import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import ObjectRepository.AccessObjects;
 import ObjectRepository.HomeObjects;
@@ -415,20 +407,20 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				getIndexHeadersOfActiveRecords();
 				String userDataFile=reconTestDataDirectory+"/Identity.csv";
-				ArrayList<String> firstNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "firstName");
+				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(userDataFile, "firstName");
 				for(String firstName:firstNameList) {
 					WebElement userId=driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+firstName+"']//ancestor::tr//td["+AGlobalComponents.userIdIndex+"]//div"));
 					String usrId = userId.getText();
-				TestDataEngine.updateCSVCellValue(userDataFile, "masterIdentityId", 1, usrId);
-				WebElement syncId = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+firstName+"']//ancestor::tr//td["+AGlobalComponents.syncIdIndex+"]//div"));
-				String syncID = syncId.getText();
-				AGlobalComponents.syncId=syncID;
-				logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
-				verifyUserReconDataFromUI(usrId);
+					ReadDataFromPropertiesFile.updateCSVCellValue(userDataFile, "masterIdentityId", 1, usrId);
+					WebElement syncId = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+firstName+"']//ancestor::tr//td["+AGlobalComponents.syncIdIndex+"]//div"));
+					String syncID = syncId.getText();
+					AGlobalComponents.syncId=syncID;
+					logger.log(LogStatus.INFO, "Navigating to Identity tab to verify recon data on UI");
+					verifyUserReconDataFromUI(usrId);
 		
-				logger.log(LogStatus.INFO, "verify recon data from DB");
-				String query = "select active from recon_monitor where job_instance_id='"+syncID+"'";
-//				verifyReconDataFromDB(query);
+					logger.log(LogStatus.INFO, "verify recon data from DB");
+					String query = "select active from recon_monitor where job_instance_id='"+syncID+"'";
+//					verifyReconDataFromDB(query);
 				}
 			}
 			catch(Exception e)
@@ -667,15 +659,15 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		            	j++;
 		            	break;
 		            case "message":
-		            	AGlobalComponents.messageIndex = j;
+		            	AGlobalComponents.messageIndex = j+1;
 		            	j++;
 		            	break;
 		            case "description":
 		            	AGlobalComponents.descriptionIndex = j+1;
 		            	j++;
 		            	break;
-		            case "active":
-		            	AGlobalComponents.activeIndex = j+1;
+		            case "last active":
+		            	AGlobalComponents.activeIndex = j+2;
 		            	j++;
 		            	break;
 		            case "":
@@ -747,28 +739,33 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				WebElement activeRecords=driver.findElement(By.xpath("//div[@class='x-grid-cell-inner ' and text()='"+jobName+"']//ancestor::tr//td["+AGlobalComponents.activeIndex+"]"));
 				WebElement errorRecords=driver.findElement(By.xpath("//div[@class='x-grid-cell-inner ' and text()='"+jobName+"']//ancestor::tr//td["+AGlobalComponents.errorIndex+"]"));
 				String totalActiveRecords =  activeRecords.getText();
-				if(Utility.compareStringValues(totalActiveRecords, activeReconRecords)){
+				 if(!errorRecords.getText().equalsIgnoreCase("0")){
+						logger.log(LogStatus.INFO, "There are Error records ");
+					}
+				 
+/*				if(Utility.compareStringValues(totalActiveRecords, activeReconRecords)){
 					if(AGlobalComponents.rerunReconJob)
 						logger.log(LogStatus.INFO, "Active records after rerunning the job are same  , when initial job was executed : "+totalActiveRecords +" which means no new records are added ");
-				}
-				else{
+				} 
+				else{ */
 					activeReconRecords = totalActiveRecords;
-					if(activeRecords.getText()!="0" ){
+					if(!totalActiveRecords.equalsIgnoreCase("0") ){
 						logger.log(LogStatus.INFO, "Total number of active records are : " +totalActiveRecords);
 						activeRecords.click();
 						Utility.pause(5);
 						verifyReconData(entityType);
 					}
-					else if(errorRecords.getText()!="0"){
-						logger.log(LogStatus.INFO, "There are Error records ");
-					}
-					else if ((driver.findElements(By.xpath("(.//div[@class='x-grid-cell-inner ' and text()='"+jobName+"']//ancestor::tr//td["+AGlobalComponents.messageIndex+"]")).size()>0)){
-						WebElement errorMessage = driver.findElement(By.xpath("(.//div[@class='x-grid-cell-inner ' and text()='"+jobName+"']//ancestor::tr//td["+AGlobalComponents.messageIndex+"]"));
-						String message = errorMessage.getText();
-						logger.log(LogStatus.INFO, "Recon job failed with message : " + message);
-					}		
-
-				}
+					else {
+						try {
+							logger.log(LogStatus.FAIL, "Last active records are : " +totalActiveRecords);
+							throw  new Exception("Last active records are :" +totalActiveRecords);
+						}
+						catch(Exception e1) {
+							String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
+							Utility.recoveryScenario(nameofCurrMethod, e1);
+						}
+					}	
+	//			}
 			}
 			
 			catch(Exception e){
@@ -1019,62 +1016,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	 * 
 	 **/
 
-	public static void createIdentity() throws Throwable
-	{
-		String firstName= null;
-		if(unhandledException==false)
-		{
-			
-			logger.log(LogStatus.INFO, "Create new Identity");
-			System.out.println("***************************** Create Identity *********************************");
-			try
-			{
-				
-				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
-					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-					Utility.pause(5);
-				}
-					
-				else{
-					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-					Utility.pause(8);
-				}
-				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
-				Utility.pause(8);
-				
-				fillProfileInfo();
-				if(!AGlobalComponents.deleteSingleIdentityFlag){
-		//			ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Accesses Tab ");
-		//			Utility.pause(2);
-		//			fillAccessesInfo();
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Click on Systems Tab ");
-					Utility.pause(2);
-					fillSystemsInfo();
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
-					Utility.pause(2);
-					fillAssetsInfo();
-					ByAttribute.click("xpath", IdentityObjects.prerequisitesTabLnk, "Click on Prerequisites Tab ");
-					Utility.pause(10);
-		//			fillPrerequisitesInfo();
-				}
-				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(20);
-				logger.log(LogStatus.PASS, "identity created");	
-				
-			}
-			catch(Exception e)
-			{		
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}	
-		}
-				
-	}
+	
 	
 	
 	public static void createIdentity(String firstName,String lastName, String scriptName) throws Throwable
@@ -1168,164 +1110,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	
 	
 	
-	/**
-	 * 
-	 * Method to search Identity 
-	 * 
-	 * Author : Monika Mehta
-	 * 
-	 * 
-	 **/
-	public static String searchIdentity() throws Throwable
-	{
-		
-		if(unhandledException==false)
-		{
-			
-			logger.log(LogStatus.INFO, "Search the above created Identity");
-			System.out.println("***************************** Search Identity*********************************");
-			try
-			{
-				String searchIdentityTemplateFile,searchIdentityDataFile;
-				
-				
-				if(AGlobalComponents.ManagerLogin){
-					searchIdentityTemplateFile = ManagerCasesTestDataDirectory + "/SearchIdentity_Template.csv";
-					searchIdentityDataFile = ManagerCasesTestDataDirectory + "/SearchIdentity.csv";
-				}
-				else{
-					searchIdentityTemplateFile = createIdentityTestDataDirectory + "/SearchIdentity_Template.csv";
-					searchIdentityDataFile = createIdentityTestDataDirectory + "/SearchIdentity.csv";
-				}
-				TestDataInterface.compileTwoRowDataTemplate(searchIdentityTemplateFile, searchIdentityDataFile);
-				
-				
-				ArrayList<String> headers = Utility.getCSVRow(searchIdentityDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(searchIdentityDataFile, 0);
-				int len = headers.size();
-
-				Actions action = new Actions(driver);
-				
-				String fieldName1= null,fieldValue1= null,fieldName2= null,fieldValue2= null,empType= null,header,idCode,idCode1,idCode2;
-								
-				try{		
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-						
-						switch (header.toLowerCase()) {
-			            case "fieldname1":
-			            	fieldName1 = Utility.getIndexValue(userData, index);
-			            	break;
-			            case "fieldvalue1":
-			            	fieldValue1 = Utility.getIndexValue(userData, index);
-			            	break;
-			            case "fieldname2":
-			            	fieldName2 = Utility.getIndexValue(userData, index);
-			            	break;
-			            case "fieldvalue2":
-			            	fieldValue2 = Utility.getIndexValue(userData, index);
-			            	break;
-			            case "employeetype":
-			            	empType = Utility.getIndexValue(userData, index);
-			                break;
-			            default: 
-			            	logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-			            	throw new UnsupportedOperationException();
-						}			
-
-					}
-
-				}
-				}
-				catch(Exception e){
-					
-				}
-				
-				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
-					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-					Utility.pause(5);
-				}
-					
-				else{
-					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-					Utility.pause(8);
-				}
-				
-
-				if(!dupIdentity){
-					ByAttribute.click("xpath", IdentityObjects.filterIconLnk, "Click on Filter icon ");
-					Utility.pause(3);
-					ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon ");
-					
-					ByAttribute.click("xpath", IdentityObjects.enterFieldName1ToFilter, "click to enter field name for Filtering");
-					Utility.pause(2);
-					ByAttribute.setText("xpath", IdentityObjects.enterFieldName1ToFilter,fieldName1, "Enter the field name for Filtering");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
-					Utility.pause(2);
-					ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,fieldValue1, "Enter the first field value for Filtering");
-					Utility.pause(2);
-				
-					ByAttribute.click("xpath", IdentityObjects.addFilterLnk, "Click on Add icon to enter the filter");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.enterFieldName2ToFilter, "click to enter field name for Filtering");
-					Utility.pause(2);
-					ByAttribute.setText("xpath", IdentityObjects.enterFieldName2ToFilter,fieldName2, "Enter the field name for Filtering");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.clickFieldValue2, "click to enter the second value");
-					Utility.pause(2);
-					ByAttribute.setText("xpath", IdentityObjects.enterFieldValue2,fieldValue2, "Enter the second field value for Filtering");
-				
-					action.sendKeys(Keys.ENTER).build().perform();
-					Utility.pause(20);
-				
-				
-					if(driver.findElements(By.xpath("((//div[text()='"+fieldValue1+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()>0){
-						WebElement record=driver.findElement(By.xpath("((//div[text()='"+fieldValue1+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
-						identityCode=record.getText();	
-						action.doubleClick(record).perform();
-						Utility.pause(15);
-						String searchResult= "//label[contains(text(),'"+fieldValue1+"')]";
-						if(Utility.verifyElementPresentReturn(searchResult,fieldValue1,true,false)){
-							logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
-						}
-						logger.log(LogStatus.PASS, "Search Identity successful");
-					}
-					else{
-						logger.log(LogStatus.FAIL ,"Failed to search the record");
-					}
-				}
-				else{
-						int noOfRecords= driver.findElements(By.xpath("//div[text()='"+fieldValue1+"']")).size();
-						for (int i=0;i<noOfRecords;i++){
-							WebElement record1 = driver.findElement(By.xpath("((//div[text()='"+fieldValue1+"'])["+(i+1)+"]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
-							idCode=record1.getText();
-							identityCodes.add(i,idCode);
-						}
-						idCode1=identityCodes.get(0);
-						idCode2=identityCodes.get(1);
-						if(!Utility.compareStringValues(idCode1, idCode2)){
-							logger.log(LogStatus.PASS ,"Duplicate identity is created with different identity code : " + idCode1+ ","+idCode2);
-						}
-				}	
-
-			}
-			catch(Exception e)
-			{		
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}	
-		}
-		return identityCode;		
-	}
+	
 	
 	
 	
@@ -1539,47 +1324,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 	
 	
-	public static void createDuplicateIdentity() throws Throwable
-	{
-
-		if(unhandledException==false)
-		{
-			
-			logger.log(LogStatus.INFO, "Create duplicate Identity");
-			System.out.println("***************************** Create DuplicateIdentity *********************************");
-			try
-			{
-				
-				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
-					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-					Utility.pause(5);
-				}
-					
-				else{
-					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-					Utility.pause(8);
-				}
-				ByAttribute.click("xpath", IdentityObjects.createBtn, "click on create  icon to create new identity");
-				Utility.pause(10);
-				
-				fillDuplicateProfileInfo();
-				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(15);
-				dupIdentity=true;
-				
-			}
-			catch(Exception e)
-			{		
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}	
-		}		
-	}
+	
 	
 	
 	public static void cancelCreateIdentity() throws Throwable{
@@ -1720,36 +1465,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	}
 	
 	
-	public static void deleteIdentity() throws Throwable{
-		
-		String iCode;
-		if(unhandledException==false)
-		{
-			
-			logger.log(LogStatus.INFO, "Create  identity and then delete the identity");
-			System.out.println("***************************** delete single identity *********************************");
-			try
-			{
-				if(!(driver.findElements(By.xpath("IdentityObjects.IdentityTabLnk")).size()>0))
-					Utility.pause(5);
-				
-				AGlobalComponents.deleteSingleIdentityFlag=true;
-				createIdentity();
-				logger.log(LogStatus.INFO, "Search above created identity");
-				iCode=searchIdentity();
-				System.out.println("Identity Created: "+ iCode);
-				logger.log(LogStatus.INFO, "Identity Created: "+ iCode);
-								
-				deleteSingleIdentity(iCode);
-			}
-			catch(Exception e)
-			{		
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}	
-		}		
-		
-	}
+
 
 	public static void deleteMultipleIdentities() throws Throwable  {
 	
@@ -1958,95 +1674,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void fillProfileInfo() throws Throwable 
-	{
-		
-		if(unhandledException==false)
-		{
-			String createIdentityTemplateFile ,createIdentityDataFile;
-			System.out.println("********************Fill Profile Info********************");
-			try{
-				if(AGlobalComponents.ManagerLogin){
-					createIdentityTemplateFile = ManagerCasesTestDataDirectory + "/CreateIdentity_Template.csv";
-					createIdentityDataFile=ManagerCasesTestDataDirectory+ "/CreateIdentity.csv";
-				}
-				else{
-					createIdentityTemplateFile = createIdentityTestDataDirectory + "/CreateIdentity_Template.csv";
-					createIdentityDataFile=createIdentityTestDataDirectory+ "/CreateIdentity.csv";
-				}
-				TestDataInterface.compileTwoRowDataTemplate(createIdentityTemplateFile, createIdentityDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(createIdentityDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(createIdentityDataFile, 0);
-				int len = headers.size();
-				String firstName=null,lastName= null,validFrom= null,validTo = null,emailId= null,empType= null,header,jobTitle;
-				
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-				
-						switch (header.toLowerCase()) {
-						case "firstname":
-							firstName = Utility.getIndexValue(userData, index);
-							break;
-						case "lastname":
-							lastName = Utility.getIndexValue(userData, index);
-							break;
-						case "validfrom":
-							validFrom=Utility.getIndexValue(userData, index);
-							break;
-						case "validto":
-							validTo=Utility.getIndexValue(userData, index);
-							break;
-						case "employeetype":
-							empType = Utility.getIndexValue(userData, index);
-							break;
-						case "email":
-							emailId = Utility.getIndexValue(userData, index);
-							break;
-						case "jobtitle":
-							jobTitle = Utility.getIndexValue(userData, index);
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-				
-				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
-				Utility.pause(5);
-				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "Enter first Name");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, firstName, "Enter first Name");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lastName, "Enter Last Name");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.emailIdLnk, emailId, "Enter email Id");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
-				Utility.pause(2);
-//				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
-//				Utility.pause(2);
 
-
-//				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
-				
-			}
-			catch(Exception e)
-			{
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}
-		}
-		
-	}
 	
 	public static void fillProfileInfo(String fName,String lName,String scriptName) throws Throwable 
 	{
@@ -2126,142 +1754,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	
 	
 	
-	public static void editProfileInfo() throws Throwable 
-	{
-		if(unhandledException==false)
-		{
-			
-			System.out.println("********************Edit Profile Info*******************");
-			try
-			{
-				String EmployeeCreationTemplateFile = createIdentityTestDataDirectory + "/EditIdentity_Template.csv";
-				String EmployeeCreationDataFile=createIdentityTestDataDirectory+ "/EditIdentity.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
-				int len = headers.size();
-				String jobTitle= null,header;
-	                
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-	        		
-						switch (header.toLowerCase()) {
-						case "jobtitle":
-							jobTitle = Utility.getIndexValue(userData, index);
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-			
-				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-				Utility.pause(2);
-				String existingJobtitle = ByAttribute.getText("xpath", IdentityObjects.jobTitleLnk, "Get Job Title Value");
-				if((existingJobtitle==null)||(existingJobtitle=="")) {
-					System.out.println("No job title is assigned to the identity");
-					logger.log(LogStatus.INFO, "No job title is assigned to the identity");
-				}
-				ByAttribute.setText("xpath", IdentityObjects.jobTitleLnk, jobTitle, "Enter job Title");
-				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
-				Utility.pause(20);
-		
-				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
-					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identity ");
-					Utility.pause(5);
-				}
-					
-				else{
-					ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on Identity tab");
-					Utility.pause(2);
-					
-					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity ");
-					Utility.pause(8);
-				}
-				
-				WebElement finalJobTitle = driver.findElement(By.xpath("(//div[@class='x-grid-cell-inner '])[7]"));
-				String jbTitle = finalJobTitle.getText();
-				if(Utility.compareStringValues(jbTitle, jobTitle)){
-					System.out.println("job title is successfully updated");
-					logger.log(LogStatus.PASS, "job title is successfully updated");
-				}
-			}
-			catch(Exception e)
-			{
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}
-		}
-	}
 	
-	public static void fillDuplicateProfileInfo() throws Throwable 
-	{
-		if(unhandledException==false)
-		{
-			
-			System.out.println("**************Fill Duplicate profile Info*****************");
-			try{
-			
-				String EmployeeCreationTemplateFile = createIdentityTestDataDirectory + "/CreateDuplicateIdentity_Template.csv";
-				String EmployeeCreationDataFile=createIdentityTestDataDirectory+ "/CreateDuplicateIdentity.csv";
-				TestDataInterface.compileTwoRowDataTemplate(EmployeeCreationTemplateFile, EmployeeCreationDataFile);
-		
-				ArrayList<String> headers = Utility.getCSVRow(EmployeeCreationDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(EmployeeCreationDataFile, 0);
-				int len = headers.size();
-				String firstName= null,lastName= null,empType= null,header;
-			
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-						
-						switch (header.toLowerCase()) {
-						case "firstname":
-							firstName = Utility.getIndexValue(userData, index);
-							break;
-						case "lastname":
-							lastName = Utility.getIndexValue(userData, index);
-							break;
-						case "employeetype":
-							empType = Utility.getIndexValue(userData, index);
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-			
-				ByAttribute.setText("xpath", IdentityObjects.employeeTypeLnk, empType, "Enter employee Type");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, firstName, "Enter first Name");
-				Utility.pause(2);
-				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lastName, "Enter Last Name");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
-				Utility.pause(2);
-				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
-			}
-			catch(Exception e)
-			{
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}
-		}
-	}
+	
+	
 	
 	
 	public static void fillAccessesInfo(String scriptName) throws Throwable 
@@ -2337,109 +1832,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 	
-	public static void fillSystemsInfo() throws Throwable 
-	{
-		if(unhandledException==false)
-		{
-			System.out.println("*************Fill systems info**********");
-			try{
-				index++;
-				String systemName= null,srcId= null,validTo = null,validFrom = null,header,temp,systemTemplateFile,systemDataFile;
-				Date date;
-				
-				systemTemplateFile = createIdentityTestDataDirectory + "/Systems_Template.csv";
-				systemDataFile=createIdentityTestDataDirectory+ "/Systems.csv";
-				
-				TestDataInterface.compileTwoRowDataTemplate(systemTemplateFile, systemDataFile);
-				ArrayList<String> headers = Utility.getCSVRow(systemDataFile, 1);
-				ArrayList<ArrayList<String>> usersData = Utility.getCSVData(systemDataFile, 0);
-				int len = headers.size();
-		
-				for (int i=0;i<len;i++){
-					header= headers.get(i);
-					System.out.println("heading "+ (i+1) +" "+ header);
-					int index = Utility.getIndex(headers,header);
-					for(ArrayList<String> userData : usersData) {
-			
-						switch (header.toLowerCase()) {
-						case "systemname":
-							systemName = Utility.getIndexValue(userData, index);
-							break;
-						case "sourceid":
-							srcId = Utility.getIndexValue(userData, index);
-							break;
-						case "validfrom":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validFrom = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-							}
-							break;
-						case "validto":
-							temp=Utility.getIndexValue(userData, index);
-							if(!Utility.compareStringValues(temp, header)){
-								date = new SimpleDateFormat("MM-dd-yy").parse(temp);
-								validTo = new SimpleDateFormat("M/d/yy hh:mm a").format(date);
-							}
-							break;
-						default: 
-							logger.log(LogStatus.ERROR, "Failed: Field {" +header+"} Not Found ");
-							throw new UnsupportedOperationException();
-						}
-					}
-				}
-				String addRecordsIcon = "//a[normalize-space(text())='Click here to Add']";
-				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new system");
-				
-				Utility.pause(5);
-		
-				Actions action = new Actions(driver);
-				WebElement system=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell x-grid-td x-grid-cell-baseComboColumn')])[1]"));
-				action.moveToElement(system).click();
-				action.sendKeys(systemName);
-				action.build().perform();
-				Utility.pause(5);
-				WebElement systemValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'CCURE 9000')]"));
-				action.moveToElement(systemValue).click();
-				action.build().perform();
-				logger.log(LogStatus.INFO, "System Name selected");
-				Utility.pause(5);
-		
-				WebElement sourceId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
-				action.moveToElement(sourceId).click();
-				action.sendKeys("123");
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered the sourceId");
-        
-				WebElement sourcId=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-td x-grid-cell-gridcolumn')])[3]"));
-				action.moveToElement(sourcId).click();
-				action.sendKeys(srcId);
-				action.build().perform();
-				logger.log(LogStatus.INFO, "Entered the sourceId");
-        
-//				WebElement validFromDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[3]"));
-//				action.moveToElement(validFromDate).click();
-//				action.build().perform();
-//				String validFromDt="(//input[@placeholder='Select Valid From'])[2]";
-//				ByAttribute.setText("xpath", validFromDt, validFrom, "Enter Valid From");
-//				Utility.pause(2);
-//				logger.log(LogStatus.INFO, "Entered valid from");
-		
 
-//				WebElement validToDate=driver.findElement(By.xpath("(//td[contains(@class,'x-grid-cell-baseDateTimeColumn')])[4]"));
-//				action.moveToElement(validToDate).click();
-//				action.build().perform();
-//				String validToDt =	"(//input[@placeholder='Select Valid To'])[2]";
-//				ByAttribute.setText("xpath", validToDt, validTo, "Enter Valid TO");
-//				Utility.pause(2);
-//				logger.log(LogStatus.INFO, "Entered valid to");
-			}
-			catch(Exception e){
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-				Utility.recoveryScenario(nameofCurrMethod, e);
-			}
-		}
-	}
 	
 	public static void fillAssetsInfo() throws Throwable 
 	{
@@ -3459,14 +2852,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 	public static void validateIdentityData() throws Throwable {
 		String userDataFile=reconTestDataDirectory+"/Identity.csv";
-		ArrayList<String> firstNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "firstName");
-		ArrayList<String> lastNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "lastName");
-		ArrayList<String> typeList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "workerType");
-		ArrayList<String> validFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "validFrom");
-		ArrayList<String> validToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "validTo");
-		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
-		ArrayList<String> emailList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "email");
-		ArrayList<String> cityList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "city");
+		ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(userDataFile, "firstName");
+		ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(userDataFile, "lastName");
+		ArrayList<String> typeList=Utility.getCSVColumnPerHeader(userDataFile, "workerType");
+		ArrayList<String> validFromList=Utility.getCSVColumnPerHeader(userDataFile, "validFrom");
+		ArrayList<String> validToList=Utility.getCSVColumnPerHeader(userDataFile, "validTo");
+		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
+		ArrayList<String> emailList=Utility.getCSVColumnPerHeader(userDataFile, "email");
+		ArrayList<String> cityList=Utility.getCSVColumnPerHeader(userDataFile, "city");
 		
 		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
 		validateDataInStagingTable(firstNameList,lastNameList,userIdList,empTypeList);
@@ -3667,7 +3060,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 					//validfrom Validation
 					String validFrom=driver.findElement(By.xpath(IdentityObjects.validFromLnk)).getAttribute("value");
-					validFrom=TestDataEngine.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
+					validFrom=Utility.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
 					if(validFrom!=null) {
 						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.validFromLnk, "ValidFrom", true, false);
@@ -3681,7 +3074,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 					//ValidTo validation
 					String validTo=driver.findElement(By.xpath("//input[@placeholder='Select Valid To']")).getAttribute("value");
-					validTo=TestDataEngine.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
+					validTo=Utility.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
 					if(validTo!=null) {
 						if(validToList.get(i).equalsIgnoreCase(validTo)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
@@ -3804,11 +3197,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	public static void validateAssetsData() throws Throwable {
 
 		String userDataFile=reconTestDataDirectory+"/BadgesData.csv";
-		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "UserId");
-		ArrayList<String> badgeIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeId");
-		ArrayList<String> badgeValidFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeValidFrom");
-		ArrayList<String> badgeValidToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeValidTo");
-		ArrayList<String> badgeTypeList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "BadgeType");
+		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
+		ArrayList<String> badgeIdList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeId");
+		ArrayList<String> badgeValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidFrom");
+		ArrayList<String> badgeValidToList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidTo");
+		ArrayList<String> badgeTypeList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeType");
 		
 		validateAssetsDataInStagingTable(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
 	
@@ -4141,11 +3534,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	public static void validateAccessesData() throws Throwable {
 
 		String userDataFile=reconTestDataDirectory+"/AccessData.csv";
-		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "UserId");
-		ArrayList<String> accessIdList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "AccessId");
-		ArrayList<String> accessValidFromList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "ValidFrom");
-		ArrayList<String> accessValidToList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "ValidTo");
-		ArrayList<String> accessNameList=TestDataEngine.getCSVColumnPerHeader(userDataFile, "AccessName");
+		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
+		ArrayList<String> accessIdList=Utility.getCSVColumnPerHeader(userDataFile, "AccessId");
+		ArrayList<String> accessValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "ValidFrom");
+		ArrayList<String> accessValidToList=Utility.getCSVColumnPerHeader(userDataFile, "ValidTo");
+		ArrayList<String> accessNameList=Utility.getCSVColumnPerHeader(userDataFile, "AccessName");
 		
 		validateAccessesDataInStagingTable(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
 	

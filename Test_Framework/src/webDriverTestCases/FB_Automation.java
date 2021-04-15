@@ -105,53 +105,53 @@ public class FB_Automation extends BrowserSelection {
 	
 	}
 	
-	/*
-	 * TC003 : Create Identity , Search Identity , Edit Identity , Duplicate Check , deleting multiple identities
-	 */
-	
-	@Test(priority=3)
-	public void FB_Automation_TC003() throws Throwable 
-	{
-		
-		logger =report.startTest("FB_Automation_TC003","Create Identity,search Identity ,edit Identity ,Duplicate check identity");
-		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
-		
-		
-	
-		/** Login as AS User **/
-		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
-
-		if(loginStatus){
-			logger.log(LogStatus.PASS, "Login Successful");
-			
-			/** Create Identity **/
-			FB_Automation_CommonMethods.createIdentity();
-			
-			/** Search Identity **/
-			FB_Automation_CommonMethods.searchIdentity();
-			
-			/** update photo of User through IDM screen**/
-			FB_Automation_CommonMethods.updatePhoto();
-			
-			/** Modify Identity **/
-			FB_Automation_CommonMethods.modifyIdentityIDM("","");
-			
-			/** Create Duplicate Identity **/
-			FB_Automation_CommonMethods.createDuplicateIdentity();
-			
-			/** Search the duplicate identity **/
-			FB_Automation_CommonMethods.searchIdentity();
-			
-			/** Delete multiple identities **/
-			FB_Automation_CommonMethods.deleteMultipleIdentities();
-				
-			/** Logout from Application **/
-			LoginPage.logout();
-		}	
-		else			
-			logger.log(LogStatus.FAIL, "Login Failed");
-		
-	}
+//	/*
+//	 * TC003 : Create Identity , Search Identity , Edit Identity , Duplicate Check , deleting multiple identities
+//	 */
+//	
+//	@Test(priority=3)
+//	public void FB_Automation_TC003() throws Throwable 
+//	{
+//		
+//		logger =report.startTest("FB_Automation_TC003","Create Identity,search Identity ,edit Identity ,Duplicate check identity");
+//		System.out.println("[INFO]--> FB_Automation_TC003 - TestCase Execution Begins");
+//		
+//		
+//	
+//		/** Login as AS User **/
+//		boolean loginStatus = LoginPage.loginAEHSC("admin", "Alert@783");
+//
+//		if(loginStatus){
+//			logger.log(LogStatus.PASS, "Login Successful");
+//			
+//			/** Create Identity **/
+//			FB_Automation_CommonMethods.createIdentity();
+//			
+//			/** Search Identity **/
+//			FB_Automation_CommonMethods.searchIdentity();
+//			
+//			/** update photo of User through IDM screen**/
+//			FB_Automation_CommonMethods.updatePhoto();
+//			
+//			/** Modify Identity **/
+//			FB_Automation_CommonMethods.modifyIdentityIDM("","");
+//			
+//			/** Create Duplicate Identity **/
+//			FB_Automation_CommonMethods.createDuplicateIdentity();
+//			
+//			/** Search the duplicate identity **/
+//			FB_Automation_CommonMethods.searchIdentity();
+//			
+//			/** Delete multiple identities **/
+//			FB_Automation_CommonMethods.deleteMultipleIdentities();
+//				
+//			/** Logout from Application **/
+//			LoginPage.logout();
+//		}	
+//		else			
+//			logger.log(LogStatus.FAIL, "Login Failed");
+//		
+//	}
 	
 	
 	/*
@@ -205,7 +205,7 @@ public class FB_Automation extends BrowserSelection {
 			logger.log(LogStatus.PASS, "Login Successful");
 			
 			/** create identity and then delete single identity **/
-			FB_Automation_CommonMethods.deleteIdentity();
+//			FB_Automation_CommonMethods.deleteIdentity();
 			
 			/** check deleted items list **/
 			FB_Automation_CommonMethods.verifyCancelAndCloseButtonInDeletedItems();
@@ -337,7 +337,7 @@ public class FB_Automation extends BrowserSelection {
 	 	
 	 	if(ApiMethods.generateAccessToken((String) testData.get("admin_username"),(String) testData.get("admin_password")))
 	 	{
-	 		if(ApiMethods.createIdentityThroughAPI()) {
+	 		if(ApiMethods.createIdentityThroughAPI( "Test", Utility.getRandomString(4), "autouser2@aeqaind.corp", "NewYork", "employee", "SYS-000002","IT Director")) {
 	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE();
 	 			
 	 			/** Login as AS User **/

@@ -1,7 +1,6 @@
 package CommonFunctions;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 
 import java.awt.Robot;
@@ -12,8 +11,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.File;
 import java.text.DateFormat;
-import java.util.Arrays;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +19,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.LongStream;
 
 import javax.imageio.ImageIO;
 
@@ -34,30 +30,23 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import com.relevantcodes.extentreports.LogStatus;
 
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
-import CommonClassReusables.MsSql;
 import CommonClassReusables.DBValidations;
+import CommonClassReusables.MsSql;
 import CommonClassReusables.Utility;
+import ObjectRepository.AccessObjects;
 import ObjectRepository.AdminObjects;
-import ObjectRepository.SelfServiceObjects;
 import ObjectRepository.AssetObjects;
 import ObjectRepository.HomeObjects;
 import ObjectRepository.IdentityObjects;
-import ObjectRepository.ReconObjects;
-import ObjectRepository.AccessObjects;
 import ObjectRepository.SelfServiceObjects;
-import ObjectRepository.AssetObjects;
-import CommonClassReusables.FileOperations;
-import CommonClassReusables.ReadDataFromPropertiesFile;
-import CommonClassReusables.TestDataEngine;
+
 
 public class Self_Service_CommonMethods extends BrowserSelection{
 	
@@ -1589,149 +1578,144 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	public static void approveBadgeRequest(int stageNum, String reqNum, String cardStatus, String assetName, String fullName) throws Throwable {
 
 		if (unhandledException == false) {
-			System.out.println(
-					"******************************** approveBadgeRequest  *****************************************");
-			logger.log(LogStatus.INFO,
-					"***************************** approveBadgeRequest *********************************");
+			System.out.println(	"******************************* approveBadgeRequest ****************************************");
+			logger.log(LogStatus.INFO,"**************************** approveBadgeRequest ********************************");
 
-			try {
-				
-				if(driver.findElements(By.xpath(HomeObjects.inboxTabBtn)).size()>0)
-				{
-					ByAttribute.click("xpath", HomeObjects.inboxTabBtn, "Click on Inbox Link");
-					Utility.pause(5);
-				}else if(driver.findElements(By.xpath(".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Inbox']")).size()>0){
-					ByAttribute.click("xpath", ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Inbox']", "Click on Inbox Link");
-					Utility.pause(5);
-				}else{
-					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
-					Thread.sleep(1000);
-					ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox Link");
-					Utility.pause(5);
-				}
-				
-				Utility.handleAnnouncementPopup();
-				
-				if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']")).size() > 0) {
-					System.out.println("Access Request is Found in Inbox");
-					logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
-					
-					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='tagorange' and text()='OPEN']", "Request Number: "+reqNum+" Current Status OPEN", false);
-					if(stageNum==1)
-					{
-						Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggrey' and contains(text(),'Manager')]", "Request Number: "+reqNum+" Workflow Stage Manager", false);
-					}else{
-						Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggrey' and contains(text(),'Approved')]", "Request Number: "+reqNum+" Workflow Stage Approved", false);
-					}
-					Thread.sleep(1000);
-					ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']", "Click on Request from Inbox");
-					Thread.sleep(3000);
-					
-					if(stageNum==2)
-					{
-						ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
-						Thread.sleep(2000);
-						
-						Robot robot = new Robot();
-						
-						StringSelection ss = new StringSelection(assetName);
-			            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-	
-			            robot.keyPress(KeyEvent.VK_CONTROL);
-			            robot.keyPress(KeyEvent.VK_V);
-			            robot.keyRelease(KeyEvent.VK_V);
-			            robot.keyRelease(KeyEvent.VK_CONTROL);
-			            Thread.sleep(4000);
-			            robot.keyPress(KeyEvent.VK_ENTER);
-			            robot.keyRelease(KeyEvent.VK_ENTER);
-			            Thread.sleep(500);
-						robot.keyPress(KeyEvent.VK_TAB);
-						robot.keyRelease(KeyEvent.VK_TAB);
-						
-						Thread.sleep(2000);
-					}
-					
-					Thread.sleep(5000);
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestApproveBtn, "Click Approve Button");
-					Thread.sleep(1000);
-					if(driver.findElements(By.xpath(".//*[contains(@id,'btnInnerEl') and text()='Yes']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//*[contains(@id,'btnInnerEl') and text()='Yes']", "Click Save Yes Button");
-						Thread.sleep(5000);
-					}else{
-						Thread.sleep(10000);
-					}
-					
-					
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click Expand Inbox Button");
-					Thread.sleep(1000);
-					if(stageNum==1)
-					{
-						Utility.verifyElementPresent(".//span[contains(@class,'x-tree-node-text') and text()='Manager']", "Manager Stage Inbox", false);
-					}else{
-						Utility.verifyElementPresent(".//span[contains(@class,'x-tree-node-text') and text()='Approved']", "Approved Stage Inbox", false);
-					}
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click Completed Inbox Button");
-					Thread.sleep(2000);
-					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggreen' and text()='COMPLETED']", "Request Number: "+reqNum+" Changed to Completed", false);
-					
-					ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']", "Click on Request from Inbox");
-					Thread.sleep(3000);
-					
-					Utility.verifyElementPresent(".//tbody//label[text()='"+cardStatus+"']", "Card Staus: "+cardStatus+" as set in Request", false);
-					Thread.sleep(500);
-					
-					if(stageNum==1)
-					{
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
-						Thread.sleep(1000);
-						Utility.verifyElementPresent(".//*[@data-ref='btnInnerEl' and text()='Add Comment']", "Comment Added via Self Service", false);
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog Button");
-						
-						Thread.sleep(1000);
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestAttachmentsBtn, "Click Attachments Button");
-						Thread.sleep(1000);
-						Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Attachments']", "Attachment Added via Self Service", false);
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog Button");	
-						Thread.sleep(2000);
-					}
-					
-					if(stageNum==2)
-					{
-						//PRINT BADGE
-						ByAttribute.click("xpath", SelfServiceObjects.selfServicePrintBtn, "Click Print Button");
-						Thread.sleep(2000);
-						Utility.verifyElementPresent(".//*[contains(@id,'header-title-textEl') and text()='Badge Print']", "Badge Print Dialog Box", false);
-						Thread.sleep(1000);
-						Utility.verifyElementPresent(".//*[contains(@id,'fullName') and contains(text(),'"+fullName+"')]", "Badge With Employee Name Printed as: "+fullName, false);
-						Thread.sleep(1000);
-						ByAttribute.click("xpath", SelfServiceObjects.selfServiceBadgeCancelBtn, "Click Cancel Button");
-					}
-					
-					ByAttribute.click("xpath", HomeObjects.homeInboxRequestWorkflowViewStatusBtn, "Click View Status Button");
-					Thread.sleep(1000);
-					Utility.verifyElementPresent(".//div[contains(@id,'header-title-textEl') and contains(text(),'"+reqNum+"')]", "Workflow Status for Request : "+reqNum, false);
-					
-					if(stageNum==1)
-					{
-						Utility.verifyElementPresent(".//*[@id='containerBox']//td[contains(text(),'Pending action by')]", "Action Pending at Badge Admin Stage", false);
-						Thread.sleep(1000);
-						ByAttribute.click("xpath", HomeObjects.homeInboxRequestWorkflowViewStatusCancelBtn, "Click Cancel Button");
-					}else{
-						Utility.verifyElementPresent(".//*[@id='containerBoxHistory']/table//div[contains(text(),'"+assetName+" Completed for')]", "Completed by Badge Admin", false);
-						Thread.sleep(1000);
-						ByAttribute.click("xpath", "(.//div[contains(@class,'window')]//span[@data-ref='btnInnerEl' and text()='Cancel'])[2]", "Click Cancel Button");
-					}
-					Thread.sleep(1000);
-				}
-				
-			} catch (Exception e) {
-				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
-				Utility.recoveryScenario(nameofCurrMethod, e);
+		try {
+
+			if(driver.findElements(By.xpath(HomeObjects.inboxTabBtn)).size()>0)
+			{
+				ByAttribute.click("xpath", HomeObjects.inboxTabBtn, "Click on Inbox Link");
+				Utility.pause(5);
+			}else if(driver.findElements(By.xpath(".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Inbox']")).size()>0){
+				ByAttribute.click("xpath", ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='My Inbox']", "Click on Inbox Link");
+				Utility.pause(5);
+			}else{
+				ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
+				Thread.sleep(1000);
+				ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox Link");
+				Utility.pause(5);
 			}
+
+			if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']")).size() > 0) {
+				System.out.println("Access Request is Found in Inbox");
+				logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
+
+				Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='tagorange' and text()='OPEN']", "Request Number: "+reqNum+" Current Status OPEN", false);
+				if(stageNum==1)
+				{
+					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggrey' and contains(text(),'Manager')]", "Request Number: "+reqNum+" Workflow Stage Manager", false);
+				}else{
+					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggrey' and contains(text(),'Approved')]", "Request Number: "+reqNum+" Workflow Stage Approved", false);
+				}
+				Thread.sleep(1000);
+				ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']", "Click on Request from Inbox");
+				Thread.sleep(3000);
+
+				if(stageNum==2)
+				{
+					ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
+					Thread.sleep(2000);
+
+					Robot robot = new Robot();
+
+					StringSelection ss = new StringSelection(assetName);
+					Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+					
+					robot.keyPress(KeyEvent.VK_CONTROL);
+					robot.keyPress(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_V);
+					robot.keyRelease(KeyEvent.VK_CONTROL);
+					Thread.sleep(4000);
+					robot.keyPress(KeyEvent.VK_ENTER);
+					robot.keyRelease(KeyEvent.VK_ENTER);
+					Thread.sleep(500);
+					robot.keyPress(KeyEvent.VK_TAB);
+					robot.keyRelease(KeyEvent.VK_TAB);
+
+					Thread.sleep(2000);
+				}
+
+				Thread.sleep(5000);
+				ByAttribute.click("xpath", HomeObjects.homeInboxRequestApproveBtn, "Click Approve Button");
+				Thread.sleep(1000);
+				if(driver.findElements(By.xpath(".//*[contains(@id,'btnInnerEl') and text()='Yes']")).size()>0)
+				{
+					ByAttribute.click("xpath", ".//*[contains(@id,'btnInnerEl') and text()='Yes']", "Click Save Yes Button");
+					Thread.sleep(5000);
+				}else{
+					Thread.sleep(10000);
+				}
+
+
+				ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click Expand Inbox Button");
+				Thread.sleep(1000);
+				if(stageNum==1)
+				{
+					Utility.verifyElementPresent(".//span[contains(@class,'x-tree-node-text') and text()='Manager']", "Manager Stage Inbox", false);
+				}else{
+					Utility.verifyElementPresent(".//span[contains(@class,'x-tree-node-text') and text()='Approved']", "Approved Stage Inbox", false);
+				}
+				ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click Completed Inbox Button");
+				Thread.sleep(2000);
+				Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']//following-sibling::div/div[@class='taggreen' and text()='COMPLETED']", "Request Number: "+reqNum+" Changed to Completed", false);
+
+				ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+reqNum+"']", "Click on Request from Inbox");
+				Thread.sleep(3000);
+
+				Utility.verifyElementPresent(".//tbody//label[text()='"+cardStatus+"']", "Card Staus: "+cardStatus+" as set in Request", false);
+				Thread.sleep(500);
+
+				if(stageNum==1)
+				{
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
+					Thread.sleep(1000);
+					Utility.verifyElementPresent(".//*[@data-ref='btnInnerEl' and text()='Add Comment']", "Comment Added via Self Service", false);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog Button");
+
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestAttachmentsBtn, "Click Attachments Button");
+					Thread.sleep(1000);
+					Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Attachments']", "Attachment Added via Self Service", false);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog Button");
+					Thread.sleep(2000);
+				}
+
+				if(stageNum==2)
+				{
+					//	PRINT BADGE
+					ByAttribute.click("xpath", SelfServiceObjects.selfServicePrintBtn, "Click Print Button");
+					Thread.sleep(2000);
+					Utility.verifyElementPresent(".//*[contains(@id,'header-title-textEl') and text()='Badge Print']", "Badge Print Dialog Box", false);
+					Thread.sleep(1000);
+					Utility.verifyElementPresent(".//*[contains(@id,'fullName') and contains(text(),'"+fullName+"')]", "Badge With Employee Name Printed as: "+fullName, false);
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", SelfServiceObjects.selfServiceBadgeCancelBtn, "Click Cancel Button");
+				}
+
+				ByAttribute.click("xpath", HomeObjects.homeInboxRequestWorkflowViewStatusBtn, "Click View Status Button");
+				Thread.sleep(1000);
+				Utility.verifyElementPresent(".//div[contains(@id,'header-title-textEl') and contains(text(),'"+reqNum+"')]", "Workflow Status for Request : "+reqNum, false);
+
+				if(stageNum==1)
+				{
+					Utility.verifyElementPresent(".//*[@id='containerBox']//td[contains(text(),'Pending action by')]", "Action Pending at Badge Admin Stage", false);
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeInboxRequestWorkflowViewStatusCancelBtn, "Click Cancel Button");
+				}else{
+					Utility.verifyElementPresent(".//*[@id='containerBoxHistory']/table//div[contains(text(),'"+assetName+" Completed for')]", "Completed by Badge Admin", false);
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", "(.//div[contains(@class,'window')]//span[@data-ref='btnInnerEl' and text()='Cancel'])[2]", "Click Cancel Button");
+				}
+				Thread.sleep(1000);
+			}
+
+		} catch (Exception e) {
+			String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+			Utility.recoveryScenario(nameofCurrMethod, e);
 		}
 	}
-
+}
 
 	
 
@@ -3168,11 +3152,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
 						gettingIndexOfIDMSystemsTab();
-						for (int i=1;i<=3;i++){
+						for (int i=1;i<=2;i++){
 							WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 							String systemAssigned = systemName.getText();
 							if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div")).size()>0){
-								Utility.verifyElementPresent("(.//img[contains(@src,'redcircle')])["+i+"]", "System Status InActive", false);
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div", "System Status InActive", false);
 								logger.log(LogStatus.PASS,"status of the system assigned to the temporary worker : "+systemAssigned+ " is inactive");
 							}
 							else
@@ -6026,6 +6010,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 					if(driver.findElements(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']")).size()>0){
 						logger.log(LogStatus.INFO, "Request  is  present in approvers inbox");
+						WebElement reqNo= driver.findElement(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']"));
+						Actions action = new Actions(driver);
+						action.doubleClick(reqNo).build().perform();
+						Utility.pause(5);
 						requestPresent=true;
 					}
 				} else if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsHeader)).size()>0){
@@ -6257,16 +6245,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					system2ForEmpOnboarding= (String) testData1.get("system_name2");
 	//				system3ForEmpOnboarding= (String) testData1.get("system_name3");
 					
-					/*
-					 * checking for Asset status after offboarding request
-					 */
-					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
-					WebElement badgeStatus = driver.findElement(By.xpath("//*[text()='"+AGlobalComponents.assetName+"']//ancestor::td//following-sibling::td//label"));
-					String status = badgeStatus.getText();
-					if(Utility.compareStringValues(status, "LOCK"))
-						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
-					else
-						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE"); 
+					
 				}
 				if(requestType.equalsIgnoreCase("Profile Change")){
 					requestNumber=DBValidations.getAccessRequestOfProfileChangeFromDB();
@@ -6351,8 +6330,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 * checking for Asset status after offboarding request
 					 */
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
-					int statusIndex=getBadgeListGridHeadersInRequest();
-					WebElement badgeStatus = driver.findElement(By.xpath("//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//td["+statusIndex+"]//label"));
+					WebElement badgeStatus = driver.findElement(By.xpath("//*[text()='"+AGlobalComponents.assetName+"']//ancestor::td//following-sibling::td//label"));
 					String status = badgeStatus.getText();
 					if(Utility.compareStringValues(status, "LOCK"))
 						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
@@ -6893,6 +6871,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Actions action = new Actions(driver);
 					action.sendKeys(identity, firstName);
 					action.build().perform();
+					Utility.pause(5);
 					ByAttribute.click("xpath","//div[@class='idmlistitem']//span[contains(text(),'"+firstName+"')]" , "Select the user name ");
 					Utility.pause(5);
 					

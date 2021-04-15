@@ -9,8 +9,6 @@ import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.DBValidations;
 import CommonClassReusables.Payload;
-import CommonClassReusables.TestDataEngine;
-import CommonClassReusables.TestDataInterface;
 import CommonClassReusables.Utility;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -80,61 +78,7 @@ public static boolean generateAccessToken() {
 		}
 	}
 	
-public static boolean createIdentityThroughAPI() throws Throwable {
-	
-	try
-	{
-		String identityTemplateFile = reconTestDataDirectory + "/Identity_Template.csv";
-		String identityDataFile = reconTestDataDirectory + "/Identity.csv";
-		TestDataInterface.compileTwoRowDataTemplate(identityTemplateFile, identityDataFile);
-			
-		String identitySystemTemplateFile = reconTestDataDirectory + "/IdentitySystem_Template.csv";
-		String identitySystemDataFile = reconTestDataDirectory + "/IdentitySystem.csv";
-		TestDataInterface.compileTwoRowDataTemplate(identitySystemTemplateFile, identitySystemDataFile);
-		
-		ArrayList<String> userIdList=TestDataEngine.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
-		RestAssured.baseURI=AGlobalComponents.baseURI;
-		String requestBody=Payload.createIdentityJson(identityDataFile,identitySystemDataFile);
-		if(requestBody!=null) {
-			logger.log(LogStatus.INFO, "Create Identity request json "+requestBody);
-		
-			Response response=given().log().all().header("Authorization","Bearer " + AGlobalComponents.access_token).header("Content-Type","application/Json")
-					.body(requestBody).when().post("/api/identity/external/save").then().log().all().extract().response();
-			int statusCode=response.getStatusCode();
-			if(statusCode==200) {
-				for(String userId:userIdList) {
-					DBValidations.deleteUserInSystemTable(userId);
-					DBValidations.deleteUserInMasterTable(userId);
-				}
-				logger.log(LogStatus.PASS, "Status code is:"+statusCode);
-				JsonPath js= new JsonPath(response.getBody().asString());
-				String messageText=js.getString("messages[0].messageDisplayText");
-				if(messageText.equalsIgnoreCase("Identity saved successfully.")) {
-					logger.log(LogStatus.PASS, "Identity saved successfully");
-					return true;
-				}
-				else {
-					logger.log(LogStatus.FAIL, messageText);
-					return false;
-				}			
-			}
-			else {
-				logger.log(LogStatus.FAIL, "Status code is:"+statusCode);
-				return false;
-			}
-		}
-		else {
-			logger.log(LogStatus.FAIL, "Unable to get Create Identity request json");
-			return false;
-		}
-	}		
-	catch(Exception e)
-	{		
-		String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
-		Utility.recoveryScenario(nameofCurrMethod, e);
-		return false;
-	}	
-}
+
 
 public static boolean createIdentityThroughAPI(String firstName, String lastName, String email, String city, String workerType, String sysCode, String position) throws Throwable {
 	
