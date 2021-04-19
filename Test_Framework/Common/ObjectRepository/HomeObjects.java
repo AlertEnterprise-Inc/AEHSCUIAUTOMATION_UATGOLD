@@ -54,6 +54,7 @@ public interface HomeObjects {
 		String homeAccessRequestAddLocationCancelBtn =".//a[@data-qtip='Cancel' and @aria-hidden='false']";
 		String homeAccessRequestAddLocationChangesWillBeLostMsgLbl =".//*[contains(@id,'messagebox') and text()='You request changes will lost, do you want to proceed?']";
 		String homeAccessRequestHistoryBtn = "//*[@class='x-btn-inner x-btn-inner-aebtnSmallSecondary-small' and text()='History']";
+		String homeAccessRequestHistoryPopUpCloseIcn= "//div[text()='History']//parent::div//following-sibling::div//*[@class='x-tool-tool-el x-tool-img x-tool-close ']";
 		
 		String homeAccessRequestAddLocationReasonTxt =".//*[contains(@id,'baseComboBox') and @placeholder='Select Reason for request']";
 		String homeAccessRequestAddLocationBusinessJustificationTxt =".//textarea[contains(@id,'baseTextArea')]";

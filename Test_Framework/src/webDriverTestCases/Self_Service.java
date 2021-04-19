@@ -1911,7 +1911,7 @@ public void Self_Service_Automation_TC021() throws Throwable
 
  		/** checking the access , system and assets assigned to the user in IDM 
  		 *  Status of user and assets , access and systems assigned to him will be active at this time**/
- 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"","",(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"","",(String) testData.get("script_name"));
  		
  		/** Launch New Private Browser **/
  		Utility.switchToNewBrowserDriver();
@@ -1951,7 +1951,7 @@ public void Self_Service_Automation_TC021() throws Throwable
  	 			Self_Service_CommonMethods.approveRequest("admin_user",requestNumber,"");
  	 			
  	 			/** checkStatusInMyRequestInbox**/
- 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("request_type"));
+ 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("script_name"));
  	 			Utility.updateDataInDatasource("Self_Service_Automation_TC021", "first_name", "");
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "last_name", "");
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "full_name", "");
@@ -1965,7 +1965,7 @@ public void Self_Service_Automation_TC021() throws Throwable
  		
 
  		/** checking status of access , assets , system in IDM **/
- 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",(String) testData.get("script_name"));
  		
  		 		
  		/** Logout from Application **/
@@ -2058,7 +2058,7 @@ public void Self_Service_Automation_TC022() throws Throwable
  		Utility.switchToDefaultBrowserDriver();
  		
  		/** checking status of access , assets , system in IDM **/
- 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",(String) testData.get("request_type"));
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"","",(String) testData.get("script_name"));
  		
  		/** Logout from Application **/
  		LoginPage.logout();

@@ -459,6 +459,7 @@ public class FB_Automation extends BrowserSelection {
 				Utility.updateDataInDatasource("FB_Automation_TC011", "user_id", userId);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "full_name", firstName+" "+lastName);
 				Utility.updateDataInDatasource("FB_Automation_TC011", "badge_name", AGlobalComponents.assetName);
+				Utility.updateDataInDatasource("FB_Automation_TC011", "badge_id", AGlobalComponents.badgeId);
 				
 				/** Logout from Application **/
 				LoginPage.logout();		
@@ -636,6 +637,7 @@ public class FB_Automation extends BrowserSelection {
 		String firstName=(String) testData1.get("first_name");
 		String lastName=(String) testData1.get("last_name");
 		AGlobalComponents.assetName=(String) testData1.get("badge_name");
+		AGlobalComponents.badgeId=(String) testData1.get("badge_id");
 		
 		if(userId==null||userId.equals(""))
 		{

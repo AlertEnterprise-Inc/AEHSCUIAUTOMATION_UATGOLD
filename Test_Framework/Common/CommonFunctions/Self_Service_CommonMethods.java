@@ -1982,6 +1982,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}
 					
 					Utility.verifyElementPresent(".//tbody//div[text()='"+badgeName+"']", "Newly Create Badge", false);
+					getIndexOfManageAssetsHeaders();
+					WebElement asstCode= driver.findElement(By.xpath("(//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr[1]/td["+assetCodeIndex+"]/div)[1]"));
+					AGlobalComponents.assetCode = asstCode.getText();
 				} else {
 					System.out.println("Navigation to 'Manage Asset' Page Failed");
 					logger.log(LogStatus.FAIL, "Navigation to 'Manage Asset' Page Failed");
@@ -3110,6 +3113,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					HashMap<String, Comparable> testData1 = Utility.getDataFromDatasource(scriptName);
 					
 					String requestType = (String) testData1.get("request_type");
+					
+					/*
+					 * Validating employee offboarding details after request approval
+					 */
 
 					if(requestType.equalsIgnoreCase("Employee Offboarding")){
 						
@@ -3152,15 +3159,18 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
 						gettingIndexOfIDMSystemsTab();
-						for (int i=1;i<=2;i++){
+						List<WebElement> noOfRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container']//tr"));
+						int size = noOfRows.size();
+						for (int i=1;i<=size;i++){
 							WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 							String systemAssigned = systemName.getText();
 							if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div")).size()>0){
-								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div", "System Status InActive", false);
-								logger.log(LogStatus.PASS,"status of the system assigned to the temporary worker : "+systemAssigned+ " is inactive");
+								Utility.verifyElementPresent("//*[text()='"+systemAssigned+"']/parent::td/following-sibling::td/descendant::*[text()='Inactive']", "System Status InActive", false);
+								logger.log(LogStatus.PASS,"status of the system assigned to the Employee : "+systemAssigned+ " is inactive");
 							}
 							else
-								logger.log(LogStatus.FAIL,"status of the system assigned to the temporary worker : "+systemAssigned+ " is not Inactive");
+								logger.log(LogStatus.FAIL,"status of the system assigned to the Employee : "+systemAssigned+ " is not Inactive");
+					
 						}
 						
 						/*access tab*/
@@ -3178,17 +3188,16 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Navigate to Assets tab");
 							
 						getIndexOfIDMAssetsHeaders();
-						if(driver.findElements(By.xpath("//div[text()='"+AGlobalComponents.assetName+"']")).size()>0){
-							WebElement assetStatus = driver.findElement(By.xpath("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::tr//td["+assignmentStatusIndex+"]/div"));
+						if(driver.findElements(By.xpath("//div[text()='"+AGlobalComponents.badgeId+"']")).size()>0){
+							WebElement assetStatus = driver.findElement(By.xpath("//div[text()='"+AGlobalComponents.badgeId+"']//ancestor::tr//td["+assignmentStatusIndex+"]/div"));
 							String assetAssignmentStatus = assetStatus.getText();
 							logger.log(LogStatus.INFO,"current assignment status of asset is : "+assetAssignmentStatus);
-							Utility.verifyElementPresent("//div[text()='"+AGlobalComponents.assetCode+"']//ancestor::tr//td["+assignmentStatusIndex+"]/div", "asset status", false);
+							Utility.verifyElementPresent("//div[text()='"+AGlobalComponents.badgeId+"']//ancestor::tr//td["+assignmentStatusIndex+"]/div", "asset status", false);
 							if(Utility.compareStringValues(assetAssignmentStatus, "INACTIVE"))
 								logger.log(LogStatus.PASS, "asset status is inactive after offboarding");
 							else
 								logger.log(LogStatus.FAIL, "asset status is not deactivated");
 						}
-						
 						else{
 							logger.log(LogStatus.INFO, "asset not assigned to the user");
 						}		 
@@ -3896,11 +3905,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 								String systemAssigned = systemName.getText();
 								if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div")).size()>0){
-									Utility.verifyElementPresent("(.//img[contains(@src,'redcircle')])["+i+"]", "System Status InActive", false);
+									Utility.verifyElementPresent("(.//label[@class='tagred' and text()='Inactive'])["+i+"]", "System Status InActive", false);
 									logger.log(LogStatus.PASS,"status of the system assigned to the temporary worker : "+systemAssigned+ " is inactive");
 								}
 								else
-									logger.log(LogStatus.FAIL,"status of the system assigned to the temporary worker : "+systemAssigned+ " is not Inactive");
+									logger.log(LogStatus.FAIL,"status of the system assigned to the temporary worker : "+systemAssigned+ " is  active");
 							}
 						
 						 /*access tab*/
@@ -3959,18 +3968,20 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						/*system tab*/
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySystemsTabBtn, "Navigate to systems tab");
 						gettingIndexOfIDMSystemsTab();
-						 for (int i=1;i<=systemsAssignedToUser.size();i++){
+						HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+						systemsAssignedToUser.add(2,(String) testData.get("system_name"));
+						for (int i=1;i<=systemsAssignedToUser.size();i++){
 								WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 								String systemAssigned = systemName.getText();
 								WebElement systemStatus = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]//following-sibling::td//label"));
 								String sysStatus = systemStatus.getText();
 								if(Utility.compareStringValues(sysStatus.toUpperCase(),"ACTIVE")){
-									Utility.verifyElementPresent("(.//img[contains(@src,'redcircle')])["+i+"]", "System Status is Active", false);
-									logger.log(LogStatus.PASS,"status of the system assigned to the temporary worker : "+systemAssigned+ " is active");
+									Utility.verifyElementPresent("(.//label[@class='taggreen' and text()='Active'])["+i+"]", "System Status is Active", false);
+									logger.log(LogStatus.PASS,"status of the system assigned to the temporary worker : "+systemAssigned+ " is Inactive");
 								}
 								else
-									logger.log(LogStatus.FAIL,"status of the system assigned to the temporary worker : "+systemAssigned+ " is still Inactive");
-							}
+									logger.log(LogStatus.FAIL,"status of the system assigned to the temporary worker : "+systemAssigned+ " is  active");
+						}
 						
 						 /*access tab*/
 							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Navigate to access tab");
@@ -3978,14 +3989,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								logger.log(LogStatus.FAIL, "Accesses are not assigned to the temporary worker after rehiring");
 							}
 							else{
-								HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC022");
+								
 								String access1=(String) testData.get("access_name_1");
 								String access2=(String) testData.get("access_name_2");
-								String access3=(String) testData.get("access_name_3");
 								Utility.verifyElementPresent("//*[text()='"+access1+"']", access1, false);
 								Utility.verifyElementPresent("//*[text()='"+access2+"']", access2, false);
-								Utility.verifyElementPresent("//*[text()='"+access3+"']", access3, false);
-								logger.log(LogStatus.PASS, "Accesses are re assigned to the temporary worker after rehiring");
+								logger.log(LogStatus.PASS, "Accesses are assigned to the temporary worker after rehiring");
 								
 							}
 							
@@ -4038,11 +4047,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								WebElement systemName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div"));
 								String systemAssigned = systemName.getText();
 								if(driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]/td["+systemIndex+"]/div")).size()>0){
-									Utility.verifyElementPresent("(.//img[contains(@src,'redcircle')])["+i+"]", "System Status InActive", false);
+									Utility.verifyElementPresent("(.//label[@class='tagred' and text()='Inactive'])["+i+"]", "System Status InActive", false);
 									logger.log(LogStatus.PASS,"status of the system assigned to the user : "+systemAssigned+ " is inactive");
 								}
 								else
-									logger.log(LogStatus.FAIL,"status of the system assigned to the user : "+systemAssigned+ " is not Inactive");
+									logger.log(LogStatus.FAIL,"status of the system assigned to the user : "+systemAssigned+ " is not active");
 							}
 						
 						 /*access tab*/
@@ -4454,9 +4463,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0){
 						logger.log(LogStatus.INFO, "No Access is assigned to the user ");
 						HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC022");
-						String access1=(String) testData.get("access_name_1");
-						String access2=(String) testData.get("access_name_2");
-						String access3=(String) testData.get("access_name_3");
+						String access1=(String) testData.get("pre_assigned_access_1");
+						String access2=(String) testData.get("pre_assigned_access_2");
+						String access3=(String) testData.get("pre_assigned_access_3");
 						logger.log(LogStatus.INFO, "Accesses removed from user after offboarding are: "+access1+ ","+access2+","+access3);
 					}
 					else{
@@ -4966,7 +4975,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
 						}
 						else{
-							ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 							Utility.pause(20);
 							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 								  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5007,7 +5016,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							Utility.pause(2);
 						}
 						else{
-							ByAttribute.click("xpath", HomeObjects.homeInboxRequestCloseHistoryPopUpWindowLnk, "close history window pop up ");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 							Utility.pause(20);
 							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 								  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5045,7 +5054,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								Utility.pause(2);
 							}
 							else{
-								ByAttribute.click("xpath", HomeObjects.homeInboxRequestCloseHistoryPopUpWindowLnk, "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5082,7 +5091,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								Utility.pause(2);
 							}
 							else{
-								ByAttribute.click("xpath", HomeObjects.homeInboxRequestCloseHistoryPopUpWindowLnk, "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5119,7 +5128,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								Utility.pause(2);
 							}
 							else{
-								ByAttribute.click("xpath", HomeObjects.homeInboxRequestCloseHistoryPopUpWindowLnk, "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5159,7 +5168,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
 						}
 						else{
-							ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 							Utility.pause(20);
 							ByAttribute.click("xpath", HomeObjects.homeRequestInboxMenuIcn, "Clickon menu");
 							Utility.pause(1);
@@ -5253,7 +5262,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								break;
 						}
 						else{
-							ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 							Utility.pause(20);
 							ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
 							Utility.pause(1);
@@ -5296,7 +5305,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
 						}
 						else{
-							ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 							Utility.pause(20);
 							ByAttribute.click("xpath", HomeObjects.homeRequestInboxMenuIcn, "Clickon menu");
 							Utility.pause(1);
@@ -5306,7 +5315,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}	
 					if(flag)
 						logger.log(LogStatus.FAIL, "Provisioning Unsuccessful");
-					ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 					if(Utility.compareStringValues(parameterToBeModified, "department")){
 						if((driver.findElements(By.xpath(HomeObjects.homeAccessRequestAccessListGrid)).size()>0)){
 							Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "Access List Grid",true, false);
@@ -5371,10 +5380,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 */
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
 					int statusIndex=getBadgeListGridHeadersInRequest();
-					WebElement badgeStatus = driver.findElement(By.xpath("//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//td["+statusIndex+"]//label"));
+					WebElement badgeStatus = driver.findElement(By.xpath("(//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//*//label)[2]"));
 					String status = badgeStatus.getText();
-					if(Utility.compareStringValues(status, "DEACTIVATE"))
-						logger.log(LogStatus.INFO, "status of  asset is DEACTIVATE ");
+					if(Utility.compareStringValues(status, "LOCK"))
+						logger.log(LogStatus.INFO, "status of  asset is LOCK ");
 					else
 						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE");
 					
@@ -5420,7 +5429,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					/*
 					 * checking for accesses status after rehiring
 					 */
-					
+					HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+					accessesAssignedToUser.add(0, (String) testData.get("access_name_1"));	
+					accessesAssignedToUser.add(1, (String) testData.get("access_name_2"));	
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
 					for (int i=0;i<accessesAssignedToUser.size();i++){
 						String accessName=accessesAssignedToUser.get(i);
@@ -5444,7 +5455,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						if(Utility.compareStringValues(status, "LOCK"))
 							logger.log(LogStatus.FAIL, "Systems status is still LOCKED");
 						else
-							logger.log(LogStatus.INFO, "status of  system :" +systemName +" is active ");
+							logger.log(LogStatus.INFO, "status of  system :" +systemName +" is unlock ");
 							
 						
 					}
@@ -5454,7 +5465,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 */
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
 					int statusIndex=getBadgeListGridHeadersInRequest();
-					WebElement badgeStatus = driver.findElement(By.xpath("//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//td["+statusIndex+"]//label"));
+					WebElement badgeStatus = driver.findElement(By.xpath("(//label[text()='Badge List']//parent::div//parent::div//parent::div//following-sibling::div[contains(@id,'baseGrid')]//*//label)"));
 					String status = badgeStatus.getText();
 					if(Utility.compareStringValues(status, "ACTIVE"))
 						logger.log(LogStatus.INFO, "status of  asset is ACTIVE");
@@ -5473,14 +5484,14 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					  }
 						boolean flag=true;
 						for(int i=0;i<10 && flag;i++){
-							if(driver.findElements(By.xpath("//div[contains(text(),' activated successfully ')]")).size()>0){
+							if(driver.findElements(By.xpath("//div[contains(text(),' "+AGlobalComponents.assetName+" added for ')]")).size()>0){
 								logger.log(LogStatus.PASS, "Provisioning successful");
 								flag=false;
 								Utility.verifyElementPresent("//div[contains(text(),' activated successfully ')]", "Provisioning message", false);
 								Utility.pause(2);
 							}
 							else{
-								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -5561,7 +5572,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								Utility.pause(2);
 							}
 							else{
-								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
 									  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
@@ -6007,8 +6018,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 				if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
 					ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests link");
-					Utility.pause(5);
-					if(driver.findElements(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']")).size()>0){
+					Utility.pause(15);
+					
+						if(driver.findElements(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']")).size()>0){
 						logger.log(LogStatus.INFO, "Request  is  present in approvers inbox");
 						WebElement reqNo= driver.findElement(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']"));
 						Actions action = new Actions(driver);
@@ -7084,7 +7096,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								break;
 							}
 							else{
-								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
 								Utility.pause(1);
@@ -7113,7 +7125,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								break;
 							}
 							else{
-								ByAttribute.click("xpath", "//div[@class='x-tool-tool-el x-tool-img x-tool-close ']", "close history window pop up ");
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
 								Utility.pause(20);
 								ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
 								Utility.pause(1);
