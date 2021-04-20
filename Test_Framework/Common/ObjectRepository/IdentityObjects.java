@@ -83,7 +83,7 @@ public interface IdentityObjects {
 	String idmAddAssetStatusDdn = ".//span[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']//ancestor::tr//preceding-sibling::tr//*[contains(@id,'baseComboBox') and @placeholder='Select Status']";
 	String idmAddAssetSaveBtn = "//*[text()='Reset']//ancestor::a//following-sibling::a//*[contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium') and text()='Save']";
 	String actionBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[4]";
-	String identityCommentsBtn = "(//div[contains(@class,'x-action-col-icon x-action-col') and @role='button'])[3]";
+	String identityCommentsBtn = "//div[@data-qtip='Add Comments' and @class='x-action-col-icon x-action-col-0  aegrid-select']";
 	String manageEntities = ".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Manage Entities']";
 	String cardHolders = ".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Cardholders']";
 	String idmMAnageIdentityExpandLeftViewLnk = ".//span[contains(@class,'hamburgerexpand')]";
