@@ -2094,12 +2094,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the view for role recon data
 				 */
 
-				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
-				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-				settingsIcon.click();
-				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
-
-				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
+//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
+//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+//				settingsIcon.click();
+//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+//
+//				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
 				Utility.pause(10);
 				
 				if(!AGlobalComponents.userId.isEmpty()) {

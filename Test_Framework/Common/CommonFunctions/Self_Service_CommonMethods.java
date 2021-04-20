@@ -4393,15 +4393,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container']//table["+i+"]//tr[1]//td["+accessIndex+"]"));
 								String accessAssigned = accessName.getText();
 								accessesAssignedToUser.add(i-1, accessAssigned);
-								String column = "access_name_"+i;
+								String column = "pre_assigned_access_"+i;
 								Utility.updateDataInDatasource("Self_Service_Automation_TC022", column, accessAssigned);
 								logger.log(LogStatus.INFO,"access assigned to the temporary worker : "+accessAssigned);
 								Utility.verifyElementPresent("//*[text()='"+accessAssigned+"']", accessAssigned, false);
 							}
 						}
-				//		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "access_name_1", accessesAssignedToUser.get(0));
-	//					Utility.updateDataInDatasource("Self_Service_Automation_TC022", "access_name_2", accessesAssignedToUser.get(1));
-	//					Utility.updateDataInDatasource("Self_Service_Automation_TC022", "access_name_3", accessesAssignedToUser.get(2));
 					}
 			
 					/*system tab*/
@@ -5936,7 +5933,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		            	else
 		            		photoFilePath=System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
 						ByAttribute.click("xpath",HomeObjects.uploadImgBtn, "Click on upload button to update the photo");
-						Thread.sleep(1000);
+						Thread.sleep(5000);
 										
 						StringSelection ss = new StringSelection(photoFilePath);
 			            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
@@ -7859,34 +7856,36 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	public static void requestNewBadge(String firstName, String lastName) throws Throwable {
 
 		if (unhandledException == false) {
-		System.out.println("**************************** request new badge ********************************");
-		logger.log(LogStatus.INFO,"**************************** request new badge ********************************");
+		System.out.println("*************************** request new badge *******************************");
+		logger.log(LogStatus.INFO,"*************************** request new badge *******************************");
 		try {
 			searchIdentity(firstName,lastName);
 			getIndexOfAssetsHeaders();
 			if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
 				logger.log(LogStatus.INFO, "No Badge is assigned to the user ");
 			else{
-//				ByAttribute.click("xpath",IdentityObjects.identityCommentsBtn, "clicking on comments button");
-//				Thread.sleep(1000);
-//
-//				Robot robot = new Robot();
-//
-//				robot.keyPress(KeyEvent.VK_TAB);
-//				robot.keyRelease(KeyEvent.VK_TAB);
-//				Thread.sleep(500);
-//				robot.keyPress(KeyEvent.VK_TAB);
-//				robot.keyRelease(KeyEvent.VK_TAB);
-//				Thread.sleep(500);
-//				robot.keyPress(KeyEvent.VK_A);
-//				robot.keyPress(KeyEvent.VK_U);
-//				robot.keyPress(KeyEvent.VK_T);
-//				robot.keyPress(KeyEvent.VK_O);
-//
-//				ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddCommentBtn, "Click Add Comment Button");
-//				Thread.sleep(2000);
-//				ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
-//				Thread.sleep(2000);
+				if((driver.findElements(By.xpath(IdentityObjects.identityCommentsBtn)).size()>0)){
+					ByAttribute.click("xpath",IdentityObjects.identityCommentsBtn, "clicking on comments button");
+					Thread.sleep(1000);
+	
+					Robot robot = new Robot();
+	
+					robot.keyPress(KeyEvent.VK_TAB);
+					robot.keyRelease(KeyEvent.VK_TAB);
+					Thread.sleep(500);
+					robot.keyPress(KeyEvent.VK_TAB);
+					robot.keyRelease(KeyEvent.VK_TAB);
+					Thread.sleep(500);
+					robot.keyPress(KeyEvent.VK_A);
+					robot.keyPress(KeyEvent.VK_U);
+					robot.keyPress(KeyEvent.VK_T);
+					robot.keyPress(KeyEvent.VK_O);
+	
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddCommentBtn, "Click Add Comment Button");
+					Thread.sleep(2000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
+					Thread.sleep(2000);
+				}
 				ByAttribute.click("xpath",IdentityObjects.identityRowAdderLnk , "clicking on row adder");
 				Utility.pause(3);
 				Utility.verifyElementPresentReturn(IdentityObjects.identityAssignAssetLbl, "Assign asset label", true, false);
@@ -7926,6 +7925,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				//WebElement accessCode=driver.findElement(By.xpath("(//span//following::b[text()='Code']//following::div//child::div//child::div//child::span[3])[1]"));
 				//String accessId=accessCode.getText();
 				//ByAttribute.click("xpath", IdentityObjects.identitySelectAssetValueTxt, "selecting Asset Value");
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yy h:mm a");  
+				LocalDateTime now = LocalDateTime.now();  
+				String currTime =   dtf.format(now.plusDays(14));
+				ByAttribute.setText("xpath","(//input[@placeholder = 'Select Valid To'])[5]", currTime, "setting valid to");
+				Utility.pause(2);
+				ByAttribute.click("xpath","//body","clicking on blank page");
 				ByAttribute.click("xpath", IdentityObjects.identityConfirmAssetBtn, "clicking on confirm button");
 				Utility.pause(5);
 				ByAttribute.click("xpath", IdentityObjects.SaveBtn, "clicking on save button");
