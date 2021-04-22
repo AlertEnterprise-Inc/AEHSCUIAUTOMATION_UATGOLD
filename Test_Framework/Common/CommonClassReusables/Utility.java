@@ -98,48 +98,32 @@ public class Utility extends BrowserSelection {
 	
 	public static void recoveryScenario (String methodName, Exception exception) throws Throwable
 	{
-		System.out.println("\n****************** RECOVERY SCENARIO INVOKED FOR METHOD : { " +methodName+ " } ******************");
-		System.out.println("****************** RECOVERY SCENARIO INVOKED FOR EXCEPTION : { " +exception+ " } ******************");
-		logger.log(LogStatus.FAIL, "\n****************** RECOVERY SCENARIO INVOKED FOR METHOD : { " +methodName+ " } ******************");
-		logger.log(LogStatus.FAIL, "****************** RECOVERY SCENARIO INVOKED FOR EXCEPTION : { " +exception+ " } ******************");
-
-		unhandledException = true;
+		System.out.println("\n******************* RECOVERY SCENARIO INVOKED FOR METHOD :       { " +methodName+ " } *******************");
+		System.out.println("******************* RECOVERY SCENARIO INVOKED FOR EXCEPTION :       { " +exception+ " } *******************");
+		logger.log(LogStatus.FAIL, "\n******************* RECOVERY SCENARIO INVOKED FOR METHOD :       { " +methodName+ " } *******************");	
+		logger.log(LogStatus.FAIL, "******************* RECOVERY SCENARIO INVOKED FOR EXCEPTION :       { " +exception+ " } *******************");
+		
+		unhandledException = true;	
 		Utility.takeScreenshot("bug screnshot1");
 		logger.log(LogStatus.ERROR, "Screenshort of page where Exception Invoked : " + imgeHtmlPath);
-		WebDriver recoveryDriver=Utility.openPrivateBrowser();
-		default_driver=recoveryDriver;
+		
+		switchToDefaultBrowserDriver();
+	
+		WebDriver driver2=Utility.openPrivateBrowser();
+		default_driver=driver2;
 		driver.close();
-		driver=default_driver;
+		driver=default_driver;  
 		driver.get(AGlobalComponents.applicationURL);
-
-		if(ByAttribute.getListSize("xpath",".//h3[text()='Sign In']","Recovery Scenario : Sign In page is present")==1)
+		
+		if(ByAttribute.getListSize("xpath","//input[@placeholder='Enter Username']","Recovery Scenario : Sign In page is present")==1)
 		{
-			driver.get(AGlobalComponents.applicationURL);
-			System.out.println("Successfully: open url-"+AGlobalComponents.applicationURL);
-			dynamicwait.WAitUntilPageLoad();
-			driver.findElement(By.xpath(".//*[contains(@placeholder,'Username')]")).sendKeys(AGlobalComponents.username);
-			System.out.println("Successfully: enter username: "+AGlobalComponents.username);
-			dynamicwait.WAitUntilPageLoad();
-			driver.findElement(By.xpath(".//*[contains(@placeholder,'Password')]")).sendKeys(AGlobalComponents.recoveryPassword);
-			System.out.println("Successfully: enter password: "+AGlobalComponents.recoveryPassword);
-			dynamicwait.WAitUntilPageLoad();
-			driver.findElement(By.xpath("//*[@type='button' and text()='Sign In']")).click();
-			Thread.sleep(1000);
-			try{
-				driver.findElement(By.xpath(".//*[@id='myModalLabel' and contains(text(),'Prevent Multiple Logins')]")).isDisplayed();
-				driver.findElement(By.xpath(".//*[@id='btnContnueLogin']")).click();
-				Thread.sleep(2000);
-			}catch(Exception e)
-			{
-				System.out.println("No {Prevent multiple login} pop-up appears.");
-			}
-			System.out.println("RECOVERY SCENARIO : Successfully new Driver launched and Logged In.");
-			logger.log(LogStatus.INFO, "RECOVERY SCENARIO : Successfully new Driver launched and Logged In.");
-		} else {
+			System.out.println("RECOVERY SCENARIO : Successfully new Driver launched and Application Opened.");
+			logger.log(LogStatus.INFO, "RECOVERY SCENARIO : Successfully new Driver launched and Application Opened.");
+		} else	{
 			System.out.println("Recovery Scenario : Sign In is not present.");
-			logger.log(LogStatus.FAIL, "RECOVERY SCENARIO : Sign In is not present.");
-		}
-		exception = null;
+			logger.log(LogStatus.FAIL, "RECOVERY SCENARIO : Sign In is not present.");		
+		}	
+		exception = null;	
 	}
 
 	
@@ -1693,6 +1677,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		WebDriver driver2 = Utility.openPrivateBrowser();
 		default_driver = driver;
 		driver = driver2;
+		AGlobalComponents.newBrowserDriver=1;
 		logger.log(LogStatus.INFO, "New Private Browser Launched and Control Switched");
 	}
 
@@ -1713,10 +1698,15 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 		System.out.println(
 				"******************************* switchToDefaultBrowserDriver  ****************************************");
 
-		WebDriver driver2 = driver;
-		driver2.quit();
-		driver = default_driver;
-		logger.log(LogStatus.INFO, "Switched Back to Default Browser Driver");
+		if(AGlobalComponents.newBrowserDriver==1)
+		{
+			WebDriver driver2 = driver;
+			driver2.quit();
+			driver = default_driver;
+			AGlobalComponents.newBrowserDriver=0;
+			logger.log(LogStatus.INFO, "Switched Back to Default Browser Driver");
+			driver.navigate().refresh();
+		}
 	}
 	
 

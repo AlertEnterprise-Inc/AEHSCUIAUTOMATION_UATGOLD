@@ -61,6 +61,7 @@ public class AGlobalComponents {
 	public static String amagDbConString =amagDbUrl+";user="+amagDbUsername+";password="+amagDbPassword+";database="+amagDbName+";portNumber=1433";	
 		
 	public static String browserName ="GC";
+	public static int newBrowserDriver=0;
 //	public static String applicationURL  = "http://hscpartner.alertenterprise.com/";
 //	public static String applicationURL  = "http://192.168.193.169:60/qarecon";
 	public static String applicationURL  = "http://autodevhsc.alertenterprise.com";

@@ -57,7 +57,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 	private static String jobName ="";
 	private static File fileInput ;
 	private static File fileOutPut ;
-	
+	public static String badgeId,activationDate,expirationDate,accessId,accessValidFrom,accessValidTo="";
 	
 	
 	
@@ -2850,29 +2850,27 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void validateIdentityData() throws Throwable {
-		String userDataFile=reconTestDataDirectory+"/Identity.csv";
-		ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(userDataFile, "firstName");
-		ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(userDataFile, "lastName");
-		ArrayList<String> typeList=Utility.getCSVColumnPerHeader(userDataFile, "workerType");
-		ArrayList<String> validFromList=Utility.getCSVColumnPerHeader(userDataFile, "validFrom");
-		ArrayList<String> validToList=Utility.getCSVColumnPerHeader(userDataFile, "validTo");
-		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
-		ArrayList<String> emailList=Utility.getCSVColumnPerHeader(userDataFile, "email");
-		ArrayList<String> cityList=Utility.getCSVColumnPerHeader(userDataFile, "city");
-		
-		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
-		validateDataInStagingTable(firstNameList,lastNameList,userIdList,empTypeList);
-		validateDataInMasterTable(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,cityList);
-		validateDataOnUI(firstNameList,lastNameList,userIdList,typeList,validFromList,validToList,emailList,cityList);
+	public static void validateIdentityData(String firstName,String lastName,String userId,String email,String city,String workerType,String position) throws Throwable {
+//		String userDataFile=reconTestDataDirectory+"/Identity.csv";
+//		ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(userDataFile, "firstName");
+//		ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(userDataFile, "lastName");
+//		ArrayList<String> typeList=Utility.getCSVColumnPerHeader(userDataFile, "workerType");
+//		ArrayList<String> validFromList=Utility.getCSVColumnPerHeader(userDataFile, "validFrom");
+//		ArrayList<String> validToList=Utility.getCSVColumnPerHeader(userDataFile, "validTo");
+//		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "masterIdentityId");
+//		ArrayList<String> emailList=Utility.getCSVColumnPerHeader(userDataFile, "email");
+//		ArrayList<String> cityList=Utility.getCSVColumnPerHeader(userDataFile, "city");
+//		
+//		ArrayList<String> empTypeList=getEmpTypeFromtypeList(typeList);
+		validateDataInStagingTable(firstName,lastName,userId,workerType);
+		validateDataInMasterTable(firstName,lastName,userId,workerType,email,city);
+		validateDataOnUI(firstName,lastName,userId,workerType,email,city);
 	}
 
-	private static void validateDataInMasterTable(ArrayList<String> firstNameList, ArrayList<String> lastNameList,
-			ArrayList<String> userIdList, ArrayList<String> typeList, ArrayList<String> validFromList,
-			ArrayList<String> validToList, ArrayList<String> emailList,
-			ArrayList<String> cityList) throws ClassNotFoundException, SQLException, ParseException {
+	private static void validateDataInMasterTable(String firstNameList,String lastNameList,
+			String userId,String typeList,String emailList,String cityList) throws ClassNotFoundException, SQLException, ParseException {
 
-		for(String userId:userIdList) {
+//		for(String userId:userIdList) {
 			String firstName=DBValidations.getFirstNameOfUser(userId);
 			String lastName=DBValidations.getLastNameOfUser(userId);
 			String type=DBValidations.getTypeofUserId(userId);
@@ -2889,19 +2887,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(typeList.contains(type)) {
 				logger.log(LogStatus.PASS, "WorkerType "+type+" exists in master table for UserID" +userId);
 			}
-			if(validFromList.contains(validFrom)) {
-				logger.log(LogStatus.PASS, "ValidFrom "+validFrom+" exists in master table for UserID" +userId);
-			}
-			if(validToList.contains(validTo)) {
-				logger.log(LogStatus.PASS, "ValidTo "+validTo+" exists in master table for UserID" +userId);
-			}
+//			if(validFromList.contains(validFrom)) {
+//				logger.log(LogStatus.PASS, "ValidFrom "+validFrom+" exists in master table for UserID" +userId);
+//			}
+//			if(validToList.contains(validTo)) {
+//				logger.log(LogStatus.PASS, "ValidTo "+validTo+" exists in master table for UserID" +userId);
+//			}
 			if(emailList.contains(email)) {
 				logger.log(LogStatus.PASS, "Email "+email+" exists in master table for UserID" +userId);
 			}
 			if(cityList.contains(city)) {
 				logger.log(LogStatus.PASS, "City "+city+" exists in master table for UserID" +userId);
 			}
-		}
+//		}
 	}
 
 	private static ArrayList<String> getEmpTypeFromtypeList(ArrayList<String> typeList) {
@@ -2920,30 +2918,31 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		return empTypeList;
 	}
 
-	private static void validateDataInStagingTable(ArrayList<String> firstNameList,ArrayList<String> lastNameList,ArrayList<String> userIdList,ArrayList<String> typeList) throws Throwable {
+private static void validateDataInStagingTable(String firstName,String lastName,String userId,String type) throws Throwable {
 		
 //		String job_instance_id=getJobInstanceIdFromJobName(AGlobalComponents.jobName);
 		
 		ArrayList<ArrayList<String>> dataList=getDataFromStagingTable(AGlobalComponents.syncId);
 		
-		for(int i=0;i<=firstNameList.size()-1;i++) {
+//		for(int i=0;i<=firstNameList.size()-1;i++) {
 
 			for (ArrayList<String> s : dataList) {	
 
-				if(firstNameList.get(i).equalsIgnoreCase(s.get(0))) {
-					logger.log(LogStatus.PASS,"firstName "+firstNameList.get(i)+"exists in staging table");
+				if(firstName.equalsIgnoreCase(s.get(0))) {
+					logger.log(LogStatus.PASS,"firstName "+firstName+"exists in staging table");
 				}
-				if(lastNameList.get(i).equalsIgnoreCase(s.get(1))) {
-					logger.log(LogStatus.PASS,"lastName "+lastNameList.get(i)+ "exists in staging table");
+				if(lastName.equalsIgnoreCase(s.get(1))) {
+					logger.log(LogStatus.PASS,"lastName "+lastName+ "exists in staging table");
 				}
-				if(userIdList.get(i).equalsIgnoreCase(s.get(2))) {
-					logger.log(LogStatus.PASS,"UserId "+userIdList.get(i)+ "exists in staging table ");
+				if(userId.equalsIgnoreCase(s.get(2))) {
+					logger.log(LogStatus.PASS,"UserId "+userId+ "exists in staging table ");
 				}
-				if(typeList.get(i).equalsIgnoreCase(s.get(3))) {
-					logger.log(LogStatus.PASS,"EmployeeType "+typeList.get(i)+" exists in staging table for userId "+userIdList.get(i));
+				if(type.equalsIgnoreCase(s.get(3))) {
+					logger.log(LogStatus.PASS,"EmployeeType "+type+" exists in staging table for userId "+userId);
 				}
 			}
-		}
+//		}
+	
 	}
 
 
@@ -2970,14 +2969,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		return Id;
 	}
 
-	private static void validateDataOnUI(ArrayList<String> firstNameList, ArrayList<String> lastNameList, ArrayList<String> userIdList, ArrayList<String> empTypeList,
-			ArrayList<String> validFromList,ArrayList<String> validToList,ArrayList<String> emailList,ArrayList<String> cityList) throws Throwable {
+	private static void validateDataOnUI(String firstNameList, String lastNameList, String userId, String empTypeList,
+			String emailList,String cityList) throws Throwable {
 		
 		
-		for(int i=0;i<=userIdList.size()-1;i++) {
+//		for(int i=0;i<=userIdList.size()-1;i++) {
 			
 			Actions action = new Actions(driver);
-			if(driver.findElements(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()<0){
+			if(driver.findElements(By.xpath("((//div[text()='"+userId+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]")).size()<0){
 				AGlobalComponents.takeScreenshotIfPass=true;
 				if((driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0)){
 					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
@@ -3004,24 +3003,24 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", IdentityObjects.clickFieldValue1, "click to enter the value");
 				Utility.pause(2);
 				
-				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userIdList.get(i), "Enter the first field value for Filtering");
+				ByAttribute.setText("xpath", IdentityObjects.enterFieldValue1,userId, "Enter the first field value for Filtering");
 				Utility.pause(2);
 		
 				action.sendKeys(Keys.ENTER).build().perform();
 				Utility.pause(20);
 			} 
 			
-				WebElement record=driver.findElement(By.xpath("((//div[text()='"+userIdList.get(i)+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
+				WebElement record=driver.findElement(By.xpath("((//div[text()='"+userId+"'])[1]/ancestor::tr//div[contains(@class,'x-grid-cell-inner ')])[2]"));
 				identityCode=record.getText();	
 				action.doubleClick(record).perform();
 				Utility.pause(15);
-				String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
-				if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+				String searchResult= "//div[contains(text(),'"+userId+"')]";
+				if(Utility.verifyElementPresentReturn(searchResult,userId,true,false)){
 					logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 					//FirstName Validation
 					String firstName=driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt)).getAttribute("value");
 					if(firstName!=null) {
-						if(firstNameList.get(i).equalsIgnoreCase(firstName)) {
+						if(firstNameList.equalsIgnoreCase(firstName)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoFirstNameTxt, "FirstName", true, false);
 						}
 						else {
@@ -3029,12 +3028,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 					else {
-						logger.log(LogStatus.FAIL, "Not able to see firstName "+firstNameList.get(i)+"on UI ");
+						logger.log(LogStatus.FAIL, "Not able to see firstName "+firstNameList+"on UI ");
 					}
 					//LastName validation
 					String lastName=driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt)).getAttribute("value");
 					if(lastName!=null) {
-						if(lastNameList.get(i).equalsIgnoreCase(lastName)) {
+						if(lastNameList.equalsIgnoreCase(lastName)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, "LastName", true, false);
 						}
 						else {
@@ -3042,12 +3041,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 					else {
-						logger.log(LogStatus.FAIL, "Not able to see LastName "+lastNameList.get(i)+"on UI ");
+						logger.log(LogStatus.FAIL, "Not able to see LastName "+lastNameList+"on UI ");
 					}
 					//Employee Type Validaiton
 					String employeeType=driver.findElement(By.xpath(IdentityObjects.employeeTypeLnk)).getAttribute("value");
 					if(employeeType!=null) {
-						if(empTypeList.get(i).equalsIgnoreCase(employeeType)) {
+						if(empTypeList.equalsIgnoreCase(employeeType)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.employeeTypeLnk, "EmployeeType", true, false);
 							logger.log(LogStatus.PASS, "EmployeeType "+employeeType+" displaying on UI");
 						}
@@ -3056,86 +3055,86 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						}
 					}
 					else {
-						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+empTypeList.get(i)+"on UI ");
+						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+empTypeList+"on UI ");
 					}
-					//validfrom Validation
-					String validFrom=driver.findElement(By.xpath(IdentityObjects.validFromLnk)).getAttribute("value");
-					validFrom=Utility.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
-					if(validFrom!=null) {
-						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
-							Utility.verifyElementPresentByScrollView(IdentityObjects.validFromLnk, "ValidFrom", true, false);
-						}
-						else {
-							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList.get(i));
-						}
-					}
-					else {
-						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+validFromList.get(i)+"on UI " +userIdList.get(i));
-					}
-					//ValidTo validation
-					String validTo=driver.findElement(By.xpath("//input[@placeholder='Select Valid To']")).getAttribute("value");
-					validTo=Utility.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
-					if(validTo!=null) {
-						if(validToList.get(i).equalsIgnoreCase(validTo)) {
-							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
-						}
-						else {
-							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
-						}
-					}
-					else {
-						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+validToList.get(i)+"on UI " +userIdList.get(i));
-					}
+//					//validfrom Validation
+//					String validFrom=driver.findElement(By.xpath(IdentityObjects.validFromLnk)).getAttribute("value");
+//					validFrom=Utility.convertDateFormatToGivenFormat(validFrom, "MM-dd-yyyy");
+//					if(validFrom!=null) {
+//						if(validFromList.get(i).equalsIgnoreCase(validFrom)) {
+//							Utility.verifyElementPresentByScrollView(IdentityObjects.validFromLnk, "ValidFrom", true, false);
+//						}
+//						else {
+//							logger.log(LogStatus.FAIL, "ValidFrom " +validFrom+" on UI is not same as expected" +userIdList);
+//						}
+//					}
+//					else {
+//						logger.log(LogStatus.FAIL, "Not able to see EmployeeType "+validFromList.get(i)+"on UI " +userIdList.get(i));
+//					}
+//					//ValidTo validation
+//					String validTo=driver.findElement(By.xpath("//input[@placeholder='Select Valid To']")).getAttribute("value");
+//					validTo=Utility.convertDateFormatToGivenFormat(validTo, "MM-dd-yyyy");
+//					if(validTo!=null) {
+//						if(validToList.get(i).equalsIgnoreCase(validTo)) {
+//							Utility.verifyElementPresentByScrollView(IdentityObjects.validToLnk, "ValidTo", true, false);							Utility.verifyElementPresent(IdentityObjects.validFromLnk, "ValidTo "+validTo+" displaying on UI "+userIdList.get(i),false);
+//						}
+//						else {
+//							logger.log(LogStatus.FAIL, "ValidTo " +validTo+" on UI is not same as expected" +userIdList.get(i));
+//						}
+//					}
+//					else {
+//						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+validToList.get(i)+"on UI " +userIdList.get(i));
+//					}
 					
 					//EmailId Validation
 					String email=driver.findElement(By.xpath(IdentityObjects.emailIdLnk)).getAttribute("value");
 					if(email!=null) {
-						if(emailList.get(i).equalsIgnoreCase(email)) {
+						if(emailList.equalsIgnoreCase(email)) {
 							Utility.verifyElementPresentByScrollView(IdentityObjects.emailIdLnk, "EmailId", true, false);
 						}
 						else {
-							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userIdList.get(i));
+							logger.log(LogStatus.FAIL, "EmailId" +email+" on UI is not same as expected" +userId);
 						}
 					}
 					else {
-						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+emailList.get(i)+"on UI " +userIdList.get(i));
+						logger.log(LogStatus.FAIL, "Not able to see ValidTo "+emailList+"on UI " +userId);
 					}
 				
 				//City Validation
 				String city=driver.findElement(By.xpath(IdentityObjects.cityLnk)).getAttribute("value");
 				if(city!=null) {
-					if(cityList.get(i).equalsIgnoreCase(city)) {
+					if(cityList.equalsIgnoreCase(city)) {
 						Utility.verifyElementPresentByScrollView(IdentityObjects.workLocationLnk, "City", true, false);
 					}
 					else {
-						logger.log(LogStatus.FAIL, "City " +city+" on UI is not same as expected" +userIdList.get(i));
+						logger.log(LogStatus.FAIL, "City " +city+" on UI is not same as expected" +userId);
 					}
 				}	
 				else {
-					logger.log(LogStatus.FAIL, "Not able to see City "+cityList.get(i)+"on UI " +userIdList.get(i));
+					logger.log(LogStatus.FAIL, "Not able to see City "+cityList+"on UI " +userId);
 				}		
 			}
-		}			
+//		}			
 	}
 
-	public static void assignBadgeToUserInCCURE() throws Throwable {
+	public static void assignBadgeToUserInCCURE(String firstName,String lastName,String userId,String badgeType) throws Throwable {
 		if(unhandledException==false) {
 			try {
-				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
-				String badgesDataFile = reconTestDataDirectory + "/BadgesData.csv"; 
-				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
-				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
-				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
-				ArrayList<String> userIds=new ArrayList<String>();
-				ArrayList<String> badgeIds=new ArrayList<String>();
-				ArrayList<String> badgeValidFroms=new ArrayList<String>();
-				ArrayList<String> badgeValidTos=new ArrayList<String>();
-				ArrayList<String> badgeTypes=new ArrayList<String>();
-				for(String userId:userIdList) {
-					String name=lastNameList.get(userIdList.indexOf(userId))+", "+firstNameList.get(userIdList.indexOf(userId));
-					String badgeId=Utility.UniqueNumber(6);
-					String activationDate=Utility.getCurrentDateTime("MM-dd-yyyy");
-					String expirationDate=Utility.getDate("MM-dd-yyyy", 4, "years");
+//				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
+//				String badgesDataFile = reconTestDataDirectory + "/BadgesData.csv"; 
+//				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
+//				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
+//				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
+//				ArrayList<String> userIds=new ArrayList<String>();
+//				ArrayList<String> badgeIds=new ArrayList<String>();
+//				ArrayList<String> badgeValidFroms=new ArrayList<String>();
+//				ArrayList<String> badgeValidTos=new ArrayList<String>();
+//				ArrayList<String> badgeTypes=new ArrayList<String>();
+//				for(String userId:userIdList) {
+					String name=lastName+", "+firstName;
+					badgeId=Utility.UniqueNumber(6);
+					activationDate=Utility.getCurrentDateTime("MM-dd-yyyy");
+					expirationDate=Utility.getDate("MM-dd-yyyy", 4, "years");
 					Calendar cal = Calendar.getInstance();
 					
 					Date date=new SimpleDateFormat("MM-dd-yyyy")
@@ -3159,32 +3158,32 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					int objectId=DBValidations.getObjectIdOfTheUser(name);
 					if(DBValidations.assignBadgeToUserInCCURE(objectId,name,badgeId,activationDate,expirationDate,maxObjectId+1)) {
 						
-						ReadDataFromPropertiesFile.updateCSVCellValue(identityDataFile, "validTo", 1,expirationDate);
-						userIds.add(Integer.toString(objectId));
-						badgeIds.add(badgeId);
-						badgeValidFroms.add(badgeActivationDate);
-						badgeValidTos.add(badgeExpirationDate);
-						badgeTypes.add("gb");
-						
-						ArrayList<ArrayList<String>> badgesData = new ArrayList<ArrayList<String>>();
-						String detailsHeaderArray []= {"UserId","BadgeId","BadgeValidFrom","BadgeValidTo","BadgeType"};
-						
-						ArrayList<String> badgesDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
-						
-						badgesData = Utility.appendColumnDataAtEnd(badgesData, userIds);
-						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeIds);
-						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidFroms);
-						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidTos);
-						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeTypes);
-						if(Utility.checkIfListIsNotNullAndNotEmpty(badgesData)) {
-							
-								badgesData.add(0, badgesDataFileHeaders);
-								if(FileOperations.createFileIfDoesNotExist(badgesDataFile)) {
-									ReadDataFromPropertiesFile.writeTestDataInFile(badgesDataFile, badgesData, false);
-								}
-						}	
+//						ReadDataFromPropertiesFile.updateCSVCellValue(identityDataFile, "validTo", 1,expirationDate);
+//						userIds.add(Integer.toString(objectId));
+//						badgeIds.add(badgeId);
+//						badgeValidFroms.add(badgeActivationDate);
+//						badgeValidTos.add(badgeExpirationDate);
+//						badgeTypes.add("gb");
+//						
+//						ArrayList<ArrayList<String>> badgesData = new ArrayList<ArrayList<String>>();
+//						String detailsHeaderArray []= {"UserId","BadgeId","BadgeValidFrom","BadgeValidTo","BadgeType"};
+//						
+//						ArrayList<String> badgesDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+//						
+//						badgesData = Utility.appendColumnDataAtEnd(badgesData, userIds);
+//						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeIds);
+//						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidFroms);
+//						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeValidTos);
+//						badgesData = Utility.appendColumnDataAtEnd(badgesData, badgeTypes);
+//						if(Utility.checkIfListIsNotNullAndNotEmpty(badgesData)) {
+//							
+//								badgesData.add(0, badgesDataFileHeaders);
+//								if(FileOperations.createFileIfDoesNotExist(badgesDataFile)) {
+//									ReadDataFromPropertiesFile.writeTestDataInFile(badgesDataFile, badgesData, false);
+//								}
+//						}	
 					}
-				}
+	//			}
 			}
 			catch(Exception e)
 			{		
@@ -3194,33 +3193,32 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void validateAssetsData() throws Throwable {
+	public static void validateAssetsData(String userId,String badgetype) throws Throwable {
 
-		String userDataFile=reconTestDataDirectory+"/BadgesData.csv";
-		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
-		ArrayList<String> badgeIdList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeId");
-		ArrayList<String> badgeValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidFrom");
-		ArrayList<String> badgeValidToList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidTo");
-		ArrayList<String> badgeTypeList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeType");
-		
-		validateAssetsDataInStagingTable(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
+//		String userDataFile=reconTestDataDirectory+"/BadgesData.csv";
+//		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
+//		ArrayList<String> badgeIdList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeId");
+//		ArrayList<String> badgeValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidFrom");
+//		ArrayList<String> badgeValidToList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeValidTo");
+//		ArrayList<String> badgeTypeList=Utility.getCSVColumnPerHeader(userDataFile, "BadgeType");
+//		
+		validateAssetsDataInStagingTable(userId,badgeId,activationDate,expirationDate,badgetype);
 	
-		validateAssetsDataInMasterTable(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
-		validateAssetsDataOnUI(userIdList,badgeIdList,badgeValidFromList,badgeValidToList,badgeTypeList);
+		validateAssetsDataInMasterTable(userId,badgeId,activationDate,expirationDate,badgetype);
+		validateAssetsDataOnUI(userId,badgeId,activationDate,expirationDate,badgetype);
 	
 	}
-
-	private static void validateAssetsDataOnUI(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
-			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList, ArrayList<String> badgeTypeList) throws Throwable {
+	private static void validateAssetsDataOnUI(String userIdList, String badgeIdList,
+			String badgeValidFromList, String badgeValidToList, String badgeTypeList) throws Throwable {
 		
 
 		if(unhandledException==false)
 		{
 			System.out.println("*****************Validate Assets Info*****************");
 			try{
-				for(int i=0;i<=userIdList.size()-1;i++) {
-					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
-					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+//				for(int i=0;i<=userIdList.size()-1;i++) {
+					String searchResult= "//div[contains(text(),'"+userIdList+"')]";
+					if(Utility.verifyElementPresentReturn(searchResult,userIdList,true,false)){
 						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 						Utility.pause(2);
@@ -3259,7 +3257,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						String newDate = sdf.format(date);
 						
 						if(newDate!=null) {
-							if(badgeValidFromList.get(i).equalsIgnoreCase(newDate)) {
+							if(badgeValidFromList.equalsIgnoreCase(newDate)) {
 								Utility.verifyElementPresentByScrollView(badgeValidFromElement, "BadgeValidFrom", true, false);
 							}
 							else {
@@ -3281,7 +3279,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						String newValidToDate = sdf1.format(date1);
 						
 						if(badgeValidTo!=null) {
-							if(badgeValidToList.get(i).equalsIgnoreCase(newValidToDate)) {
+							if(badgeValidToList.equalsIgnoreCase(newValidToDate)) {
 								Utility.verifyElementPresentByScrollView(badgeValidToElement, "BadgeValidTo", true, false);
 							}
 							else {
@@ -3302,7 +3300,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 								badgeType="gb";
 							}
 								
-							if(badgeTypeList.get(i).equalsIgnoreCase(badgeType)) {
+							if(badgeTypeList.equalsIgnoreCase(badgeType)) {
 								Utility.verifyElementPresentByScrollView(badgeTypeElement, "Asset Type", true, false);
 							}
 							else {
@@ -3313,7 +3311,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.FAIL, "Not able to see AssetType "+badgeType+"on UI ");
 						}
 					}
-				}
+//				}
 			}			
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -3364,10 +3362,10 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			}
 	}
 
-	private static void validateAssetsDataInMasterTable(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
-			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList,ArrayList<String> badgeTypeList) throws ClassNotFoundException, SQLException 
+	private static void validateAssetsDataInMasterTable(String userId, String badgeIdList,
+			String badgeValidFromList, String badgeValidToList,String badgeTypeList) throws ClassNotFoundException, SQLException 
 	{
-		for(String userId:userIdList) {
+//		for(String userId:userIdList) {
 			String identityId=DBValidations.getIdentityIdOfUser(userId);
 			String assetId=DBValidations.getAssetId(identityId);
 			String badgeId=DBValidations.getBadgeIdFromMasterTable(assetId);
@@ -3387,12 +3385,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(badgeTypeList.contains(badgeType)) {
 				logger.log(LogStatus.PASS, "BadgeType "+badgeType+" exists in master table for UserID" +userId);
 			}
-		}
+//		}
 	}
-
-	private static void validateAssetsDataInStagingTable(ArrayList<String> userIdList, ArrayList<String> badgeIdList,
-			ArrayList<String> badgeValidFromList, ArrayList<String> badgeValidToList, ArrayList<String> badgeTypeList) throws ClassNotFoundException, SQLException, ParseException {
-		for(String userId:userIdList) {
+	private static void validateAssetsDataInStagingTable(String userId, String badgeIdList,
+			String badgeValidFromList, String badgeValidToList, String badgeTypeList) throws ClassNotFoundException, SQLException, ParseException {
+//		for(String userId:userIdList) {
 			String userDataExtId=DBValidations.getUserdataExtId(userId);
 			String badgeId=DBValidations.getBadgeIdFromStagingTable(userDataExtId);
 			String badgeValidFrom=DBValidations.getBadgeValidFromFromStagingTable(userDataExtId);	
@@ -3426,7 +3423,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.PASS, "BadgeValidTo "+badgeValidTo+" exists in master table for UserID" +userId);
 			}
 			
-		}
+//		}
 	}
 	
 	public static void updatePhoto() throws Throwable {
@@ -3476,52 +3473,52 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		
 	}
 
-	public static void assignAccessToUserInCCURE() throws Throwable {
+	public static void assignAccessToUserInCCURE(String firstName,String lastName,String userId,String accessName) throws Throwable {
 
 		if(unhandledException==false) {
 			try {
-				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
-				String accessDataFile = reconTestDataDirectory + "/AccessData.csv"; 
-				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
-				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
-				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
-				ArrayList<String> userIds=new ArrayList<String>();
-				ArrayList<String> accessValidFroms=new ArrayList<String>();
-				ArrayList<String> accessValidTos=new ArrayList<String>();
-				ArrayList<String> accessNames=new ArrayList<String>();
-				ArrayList<String> accessIds=new ArrayList<String>();
-				for(String userId:userIdList) {
-					String name=lastNameList.get(userIdList.indexOf(userId))+", "+firstNameList.get(userIdList.indexOf(userId));
-					String activationDate=Utility.getCurrentDateTime("MM-dd-yyyy");
-					String expirationDate=Utility.getDate("MM-dd-yyyy", 4, "years");
-					int accessId=DBValidations.getAccessId("07 Contractors");
+//				String identityDataFile = reconTestDataDirectory + "/Identity.csv";
+//				String accessDataFile = reconTestDataDirectory + "/AccessData.csv"; 
+//				ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(identityDataFile, "masterIdentityId");
+//				ArrayList<String> firstNameList=Utility.getCSVColumnPerHeader(identityDataFile, "firstName");
+//				ArrayList<String> lastNameList=Utility.getCSVColumnPerHeader(identityDataFile, "lastName");
+//				ArrayList<String> userIds=new ArrayList<String>();
+//				ArrayList<String> accessValidFroms=new ArrayList<String>();
+//				ArrayList<String> accessValidTos=new ArrayList<String>();
+//				ArrayList<String> accessNames=new ArrayList<String>();
+//				ArrayList<String> accessIds=new ArrayList<String>();
+//				for(String userId:userIdList) {
+					String name=lastName+", "+firstName;
+					accessValidFrom=Utility.getCurrentDateTime("MM-dd-yyyy");
+					accessValidTo=Utility.getDate("MM-dd-yyyy", 4, "years");
+					accessId=DBValidations.getAccessId(accessName);
 					int objectId=DBValidations.getObjectIdOfTheUser(name);
-					if(DBValidations.assignAccessToUserInCCURE(objectId,accessId,activationDate,expirationDate)) {
+					if(DBValidations.assignAccessToUserInCCURE(objectId,accessId,accessValidFrom,accessValidTo)) {
 											
-						accessValidFroms.add(activationDate);
-						accessValidTos.add(expirationDate);
-						accessNames.add("07 Contractors");
-						accessIds.add(Integer.toString(accessId));
-						userIds.add(Integer.toString(objectId));
-						ArrayList<ArrayList<String>> accessesData = new ArrayList<ArrayList<String>>();
-						String detailsHeaderArray []= {"UserId","AccessId","AccessName","ValidFrom","ValidTo"};
-						
-						ArrayList<String> accessDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
-						
-						accessesData = Utility.appendColumnDataAtEnd(accessesData, userIds);
-						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessIds);
-						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessNames );
-						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidFroms );
-						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidTos);
-						if(Utility.checkIfListIsNotNullAndNotEmpty(accessesData)) {
-							
-							accessesData.add(0, accessDataFileHeaders);
-								if(FileOperations.createFileIfDoesNotExist(accessDataFile)) {
-									ReadDataFromPropertiesFile.writeTestDataInFile(accessDataFile, accessesData, false);
-								}
-						}	
+//						accessValidFroms.add(activationDate);
+//						accessValidTos.add(expirationDate);
+//						accessNames.add(accessName);
+//						accessIds.add(Integer.toString(accessId));
+//						userIds.add(Integer.toString(objectId));
+//						ArrayList<ArrayList<String>> accessesData = new ArrayList<ArrayList<String>>();
+//						String detailsHeaderArray []= {"UserId","AccessId","AccessName","ValidFrom","ValidTo"};
+//						
+//						ArrayList<String> accessDataFileHeaders = new ArrayList<String>(Arrays.asList(detailsHeaderArray));
+//						
+//						accessesData = Utility.appendColumnDataAtEnd(accessesData, userIds);
+//						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessIds);
+//						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessNames );
+//						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidFroms );
+//						accessesData = Utility.appendColumnDataAtEnd(accessesData, accessValidTos);
+//						if(Utility.checkIfListIsNotNullAndNotEmpty(accessesData)) {
+//							
+//							accessesData.add(0, accessDataFileHeaders);
+//								if(FileOperations.createFileIfDoesNotExist(accessDataFile)) {
+//									ReadDataFromPropertiesFile.writeTestDataInFile(accessDataFile, accessesData, false);
+//								}
+//						}	
 					}
-				}
+	//			}
 			}
 			catch(Exception e)
 			{		
@@ -3531,33 +3528,32 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	public static void validateAccessesData() throws Throwable {
+	public static void validateAccessesData(String userId,String accessName) throws Throwable {
 
-		String userDataFile=reconTestDataDirectory+"/AccessData.csv";
-		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
-		ArrayList<String> accessIdList=Utility.getCSVColumnPerHeader(userDataFile, "AccessId");
-		ArrayList<String> accessValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "ValidFrom");
-		ArrayList<String> accessValidToList=Utility.getCSVColumnPerHeader(userDataFile, "ValidTo");
-		ArrayList<String> accessNameList=Utility.getCSVColumnPerHeader(userDataFile, "AccessName");
+//		String userDataFile=reconTestDataDirectory+"/AccessData.csv";
+//		ArrayList<String> userIdList=Utility.getCSVColumnPerHeader(userDataFile, "UserId");
+//		ArrayList<String> accessIdList=Utility.getCSVColumnPerHeader(userDataFile, "AccessId");
+//		ArrayList<String> accessValidFromList=Utility.getCSVColumnPerHeader(userDataFile, "ValidFrom");
+//		ArrayList<String> accessValidToList=Utility.getCSVColumnPerHeader(userDataFile, "ValidTo");
+//		ArrayList<String> accessNameList=Utility.getCSVColumnPerHeader(userDataFile, "AccessName");
 		
-		validateAccessesDataInStagingTable(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
+		validateAccessesDataInStagingTable(userId,accessId,accessValidFrom,accessValidTo,accessName);
 	
-		validateAccessesDataInMasterTable(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
-		validateAccessesDataOnUI(userIdList,accessIdList,accessValidFromList,accessValidToList,accessNameList);
+		validateAccessesDataInMasterTable(userId,accessId,accessValidFrom,accessValidTo,accessName);
+		validateAccessesDataOnUI(userId,accessId,accessValidFrom,accessValidTo,accessName);
 	}
 
-	private static void validateAccessesDataOnUI(ArrayList<String> userIdList, ArrayList<String> accessIdList,
-			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
-			ArrayList<String> accessNameList) throws Throwable {
+	private static void validateAccessesDataOnUI(String userIdList, String accessIdList,
+			String accessValidFromList, String accessValidToList,String accessNameList) throws Throwable {
 
 		
 		if(unhandledException==false)
 		{
 			System.out.println("*****************Validate Assets Info*****************");
 			try{
-				for(int i=0;i<=userIdList.size()-1;i++) {
-					String searchResult= "//div[contains(text(),'"+userIdList.get(i)+"')]";
-					if(Utility.verifyElementPresentReturn(searchResult,userIdList.get(i),true,false)){
+//				for(int i=0;i<=userIdList.size()-1;i++) {
+					String searchResult= "//div[contains(text(),'"+userIdList+"')]";
+					if(Utility.verifyElementPresentReturn(searchResult,userIdList,true,false)){
 						logger.log(LogStatus.INFO ,"Search result record appeared with identity code as : "+ identityCode);
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 						Utility.pause(2);
@@ -3596,7 +3592,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						String newDate = sdf.format(date);
 						
 						if(newDate!=null) {
-							if(accessValidFromList.get(i).equalsIgnoreCase(newDate)) {
+							if(accessValidFromList.equalsIgnoreCase(newDate)) {
 								Utility.verifyElementPresentByScrollView(badgeValidFromElement, "BadgeValidFrom", true, false);
 							}
 							else {
@@ -3618,7 +3614,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						String newValidToDate = sdf1.format(date1);
 						
 						if(badgeValidTo!=null) {
-							if(accessValidToList.get(i).equalsIgnoreCase(newValidToDate)) {
+							if(accessValidToList.equalsIgnoreCase(newValidToDate)) {
 								Utility.verifyElementPresentByScrollView(badgeValidToElement, "BadgeValidTo", true, false);
 							}
 							else {
@@ -3639,7 +3635,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 								badgeType="gb";
 							}
 								
-							if(accessNameList.get(i).equalsIgnoreCase(badgeType)) {
+							if(accessNameList.equalsIgnoreCase(badgeType)) {
 								Utility.verifyElementPresentByScrollView(badgeTypeElement, "Asset Type", true, false);
 							}
 							else {
@@ -3650,7 +3646,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 							logger.log(LogStatus.FAIL, "Not able to see AssetType "+badgeType+"on UI ");
 						}
 					}
-				}
+//				}
 			}			
 			catch(Exception e){
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName(); 
@@ -3659,11 +3655,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		}
 	}
 
-	private static void validateAccessesDataInMasterTable(ArrayList<String> userIdList, ArrayList<String> accessIdList,
-			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
-			ArrayList<String> accessNameList) throws ClassNotFoundException, SQLException {
+	private static void validateAccessesDataInMasterTable(String userId, String accessIdList,
+			String accessValidFromList, String accessValidToList,
+			String accessNameList) throws ClassNotFoundException, SQLException {
 
-		for(String userId:userIdList) {
+//		for(String userId:userIdList) {
 			String identityId=DBValidations.getIdentityIdOfUser(userId);
 			String accessId=DBValidations.getAccessIdFromMasterTable(identityId);
 			String accessValidFrom=DBValidations.getAccessValidFromFromMasterTable(identityId);
@@ -3682,14 +3678,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(accessNameList.contains(accessName)) {
 				logger.log(LogStatus.PASS, "AccessName "+accessName+" exists in master table for UserID" +userId);
 			}
-		}
+//		}
 	}
 
-	private static void validateAccessesDataInStagingTable(ArrayList<String> userIdList, ArrayList<String> accessIdList,
-			ArrayList<String> accessValidFromList, ArrayList<String> accessValidToList,
-			ArrayList<String> accessNameList) throws ParseException, ClassNotFoundException, SQLException {
+	private static void validateAccessesDataInStagingTable(String userId, String accessIdList,
+			String accessValidFromList,String accessValidToList,String accessNameList) throws ParseException, ClassNotFoundException, SQLException {
 
-		for(String userId:userIdList) {
+//		for(String userId:userIdList) {
 			String userDataExtId=DBValidations.getUserdataExtId(userId);
 			String accessName=DBValidations.getAccessNameFromStagingTable(userDataExtId);
 			String accessValidFrom=DBValidations.getAccessValidFromFromStagingTable(userDataExtId);	
@@ -3704,8 +3699,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 			if(accessValidToList.contains(accessValidTo)) {
 				logger.log(LogStatus.PASS, "BadgeValidTo "+accessValidTo+" exists in master table for UserID" +userId);
 			}
-		}
+//		}
 	}
+
+	
+
+	
 
 	public static void addIdentitiesToAccess(ArrayList<String> firstNames, ArrayList<String> lastNames,String accessName) throws Throwable {
 		if(unhandledException==false)

@@ -51,24 +51,25 @@ public class FB_Automation extends BrowserSelection {
 		System.out.println("[INFO]--> FB_Automation_TC001 - TestCase Execution Begins");
 		AGlobalComponents.CCURERoleRecon=true;
 		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC001");
+		AGlobalComponents.applicationURL = (String) testData.get("application_url");
 	
-		/** Login as AS User **/
+		/* Login as AS User */
 		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));
 
 		if(loginStatus){
 			logger.log(LogStatus.PASS, "Login Successful");
 			
-			/** Create Recon Job **/
+			/* Create Recon Job */
 			FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
 				
-			/** Rerun the role recon job **/
-//			FB_Automation_CommonMethods.rerunReconRecord((String) testData.get("recon_entity"));
+			/* Rerun the role recon job */
+	//		FB_Automation_CommonMethods.rerunReconRecord((String) testData.get("recon_entity"));
 			
-			/** Deleting the Recon Record **/
-//			FB_Automation_CommonMethods.deleteReconRecord((String) testData.get("recon_entity"));
+			/* Deleting the Recon Record */
+	//		FB_Automation_CommonMethods.deleteReconRecord((String) testData.get("recon_entity"));
 			
 				
-			/** Logout from Application **/
+			/* Logout from Application */
 			LoginPage.logout();
 		}	
 		else
@@ -334,23 +335,27 @@ public class FB_Automation extends BrowserSelection {
 	 	System.out.println("[INFO]--> FB_Automation_TC009 - TestCase Execution Begins");
 	 	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("FB_Automation_TC009");
 		AGlobalComponents.applicationURL = (String) testData.get("application_url");
+		String firstName="Test"+Utility.getRandomString(2);
+	 	String lastName=Utility.getRandomString(4);
+	 	String scriptName = (String) testData.get("script_name");
 	 	
 	 	if(ApiMethods.generateAccessToken((String) testData.get("admin_username"),(String) testData.get("admin_password")))
 	 	{
-	 		if(ApiMethods.createIdentityThroughAPI( "Test", Utility.getRandomString(4), "autouser2@aeqaind.corp", "NewYork", "employee", "SYS-000002","IT Director")) {
-	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE();
+	 		if(ApiMethods.createIdentityThroughAPI(scriptName,firstName,lastName,(String) testData.get("email"),(String) testData.get("city"), (String) testData.get("employee_type"),(String) testData.get("system_code"),(String) testData.get("pre_assigned_position"))) {
+	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE(firstName,lastName,AGlobalComponents.userId,(String) testData.get("badge_type"));
+	 			FB_Automation_CommonMethods.assignAccessToUserInCCURE(firstName,lastName,AGlobalComponents.userId,(String) testData.get("access_name_1"));
 	 			
-	 			/** Login as AS User **/
+	 			/* Login as AS User */
 	 			boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("recon_entity"), (String) testData.get("recon_entity"));
 
 	 			if(loginStatus){
 	 				logger.log(LogStatus.PASS, "Login Successful");
 	 				
-	 				/** Create Recon Job **/
+	 				/* Create Recon Job */
 	 				FB_Automation_CommonMethods.setUpReconJob((String) testData.get("recon_entity"),(String) testData.get("recon_connector"),(String) testData.get("recon_prefeedrule"),(String) testData.get("recon_scheduletype"),(boolean) testData.get("recon_createrequest"),(boolean) testData.get("recon_fetchentity"));
-	 				FB_Automation_CommonMethods.validateIdentityData();	 	
-	 				FB_Automation_CommonMethods.validateAssetsData();
-	 				FB_Automation_CommonMethods.validateAccessesData();
+	 				FB_Automation_CommonMethods.validateIdentityData(firstName,lastName,AGlobalComponents.userId,(String) testData.get("email"),(String) testData.get("city"),(String) testData.get("employee_type"),(String) testData.get("pre_assigned_position"));	 	
+	 				FB_Automation_CommonMethods.validateAssetsData(AGlobalComponents.userId,(String) testData.get("badge_type"));
+	 				FB_Automation_CommonMethods.validateAccessesData(AGlobalComponents.userId,(String) testData.get("access_name_1"));
 	 				LoginPage.logout();
 			}	
 			else

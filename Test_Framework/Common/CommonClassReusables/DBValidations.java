@@ -473,12 +473,12 @@ public class DBValidations extends BrowserSelection{
 		return type;				
 	}
 
-	public static int getAccessId(String name) throws ClassNotFoundException {
+	public static String getAccessId(String name) throws ClassNotFoundException {
 
 		String query = "Select ObjectID from [ACVSCore].[Access].[Clearance] where Name='"+name+"'";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromCCUREDatabase(query));
-		int objectId =Integer.parseInt(rs.get(0).get(0));	
-		if(objectId!=0) {
+		String objectId =rs.get(0).get(0);	
+		if(objectId!="") {
 			System.out.println("ObjectId of the user: "+objectId);
 		}
 		else {
@@ -487,7 +487,7 @@ public class DBValidations extends BrowserSelection{
 		return objectId;
 	}
 
-	public static boolean assignAccessToUserInCCURE(int userId,int accessId, String activationDate, String expirationDate) throws ClassNotFoundException {
+	public static boolean assignAccessToUserInCCURE(int userId,String accessId, String activationDate, String expirationDate) throws ClassNotFoundException {
 
 		int noOfRecordsUpdated=-1;
 		String query="insert into [ACVSCore].[Access].[PersonnelClearancePair](ClassType,PersonnelID,ClearanceID,StartDateTime,EndDateTime)"

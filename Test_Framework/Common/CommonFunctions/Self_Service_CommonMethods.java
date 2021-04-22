@@ -8133,7 +8133,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					String firstName = "Test";
 					String lastName = "User" + Utility.getRandomNumber(3);
 					arr.add(firstName+" "+lastName);
-					CommonFunctions.ApiMethods.createIdentityThroughAPI( firstName, lastName, email, city, workerType, sysCode,position);
+					CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, email, city, workerType, sysCode,position);
 					addAccessToUsers(firstName, lastName, AccessName,position);
 					
 			}

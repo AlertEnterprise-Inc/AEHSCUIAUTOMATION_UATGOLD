@@ -80,7 +80,7 @@ public static boolean generateAccessToken() {
 	
 
 
-public static boolean createIdentityThroughAPI(String firstName, String lastName, String email, String city, String workerType, String sysCode, String position) throws Throwable {
+public static boolean createIdentityThroughAPI(String scriptName,String firstName, String lastName, String email, String city, String workerType, String sysCode, String position) throws Throwable {
 	
 	try
 	{
@@ -94,7 +94,10 @@ public static boolean createIdentityThroughAPI(String firstName, String lastName
 			int statusCode=response.getStatusCode();
 			if(statusCode==200) {
 				
-				
+				if(scriptName.equalsIgnoreCase("FB_Automation_TC009")) {
+					DBValidations.deleteUserInSystemTable(AGlobalComponents.userId);
+					DBValidations.deleteUserInMasterTable(AGlobalComponents.userId);	
+				}
 				logger.log(LogStatus.PASS, "Status code is:"+statusCode);
 				JsonPath js= new JsonPath(response.getBody().asString());
 				String messageText=js.getString("messages[0].messageDisplayText");
