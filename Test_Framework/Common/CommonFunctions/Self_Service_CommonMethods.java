@@ -2823,12 +2823,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	Utility.pause(60);
 	ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 	Utility.pause(1);
-	ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+	ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 	Utility.pause(10);
 	ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 	ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 	Utility.pause(1);
-	ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+	ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 	Utility.pause(10);
 	ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "Click on Assets Tab ");
 
@@ -3147,13 +3147,13 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 						Utility.pause(5);
 						
 						
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 						Utility.pause(5);
 						
 						/*system tab*/
@@ -3243,7 +3243,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							else{
 								ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 								Utility.pause(1);
-								ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+								ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 								Utility.pause(5);
 								newJobTitle = driver.findElement(By.xpath("HomeObjects.homeAccessRequestJobTitle")).getAttribute("value");
 							}
@@ -3354,8 +3354,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3498,8 +3498,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(Utility.compareStringValues(requestType,"Wellness Check")){	
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3528,8 +3528,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3569,8 +3569,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3609,8 +3609,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3650,8 +3650,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3691,8 +3691,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3826,8 +3826,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3882,8 +3882,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if (Utility.compareStringValues(requestType, "Temp Worker Offboarding")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -3949,8 +3949,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if (Utility.compareStringValues(requestType, "Temp Worker Rehire")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -4024,8 +4024,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					if(Utility.compareStringValues(requestType, "Emergency Termination")){
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
-						if(driver.findElements(By.xpath(IdentityObjects.reloadOption)).size()>0){
-							ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 							Utility.pause(5);
 						}
 						else{
@@ -4879,7 +4879,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
 						Utility.pause(2);
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
-						Utility.pause(5);
+						Utility.pause(15);
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
 						Utility.pause(5);
 						
@@ -6013,44 +6013,31 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				boolean requestPresent=false;
 				logger.log(LogStatus.INFO, "Approving the request ");
 						
-				if(driver.findElements(By.xpath(HomeObjects.homeOpenRequestsLnk)).size()>0){
-					ByAttribute.click("xpath", HomeObjects.homeOpenRequestsLnk, "Click on Open Requests link");
-					Utility.pause(15);
-					
-						if(driver.findElements(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']")).size()>0){
-						logger.log(LogStatus.INFO, "Request  is  present in approvers inbox");
-						WebElement reqNo= driver.findElement(By.xpath("//*[@class='x-component x-component-activityLabeltext' and text()='"+requestNumber+"']"));
-						Actions action = new Actions(driver);
-						action.doubleClick(reqNo).build().perform();
-						Utility.pause(5);
-						requestPresent=true;
-					}
-				} else if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsHeader)).size()>0){
-					WebElement reqNo= driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]"));
-					if(Utility.verifyElementPresentReturn(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]", "Request",true, false)){
-						requestPresent=true;
-						Actions action = new Actions(driver);
-						action.doubleClick(reqNo).build().perform();
-						Utility.pause(5);
-					}
-				}
-				else{
-					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "mouse hover on Home tab");
-					ByAttribute.click("xpath", HomeObjects.homeMyRequestsLnk, "Click on My Requests Link to open the request");
+				if(driver.findElements(By.xpath(HomeObjects.inboxTabBtn)).size()>0)
+				{
+					ByAttribute.click("xpath", HomeObjects.inboxTabBtn, "Click on Inbox Link");
 					Utility.pause(5);
-					WebElement reqNo= driver.findElement(By.xpath(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]"));
-					if(Utility.verifyElementPresentReturn(".//*[contains(@class,'x-grid-cell-inner') and contains( text(),'"+requestNumber+"')]", "Request",true, false)){
-						requestPresent=true;
-						Actions action = new Actions(driver);
-						action.doubleClick(reqNo).build().perform();
-						Utility.pause(5);
-					}
-					else{
-							logger.log(LogStatus.FAIL, "request number not present in approvers inbox");
-					}
+				}else{
+					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox Link");
+					Utility.pause(5);
 				}
 				
 				Utility.handleAnnouncementPopup();
+				
+				if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']")).size() > 0) {
+					System.out.println("Access Request is Found in Inbox");
+					logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
+					
+					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']//following-sibling::div/div[@class='tagorange' and text()='OPEN']", "Request Number: "+reqNum+" Current Status OPEN", false);
+					ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Click on Request from Inbox");
+					Thread.sleep(3000);
+				} else 
+					logger.log(LogStatus.FAIL, "request number not present in approvers inbox");
+			
+				
+				
 				
 				if(Utility.compareStringValues("manager", WfActor)){
 					System.out.println("Approving the request by : "+WfActor);
@@ -7605,12 +7592,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(60);
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				
@@ -7812,12 +7799,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(30);
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab");
 				Utility.pause(3);
@@ -7937,12 +7924,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				Utility.pause(60);
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 				Utility.pause(10);
 				ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab ");
 				Utility.pause(3);
@@ -8026,7 +8013,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 					ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 					Utility.pause(1);
-					ByAttribute.click("xpath", IdentityObjects.reloadOption, "Click on reload ");
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click on reload ");
 					Utility.pause(10);
 					ByAttribute.click("xpath", IdentityObjects.badgeTabLnk, "Click on Badges Tab");
 					
@@ -8621,6 +8608,76 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
 				Utility.recoveryScenario(nameofCurrMethod, e);
 				}
+		}
+	}
+	
+	/**
+	 * <h1>idmRemoveAssetAccess</h1> 
+	 * This is Method to Validate User in IDM
+	 * @author Jiten Khanna
+	 * @modified
+	 * @version 1.0
+	 * @since 4-15-2021
+	 * @param String requestType
+	 * @return none
+	 **/
+
+	public static void idmRemoveAssetAccess(String userId, String idmTab, String assetAccessName) throws Throwable {
+
+		if (unhandledException == false) {
+			System.out.println(
+					"******************************* idmRemoveAssetAccess  ****************************************");
+			logger.log(LogStatus.INFO,
+					"**************************** idmRemoveAssetAccess ********************************");
+
+			try {
+				
+					if(driver.findElements(By.xpath(IdentityObjects.idmCardholdersAssetsTabBtn)).size()>0)
+					{
+						ByAttribute.mouseHover("xpath", IdentityObjects.idmCardholdersAssetsTabBtn, "Mouse Hover on Cardholders & Assets Tab Link");
+						Thread.sleep(1000);
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentitiesLnk, "Click on Manage Identities Link");
+						Utility.pause(5);
+					}else{
+						ByAttribute.mouseHover("xpath", IdentityObjects.idmTabBtn, "Mouse Hover on IDM Tab Link");
+						Thread.sleep(1000);
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityLnk, "Click on Manage Identity Link");
+						Utility.pause(5);
+					}
+					
+					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, userId, "Enter User ID in Search field");
+					Thread.sleep(3000);
+					Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+userId+"']", "User Available in IDM", false);
+					
+					Actions actions = new Actions(driver);
+					WebElement elementLocator = driver.findElement(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+userId+"']"));
+					actions.doubleClick(elementLocator).perform();
+					Thread.sleep(3000);
+					
+					ByAttribute.click("xpath", ".//*[@data-ref='btnInnerEl' and text()='"+idmTab+"']", "Click "+idmTab+" Tab");
+					Thread.sleep(3000);
+					
+					ByAttribute.click("xpath", ".//tbody//div[text()='"+assetAccessName+"']//ancestor::tr//div[contains(@class,'aegrid-rowMinus') and @data-qtip='Delete Row']", "Click Delete Button");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentitySaveBtn, "Click Save Button");
+					Thread.sleep(10000);
+					if(idmTab.equals("Accesses"))
+					{
+						Utility.pause(5);
+					}
+					
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityMenuBtn, "Click IDM Menu button");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityReloadBtn, "Click Reload Identity button");
+					Thread.sleep(3000);
+					ByAttribute.click("xpath", ".//*[@data-ref='btnInnerEl' and text()='"+idmTab+"']", "Click "+idmTab+" Tab");
+					Thread.sleep(1000);
+					Utility.verifyElementNotPresent(".//tbody//div[text()='"+assetAccessName+"']", assetAccessName, false);
+					
+			} catch (Exception e) {
+				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
+				Utility.recoveryScenario(nameofCurrMethod, e);
+			}
 		}
 	}
 }

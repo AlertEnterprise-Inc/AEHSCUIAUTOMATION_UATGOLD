@@ -94,6 +94,9 @@ public class Self_Service extends BrowserSelection {
 				/** Validate IDM User Status **/
 				Self_Service_CommonMethods.idmUserValidation((String) testData.get("user_id"),(String) testData.get("idm_validation_tab"),(String) testData.get("idm_validation_key"),(String) testData.get("idm_validation_status"));
 				
+				/* Remove Access from IDM */
+				Self_Service_CommonMethods.idmRemoveAssetAccess((String) testData.get("user_id"),(String) testData.get("idm_validation_tab"),(String) testData.get("idm_validation_key"));
+				
 				/** Switch to Default Browser **/
 				Utility.switchToDefaultBrowserDriver();
 				

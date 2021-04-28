@@ -1772,8 +1772,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
 				String accessToBeAssigned1=(String) testData.get("pre_assigned_access_1");
 				String accessToBeAssigned2=	(String) testData.get("pre_assigned_access_2");	
+				String accessToBeAssigned3=	(String) testData.get("pre_assigned_access_3");
 				
-				if(accessToBeAssigned1!= null){
+				if((accessToBeAssigned1==null)||(accessToBeAssigned1.equals(""))){
+				}
+				else{	
 					String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
 					ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 					Utility.pause(5);
@@ -1791,7 +1794,9 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ele.click();
 				}
 				
-				if(accessToBeAssigned2!= null){
+				if((accessToBeAssigned2==null)||(accessToBeAssigned2.equals(""))){
+				}
+				else{	
 					ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");
 					Utility.pause(5);
 					Actions action = new Actions(driver);
@@ -1799,6 +1804,24 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					action.build().perform();
 					Utility.pause(5);
 					WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned2+"')]"));
+					action.moveToElement(accessValue).click();
+					action.build().perform();
+					logger.log(LogStatus.INFO, "Access Value selected");
+					Utility.pause(2);
+		
+					WebElement ele=driver.findElement(By.xpath("//span[text()='Description']"));
+					ele.click();
+				}
+				if((accessToBeAssigned3==null)||(accessToBeAssigned3.equals(""))){
+				}
+				else{
+					ByAttribute.click("xpath",IdentityObjects.idmManageIdentityaddRowLnk,"Click on Add icon to add more accesses");
+					Utility.pause(5);
+					Actions action = new Actions(driver);		
+					action.sendKeys(accessToBeAssigned3);
+					action.build().perform();
+					Utility.pause(5);
+					WebElement accessValue=driver.findElement(By.xpath("//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+accessToBeAssigned3+"')]"));
 					action.moveToElement(accessValue).click();
 					action.build().perform();
 					logger.log(LogStatus.INFO, "Access Value selected");
@@ -1957,12 +1980,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", "//li[contains(@class,'x-boundlist-item') and text()='Active']", " select status");
 					Utility.pause(2);
 				}
-				if (driver.findElements(By.xpath(IdentityObjects.idmAddAssetSaveBtn)).size()>0){
-					ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
-					Utility.pause(5);
-				}
+				
 				if (driver.findElements(By.xpath(IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn)).size()>0){
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn, " Click confirm to add the asset ");
+					Utility.pause(5);
+				}
+				else{
+					ByAttribute.click("xpath", IdentityObjects.idmAddAssetSaveBtn, " Click Save to add the asset ");
 					Utility.pause(5);
 				}
 				

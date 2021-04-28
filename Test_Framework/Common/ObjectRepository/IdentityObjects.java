@@ -110,4 +110,63 @@ public interface IdentityObjects {
 	String deactivateActionBtn = "//div[@class='x-action-col-icon x-action-col-0  aegrid-inactive2']";
 	String badgeTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Badges']";
 	
+	
+	
+	String idmCardholdersAssetsTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
+	
+	String idmManageIdentitySaveBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Save']";
+	
+	String idmManageIdentityMenuBtn =".//*[@class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu ']";
+	
+	String idmManageIdentityReloadBtn = ".//*[contains(@id,'menuitem') and text()='Reload']";
+	
+	String cancelButtonLnk = "(//a[@role='button']//span[contains(@class,'x-btn-inner') and text()='Cancel'])[1]";
+	
+	String createIdentityLnk = "//span[normalize-space(text())='Create']";
+	
+	String profileTabLnk = "//span[text()='Profile Info']";
+	
+	String accessTabLnk = "//span[text()='Accesses']";
+	
+	String systemsTabLnk = "//span[text()='Systems']";
+	
+	String assetsTabLnk = "//span[text()='Assets']";
+	
+	String firstNameLnk = "//input[@placeholder='Enter First Name']";
+	
+	String lastNameLnk = "//input[@placeholder='Enter Last Name']";	
+	
+	String saveIconLnk = "//span[contains(@class,'x-btn-inner-aebtnPrimary-medium') and text()='Save']";
+	
+	String deletedItemsIcon = "//span[contains(@id,'button') and contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-menu')]";
+	
+	String restoreButtonInDeletedItemsLnk = "//span[contains(@id,'button') and text()='Restore']";
+	
+	String cancelButtonInDeletedItemsLnk = "//span[contains(@id,'button') and text()='Restore']/ancestor::a/preceding-sibling::a//span[contains(@id,'button') and text()='Cancel']";
+	
+	String closeButtonInDeletedItemsLnk = "//div[contains(@class,'x-tool-tool-el x-tool-img x-tool-close ')]";
+	
+	String addRecordsIconPrerequisiteTab = "//a[normalize-space(text())='Click here to Add']";
+	
+	String addRecordsIconSystemsTab = "//a[normalize-space(text())='Click here to Add']";
+	
+	String addRecordsIconAccessTab = "//a[normalize-space(text())='Click here to Add']";
+	
+	String confirmButtonValidFrom = "(//span[contains(@id,'ButtonbaseDatePicker') and text()='Confirm'])[1]";
+	
+	String confirmButtonValidTo ="(//span[contains(@id,'ButtonbaseDatePicker') and text()='Confirm'])[2]";
+	
+	String addCommentsButtonLnk = "//span[contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small') and text()='Add Comment']";
+	
+	String closeNotesWindowLnk = "//div[text()='Add Comment']/parent::div//following-sibling::div//div[contains(@class,'x-tool-img x-tool-close ')]";
+	
+	String uploadAttachmentLnk = "//span[contains(@class,'x-fa fa-paperclip ')]";
+	
+	String downloadAttachmentLnk = "//span[contains(@class,' x-fa fa-download ')]";
+	
+	String deleteAttachmentLnk = "//span[contains(@class,'x-fa fa-trash ')]";
+	
+	String yesButtonToDeleteIdentities = "//span[contains(@id,'button') and contains(@class,'x-btn-inner-aebtnSmallPrimary-small') and text()='Yes']";
+	
+	
 }

@@ -43,6 +43,7 @@ public class Golden_Suite  extends BrowserSelection {
 		}
 	}
 
+	
 	/*
 	 * TC001 : AEAP-9 : Physical Access - Case1(Submission flow and validations)
 	*/
@@ -94,6 +95,9 @@ public class Golden_Suite  extends BrowserSelection {
 				/** Validate IDM User Status **/
 				Self_Service_CommonMethods.idmUserValidation((String) testData.get("user_id"),(String) testData.get("idm_validation_tab"),(String) testData.get("idm_validation_key"),(String) testData.get("idm_validation_status"));
 				
+				/* Remove Access from IDM */
+				Self_Service_CommonMethods.idmRemoveAssetAccess((String) testData.get("user_id"),(String) testData.get("idm_validation_tab"),(String) testData.get("idm_validation_key"));
+				
 				/** Switch to Default Browser **/
 				Utility.switchToDefaultBrowserDriver();
 				
@@ -112,8 +116,6 @@ public class Golden_Suite  extends BrowserSelection {
 		
 	}
 
-	
-	
 	/*
 	 * TC007 : AEAP-17 : Self Service - New Badge
 	 */
@@ -641,7 +643,7 @@ public class Golden_Suite  extends BrowserSelection {
 	}
 	
 
-
+	
 /*
  * TC017 : 5.0 Use cases . Manager Login Scenarios :Employment Type Conversion
  */
@@ -2261,6 +2263,7 @@ public void Self_Service_Automation_TC032() throws Throwable
  		LoginPage.logout();
  	 	}
 	}
+
 /*
  * TC033 : Self Service - Return Temporary Badge
 */
@@ -2340,6 +2343,7 @@ public void Self_Service_Automation_TC034() throws Throwable
 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
 	}
 }
+
 
 @Test(priority=35)
 public void FB_Automation_TC011() throws Throwable 
@@ -2701,7 +2705,6 @@ public void FB_Automation_TC016() throws Throwable 	{
 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
 	}			
 }
-
 
 	
 }
