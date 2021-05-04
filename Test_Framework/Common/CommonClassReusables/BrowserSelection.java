@@ -90,7 +90,9 @@ public class BrowserSelection  {
 		    options.addArguments("chrome.switches","--disable-extensions");
 			options.addArguments("--no-sandbox");
 			options.addArguments("test-type");
+	//		options.addArguments("headless");
 		    options.addArguments("--start-maximized");
+		    
 		    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		    driver = new ChromeDriver(capabilities);
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

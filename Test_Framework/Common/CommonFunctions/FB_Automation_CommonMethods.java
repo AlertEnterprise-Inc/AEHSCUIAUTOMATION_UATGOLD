@@ -1778,7 +1778,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				}
 				else{	
 					String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])["+index+"]";
-					ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+					if(driver.findElements(By.xpath(addRecordsIcon)).size()>0)
+						ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+					else{
+						ByAttribute.click("xpath", IdentityObjects.addRecordsIconAccessTab, "click on add icon to insert new access");
+					}
 					Utility.pause(5);
 					Actions action = new Actions(driver);		
 					action.sendKeys(accessToBeAssigned1);

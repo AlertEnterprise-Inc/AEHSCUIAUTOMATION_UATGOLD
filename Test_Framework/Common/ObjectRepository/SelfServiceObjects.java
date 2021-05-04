@@ -29,6 +29,7 @@ public interface SelfServiceObjects
 	String selfServiceReasonForReplaceTxt = "//input[@placeholder='Enter Reason']";
 	String selfServiceSelectStatusDdn = "//input[@placeholder= 'Select Status']//following::div[1]";
 	String selfServiceSelectStatusTxt = ".//input[contains(@id,'baseComboBox') and @placeholder='Select Status']";
+	String selfServiceEnterAssetNameTxt = ".//input[@name='assetId' and @placeholder='Select Badge']";
 
 	
 	

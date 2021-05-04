@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -4938,15 +4939,15 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						break;
 					case "lastName":
 						
-						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
-						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedLastName+"']", "modifiedLastName", false);
-						logger.log(LogStatus.PASS,"Last name is modified for the employee");
+//						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
+//						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedLastName+"']", "modifiedLastName", false);
+//						logger.log(LogStatus.PASS,"Last name is modified for the employee");
 						break;
 					case "phoneno":
 						
-						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
-						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedPhoneNumber+"']", "modified Phone number", false);
-						logger.log(LogStatus.PASS,"Phone number is modified for the employee");
+//						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
+//						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedPhoneNumber+"']", "modified Phone number", false);
+//						logger.log(LogStatus.PASS,"Phone number is modified for the employee");
 						break;
 					default: 
 						System.out.println("No parameter updation request is received");
@@ -5673,11 +5674,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States of America')]" , "Select the country");
 					Utility.pause(2);
 					
-					ByAttribute.click("xpath",HomeObjects.homeAccessRequestDepartmentDdn , "Click to enter department name ");
-					ByAttribute.setText("xpath",HomeObjects.homeAccessRequestDepartmentDdn,"Sales" , "Enter department name");
-					Utility.pause(2);
-					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Sales')]" , "Select the department");
-					Utility.pause(2);
+//					ByAttribute.click("xpath",HomeObjects.homeAccessRequestDepartmentDdn , "Click to enter department name ");
+//					ByAttribute.setText("xpath",HomeObjects.homeAccessRequestDepartmentDdn,"Sales" , "Enter department name");
+//					Utility.pause(2);
+//					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Sales')]" , "Select the department");
+//					Utility.pause(2);
 					
 					Actions action = new Actions(driver);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestLocationDdn)).size()>0){
@@ -5948,10 +5949,14 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						Utility.pause(10);
 						ByAttribute.click("xpath",HomeObjects.homeMyRequestsActualPhotoLnk, "Click on Actual Photo to crop");
 			            ByAttribute.click("xpath",HomeObjects.cropAndSaveBtn, "Click on Crop and Save button");
+		            	
+		        //    	WebElement imageElement = driver.findElement(By.xpath("//label[@class='x-component x-box-item x-component-activitySubtext' and text()='photo']//parent::div//*[@class='x-img x-box-item x-img-default']"));    
+		         //   	((JavascriptExecutor)driver).executeScript("arguments[0].src='"+photoFilePath+"'", imageElement);
+		            	
 			            Utility.pause(4);
-			            if(driver.findElements(By.xpath("//*[@class='x-img x-box-item x-img-default']")).size()>0){
+			            if(driver.findElements(By.xpath(HomeObjects.homeMyRequestsUploadedImageLnk)).size()>0){
 			            	logger.log(LogStatus.PASS, "Image uploaded successfully");
-			            	Utility.verifyElementPresent(HomeObjects.homeMyRequestsUploadedImageLnk, "Uploaded Image", false);
+			            	Utility.verifyElementPresent(HomeObjects.homeMyRequestsUploadedImageSectionLnk, "Uploaded Image", false);
 			            }
 		            	break;
 		            case "lastname":
@@ -6016,12 +6021,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				if(driver.findElements(By.xpath(HomeObjects.inboxTabBtn)).size()>0)
 				{
 					ByAttribute.click("xpath", HomeObjects.inboxTabBtn, "Click on Inbox Link");
-					Utility.pause(5);
+					Utility.pause(15);
 				}else{
 					ByAttribute.mouseHover("xpath", HomeObjects.homeTabBtn, "Mouse Hover on Home Tab Link");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", HomeObjects.homeInboxLnk, "Click on Inbox Link");
-					Utility.pause(5);
+					Utility.pause(15);
 				}
 				
 				Utility.handleAnnouncementPopup();
@@ -6159,25 +6164,14 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.INFO,"******Approving the  request by  ******: "+WfActor);
 										
 					/*Giving badge to the user */
-					Utility.pause(5);
-					ByAttribute.click("xpath", HomeObjects.homeAccessRequestSelectBadgeDDn, "Select Asset from list");
-					Thread.sleep(5000);
+					ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
+					Thread.sleep(2000);
 					
-					Robot robot = new Robot();
-					
-					StringSelection ss = new StringSelection(AGlobalComponents.assetName);
-		            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-
-		            robot.keyPress(KeyEvent.VK_CONTROL);
-		            robot.keyPress(KeyEvent.VK_V);
-		            robot.keyRelease(KeyEvent.VK_V);
-		            robot.keyRelease(KeyEvent.VK_CONTROL);
-		            Thread.sleep(5000);
-		            robot.keyPress(KeyEvent.VK_ENTER);
-		            robot.keyRelease(KeyEvent.VK_ENTER);
-		            Thread.sleep(500);
-					robot.keyPress(KeyEvent.VK_TAB);
-					robot.keyRelease(KeyEvent.VK_TAB);
+					ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceEnterAssetNameTxt, AGlobalComponents.assetName, "Enter Asset Name: "+AGlobalComponents.assetName);
+					Thread.sleep(4000);
+					ByAttribute.click("xpath", ".//span[@data-qtip='"+AGlobalComponents.assetName+"' and text()='"+AGlobalComponents.assetName+"']", "Click on Asset Option");
+					Thread.sleep(1000);
+					ByAttribute.click("xpath", HomeObjects.homeAccessRequestSystemListGrid, "Move Control");
 					
 					Thread.sleep(2000);
 					Utility.pause(5);
@@ -6522,11 +6516,13 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							System.out.println("Approve button not visible");
 							logger.log(LogStatus.FAIL, "Approve button not visible");
 						}
-						
+						if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestYesButtonOnPopUpWindow)).size()>0)
+							ByAttribute.click("xpath",HomeObjects.homeAccessRequestYesButtonOnPopUpWindow, "Click yes button to save the changes done in manager stage");
 						Utility.pause(5);
 						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
 						
 					}
+					
 					if(Utility.compareStringValues("Badge Admin", WfActor)){
 						System.out.println("Approving the Employee onboarding request by : "+WfActor);
 						logger.log(LogStatus.INFO,"******Approving the Employee onboarding request by  ******: "+WfActor);
@@ -7441,54 +7437,54 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
 							Utility.verifyElementPresent("(.//tbody//td[2]/div[text()='"+access+"'])[2]", "Added Access: "+access, false);
 							
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
-							Thread.sleep(1000);
-							
-							Robot robot = new Robot();
-							
-							robot.keyPress(KeyEvent.VK_TAB);
-							robot.keyRelease(KeyEvent.VK_TAB);
-							Thread.sleep(500);
-							robot.keyPress(KeyEvent.VK_TAB);
-							robot.keyRelease(KeyEvent.VK_TAB);
-							Thread.sleep(500);
-							robot.keyPress(KeyEvent.VK_A);
-							robot.keyPress(KeyEvent.VK_U);
-							robot.keyPress(KeyEvent.VK_T);
-							robot.keyPress(KeyEvent.VK_O);
-							
-							robot.keyRelease(KeyEvent.VK_A);
-							robot.keyRelease(KeyEvent.VK_U);
-							robot.keyRelease(KeyEvent.VK_T);
-							robot.keyRelease(KeyEvent.VK_O);
-
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddCommentBtn, "Click Add Comment Button");
-							Thread.sleep(2000);
-							Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Add Comment']", "Add Comment", false);
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
-							
-							Thread.sleep(1000);														
-							
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAttachmentsBtn, "Click Attachments Button");
-							Thread.sleep(2000);
-							ByAttribute.click("xpath", HomeObjects.homeAccessRequestUploadAttachmentBtn, "Cick Upload Attachment Button");
-							Thread.sleep(3000);
-							
-							String uploadFile = System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
-							StringSelection ss = new StringSelection(uploadFile);
-				            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-
-				            robot.keyPress(KeyEvent.VK_CONTROL);
-				            robot.keyPress(KeyEvent.VK_V);
-				            robot.keyRelease(KeyEvent.VK_V);
-				            robot.keyRelease(KeyEvent.VK_CONTROL);
-				            robot.keyPress(KeyEvent.VK_ENTER);
-				            robot.keyRelease(KeyEvent.VK_ENTER);
-							
-				            Thread.sleep(5000);
-				            Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Attachments']", "Attachment", false);
-				            ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
-				            
+//							ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
+//							Thread.sleep(1000);
+//							
+//							Robot robot = new Robot();
+//							
+//							robot.keyPress(KeyEvent.VK_TAB);
+//							robot.keyRelease(KeyEvent.VK_TAB);
+//							Thread.sleep(500);
+//							robot.keyPress(KeyEvent.VK_TAB);
+//							robot.keyRelease(KeyEvent.VK_TAB);
+//							Thread.sleep(500);
+//							robot.keyPress(KeyEvent.VK_A);
+//							robot.keyPress(KeyEvent.VK_U);
+//							robot.keyPress(KeyEvent.VK_T);
+//							robot.keyPress(KeyEvent.VK_O);
+//							
+//							robot.keyRelease(KeyEvent.VK_A);
+//							robot.keyRelease(KeyEvent.VK_U);
+//							robot.keyRelease(KeyEvent.VK_T);
+//							robot.keyRelease(KeyEvent.VK_O);
+//
+//							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddCommentBtn, "Click Add Comment Button");
+//							Thread.sleep(2000);
+//							Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Add Comment']", "Add Comment", false);
+//							ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
+//							
+//							Thread.sleep(1000);														
+//							
+//							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAttachmentsBtn, "Click Attachments Button");
+//							Thread.sleep(2000);
+//							ByAttribute.click("xpath", HomeObjects.homeAccessRequestUploadAttachmentBtn, "Cick Upload Attachment Button");
+//							Thread.sleep(3000);
+//							
+//							String uploadFile = System.getProperty("user.dir") + "\\Browser_Files\\Applicant_Photo.jpg";
+//							StringSelection ss = new StringSelection(uploadFile);
+//				            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+//
+//				            robot.keyPress(KeyEvent.VK_CONTROL);
+//				            robot.keyPress(KeyEvent.VK_V);
+//				            robot.keyRelease(KeyEvent.VK_V);
+//				            robot.keyRelease(KeyEvent.VK_CONTROL);
+//				            robot.keyPress(KeyEvent.VK_ENTER);
+//				            robot.keyRelease(KeyEvent.VK_ENTER);
+//							
+//				            Thread.sleep(5000);
+//				            Utility.verifyElementPresent(".//*[@class='x-title-text x-title-text-default x-title-item' and text()='Attachments']", "Attachment", false);
+//				            ByAttribute.click("xpath", HomeObjects.homeAccessRequestCloseDialogBtn, "Click Close Dialog button");
+//				            
 				            ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddApplicationSubmitBtn, "Click Submit Button");
 							Thread.sleep(5000);
 				            
