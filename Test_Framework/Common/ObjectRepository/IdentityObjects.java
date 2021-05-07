@@ -97,10 +97,10 @@ public interface IdentityObjects {
 	String identityResetPinBtn = "(//div[@data-qtip='Reset Pin' and @class = 'x-action-col-icon x-action-col-0  aegrid-passwordUpdate'])[1]";
 	String identityResetPinYesBtn = "//span[contains(text(),'Yes') and contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small')]";
 	String identitypopUpToast = "//div[contains(@id,'toast') and @class='x-autocontainer-innerCt']";
-	String identityReplaceBadgeBtn = "(//label[text()='Active'])[1]//parent::div//parent::div//parent::td//following-sibling::td[5]//div[@class='x-action-col-icon x-action-col-0  aegrid-replaceasset']";
+	String identityReplaceBadgeBtn = "(//label[text()='Active'])[1]//parent::div//parent::div//parent::td//following-sibling::td[4]//div[@class='x-action-col-icon x-action-col-0  aegrid-replaceasset']";
 	String identityReplaceBadgeLbl = "//div[text()='Replace Badge']";
 	String identityReplacementReason = "//input[@placeholder = 'Enter Replacement Reason']";
-	String identitySelectStatusDnd = "(//input[@placeholder= 'Select Status'])[4]//parent::div//following-sibling::div";
+	String identitySelectStatusDnd = "(//input[@placeholder= 'Select Asset Status'])[2]//parent::div//following-sibling::div";
 	String identityDamagedStatusTxt = "//li[text()='DAMAGED']";
 	String identitySelectBadgetDnd = "(//input[@placeholder= 'Select Asset'])[5]//parent::div//following-sibling::div";
 	String identityReplaceSaveBtn = "(.//span[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Save'])[2]";

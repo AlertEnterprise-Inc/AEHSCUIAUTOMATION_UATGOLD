@@ -707,8 +707,9 @@ public class Utility extends BrowserSelection {
 		    ChromeOptions options = new ChromeOptions();		    
 		    options.setExperimentalOption("prefs", chromePrefs);   
 		    options.addArguments("incognito");
-	//	    options.addArguments("headless");
+	
 		    options.addArguments("--start-maximized");
+	//	    options.addArguments("headless");
 		    capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		    PrivateBrowser_driver2 = new ChromeDriver(capabilities);
 		    PrivateBrowser_driver2.get("chrome://extensions-frame");

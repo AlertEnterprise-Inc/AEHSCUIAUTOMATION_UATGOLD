@@ -777,4 +777,46 @@ public class DBValidations extends BrowserSelection{
 		}
 		return requestNo;	
 	}
+
+	public static String getUIActionOfAccess(String requestNumber,String accessName) throws ClassNotFoundException {
+
+		String query="select ui_action from autodevhsc.access_request_role arr where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and access_id =(select id from autodevhsc.access_role  where text='"+accessName+"')";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String action =rs.get(0).get(0);
+		if(action!=null) {
+			System.out.println("UI action of access: "+action);
+		}
+		else {
+			System.out.println("Unable to fetch action");
+		}
+		return action;	
+	}
+
+	public static String getUiActionOfSystem(String requestNumber, String systemName) throws ClassNotFoundException {
+
+		String query="select ui_action from autodevhsc.access_request_system ars where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and system_id=(select id from autodevhsc.system where text='"+systemName+"')";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String action =rs.get(0).get(0);
+		if(action!=null) {
+			System.out.println("UI action of access: "+action);
+		}
+		else {
+			System.out.println("Unable to fetch action");
+		}
+		return action;	
+	}
+
+	public static String getUiActionOfAsset(String requestNumber, String assetName) throws ClassNotFoundException {
+
+		String query="select ui_action from autodevhsc.access_request_asset ara where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and asset_id =(select id from autodevhsc.asset where text ='"+assetName+"')";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String action =rs.get(0).get(0);
+		if(action!=null) {
+			System.out.println("UI action of access: "+action);
+		}
+		else {
+			System.out.println("Unable to fetch action");
+		}
+		return action;	
+	}
 }
