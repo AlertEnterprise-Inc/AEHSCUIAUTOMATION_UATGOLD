@@ -89,7 +89,7 @@ public class AGlobalComponents {
 	public static String postgresqlDbName="aehscdb";
 	public static String postgresqlDbUserName="alert";
 	public static String postgresqlDbPassword="alert123";
-	public static String postgresqlDbIP="44.236.46.102";
+	public static String postgresqlDbIP="35.81.218.186";
 	public static String postgresqlDbUrl="jdbc:postgresql://"+ postgresqlDbIP+":5432/"+postgresqlDbName;
 	
 	public static String lenelDbName = "AccessControl";
@@ -106,7 +106,7 @@ public class AGlobalComponents {
 	public static int  RANDOM_DATA_GEN_LEN = 10;
 	public static boolean RANDOM_DATA_GEN_FLAG = true;
 //	public static String baseURI="http://aepdemo.alertenterprise.com/";
-	public static String baseURI="http://autodevhsc.alertenterprise.com";
+	public static String baseURI="http://autouathsc.alertenterprise.com";
 	public static String access_token="";
 	public static String assetCode="";
 	public static String reviewName="";

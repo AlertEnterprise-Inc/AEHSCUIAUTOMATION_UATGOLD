@@ -1739,7 +1739,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 				String dbUsername = "alert";
 				String dbPassword = "alert123";
 				con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-				String dbQuery = "select * from public.hscautomation where script_name = '"+scriptName+"'";
+				String dbQuery = "select * from public.hscautomation_uat where script_name = '"+scriptName+"'";
 				Class.forName("org.postgresql.Driver");
 				
 				if (con != null) {
@@ -1833,7 +1833,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 					String dbUsername = "alert";
 					String dbPassword = "alert123";
 					con = DriverManager.getConnection(dbURL, dbUsername, dbPassword);
-					String dbQuery = "update public.hscautomation set "+columnName+" ='"+columnValue+"' where script_name ='"+scriptName+"'";
+					String dbQuery = "update public.hscautomation_uat set "+columnName+" ='"+columnValue+"' where script_name ='"+scriptName+"'";
 					Class.forName("org.postgresql.Driver");
 					
 					if (con != null) {

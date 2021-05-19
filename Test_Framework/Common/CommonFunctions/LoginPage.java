@@ -75,9 +75,11 @@ public class LoginPage extends BrowserSelection
 						System.out.println("Click Sign-in Button");
 						Utility.pause(15);
 					}
-					else
+					else{
 						logger.log(LogStatus.PASS, "Login Successful");
 						flag=true;
+						Utility.handleAnnouncementPopup();
+					}
 				}
 				if(!flag){
 					logger.log(LogStatus.FAIL, "Unable to login to the application");
