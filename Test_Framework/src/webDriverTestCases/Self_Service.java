@@ -1158,8 +1158,8 @@ public void Self_Service_Automation_TC017() throws Throwable
 	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC017");
 	
 	AGlobalComponents.applicationURL = (String) testData.get("application_url");
-	String firstName ="Test"+Utility.getRandomString(4);
-	String lastName =Utility.getRandomString(4);
+	String firstName ="Auto"+Utility.getRandomString(4);
+	String lastName ="Test"+Utility.getRandomString(4);
 	String requestNumber = "";
 	String scriptName = (String) testData.get("script_name");
 	AGlobalComponents.userId=firstName+"."+lastName;
@@ -1269,8 +1269,8 @@ public void Self_Service_Automation_TC018_1() throws Throwable
 	if(loginStatus){
 		
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-			firstName ="Test"+Utility.getRandomString(4);
-			lastName =Utility.getRandomString(4);
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
@@ -1408,8 +1408,8 @@ public void Self_Service_Automation_TC018_2() throws Throwable
 	if(loginStatus){
 		
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-			firstName ="Test"+Utility.getRandomString(4);
-			lastName =Utility.getRandomString(4);
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
@@ -1508,8 +1508,8 @@ public void Self_Service_Automation_TC018_3() throws Throwable
 	if(loginStatus){
 		
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-			firstName ="Test"+Utility.getRandomString(4);
-			lastName =Utility.getRandomString(4);
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
@@ -2101,7 +2101,7 @@ public void Self_Service_Automation_TC023() throws Throwable
 	if(loginStatus){
 		
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-			firstName ="Test"+Utility.getRandomString(4);
+			firstName ="AutoTest"+Utility.getRandomString(4);
 			lastName ="Reqlocation";
 			
 			/**create new asset **/
@@ -2140,7 +2140,7 @@ public void Self_Service_Automation_TC023() throws Throwable
  	 		if(loginStatus){
 
  	 			/** Approve Access Request by area admin**/
- 	 			Self_Service_CommonMethods.approveRequest("areaAdmin",requestNumber,accessName);
+ 	 			Self_Service_CommonMethods.approveRequest("access_owner",requestNumber,accessName);
  	 			
  		 	 	/** Validate Access Request Status **/
  	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,scriptName);
@@ -2201,7 +2201,7 @@ public void Self_Service_Automation_TC024() throws Throwable
 	
 		/**create identity **/
 		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-			firstName ="Test"+Utility.getRandomString(4); lastName ="EmergencyTermination";
+			firstName ="AutoTest"+Utility.getRandomString(4); lastName ="EmergencyTermination";
 			AGlobalComponents.userId=firstName+"."+lastName;
 			/**create new asset **/
 			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
@@ -2275,8 +2275,8 @@ public void Self_Service_Automation_TC025() throws Throwable
 	String accessName = (String) testData.get("access_name_1");
 	String scriptName = (String) testData.get("script_name");
 
-	String firstName =Utility.getRandomString(6);
-	String lastName = Utility.getRandomString(4);
+	String firstName ="Auto"+Utility.getRandomString(4);
+	String lastName ="Test"+Utility.getRandomString(4);
 
 	AGlobalComponents.userId = firstName+"."+lastName;
 	String requestNumber="";
@@ -2390,8 +2390,8 @@ public void Self_Service_Automation_TC026() throws Throwable
 	
 		if(firstName==null||firstName.equals("")){
 		
-			firstName =Utility.getRandomString(6);
-			lastName =Utility.getRandomString(4);
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
 			/**create new asset **/
 			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 					
@@ -2517,8 +2517,8 @@ public void Self_Service_Automation_TC027() throws Throwable
 		
 		if(firstName==null||firstName.equals("")){
 			
-			firstName =Utility.getRandomString(6);
-			lastName =Utility.getRandomString(4);
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
 			/**create new asset **/
 			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 						

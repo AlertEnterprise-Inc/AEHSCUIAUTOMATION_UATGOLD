@@ -1957,7 +1957,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
 				Utility.pause(2);
 				for (int i=0;i<4;i++){
-					if(driver.findElements(By.xpath("//div[@class='x-component x-fieldset-header-text x-fieldset-header-text-collapsible x-component-default' and text()='Assign Assets']")).size()>1){
+					if(driver.findElements(By.xpath("//span[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Reset']//ancestor::tr//preceding-sibling::tr//*[text()='Assign Asset']")).size()>0){
 						break;
 					}
 					else{
@@ -1970,8 +1970,25 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.click("xpath", "//*[@class='idmlistitem']//span[text()='"+AGlobalComponents.assetName+"']", " select asset code");
 				Utility.pause(2);
 				
-			//	Utility.verifyElementPresentByScrollView(IdentityObjects.idmAddAssetStatusDdn, "status field", false, false);
-		//		Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityAssetsAddAssetConfirmBtn, "status field", false, false);
+//				DateFormat dateFormat = new SimpleDateFormat("M/d/yy hh:mm a");
+//				Date currentDate = new Date();
+//		        System.out.println(dateFormat.format(currentDate));
+//
+//		        // convert date to calendar
+//		        Calendar c = Calendar.getInstance();
+//		        c.setTime(currentDate);
+//
+//		        // manipulate date
+//		        c.add(Calendar.MONTH, 1);
+//		        
+//		        // convert calendar to date
+//		        Date currentDatePlusOne = c.getTime();
+//		        AGlobalComponents.validToDate = currentDatePlusOne;
+//		        String validTo = new SimpleDateFormat("d/M/yy h:mm a").format(currentDatePlusOne);
+//				
+//		        ByAttribute.clearSetText("xpath", IdentityObjects.identityAssignAssetValidToDate, validTo, "set the valid to date after one month");
+//				Thread.sleep(1000);
+				
 				if(AGlobalComponents.tempWorkerOnboarding){
 					ByAttribute.clearSetText("xpath", IdentityObjects.idmAddAssetStatusDdn, "InActive", "set the status of the asset active/inactive");
 					Thread.sleep(1000);

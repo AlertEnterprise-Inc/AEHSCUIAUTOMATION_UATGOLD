@@ -3469,7 +3469,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							String accessAssigned = accessName.getText();
 							if(Utility.compareStringValues(accessAssigned, accessAdded)){
 								logger.log(LogStatus.PASS, "Access is successfully assigned to the user");
-								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", "Newly assigned access", false);
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]//div[text()='"+accessAdded+"']", "Newly assigned access", false);
 								flag=false;
 							}
 							
@@ -6656,8 +6656,9 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchAccessTxt, "", "Clear Search Filter");
 							Thread.sleep(1000);
-							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Location");
+							
 							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Location");
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
 							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
@@ -7120,10 +7121,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchPositionAccessTxt, access, "Search Access based on Position");
 							
-							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
-							Thread.sleep(1000);
-							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Position");
+					//		ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
+						//	Thread.sleep(1000);
+					//		ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget x-item-select-active x-item-selected']", "Add Access");
 							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
+							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
 							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
@@ -7216,10 +7218,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							
 							ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestSearchApplicationAccessTxt, access, "Search Access based on Application");
 							
+							//					ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Access");
+							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
 							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Access");
 							Thread.sleep(1000);
-							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']//ancestor::div[@class='innerWidget']", "Add Access");
-							Utility.verifyElementPresent(".//h4[@data-qtip='"+access+"']", "Searched Access", false);
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
 							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);

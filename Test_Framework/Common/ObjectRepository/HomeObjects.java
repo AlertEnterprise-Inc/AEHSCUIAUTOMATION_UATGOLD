@@ -31,18 +31,18 @@ public interface HomeObjects {
 		String homeAccessRequestSelfRdb =".//span[@data-ref='labelTextEl' and text()='Request For:']//ancestor::div[@class='x-container x-form-checkboxgroup x-form-item x-form-item-default x-box-item x-container-default x-vbox-form-item']//label[@data-ref='boxLabelEl' and text()='Self']";
 		String homeAccessRequestOthersRdb =".//span[@data-ref='labelTextEl' and text()='Request For:']//ancestor::div[@class='x-container x-form-checkboxgroup x-form-item x-form-item-default x-box-item x-container-default x-vbox-form-item']//label[@data-ref='boxLabelEl' and text()='Others']";
 		String homeAccessRequestSearchLocationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
-		String homeAccessRequestSearchPositionTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
-		String homeAccessRequestSearchApplicationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
+		String homeAccessRequestSearchPositionTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position Access']";
+		String homeAccessRequestSearchApplicationTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application Access']";
 		String homeAccessRequestSearchITSystemTxt =".//input[@data-ref='inputEl' and @placeholder='Search or Filter by IT System']";
-		String homeAccessRequestSearchAccessTxt =".//div[@class='tab-title' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
-		String homeAccessRequestSearchPositionAccessTxt ="//div[@class='tab-title' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Position']";
-		String homeAccessRequestSearchApplicationAccessTxt ="//div[@class='tab-title' and text()='Review']//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application']";
+		String homeAccessRequestSearchAccessTxt ="(.//div[@class='tab-title' and contains(text(),'Review')]) | (//span[@class='x-tab-inner x-tab-inner-default' and text()='Review'])//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Location']";
+		String homeAccessRequestSearchPositionAccessTxt ="//input[contains(@class,'x-form-field x-form-empty-field x-form-empty-field-default x-form-text x-form-text-default') and @placeholder='Search or Filter by Position Access']";
+		String homeAccessRequestSearchApplicationAccessTxt ="(.//div[@class='tab-title' and contains(text(),'Review')]) | (//span[@class='x-tab-inner x-tab-inner-default' and text()='Review'])//ancestor::div[@class='x-tab-bar x-docked x-tab-bar-default x-horizontal x-tab-bar-horizontal x-tab-bar-default-horizontal x-top x-tab-bar-top x-tab-bar-default-top x-docked-top x-tab-bar-docked-top x-tab-bar-default-docked-top x-noborder-trl']//parent::div/div[@class='x-panel-body x-panel-body-default x-panel-body-default x-noborder-trbl']//input[@data-ref='inputEl' and @placeholder='Search or Filter by Application Access']";
 		String homeAccessRequestSearchITAccessLbl =".//label[contains(@id,'placeholderLabel') and text()='Search or Filter by IT Access']";
 		String homeAccessRequestCreateNextBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Next')]";
 		String homeAccessRequestCreateAddBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Add')]";
 		String homeAccessRequestCreatePreviousBtn =".//*[@class='x-btn-inner x-btn-inner-aebtnSmallPrimary-small' and contains(text(),'Previous')]";
 		String homeAccessRequestAddLocationBtn =".//*[contains(@id,'baseAccessLocationBox')]//div[@class='selecteditem btnadd' and text()='Add']";
-		String homeAccessRequestReviewTab =".//div[@class='tab-title' and contains(text(),'Review')]";
+		String homeAccessRequestReviewTab ="(.//div[@class='tab-title' and contains(text(),'Review')]) | (//span[@class='x-tab-inner x-tab-inner-default' and text()='Review'])";
 		String homeAccessRequestCommentsBtn =".//*[@data-ref='btnInnerEl' and text()='Comments']";
 		String homeAccessRequestAttachmentsBtn =".//*[@data-ref='btnInnerEl' and text()='Attachments']";
 		String homeAccessRequestUploadAttachmentBtn =".//*[@class='x-btn-icon-el x-btn-icon-el-aebtnSecondary-medium aegrid-upload ']";
@@ -138,6 +138,7 @@ public interface HomeObjects {
 	    String homeMyRequestsApprovalMenuItemLnk = "//*[contains(@id,'menuitem') and text()='Approve']";
 	    String homeMyRequestsRequesterNameLnk = ".//span[@class='x-btn-wrap x-btn-wrap-aetextlink-medium x-btn-arrow x-btn-arrow-right' and @role='presentation']";
 	    String homeMyRequestSearchUserTxt = ".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']";
+	    
 
 }
 
