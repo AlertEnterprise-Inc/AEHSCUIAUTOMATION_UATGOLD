@@ -288,14 +288,15 @@ public class Utility extends BrowserSelection {
 	* <h1>verifyElementPresent</h1>
 	* This is Mathod to Verify Element Presence
 	* @author  	Jiten Khanna
-	* @modified 
+	* @modified 05-29-2020
 	* @version 	1.0
 	* @since   	04-04-2020
 	* @param   	String verifyElementXpath,String fieldName,boolean takeScreenshotIfPass,boolean stopExecution
 	* @return  	none
 	**/
 	
-	public static void verifyElementPresent(String verifyElementXpath, String fieldName, boolean stopExecution) throws Exception {
+	public static boolean verifyElementPresent(String verifyElementXpath, String fieldName, boolean stopExecution) throws Exception {
+		boolean status=false;
 		try {
 			Assert.assertTrue(driver.findElement(By.xpath(verifyElementXpath)).isDisplayed());
 			WebElement element = driver.findElement(By.xpath(verifyElementXpath));
@@ -304,8 +305,10 @@ public class Utility extends BrowserSelection {
 			if (AGlobalComponents.takeScreenshotIfPass) {
 				Utility.takeScreenshot(Utility.UniqueNumber(5));
 				logger.log(LogStatus.PASS, "Successfully: " + fieldName + " is present." + imgeHtmlPath);
+				status=true;
 			} else {
 				logger.log(LogStatus.PASS, "Successfully: " + fieldName + " is present.");
+				status=true;
 			}
 		} catch (Exception e) {
 			System.out.println("Failed: " + fieldName + " is not present.");
@@ -316,6 +319,7 @@ public class Utility extends BrowserSelection {
 				throw (e);
 			}
 		}
+		return status;
 	}
 		
 	
