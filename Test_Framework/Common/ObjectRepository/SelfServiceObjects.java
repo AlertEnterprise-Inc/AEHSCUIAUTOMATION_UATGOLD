@@ -10,7 +10,7 @@ public interface SelfServiceObjects
 	String selfServiceSearchUserTxt = ".//label[@data-ref='placeholderLabel' and text()='Search Identity or User']//preceding-sibling::div//input";
 	String selfServiceCardStatusTxt = ".//input[@placeholder='Select Status']";
 	String selfServiceCardInactiveDateTxt = ".//input[contains(@id,'baseDateTime') and @placeholder='Enter inactive date']";
-	String selfServiceCardActiveDateTxt = ".//input[contains(@id,'baseDateTime') and @placeholder='Select Valid From']";
+	String selfServiceCardActiveDateTxt = ".//input[contains(@id,'baseDateTime') and @placeholder='Enter active date']";
 	String selfServiceCardRequestReasonTxt = ".//input[@data-ref='inputEl' and @placeholder='Enter card request reason']";
 	
 	/** NEW BADGE APPROVAL OBJECTS**/

@@ -1821,7 +1821,7 @@ public static String validateApplicantCreatedDB(String firstName,String dbIP,Str
 
 	 public static boolean updateDataInDatasource(String scriptName, String columnName, String columnValue) throws ClassNotFoundException, SQLException
 	 {
-		 logger.log(LogStatus.INFO, "Getting data from Source for Script: " + scriptName);
+		 logger.log(LogStatus.INFO, "Updating data into Source for Script: " + scriptName);
 			Connection con = null;
 			Statement st = null;
 			ResultSet rs = null;

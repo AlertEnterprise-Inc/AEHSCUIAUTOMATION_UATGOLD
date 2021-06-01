@@ -38,6 +38,7 @@ import com.relevantcodes.extentreports.LogStatus;
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.ByAttribute;
+import CommonClassReusables.ByAttributeAngular;
 import CommonClassReusables.DBValidations;
 import CommonClassReusables.MsSql;
 import CommonClassReusables.Utility;
@@ -55,7 +56,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 	private static String oldAssetStatus = null,newAssetStatus=null,badgeStatusInRequest=null,reqNum="",requestorName="",assetStatusBeforeOffboarding="",oldPhotoSrc=null,modifiedLastName="";
 	private static ArrayList<String> contractorAccessNames = new ArrayList<String>();
 	private static ArrayList<String> permanentAccessNames = new ArrayList<String>();
-	private static String access1ForTempOnboarding = "Server Room" , access2ForTempOnboarding = "EndUserRole",access3ForTempOnboarding="Common_Area_Access";
+	private static String access1ForTempOnboarding = "Server Room" , access2ForTempOnboarding = "End User Role",access3ForTempOnboarding="Common_Area_Access";
 	private static String access1ForPermanentEmp = "SC CHRWLS NONR CONST GATE" , access2ForPermanentEmp = "SC LEEXSS NONR GENERAL ACCESS";
 	private static String system2ForTempOnboarding = "CCURE 9000",system1ForTempOnboarding = "Database Connector",departmentName="Finance";
 	private static String access1ForEmpOnboarding,accessNewForChangeJobTitle,jobTitle,system1ForEmpOnboarding,system2ForEmpOnboarding;
@@ -1403,7 +1404,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 
 	public static String createNewBadgeRequest(String requestType, String requestFor, String otherUser, String cardStatus) throws Throwable {
 
-		String reqNum="";
+			reqNum="";
 		if (unhandledException == false) {
 			System.out.println("***************************** createNewBadgeRequest *********************************");
 			logger.log(LogStatus.INFO,"***************************** createNewBadgeRequest *********************************");
@@ -1494,7 +1495,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestCommentsBtn, "Click Comments Button");
 					Thread.sleep(1000);
 					
-					Robot robot = new Robot();
+						Robot robot = new Robot();
 					
 					robot.keyPress(KeyEvent.VK_TAB);
 					robot.keyRelease(KeyEvent.VK_TAB);
@@ -3267,8 +3268,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					}
 					
 					//modified identity validation
-					if(Utility.compareStringValues(requestType, "Modify Identity")){
-						
+					if(Utility.compareStringValues(requestType, "Update Identity")){
+						String accessAdded=attribute;
 						ByAttribute.click("xpath", IdentityObjects.reloadOptionMenu, "Click on menu to reload");
 						Utility.pause(1);
 						if(driver.findElements(By.xpath(IdentityObjects.idmManageIdentityReloadBtn)).size()>0){
@@ -3362,8 +3363,25 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 								logger.log(LogStatus.FAIL, "Phone number modification failed ");
 							}
 			            	break;
+			            	
+						case "department":
+							String deptName = driver.findElement(By.xpath(".//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']")).getAttribute("value");
+							if(Utility.compareStringValues(deptName, departmentName)){
+								Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestDepartmentDdn, "Modified department",true, false);
+								logger.log(LogStatus.PASS, "Department of temp worker is modified to : "+deptName);
+								
+							}
+							else
+								logger.log(LogStatus.FAIL, "Deaprtment name not modified");
+							/*Validating access assigned to the user*/
+							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+							if(Utility.verifyElementPresentReturn("//*[text()='"+accessAdded+"']", accessAdded,true, false))
+									logger.log(LogStatus.PASS, "Accesses are successfully assigned to the user");
+							else
+								logger.log(LogStatus.FAIL, "Required access not assigned to the temp worker");
+							break;
 						case "addaccess":
-							String accessAdded=(String) testData1.get("access_name_1");
+							accessAdded=(String) testData1.get("access_name_1");
 							ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 							List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
 							int size = noOfAccessRows.size();
@@ -4025,8 +4043,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				WebElement image=null ;
 				FB_Automation_CommonMethods.searchIdentity(userId);
 		
-				//existing photo capture
-				if(Utility.compareStringValues(requestType, "Modify Identity")){
+				/**
+				 * Checking for update identity use case
+				 */
+				if(Utility.compareStringValues(requestType, "Update Identity")){
 					String parameterToBeUpdated = parameterToBeModified;
 					switch (parameterToBeUpdated.toLowerCase()) {
 		            case "photo":
@@ -4064,6 +4084,30 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		            	Utility.verifyElementPresentByScrollView(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, "Phone number",true, false);
 						String currentPhoneNo = driver.findElement(By.xpath(IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt)).getAttribute("value");
 						logger.log(LogStatus.INFO, "Current last name of employee is : "+currentPhoneNo);
+		            	break;
+		            case "department":
+		            	String accessToBeAdded=attribute;
+						String deptName = driver.findElement(By.xpath(".//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']")).getAttribute("value");			
+				
+						logger.log(LogStatus.INFO, "Current department of temp worker is : "+deptName);
+				
+						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
+						getIndexOfAccessHeaders();
+						if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0)
+							logger.log(LogStatus.INFO, "No Access is assigned to the user ");
+						else{
+							List<WebElement> noOfAccessRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//tr"));
+							int size = noOfAccessRows.size();
+							for (int i=1;i<=size;i++){
+								WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container' ]//table["+i+"]//tr[1]//td["+accessIndex+"]"));
+								String accessAssigned = accessName.getText();
+								accessesAssignedToUser.add(i-1, accessAssigned);
+								Utility.verifyElementPresent("//div[@class='x-grid-item-container' and contains(@style,'transform: translate')]//table["+i+"]//tr[1]//td["+accessIndex+"]", accessAssigned, false);
+								if(!(Utility.compareStringValues(accessAssigned, accessToBeAdded))){
+									logger.log(LogStatus.INFO, "Access to be added :"+accessToBeAdded+" is not assigned to the user before");
+								}
+							}
+						}
 		            	break;
 		            case "addaccess":
 		            	String accessAdded=(String) testData1.get("access_name_1");
@@ -4848,22 +4892,28 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.FAIL, "Request not present in completed inbox");
 				
 						
-				if(Utility.compareStringValues(requestType, "Modify Identity")){
+				if(Utility.compareStringValues(requestType, "Update Identity")){
 					String parameterToBeUpdated = parameterToBeModified;
 					switch(parameterToBeUpdated){
 					case "photo":
 						break;
 					case "lastName":
 						
-//						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
-//						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedLastName+"']", "modifiedLastName", false);
-//						logger.log(LogStatus.PASS,"Last name is modified for the employee");
+						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
+						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedLastName+"']", "modifiedLastName", false);
+						logger.log(LogStatus.PASS,"Last name is modified for the employee");
 						break;
 					case "phoneno":
 						
-//						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
-//						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedPhoneNumber+"']", "modified Phone number", false);
-//						logger.log(LogStatus.PASS,"Phone number is modified for the employee");
+						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Clickon comparison button to verify the modifications");
+						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+modifiedPhoneNumber+"']", "modified Phone number", false);
+						logger.log(LogStatus.PASS,"Phone number is modified for the employee");
+						break;
+					case "department":
+						
+						ByAttribute.click("xpath", HomeObjects.ComparisonButton, "Click on comparison button to verify the modifications");
+						Utility.verifyElementPresent("//*[@class='x-grid-cell-inner ' and text()='"+departmentName+"']", "modifieddepartmentName", false);
+						logger.log(LogStatus.PASS,"new department name is present in comparison tab for temp worker :"+departmentName);
 						break;
 					default: 
 						System.out.println("No parameter updation request is received");
@@ -5096,7 +5146,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "Access List Grid",true, false);
 					if((driver.findElements(By.xpath("//*[text()='"+accessName+"']")).size()>0)){
 						String uiAccessStatus=DBValidations.getUIActionOfAccess(requestNumber,accessName);
-						if((Utility.compareStringValues(uiAccessStatus, "ADDED"))){
+						if((Utility.compareStringValues(uiAccessStatus, "ADD"))){
 							Utility.verifyElementPresent("//*[text()='"+accessName+"']", accessName, false);
 							logger.log(LogStatus.PASS, "New access is added when employment type is modified");
 						}
@@ -5231,7 +5281,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						if((driver.findElements(By.xpath(HomeObjects.homeAccessRequestAccessListGrid)).size()>0)){
 							Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "Access List Grid",true, false);
 							String uiActionStatus=DBValidations.getUIActionOfAccess(requestNumber,accessName);
-							if((Utility.compareStringValues(uiActionStatus, "ADDED")))
+							if((Utility.compareStringValues(uiActionStatus, "ADD")))
 								logger.log(LogStatus.PASS, "New access is added when department is modified");
 							else
 								logger.log(LogStatus.FAIL, "Access is not added on department change");
@@ -5335,13 +5385,16 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 * checking for accesses status after rehiring
 					 */
 					HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
-					accessesAssignedToUser.add(0, (String) testData.get("access_name_1"));	
-					accessesAssignedToUser.add(1, (String) testData.get("access_name_2"));	
+		//			accessesAssignedToUser.add(0, (String) testData.get("access_name_1"));	
+		//			accessesAssignedToUser.add(1, (String) testData.get("access_name_2"));	
+					accessesAssignedToUser.add(0, "GU-HR-SECURITY MANAGEMENT - 24/7");
+					accessesAssignedToUser.add(0, "End User Correct");
+					accessesAssignedToUser.add(0, "WA-OX - SECURITY OFFICE -24/7");
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestAccessListGrid, "AccessList Grid",true, false);
 					for (int i=0;i<accessesAssignedToUser.size();i++){
 						String accessName=accessesAssignedToUser.get(i);
 						String uiAccessStatus=DBValidations.getUIActionOfAccess(requestNumber,accessName);
-						if(Utility.compareStringValues(uiAccessStatus, "ADDED")) 
+						if(Utility.compareStringValues(uiAccessStatus, "ADD")) 
 							logger.log(LogStatus.PASS, "status of  access :" +accessName+ " is added ");
 						else
 							logger.log(LogStatus.FAIL, "Access status is not removed");
@@ -5368,7 +5421,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					 */
 					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
 					String uiBadgeStatus=DBValidations.getUiActionOfAsset(requestNumber,AGlobalComponents.assetName);
-					if(Utility.compareStringValues(uiBadgeStatus, "ACTIVE"))
+					if(Utility.compareStringValues(uiBadgeStatus, "ADD"))
 						logger.log(LogStatus.PASS, "status of  asset is ACTIVE");
 					else
 						logger.log(LogStatus.FAIL, "status of  asset is still DEACTIVATE");
@@ -5797,7 +5850,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 				}
 				
-				Utility.handleAnnouncementPopup();
 				
 				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) 
 				{
@@ -5811,7 +5863,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(2);
 					ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceSelectRequestTypeTxt, request_Type, "Enter Request Type");
 					Thread.sleep(1000);
-					ByAttribute.click("xpath", ".//li[@role='option' and text()='"+request_Type+"']", "Select Request Type as: "+request_Type);
+					ByAttribute.click("xpath", ".//li[@role='option' and contains(text(),'"+request_Type+"')]", "Select Request Type as: "+request_Type);
 					Thread.sleep(2000);
 					Actions action = new Actions(driver);
 					action.sendKeys(Keys.TAB);
@@ -5868,6 +5920,12 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		            	ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, String.valueOf(modifiedPhoneNumber), "Enter the value of modified phone number ");
 						Utility.pause(2);
 		            	break;
+		            case "department":
+						ByAttribute.clearSetText("xpath", HomeObjects.homeAccessRequestDepartmentDdn, departmentName, "Enter the value of new department ");
+						Utility.pause(2);
+						ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'"+departmentName+"')]" , "Select the department");
+						Utility.pause(2);
+						break;
 		            default: 
 		            	System.out.println("No parameter updation request is received");
 		            	
@@ -6062,13 +6120,18 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				if(Utility.compareStringValues("badgeAdmin", WfActor)){
 					System.out.println("Approving the  request by : "+WfActor);
 					logger.log(LogStatus.INFO,"******Approving the  request by  ******: "+WfActor);
-										
+					Thread.sleep(4000);
+					
 					/*Giving badge to the user */
 					ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
-					Thread.sleep(2000);
-					
-					ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceEnterAssetNameTxt, AGlobalComponents.assetName, "Enter Asset Name: "+AGlobalComponents.assetName);
-					Thread.sleep(4000);
+//					Thread.sleep(4000);
+				//  ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceEnterAssetNameTxt, AGlobalComponents.assetName, "Enter Asset Name: "+AGlobalComponents.assetName);
+					Actions action = new Actions(driver);
+					WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Badge']"));
+					action.moveToElement(elementConnector).click();
+					action.sendKeys(AGlobalComponents.assetName);
+					action.build().perform();
+					Thread.sleep(10000);
 					ByAttribute.click("xpath", ".//span[@data-qtip='"+AGlobalComponents.assetName+"' and text()='"+AGlobalComponents.assetName+"']", "Click on Asset Option");
 					Thread.sleep(1000);
 					ByAttribute.click("xpath", HomeObjects.homeAccessRequestSystemListGrid, "Move Control");
@@ -8006,7 +8069,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					String firstName = "Test";
 					String lastName = "User" + Utility.getRandomNumber(3);
 					arr.add(firstName+" "+lastName);
-					CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, email, city, workerType, sysCode,position);
+					CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, email, city, workerType, sysCode,position,"");
 					addAccessToUsers(firstName, lastName, AccessName,position);
 					
 			}

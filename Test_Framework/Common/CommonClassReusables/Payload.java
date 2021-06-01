@@ -23,7 +23,7 @@ public class Payload {
 	}
 
 	
-	public static String createIdentityJson(String firstName, String lastName, String email, String city, String workerType, String sysCode, String position) throws Throwable {
+	public static String createIdentityJson(String firstName, String lastName, String email, String city, String workerType, String sysCode, String position, String managerId) throws Throwable {
 		String payload="";
 		String identityPayload="";
 		String identitySystemPayload="";
@@ -39,6 +39,7 @@ public class Payload {
 			String h8 = "city";
 			String h9 = "gbId";
 			String h10 = "position";
+			String h11 = "managerId";
 			identityHeaders.add(h1);
 			identityHeaders.add(h2);
 			identityHeaders.add(h3);
@@ -49,17 +50,19 @@ public class Payload {
 			identityHeaders.add(h8);
 			identityHeaders.add(h9);
 			identityHeaders.add(h10);
+			identityHeaders.add(h11);
 			HashMap<String, String> map = new HashMap<>();
 			 map.put("firstName", firstName);
 			 map.put("lastName", lastName);
 			 map.put("workerType", workerType);
-			 map.put("masterIdentityId", ""+Utility.getRandomNumber(6));
+			 map.put("masterIdentityId", firstName+"."+lastName);
 			 map.put("validFrom", "");
 			 map.put("validTo", "");
 			 map.put("email", email);
 			 map.put("city", city);
 			 map.put("gbId", ""+Utility.getRandomNumber(2));
 			 map.put("position", position);
+			 map.put("managerId", managerId);
 			
 			identityPayload="{\r\n" + 
 					"  \"identity\": {";

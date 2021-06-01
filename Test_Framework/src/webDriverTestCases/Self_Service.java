@@ -1,24 +1,18 @@
 package webDriverTestCases;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.testng.SkipException;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import java.io.File;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import CommonClassReusables.MsSql;
+import org.testng.SkipException;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import com.relevantcodes.extentreports.LogStatus;
 
 import CommonClassReusables.AGlobalComponents;
 import CommonClassReusables.BrowserSelection;
 import CommonClassReusables.Utility;
+import CommonFunctions.ApiMethods;
 import CommonFunctions.FB_Automation_CommonMethods;
 import CommonFunctions.LoginPage;
 import CommonFunctions.Self_Service_CommonMethods;
@@ -47,7 +41,7 @@ public class Self_Service extends BrowserSelection {
 	 * TC001 : AEAP-9 : Physical Access - Case1(Submission flow and validations)
 	*/
 		
-	@Test(priority=1)
+	@Test(priority=11)
 	public void Self_Service_Automation_TC001() throws Throwable 
 	{
 		
@@ -447,6 +441,7 @@ public void Self_Service_Automation_TC007() throws Throwable
 	
 	AGlobalComponents.applicationURL = (String) testData.get("application_url");
 	String requestNumber = (String) testData.get("request_number");
+	requestNumber="";
 	String badgeName = (String) testData.get("badge_name");
 	
 	/** Login as Requester User **/
@@ -644,6 +639,8 @@ public void Self_Service_Automation_TC010() throws Throwable
 	
 	AGlobalComponents.applicationURL = (String) testData.get("application_url");
 	String requestNumber = (String) testData.get("request_number");
+	String firstName="AutoTest"+Utility.getRandomIntNumber(3);
+	String lastName="ITAccess";
 	
 	/** Login as Requester User **/
 	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("end_user_username"), (String) testData.get("end_user_password"));
@@ -653,8 +650,13 @@ public void Self_Service_Automation_TC010() throws Throwable
 		/** Create Access Request **/
 		if(requestNumber==null||requestNumber.equals(""))
 		{
-			requestNumber = Self_Service_CommonMethods.createAccessRequestOthers((String) testData.get("request_type"),(String) testData.get("system_name"),(String) testData.get("access_name_1"),(String) testData.get("first_name"));
-			Utility.updateDataInDatasource("Self_Service_Automation_TC010", "request_number", requestNumber);
+			if(ApiMethods.generateAccessToken()){
+				CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, "", "", "", "","",(String) testData.get("manager_username"));
+				requestNumber = Self_Service_CommonMethods.createAccessRequestOthers((String) testData.get("request_type"),(String) testData.get("system_name"),(String) testData.get("access_name_1"),(String) testData.get("first_name"));
+				Utility.updateDataInDatasource("Self_Service_Automation_TC010", "request_number", requestNumber);
+			}
+			else
+				logger.log(LogStatus.FAIL, "Unable to create identity");
 		}		
 		
 		/** Launch New Private Browser **/
@@ -1149,7 +1151,7 @@ public void Self_Service_Automation_TC016() throws Throwable
  * TC017 : 5.0 Use cases . Manager Login Scenarios :Employment Type Conversion
  */
 
-@Test(priority=17)
+@Test(priority=17,enabled=true)
 public void Self_Service_Automation_TC017() throws Throwable 
 {
 	
@@ -1245,7 +1247,7 @@ public void Self_Service_Automation_TC017() throws Throwable
  * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity : photo
  */
 
-@Test(priority=18)
+@Test(priority=18,enabled=true)
 public void Self_Service_Automation_TC018_1() throws Throwable 
 {
 	
@@ -1383,7 +1385,7 @@ public void Self_Service_Automation_TC018_1() throws Throwable
  * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity :lastName
  */
 
-@Test(priority=18)
+@Test(priority=18,enabled=true)
 public void Self_Service_Automation_TC018_2() throws Throwable 
 {
 	
@@ -1483,7 +1485,7 @@ public void Self_Service_Automation_TC018_2() throws Throwable
  * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : phoneNo
  */
 
-@Test(priority=18)
+@Test(priority=18,enabled=true)
 public void Self_Service_Automation_TC018_3() throws Throwable 
 {
 	
@@ -1577,10 +1579,107 @@ public void Self_Service_Automation_TC018_3() throws Throwable
 
 
 /*
+ * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : department
+ */
+
+@Test(priority=18,enabled=true)
+public void Self_Service_Automation_TC018_4() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018_4","Manager Login Scenarios  : Modify Identity , modifying department");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018_4 - TestCase Execution Begins");
+	
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_4");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String requestNumber = (String) testData.get("request_number");
+		
+	String firstName =(String) testData.get("first_name");
+	String lastName =(String) testData.get("last_name");
+	String scriptName =(String) testData.get("script_name");
+	AGlobalComponents.userId = (String) testData.get("user_id");
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
+			
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
+		
+		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
+			AGlobalComponents.userId=firstName+"."+lastName;
+			
+			/**create new asset **/
+			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				
+			/**create identity **/
+		
+			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+		
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+		}
+		
+		/** checking the user details in IDM  before modification**/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+				
+ 			/** Modify Identity **/
+ 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+ 				 			
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+	
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
+
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "asset_code", "");
+ 		
+ 		
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
+
+/*
  * TC019 : 5.0 Use cases . Manager Login Scenarios :Temp Worker Onboarding
  */
 
-@Test(priority=19)
+@Test(priority=19,enabled=true)
 public void Self_Service_Automation_TC019() throws Throwable 
 {
 	
@@ -1689,7 +1788,7 @@ public void Self_Service_Automation_TC019() throws Throwable
  * TC020 : 5.0 Use cases . Manager Login Scenarios :Temp Worker Modification . 
  */
 
-@Test(priority=20)
+@Test(priority=20,enabled=true)
 public void Self_Service_Automation_TC020() throws Throwable 
 {
 	
@@ -1825,7 +1924,7 @@ public void Self_Service_Automation_TC020() throws Throwable
  * TC021 : 5.0 Use cases . Manager Login Scenarios :Temp Worker offboarding  
  */
 
-@Test(priority=21)
+@Test(priority=21,enabled=true)
 public void Self_Service_Automation_TC021() throws Throwable 
 {
 	
@@ -1944,22 +2043,13 @@ public void Self_Service_Automation_TC021() throws Throwable
  			/** approve request  by manager**/
  			Self_Service_CommonMethods.approveRequest("manager",requestNumber,"");
  			
- 			LoginPage.logout();
- 			
- 			/* Login as admin user to approve the request */
- 	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_user_username"), (String) testData.get("admin_user_password"));
-
- 	 		if(loginStatus){
- 	 			/** approve request  by admin user**/
- 	 			Self_Service_CommonMethods.approveRequest("admin_user",requestNumber,"");
- 	 			
- 	 			/** checkStatusInMyRequestInbox**/
- 	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("script_name"));
- 	 			Utility.updateDataInDatasource("Self_Service_Automation_TC021", "first_name", "");
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "last_name", "");
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "full_name", "");
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "user_id", "");
- 	 		}
+ 			/** checkStatusInMyRequestInbox**/
+ 	 		Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"","",requestNumber,(String) testData.get("script_name"));
+ 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "first_name", "");
+	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "last_name", "");
+	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "full_name", "");
+	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "user_id", "");
+ 	 		
  			
  			
  		}
@@ -1984,7 +2074,7 @@ public void Self_Service_Automation_TC021() throws Throwable
  * TC022 : 5.0 Use cases . Manager Login Scenarios :Temp Worker Rehire  
  */
 
-@Test(priority=22)
+@Test(priority=22,enabled=true)
 public void Self_Service_Automation_TC022() throws Throwable 
 {
 	
@@ -2077,7 +2167,7 @@ public void Self_Service_Automation_TC022() throws Throwable
  * TC023 :  Physical Access - Request Location access for Others
 */
 	
-@Test(priority=23)
+@Test(priority=23,enabled=true)
 public void Self_Service_Automation_TC023() throws Throwable 
 {
 	
@@ -2177,7 +2267,7 @@ public void Self_Service_Automation_TC023() throws Throwable
  * TC024 :  emergency Termination
 */
 	
-@Test(priority=24)
+@Test(priority=24,enabled=true)
 public void Self_Service_Automation_TC024() throws Throwable 
 {
 
@@ -2261,7 +2351,7 @@ public void Self_Service_Automation_TC024() throws Throwable
 * TC025 :  Position Access
 */
 
-@Test(priority=25)
+@Test(priority=25,enabled=true)
 public void Self_Service_Automation_TC025() throws Throwable 
 {
 
@@ -2363,7 +2453,7 @@ public void Self_Service_Automation_TC025() throws Throwable
 */
 
 
-@Test(priority=26)
+@Test(priority=26,enabled=true)
 public void Self_Service_Automation_TC026() throws Throwable 
 {
 
@@ -2490,7 +2580,7 @@ public void Self_Service_Automation_TC026() throws Throwable
 */
 	
 
-@Test(priority=27)
+@Test(priority=27,enabled=true)
 public void Self_Service_Automation_TC027() throws Throwable 
 {
 	
@@ -2603,7 +2693,7 @@ public void Self_Service_Automation_TC027() throws Throwable
  * TC028 : 5.0 Use cases . Badge Admin Login Scenarios : Activate Badge
  */
 
-@Test(priority=28)
+@Test(priority=28,enabled=true)
 public void Self_Service_Automation_TC028() throws Throwable 
 {
 	
@@ -2645,7 +2735,7 @@ public void Self_Service_Automation_TC028() throws Throwable
  * TC029 : 5.0 Use cases . Badge Admin Login Scenarios : Deactivate Badge
  */
 
-@Test(priority=29)
+@Test(priority=29,enabled=true)
 public void Self_Service_Automation_TC029() throws Throwable 
 {
 	
@@ -2687,7 +2777,7 @@ public void Self_Service_Automation_TC029() throws Throwable
  * TC030 : 5.0 Use cases . Badge Admin Login Scenarios : Request Replacement Badge
  */
 
-@Test(priority=30)
+@Test(priority=30,enabled=true)
 public void Self_Service_Automation_TC030() throws Throwable 
 	{
 		logger =report.startTest("Self_Service_Automation_TC030","Badge Admin login scenarios - Request Replacement badge");
@@ -2726,7 +2816,7 @@ public void Self_Service_Automation_TC030() throws Throwable
  * TC031 : 5.0 Use cases . Badge Admin Login Scenarios : Request new badge
  */
 
-@Test(priority=31)
+@Test(priority=31,enabled=true)
 public void Self_Service_Automation_TC031() throws Throwable 
 	{
 		
@@ -2768,7 +2858,7 @@ public void Self_Service_Automation_TC031() throws Throwable
  * TC032 : 5.0 Use cases . Badge Admin Login Scenarios : Reset Pin
  */
 
-@Test(priority=32)
+@Test(priority=32,enabled=true)
 public void Self_Service_Automation_TC032() throws Throwable 
 	{
 		
@@ -2798,7 +2888,7 @@ public void Self_Service_Automation_TC032() throws Throwable
  * TC033 : Self Service - Return Temporary Badge
 */
 
-@Test(priority=33)
+@Test(priority=33,enabled=true)
 public void Self_Service_Automation_TC033() throws Throwable 
 {
 
@@ -2844,7 +2934,7 @@ public void Self_Service_Automation_TC033() throws Throwable
  * TC034 : Self Service - Access Review Identity Expiring in X days
 */
 
-@Test(priority=34)
+@Test(priority=34,enabled=true)
 public void Self_Service_Automation_TC034() throws Throwable 
 {
 	logger =report.startTest("Self_Service_Automation_TC034","Self Service - Access Review Identity Expiring in X days");

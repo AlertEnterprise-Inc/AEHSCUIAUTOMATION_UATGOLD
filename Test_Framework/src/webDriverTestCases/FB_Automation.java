@@ -341,7 +341,7 @@ public class FB_Automation extends BrowserSelection {
 	 	
 	 	if(ApiMethods.generateAccessToken((String) testData.get("admin_username"),(String) testData.get("admin_password")))
 	 	{
-	 		if(ApiMethods.createIdentityThroughAPI(scriptName,firstName,lastName,(String) testData.get("email"),(String) testData.get("city"), (String) testData.get("employee_type"),(String) testData.get("system_code"),(String) testData.get("pre_assigned_position"))) {
+	 		if(ApiMethods.createIdentityThroughAPI(scriptName,firstName,lastName,(String) testData.get("email"),(String) testData.get("city"), (String) testData.get("employee_type"),(String) testData.get("system_code"),(String) testData.get("pre_assigned_position"),"")) {
 	 			FB_Automation_CommonMethods.assignBadgeToUserInCCURE(firstName,lastName,AGlobalComponents.userId,(String) testData.get("badge_type"));
 	 			FB_Automation_CommonMethods.assignAccessToUserInCCURE(firstName,lastName,AGlobalComponents.userId,(String) testData.get("access_name_1"));
 	 			

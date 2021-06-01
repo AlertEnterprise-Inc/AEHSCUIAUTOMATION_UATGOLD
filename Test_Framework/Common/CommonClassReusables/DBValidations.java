@@ -592,7 +592,7 @@ public class DBValidations extends BrowserSelection{
 			String validFrom, String validTo, String jobTitle, String identityType,String payStatus, String managerId,String workLocation,String country,String created_date) throws ClassNotFoundException, SQLException {
 
 		int noOfRecordsUpdated=-1;
-		String query="insert into autodevhsc.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto,worklocation,country,created_date)" + 
+		String query="insert into autouathsc.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto,worklocation,country,created_date)" + 
 				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"','218 2nd Ave S, Nashville','United States of America','"+created_date+"')";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
@@ -607,7 +607,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static boolean updateUserInHrdb(String userId, String jobTitle) throws ClassNotFoundException, SQLException {
 		int noOfRecordsUpdated=-1;
-		String query="update autodevhsc.hr_data set jobtitle ='"+jobTitle+"' where user_id='"+userId+"'";
+		String query="update autouathsc.hr_data set jobtitle ='"+jobTitle+"' where user_id='"+userId+"'";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -621,7 +621,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getAccessRequestNoFromDB(String userId) throws ClassNotFoundException, SQLException {
 
-		String query="select ext_id from autodevhsc.Access_request where id=(select access_request_id from autodevhsc.access_request_identity_field_new where master_identity_id='"+userId+"' FETCH FIRST 1 ROW ONLY)";
+		String query="select ext_id from autouathsc.Access_request where id=(select access_request_id from autouathsc.access_request_identity_field_new where master_identity_id='"+userId+"' FETCH FIRST 1 ROW ONLY)";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String requestNo =rs.get(0).get(0);
 		if(requestNo!=null) {
@@ -636,7 +636,7 @@ public class DBValidations extends BrowserSelection{
 	public static boolean terminateUserInHrdb(String userId) throws ClassNotFoundException, SQLException {
 
 		int noOfRecordsUpdated=-1;
-		String query="update autodevhsc.hr_data set paystatus = 'Terminate' where user_id='"+userId+"'";
+		String query="update autouathsc.hr_data set paystatus = 'Terminate' where user_id='"+userId+"'";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -651,7 +651,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getAccessRequestOfProfileChangeFromDB() throws ClassNotFoundException {
 
-		String query="select ext_id from autodevhsc.Access_request where type='profileChange' order by 1 desc fetch first row only";
+		String query="select ext_id from autouathsc.Access_request where type='profileChange' order by 1 desc fetch first row only";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String requestNo =rs.get(0).get(0);
 		if(requestNo!=null) {
@@ -665,7 +665,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getAccessRequestOfTerminateFromDB() throws ClassNotFoundException {
 
-		String query="select ext_id from autodevhsc.Access_request where type='EmpOffboarding' order by 1 desc fetch first row only;";
+		String query="select ext_id from autouathsc.Access_request where type='EmpOffboarding' order by 1 desc fetch first row only;";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String requestNo =rs.get(0).get(0);
 		if(requestNo!=null) {
@@ -696,7 +696,7 @@ public class DBValidations extends BrowserSelection{
 	public static boolean empTyepConversionInHrDb(String userId,String employeeType) throws ClassNotFoundException {
 
 		int noOfRecordsUpdated=-1;
-		String query="update autodevhsc.hr_data set identityType = '"+employeeType+"' where user_id='"+userId+"'";
+		String query="update autouathsc.hr_data set identityType = '"+employeeType+"' where user_id='"+userId+"'";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -752,7 +752,7 @@ public class DBValidations extends BrowserSelection{
 	
 	public static String getAccessRequestOfEmpTypeConvPermanentToTemp() throws ClassNotFoundException {
 
-		String query="select ext_id from autodevhsc.Access_request where type='employmentTypeConversionPermanentToTemp' order by 1 desc fetch first row only";
+		String query="select ext_id from autouathsc.Access_request where type='employmentTypeConversionPermanentToTemp' order by 1 desc fetch first row only";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String requestNo =rs.get(0).get(0);
 		if(requestNo!=null) {
@@ -766,7 +766,7 @@ public class DBValidations extends BrowserSelection{
 	
 	public static String getAccessRequestOfEmpTypeConvTempToPermanent() throws ClassNotFoundException {
 
-		String query="select ext_id from autodevhsc.Access_request where type='empTypeConversionTempToPermanent' order by 1 desc fetch first row only";
+		String query="select ext_id from autouathsc.Access_request where type='empTypeConversionTempToPermanent' order by 1 desc fetch first row only";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String requestNo =rs.get(0).get(0);
 		if(requestNo!=null) {
@@ -780,7 +780,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getUIActionOfAccess(String requestNumber,String accessName) throws ClassNotFoundException {
 
-		String query="select ui_action from autodevhsc.access_request_role arr where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and access_id =(select id from autodevhsc.access_role  where text='"+accessName+"')";
+		String query="select ui_action from autouathsc.access_request_role arr where access_request_id =(select id from autouathsc.Access_request where ext_id='"+requestNumber+"') and access_id =(select id from autouathsc.access_role  where text='"+accessName+"')";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String action =rs.get(0).get(0);
 		if(action!=null) {
@@ -794,7 +794,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getUiActionOfSystem(String requestNumber, String systemName) throws ClassNotFoundException {
 
-		String query="select ui_action from autodevhsc.access_request_system ars where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and system_id=(select id from autodevhsc.system where text='"+systemName+"')";
+		String query="select ui_action from autouathsc.access_request_system ars where access_request_id =(select id from autouathsc.Access_request where ext_id='"+requestNumber+"') and system_id=(select id from autouathsc.system where text='"+systemName+"')";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String action =rs.get(0).get(0);
 		if(action!=null) {
@@ -808,7 +808,7 @@ public class DBValidations extends BrowserSelection{
 
 	public static String getUiActionOfAsset(String requestNumber, String assetName) throws ClassNotFoundException {
 
-		String query="select ui_action from autodevhsc.access_request_asset ara where access_request_id =(select id from autodevhsc.Access_request where ext_id='"+requestNumber+"') and asset_id =(select id from autodevhsc.asset where text ='"+assetName+"')";
+		String query="select ui_action from autouathsc.access_request_asset ara where access_request_id =(select id from autouathsc.Access_request where ext_id='"+requestNumber+"') and asset_id =(select id from autouathsc.asset where text ='"+assetName+"')";
 		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
 		String action =rs.get(0).get(0);
 		if(action!=null) {

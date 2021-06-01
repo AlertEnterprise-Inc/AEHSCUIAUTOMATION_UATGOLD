@@ -80,12 +80,12 @@ public static boolean generateAccessToken() {
 	
 
 
-public static boolean createIdentityThroughAPI(String scriptName,String firstName, String lastName, String email, String city, String workerType, String sysCode, String position) throws Throwable {
+public static boolean createIdentityThroughAPI(String scriptName,String firstName, String lastName, String email, String city, String workerType, String sysCode, String position,String managerId) throws Throwable {
 	
 	try
 	{
 		RestAssured.baseURI=AGlobalComponents.baseURI;
-		String requestBody=Payload.createIdentityJson( firstName, lastName, email,  city,  workerType, sysCode,position);
+		String requestBody=Payload.createIdentityJson( firstName, lastName, email,  city,  workerType, sysCode,position,managerId);
 		if(requestBody!=null) {
 			logger.log(LogStatus.INFO, "Create Identity request json "+requestBody);
 		
