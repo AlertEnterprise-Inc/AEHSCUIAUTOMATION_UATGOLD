@@ -43,6 +43,7 @@ public interface IdentityObjects {
 	String idmManageIdentityProfileInfoFirstNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter First Name']";
 	String idmManageIdentityProfileInfoLastNameTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Last Name']";	
 	String idmManageIdentityProfileInfoPhoneNoTxt = "//*[contains(@id,'baseText') and @placeholder='Enter Phone Number']";
+	String idmManageIdentityProfileInfoDepartmentTxt = "//*[contains(@id,'baseComboBox') and @placeholder='Select Department Name']";
 	String collapseBasicInfoSection = "//fieldset[@aria-label='Basic Information field set']//div[contains(@class,'x-tool-img x-tool-toggle ')]";
 	String emailIdLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Email ID']";
 	String phoneNumberLnk = "//*[contains(@id,'baseText') and @placeholder='Enter Phone Number']";

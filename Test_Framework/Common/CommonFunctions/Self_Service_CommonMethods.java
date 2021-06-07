@@ -3024,7 +3024,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			
 			try {
 				Thread.sleep(10000);
-				WebElement image=null ;										
+				WebElement image=null ;	
+				
+				if (driver.findElements(By.xpath("//*[contains(@id,'toolEl') and @class='x-tool-tool-el x-tool-img x-tool-close ']")).size()>0)
+					ByAttribute.click("xpath", "//*[contains(@id,'toolEl') and @class='x-tool-tool-el x-tool-img x-tool-close ']", "close the popup");
+				
 				if(AGlobalComponents.RequestSubmit){
 					logger.log(LogStatus.INFO, "Checking status of the user after request submission");
 									
@@ -3925,10 +3929,16 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							}
 							else{
 								
-								String access1=(String) testData.get("access_name_1");
-								String access2=(String) testData.get("access_name_2");
+				//				String access1=(String) testData.get("access_name_1");
+				//				String access2=(String) testData.get("access_name_2");
+								String access1="GU-HR-SECURITY MANAGEMENT - 24/7";
+								String access2="End User Correct";
+								String access3="WA-OX - SECURITY OFFICE -24/7";
+								
 								Utility.verifyElementPresent("//*[text()='"+access1+"']", access1, false);
 								Utility.verifyElementPresent("//*[text()='"+access2+"']", access2, false);
+								Utility.verifyElementPresent("//*[text()='"+access3+"']", access3, false);
+								
 								logger.log(LogStatus.PASS, "Accesses are assigned to the temporary worker after rehiring");
 								
 							}
@@ -4089,7 +4099,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 		            	String accessToBeAdded=attribute;
 						String deptName = driver.findElement(By.xpath(".//input[contains(@id,'baseComboBoxRemote') and @placeholder='Select Department Name']")).getAttribute("value");			
 				
-						logger.log(LogStatus.INFO, "Current department of temp worker is : "+deptName);
+						logger.log(LogStatus.INFO, "Current department of user is : "+deptName);
 				
 						ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAccessTabBtn, "Click on Access Tab ");
 						getIndexOfAccessHeaders();
@@ -4933,7 +4943,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					for(int i=0;i<10 && flag;i++){
 						WebElement provisioningMessage = driver.findElement(By.xpath("(//div[text()='Provisioning Done for :']//parent::div//div)[2]"));
 						String provMessage = provisioningMessage.getText();
-						if(provMessage.contains("changed successfully")){
+						if((provMessage.contains("assignment successful"))||(provMessage.contains("changed successfully"))){
 							logger.log(LogStatus.PASS, "Provisioning successful");
 							flag=false;
 							Utility.verifyElementPresent("(//div[text()='Provisioning Done for :']//parent::div//div)[2]", "Provisioning message", false);
@@ -5786,7 +5796,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(2);
 					ByAttribute.click("xpath", HomeObjects.selectRequestType,"Enter the request type");
 					ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceSelectRequestTypeTxt, "Employment Type Conversion", "Enter Request Type");
-					Thread.sleep(1000);
+					Thread.sleep(4000);
 					ByAttribute.click("xpath", ".//li[@role='option' and text()='Employment Type Conversion']", "Select Request Type as: Employment Type Conversion");
 					Thread.sleep(2000);
 					Actions action = new Actions(driver);
@@ -5987,8 +5997,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(15);
 				}
 				
-				Utility.handleAnnouncementPopup();
-				
 				if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']")).size() > 0) {
 					System.out.println("Access Request is Found in Inbox");
 					logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
@@ -5996,9 +6004,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Request Number: "+reqNum+" Current Status OPEN", false);
 					ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Click on Request from Inbox");
 					Thread.sleep(3000);
-				} else 
-					logger.log(LogStatus.FAIL, "request number not present in approvers inbox");
-			
 				
 				
 				
@@ -6166,7 +6171,8 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					logger.log(LogStatus.PASS,"Request successfully approved by badge admin");
 						
 				}
-					
+			} else 
+				logger.log(LogStatus.FAIL, "request number not present in approvers inbox");	
 				
 			} catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();

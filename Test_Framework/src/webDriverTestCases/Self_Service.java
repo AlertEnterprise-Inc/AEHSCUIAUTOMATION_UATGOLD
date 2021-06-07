@@ -1202,6 +1202,8 @@ public void Self_Service_Automation_TC017() throws Throwable
  		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
+ 		
 				
 		/** check accesses assigned to Contractor in IDM **/
  		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"",accessToBeAdded,scriptName);
@@ -1331,11 +1333,7 @@ public void Self_Service_Automation_TC018_1() throws Throwable
 
  		/** Validate  status in IDM after  request approved**/
  		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
- 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "first_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "last_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "full_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "user_id", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "asset_code", "");
+ 		
  		
  		if(Utility.compareStringValues(parameterToBeModified, "photo")){
  		
@@ -1592,12 +1590,13 @@ public void Self_Service_Automation_TC018_4() throws Throwable
 	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_4");
 	
 	AGlobalComponents.applicationURL = (String) testData.get("application_url");
-	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	
 	String requestNumber = (String) testData.get("request_number");
 		
 	String firstName =(String) testData.get("first_name");
 	String lastName =(String) testData.get("last_name");
 	String scriptName =(String) testData.get("script_name");
+	String accessName =(String) testData.get("access_name_1");
 	AGlobalComponents.userId = (String) testData.get("user_id");
 	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
 	
@@ -1631,7 +1630,7 @@ public void Self_Service_Automation_TC018_4() throws Throwable
 		}
 		
 		/** checking the user details in IDM  before modification**/
- 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,scriptName);
 	
  		/** Launch New Private Browser **/
  		Utility.switchToNewBrowserDriver();
@@ -1646,7 +1645,7 @@ public void Self_Service_Automation_TC018_4() throws Throwable
  			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
  				 			
  			/** checkStatusInMyRequestInbox**/
- 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,accessName,requestNumber,scriptName);
 	
  			/** Switch to Default Browser **/
  			Utility.switchToDefaultBrowserDriver();
@@ -1656,7 +1655,7 @@ public void Self_Service_Automation_TC018_4() throws Throwable
  		}
 
  		/** Validate  status in IDM after  request approved**/
- 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,accessName,scriptName);
  		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "first_name", "");
 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "last_name", "");
 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "full_name", "");
@@ -2283,6 +2282,7 @@ public void Self_Service_Automation_TC024() throws Throwable
 	String scriptName =(String) testData.get("script_name");
 	AGlobalComponents.userId=(String) testData.get("user_id");
 	AGlobalComponents.assetCode=(String) testData.get("asset_code");
+	AGlobalComponents.assetName=(String) testData.get("badge_name");
 	String requestNumber="";
 	
 	/** Login as admin User **/

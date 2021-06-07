@@ -1126,7 +1126,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				
 				
 				Actions action = new Actions(driver);
-				action.click().build().perform();
+				
 				if(driver.findElements(By.xpath(IdentityObjects.cardHoldersAndAssetsTabBtn)).size()>0){
 					ByAttribute.mouseHover("xpath", IdentityObjects.cardHoldersAndAssetsTabBtn, "Mouse Hover on Identity tab");
 					Utility.pause(5);
@@ -1721,6 +1721,8 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoLastNameTxt, lName, "Enter Last Name");
 				Utility.pause(1);
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoPhoneNoTxt, (String.valueOf(Utility.getRandomIntNumber(5))), "Enter Phone Number");
+				Utility.pause(1);
+				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoDepartmentTxt, "Sales", "Enter Department");
 				Utility.pause(1);
 				
 				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
