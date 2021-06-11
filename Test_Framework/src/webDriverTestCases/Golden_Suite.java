@@ -42,42 +42,145 @@ public class Golden_Suite  extends BrowserSelection {
 			throw new SkipException("skipp");
 		}
 	}
-	/*
-	 * TC017 : 5.0 Use cases . Manager Login Scenarios :Employment Type Conversion
-	 */
 
-	@Test(priority=17,enabled=true)
-	public void Self_Service_Automation_TC017() throws Throwable 
-	{
+/*
+ * TC017 : 5.0 Use cases . Manager Login Scenarios :Employment Type Conversion
+ */
+
+@Test(priority=17,enabled=true)
+public void Self_Service_Automation_TC017() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC017","Manager Login Scenarios : Employment Type Conversion ");
+	System.out.println("[INFO]--> Self_Service_Automation_TC017 - TestCase Execution Begins");
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC017");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String firstName ="Auto"+Utility.getRandomString(4);
+	String lastName ="Test"+Utility.getRandomString(4);
+	String requestNumber = "";
+	String scriptName = (String) testData.get("script_name");
+	AGlobalComponents.userId=firstName+"."+lastName;
+	AGlobalComponents.contractorToPermanentEmployeeConversion=true;
+	String accessToBeAdded = (String) testData.get("access_name_1");
 		
-		logger =report.startTest("Self_Service_Automation_TC017","Manager Login Scenarios : Employment Type Conversion ");
-		System.out.println("[INFO]--> Self_Service_Automation_TC017 - TestCase Execution Begins");
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC017");
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
 		
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		String firstName ="Auto"+Utility.getRandomString(4);
-		String lastName ="Test"+Utility.getRandomString(4);
-		String requestNumber = "";
-		String scriptName = (String) testData.get("script_name");
-		AGlobalComponents.userId=firstName+"."+lastName;
-		AGlobalComponents.contractorToPermanentEmployeeConversion=true;
-		String accessToBeAdded = (String) testData.get("access_name_1");
+		/**create new asset **/
+		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+		
+		/**create identity **/
+		FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "first_name", firstName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "last_name", lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "full_name", firstName+" "+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "user_id", firstName+"."+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", firstName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "last_name", lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "full_name", firstName+" "+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "user_id", firstName+"."+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", firstName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", firstName+" "+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", firstName+"."+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
+ 		
+				
+		/** check accesses assigned to Contractor in IDM **/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"",accessToBeAdded,scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+				
+ 			/** Employee Type Conversion**/
+ 			requestNumber = Self_Service_CommonMethods.employeeConversion(firstName);
+ 				
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",accessToBeAdded,requestNumber,scriptName);
+ 			
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
+
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",accessToBeAdded,scriptName);
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
+
+
+
+/*
+ * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity : photo
+ */
+
+@Test(priority=18,enabled=true)
+public void Self_Service_Automation_TC018_1() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018_1","Manager Login Scenarios  : Modify Identity");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018_1 - TestCase Execution Begins");
+	
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_1");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String requestNumber = (String) testData.get("request_number");
+		
+	String firstName =(String) testData.get("first_name");
+	String lastName =(String) testData.get("last_name");
+	String scriptName =(String) testData.get("script_name");
+	AGlobalComponents.userId = (String) testData.get("user_id");
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
 			
-		/** Login as admin User **/
-		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
-		if(loginStatus){
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
+		
+		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
+			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
 			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-			
+				
 			/**create identity **/
+		
 			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "first_name", firstName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "last_name", lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "full_name", firstName+" "+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "user_id", firstName+"."+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "asset_code", AGlobalComponents.assetCode);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", firstName);
+			
+			Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", firstName);
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "last_name", lastName);
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "full_name", firstName+" "+lastName);
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "user_id", firstName+"."+lastName);
@@ -88,485 +191,375 @@ public class Golden_Suite  extends BrowserSelection {
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", firstName+"."+lastName);
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", AGlobalComponents.assetCode);
 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
-	 		
-					
-			/** check accesses assigned to Contractor in IDM **/
-	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,"",accessToBeAdded,scriptName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
+		}
 		
-	 		/** Launch New Private Browser **/
-	 		Utility.switchToNewBrowserDriver();
-			
-	 		/* Login as Manager */
-	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-
-	 		if(loginStatus){
-	 			logger.log(LogStatus.PASS, "Login Successful");
-					
-	 			/** Employee Type Conversion**/
-	 			requestNumber = Self_Service_CommonMethods.employeeConversion(firstName);
-	 				
-	 			/** checkStatusInMyRequestInbox**/
-	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,"",accessToBeAdded,requestNumber,scriptName);
-	 			
-	 			/** Switch to Default Browser **/
-	 			Utility.switchToDefaultBrowserDriver();
-	 		}
-	 		else{
-	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 		}
-
-	 		/** Validate  status in IDM after  request approved**/
-	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",accessToBeAdded,scriptName);
-	 		
-	 		/** Logout from Application **/
-	 		LoginPage.logout();
+		/** checking the user details in IDM  before modification**/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
 		
-	 	}
-	 	else {
-	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-	 	}	
-	}
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
 
-
-
-
-	/*
-	 * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity : photo
-	 */
-
-	@Test(priority=18,enabled=true)
-	public void Self_Service_Automation_TC018_1() throws Throwable 
-	{
-		
-		logger =report.startTest("Self_Service_Automation_TC018_1","Manager Login Scenarios  : Modify Identity");
-		System.out.println("[INFO]--> Self_Service_Automation_TC018_1 - TestCase Execution Begins");
-		
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_1");
-		
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		String requestNumber = (String) testData.get("request_number");
-			
-		String firstName =(String) testData.get("first_name");
-		String lastName =(String) testData.get("last_name");
-		String scriptName =(String) testData.get("script_name");
-		AGlobalComponents.userId = (String) testData.get("user_id");
-		String parameterToBeModified=(String) testData.get("parameter_tobemodified");
-		
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
 				
-		/** Login as admin User **/
-		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
-		if(loginStatus){
-			
-			if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-				firstName ="Auto"+Utility.getRandomString(4);
-				lastName ="Test"+Utility.getRandomString(4);
-				AGlobalComponents.userId=firstName+"."+lastName;
+ 			/** Modify Identity **/
+ 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+ 				 			
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+	
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
+
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 		
+ 		
+ 		if(Utility.compareStringValues(parameterToBeModified, "photo")){
+ 		
+ 			/** checking the user details in IDM  before modification**/
+ 			Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+ 		
+ 			/** Launch New Private Browser **/
+ 			Utility.switchToNewBrowserDriver();
+ 		
+ 			/* Login as Manager */
+ 			loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+ 			if(loginStatus){
+ 				logger.log(LogStatus.PASS, "Login Successful");
 				
-				/**create new asset **/
-				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-					
-				/**create identity **/
+ 				/** Modify Identity **/
+ 				requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+		
+ 				/** checkStatusInMyRequestInbox**/
+ 				Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+	
+ 				/** Switch to Default Browser **/
+ 				Utility.switchToDefaultBrowserDriver();
+ 			}
+ 			else{
+ 				logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 			}
+
+ 			/** Validate  status in IDM after  request approved**/
+ 			Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,"",scriptName);
+ 			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "first_name", "");
+			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "last_name", "");
+			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "full_name", "");
+			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "user_id", "");
+ 		}
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
+/*
+ * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity :lastName
+ */
+
+@Test(priority=18,enabled=true)
+public void Self_Service_Automation_TC018_2() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018_2","Manager Login Scenarios  : Modify Identity");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018_2 - TestCase Execution Begins");
+	
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_2");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String requestNumber = (String) testData.get("request_number");
+		
+	String firstName =(String) testData.get("first_name");
+	String lastName =(String) testData.get("last_name");
+	String scriptName =(String) testData.get("script_name");
+	AGlobalComponents.userId = (String) testData.get("user_id");
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
 			
-				FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
+		
+		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
+			AGlobalComponents.userId=firstName+"."+lastName;
+			
+			/**create new asset **/
+			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
-				Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", firstName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "last_name", lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "full_name", firstName+" "+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "user_id", firstName+"."+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "asset_code", AGlobalComponents.assetCode);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", firstName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", firstName+" "+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", firstName+"."+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", AGlobalComponents.assetCode);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			/**create identity **/
+		
+			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", firstName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", lastName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", firstName+" "+lastName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", firstName+"."+lastName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", AGlobalComponents.assetCode);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
+		}
+		
+		/** checking the user details in IDM  before modification**/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+				
+ 			/** Modify Identity **/
+ 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+ 				 			
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+	
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
+
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "asset_code", "");
+ 		
+ 		
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
+/*
+ * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : phoneNo
+ */
+
+@Test(priority=18,enabled=true)
+public void Self_Service_Automation_TC018_3() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018_3","Manager Login Scenarios  : Modify Identity , modifying phone number");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018_3 - TestCase Execution Begins");
+	
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_3");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	String requestNumber = (String) testData.get("request_number");
+		
+	String firstName =(String) testData.get("first_name");
+	String lastName =(String) testData.get("last_name");
+	String scriptName =(String) testData.get("script_name");
+	AGlobalComponents.userId = (String) testData.get("user_id");
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
+			
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
+		
+		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
+			AGlobalComponents.userId=firstName+"."+lastName;
+			
+			/**create new asset **/
+			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				
+			/**create identity **/
+		
+			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
+		
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
+		}
+		
+		/** checking the user details in IDM  before modification**/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
+				
+ 			/** Modify Identity **/
+ 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+ 				 			
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
+	
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
+
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", "");
+ 		
+ 		
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
+
+
+/*
+ * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : department
+ */
+
+@Test(priority=18,enabled=true)
+public void Self_Service_Automation_TC018_4() throws Throwable 
+{
+	
+	logger =report.startTest("Self_Service_Automation_TC018_4","Manager Login Scenarios  : Modify Identity , modifying department");
+	System.out.println("[INFO]--> Self_Service_Automation_TC018_4 - TestCase Execution Begins");
+	
+	HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_4");
+	
+	AGlobalComponents.applicationURL = (String) testData.get("application_url");
+	
+	String requestNumber = (String) testData.get("request_number");
+		
+	String firstName =(String) testData.get("first_name");
+	String lastName =(String) testData.get("last_name");
+	String scriptName =(String) testData.get("script_name");
+	String accessName =(String) testData.get("access_name_1");
+	AGlobalComponents.userId = (String) testData.get("user_id");
+	String parameterToBeModified=(String) testData.get("parameter_tobemodified");
+	
+			
+	/** Login as admin User **/
+	boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
+	if(loginStatus){
+		
+		if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
+			firstName ="Auto"+Utility.getRandomString(4);
+			lastName ="Test"+Utility.getRandomString(4);
+			AGlobalComponents.userId=firstName+"."+lastName;
+			
+			/**create new asset **/
+			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				
+			/**create identity **/
+		
+			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
 			}
-			
-			/** checking the user details in IDM  before modification**/
-	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
 		
-	 		/** Launch New Private Browser **/
-	 		Utility.switchToNewBrowserDriver();
-			
-	 		/* Login as Manager */
-	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+		/** checking the user details in IDM  before modification**/
+ 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,scriptName);
+	
+ 		/** Launch New Private Browser **/
+ 		Utility.switchToNewBrowserDriver();
+		
+ 		/* Login as Manager */
+ 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
 
-	 		if(loginStatus){
-	 			logger.log(LogStatus.PASS, "Login Successful");
-					
-	 			/** Modify Identity **/
-	 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
-	 				 			
-	 			/** checkStatusInMyRequestInbox**/
-	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
-		
-	 			/** Switch to Default Browser **/
-	 			Utility.switchToDefaultBrowserDriver();
-	 		}
-	 		else{
-	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 		}
-
-	 		/** Validate  status in IDM after  request approved**/
-	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
-	 		
-	 		
-	 		if(Utility.compareStringValues(parameterToBeModified, "photo")){
-	 		
-	 			/** checking the user details in IDM  before modification**/
-	 			Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
-	 		
-	 			/** Launch New Private Browser **/
-	 			Utility.switchToNewBrowserDriver();
-	 		
-	 			/* Login as Manager */
-	 			loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-
-	 			if(loginStatus){
-	 				logger.log(LogStatus.PASS, "Login Successful");
-					
-	 				/** Modify Identity **/
-	 				requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
-			
-	 				/** checkStatusInMyRequestInbox**/
-	 				Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
-		
-	 				/** Switch to Default Browser **/
-	 				Utility.switchToDefaultBrowserDriver();
-	 			}
-	 			else{
-	 				logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 			}
-
-	 			/** Validate  status in IDM after  request approved**/
-	 			Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,"",scriptName);
-	 			Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "first_name", "");
-				Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "last_name", "");
-				Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "full_name", "");
-				Utility.updateDataInDatasource("Self_Service_Automation_TC018_1", "user_id", "");
-	 		}
-	 		
-	 		/** Logout from Application **/
-	 		LoginPage.logout();
-		
-	 	}
-	 	else {
-	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-	 	}	
-	}
-
-	/*
-	 * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity :lastName
-	 */
-
-	@Test(priority=18,enabled=true)
-	public void Self_Service_Automation_TC018_2() throws Throwable 
-	{
-		
-		logger =report.startTest("Self_Service_Automation_TC018_2","Manager Login Scenarios  : Modify Identity");
-		System.out.println("[INFO]--> Self_Service_Automation_TC018_2 - TestCase Execution Begins");
-		
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_2");
-		
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		String requestNumber = (String) testData.get("request_number");
-			
-		String firstName =(String) testData.get("first_name");
-		String lastName =(String) testData.get("last_name");
-		String scriptName =(String) testData.get("script_name");
-		AGlobalComponents.userId = (String) testData.get("user_id");
-		String parameterToBeModified=(String) testData.get("parameter_tobemodified");
-		
+ 		if(loginStatus){
+ 			logger.log(LogStatus.PASS, "Login Successful");
 				
-		/** Login as admin User **/
-		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
-		if(loginStatus){
-			
-			if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-				firstName ="Auto"+Utility.getRandomString(4);
-				lastName ="Test"+Utility.getRandomString(4);
-				AGlobalComponents.userId=firstName+"."+lastName;
-				
-				/**create new asset **/
-				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-					
-				/**create identity **/
-			
-				FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", firstName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", firstName+" "+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", firstName+"."+lastName);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", AGlobalComponents.assetCode);
-		 		Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
-			}
-			
-			/** checking the user details in IDM  before modification**/
-	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
-		
-	 		/** Launch New Private Browser **/
-	 		Utility.switchToNewBrowserDriver();
-			
-	 		/* Login as Manager */
-	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
+ 			/** Modify Identity **/
+ 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
+ 				 			
+ 			/** checkStatusInMyRequestInbox**/
+ 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,accessName,requestNumber,scriptName);
+	
+ 			/** Switch to Default Browser **/
+ 			Utility.switchToDefaultBrowserDriver();
+ 		}
+ 		else{
+ 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
+ 		}
 
-	 		if(loginStatus){
-	 			logger.log(LogStatus.PASS, "Login Successful");
-					
-	 			/** Modify Identity **/
-	 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
-	 				 			
-	 			/** checkStatusInMyRequestInbox**/
-	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
-		
-	 			/** Switch to Default Browser **/
-	 			Utility.switchToDefaultBrowserDriver();
-	 		}
-	 		else{
-	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 		}
-
-	 		/** Validate  status in IDM after  request approved**/
-	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "first_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "last_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "full_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "user_id", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_2", "asset_code", "");
-	 		
-	 		
-	 		
-	 		/** Logout from Application **/
-	 		LoginPage.logout();
-		
-	 	}
-	 	else {
-	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-	 	}	
-	}
-
-	/*
-	 * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : phoneNo
-	 */
-
-	@Test(priority=18,enabled=true)
-	public void Self_Service_Automation_TC018_3() throws Throwable 
-	{
-		
-		logger =report.startTest("Self_Service_Automation_TC018_3","Manager Login Scenarios  : Modify Identity , modifying phone number");
-		System.out.println("[INFO]--> Self_Service_Automation_TC018_3 - TestCase Execution Begins");
-		
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_3");
-		
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		String requestNumber = (String) testData.get("request_number");
-			
-		String firstName =(String) testData.get("first_name");
-		String lastName =(String) testData.get("last_name");
-		String scriptName =(String) testData.get("script_name");
-		AGlobalComponents.userId = (String) testData.get("user_id");
-		String parameterToBeModified=(String) testData.get("parameter_tobemodified");
-		
-				
-		/** Login as admin User **/
-		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
-		if(loginStatus){
-			
-			if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-				firstName ="Auto"+Utility.getRandomString(4);
-				lastName ="Test"+Utility.getRandomString(4);
-				AGlobalComponents.userId=firstName+"."+lastName;
-				
-				/**create new asset **/
-				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-					
-				/**create identity **/
-			
-				FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
-			
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
-			}
-			
-			/** checking the user details in IDM  before modification**/
-	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,"",scriptName);
-		
-	 		/** Launch New Private Browser **/
-	 		Utility.switchToNewBrowserDriver();
-			
-	 		/* Login as Manager */
-	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-
-	 		if(loginStatus){
-	 			logger.log(LogStatus.PASS, "Login Successful");
-					
-	 			/** Modify Identity **/
-	 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
-	 				 			
-	 			/** checkStatusInMyRequestInbox**/
-	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,"",requestNumber,scriptName);
-		
-	 			/** Switch to Default Browser **/
-	 			Utility.switchToDefaultBrowserDriver();
-	 		}
-	 		else{
-	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 		}
-
-	 		/** Validate  status in IDM after  request approved**/
-	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",parameterToBeModified,scriptName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "first_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "last_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "full_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "user_id", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_3", "asset_code", "");
-	 		
-	 		
-	 		
-	 		/** Logout from Application **/
-	 		LoginPage.logout();
-		
-	 	}
-	 	else {
-	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-	 	}	
-	}
-
-
-	/*
-	 * TC018 : 5.0 Use cases . Manager Login Scenarios : Modify Identity  : department
-	 */
-
-	@Test(priority=18,enabled=true)
-	public void Self_Service_Automation_TC018_4() throws Throwable 
-	{
-		
-		logger =report.startTest("Self_Service_Automation_TC018_4","Manager Login Scenarios  : Modify Identity , modifying department");
-		System.out.println("[INFO]--> Self_Service_Automation_TC018_4 - TestCase Execution Begins");
-		
-		HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC018_4");
-		
-		AGlobalComponents.applicationURL = (String) testData.get("application_url");
-		
-		String requestNumber = (String) testData.get("request_number");
-			
-		String firstName =(String) testData.get("first_name");
-		String lastName =(String) testData.get("last_name");
-		String scriptName =(String) testData.get("script_name");
-		String accessName =(String) testData.get("access_name_1");
-		AGlobalComponents.userId = (String) testData.get("user_id");
-		String parameterToBeModified=(String) testData.get("parameter_tobemodified");
-		
-				
-		/** Login as admin User **/
-		boolean loginStatus = LoginPage.loginAEHSC((String) testData.get("admin_username"), (String) testData.get("admin_password"));	
-		if(loginStatus){
-			
-			if((firstName==null||firstName.equals(""))&&(lastName==null||lastName.equals(""))){
-				firstName ="Auto"+Utility.getRandomString(4);
-				lastName ="Test"+Utility.getRandomString(4);
-				AGlobalComponents.userId=firstName+"."+lastName;
-				
-				/**create new asset **/
-				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
-					
-				/**create identity **/
-			
-				FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
-			
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-				Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
-			}
-			
-			/** checking the user details in IDM  before modification**/
-	 		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,scriptName);
-		
-	 		/** Launch New Private Browser **/
-	 		Utility.switchToNewBrowserDriver();
-			
-	 		/* Login as Manager */
-	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("manager_username"), (String) testData.get("manager_password"));
-
-	 		if(loginStatus){
-	 			logger.log(LogStatus.PASS, "Login Successful");
-					
-	 			/** Modify Identity **/
-	 			requestNumber =Self_Service_CommonMethods.modifyIdentity(firstName,parameterToBeModified,(String) testData.get("request_type"));
-	 				 			
-	 			/** checkStatusInMyRequestInbox**/
-	 			Self_Service_CommonMethods.checkRequestInMyRequestInbox(firstName,lastName,parameterToBeModified,accessName,requestNumber,scriptName);
-		
-	 			/** Switch to Default Browser **/
-	 			Utility.switchToDefaultBrowserDriver();
-	 		}
-	 		else{
-	 			logger.log(LogStatus.FAIL, "Unable to Login as end user. Plz Check Application");
-	 		}
-
-	 		/** Validate  status in IDM after  request approved**/
-	 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,accessName,scriptName);
-	 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "first_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "last_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "full_name", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "user_id", "");
-			Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "asset_code", "");
-	 		
-	 		
-	 		
-	 		/** Logout from Application **/
-	 		LoginPage.logout();
-		
-	 	}
-	 	else {
-	 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
-	 	}	
-	}
+ 		/** Validate  status in IDM after  request approved**/
+ 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,parameterToBeModified,accessName,scriptName);
+ 		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC018_4", "asset_code", "");
+ 		
+ 		
+ 		
+ 		/** Logout from Application **/
+ 		LoginPage.logout();
+	
+ 	}
+ 	else {
+ 		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
+ 	}	
+}
 
 
 /*
@@ -1057,7 +1050,6 @@ public void Self_Service_Automation_TC022() throws Throwable
  	}	
 }
 
-
 /*
  * TC023 :  Physical Access - Request Location access for Others
 */
@@ -1121,11 +1113,11 @@ public void Self_Service_Automation_TC023() throws Throwable
  	 		LoginPage.logout();
  			
  			/** Login as approver **/
- 	 		loginStatus = LoginPage.loginAEHSC("john.payne", "Alert1234");
+ 	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("access_owner_username"), (String) testData.get("access_owner_password"));
 		
  	 		if(loginStatus){
 
- 	 			/** Approve Access Request by area admin**/
+ 	 			/** Approve Access Request by access owner**/
  	 			Self_Service_CommonMethods.approveRequest("access_owner",requestNumber,accessName);
  	 			
  		 	 	/** Validate Access Request Status **/
@@ -1306,8 +1298,7 @@ public void Self_Service_Automation_TC025() throws Throwable
 	
 			/** Request new position and add access Request **/
 			requestNumber=Self_Service_CommonMethods.positionAccess(position,accessName,firstName,lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC025", "request_number", requestNumber);
-				
+							
 			/** logout from the application **/
 	 		LoginPage.logout();
 			
@@ -1316,7 +1307,7 @@ public void Self_Service_Automation_TC025() throws Throwable
 	
 	 		if(loginStatus){
 
-	 			/** Approve Access Request by area admin**/
+	 			/** Approve Access Request by access owner**/
 	 			Self_Service_CommonMethods.approveRequest("access_owner",requestNumber,accessName);
 	 			
 		 	 	/** Validate Access Request Status **/
@@ -1455,12 +1446,12 @@ public void Self_Service_Automation_TC026() throws Throwable
 		
 		/** checking status of access assigned in IDM **/
 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",accessName,scriptName);	
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "first_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "last_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "full_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "user_id", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "asset_code", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "badge_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "asset_code", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "badge_name", "");
 	
 		/** Logout from Application **/
 		LoginPage.logout();

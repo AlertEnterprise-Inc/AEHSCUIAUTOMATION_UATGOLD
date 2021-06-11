@@ -1069,9 +1069,13 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					fillAssetsInfo(AGlobalComponents.assetCode);
 					ByAttribute.click("xpath", IdentityObjects.SaveBtn, "Click on save Button ");
 					Utility.pause(10);
-					
-				
+								
 					ByAttribute.click("xpath", IdentityObjects.idmManageIdentityCancelBtn, "Click on Cancel Button ");
+					if(driver.findElements(By.xpath("//*[contains(text(),'Save Changes?')]")).size()>0) {
+						ByAttribute.click("xpath","//*[contains(@class,'x-btn-inner x-btn-inner-aebtnSmallPrimary-small') and text()='Yes']", "Click on Yes to save the changes done");
+						Utility.pause(5);
+					}
+					
 					ByAttribute.clearSetText("xpath", IdentityObjects.idmManageIdentitySearchFieldTxt, AGlobalComponents.userId, "Enter User ID in Search field");
 					Thread.sleep(3000);
 					if(driver.findElements(By.xpath(".//div[@class='x-grid-cell-inner ' and text()='"+AGlobalComponents.userId+"']")).size()>0){

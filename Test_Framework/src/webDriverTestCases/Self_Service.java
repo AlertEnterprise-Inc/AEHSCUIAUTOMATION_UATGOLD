@@ -651,7 +651,7 @@ public void Self_Service_Automation_TC010() throws Throwable
 		if(requestNumber==null||requestNumber.equals(""))
 		{
 			if(ApiMethods.generateAccessToken()){
-				CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, "", "", "", "","",(String) testData.get("manager_username"));
+				CommonFunctions.ApiMethods.createIdentityThroughAPI( "",firstName, lastName, "", "", "", "SYS-000002","IT Director",(String) testData.get("manager_username"));
 				requestNumber = Self_Service_CommonMethods.createAccessRequestOthers((String) testData.get("request_type"),(String) testData.get("system_name"),(String) testData.get("access_name_1"),(String) testData.get("first_name"));
 				Utility.updateDataInDatasource("Self_Service_Automation_TC010", "request_number", requestNumber);
 			}
@@ -1304,6 +1304,7 @@ public void Self_Service_Automation_TC018_1() throws Throwable
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
 		}
 		
 		/** checking the user details in IDM  before modification**/
@@ -1433,6 +1434,7 @@ public void Self_Service_Automation_TC018_2() throws Throwable
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
 		}
 		
 		/** checking the user details in IDM  before modification**/
@@ -1529,6 +1531,7 @@ public void Self_Service_Automation_TC018_3() throws Throwable
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
 		}
 		
 		/** checking the user details in IDM  before modification**/
@@ -1616,18 +1619,7 @@ public void Self_Service_Automation_TC018_4() throws Throwable
 			/**create identity **/
 		
 			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
-		
-			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "first_name", firstName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "last_name", lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "full_name", firstName+" "+lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "user_id", firstName+"."+lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC023", "asset_code", AGlobalComponents.assetCode);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "last_name", lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
-		}
+			}
 		
 		/** checking the user details in IDM  before modification**/
  		Self_Service_CommonMethods.checkStatusBeforeRequestSubmission(AGlobalComponents.userId,parameterToBeModified,accessName,scriptName);
@@ -2203,6 +2195,7 @@ public void Self_Service_Automation_TC023() throws Throwable
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "full_name", firstName+" "+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "user_id", firstName+"."+lastName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "asset_code", AGlobalComponents.assetCode);
+			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "badge_name", AGlobalComponents.assetName);
 		}
 			
 		/** check accesses assigned to the user in IDM **/
@@ -2224,11 +2217,11 @@ public void Self_Service_Automation_TC023() throws Throwable
  	 		LoginPage.logout();
  			
  			/** Login as approver **/
- 	 		loginStatus = LoginPage.loginAEHSC("anna.mordeno", "Alert1234");
+ 	 		loginStatus = LoginPage.loginAEHSC((String) testData.get("access_owner_username"), (String) testData.get("access_owner_password"));
 		
  	 		if(loginStatus){
 
- 	 			/** Approve Access Request by area admin**/
+ 	 			/** Approve Access Request by access owner**/
  	 			Self_Service_CommonMethods.approveRequest("access_owner",requestNumber,accessName);
  	 			
  		 	 	/** Validate Access Request Status **/
@@ -2409,8 +2402,7 @@ public void Self_Service_Automation_TC025() throws Throwable
 	
 			/** Request new position and add access Request **/
 			requestNumber=Self_Service_CommonMethods.positionAccess(position,accessName,firstName,lastName);
-			Utility.updateDataInDatasource("Self_Service_Automation_TC025", "request_number", requestNumber);
-				
+							
 			/** logout from the application **/
 	 		LoginPage.logout();
 			
@@ -2419,7 +2411,7 @@ public void Self_Service_Automation_TC025() throws Throwable
 	
 	 		if(loginStatus){
 
-	 			/** Approve Access Request by area admin**/
+	 			/** Approve Access Request by access owner**/
 	 			Self_Service_CommonMethods.approveRequest("access_owner",requestNumber,accessName);
 	 			
 		 	 	/** Validate Access Request Status **/
@@ -2558,12 +2550,12 @@ public void Self_Service_Automation_TC026() throws Throwable
 		
 		/** checking status of access assigned in IDM **/
 		Self_Service_CommonMethods.checkStatusAfterRequestApproval(firstName,"",accessName,scriptName);	
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "first_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "last_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "full_name", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "user_id", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "asset_code", "");
-		Utility.updateDataInDatasource("Self_Service_Automation_TC027", "badge_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "first_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "last_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "full_name", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "user_id", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "asset_code", "");
+		Utility.updateDataInDatasource("Self_Service_Automation_TC026", "badge_name", "");
 	
 		/** Logout from Application **/
 		LoginPage.logout();

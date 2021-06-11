@@ -4363,6 +4363,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							for (int i=1;i<=noOfAccess;i++){
 								WebElement accessName = driver.findElement(By.xpath("//div[@class='x-grid-item-container']//table["+i+"]//tr[1]//td["+accessIndex+"]"));
 								String accessAssigned = accessName.getText();
+								accessesAssignedToUser.clear();
 								accessesAssignedToUser.add(i-1, accessAssigned);
 								String column = "pre_assigned_access_"+i;
 								Utility.updateDataInDatasource("Self_Service_Automation_TC022", column, accessAssigned);
@@ -4430,11 +4431,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					getIndexOfAccessHeaders();
 					if(driver.findElements(By.xpath(IdentityObjects.emptyGrid)).size()>0){
 						logger.log(LogStatus.INFO, "No Access is assigned to the user ");
-						HashMap<String, Comparable> testData = Utility.getDataFromDatasource("Self_Service_Automation_TC022");
-						String access1=(String) testData.get("pre_assigned_access_1");
-						String access2=(String) testData.get("pre_assigned_access_2");
-						String access3=(String) testData.get("pre_assigned_access_3");
-						logger.log(LogStatus.INFO, "Accesses removed from user after offboarding are: "+access1+ ","+access2+","+access3);
+						
 					}
 					else{
 						List<WebElement> noOfRows = driver.findElements(By.xpath("//div[@class='x-grid-item-container']//tr"));
@@ -4850,7 +4847,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxExpandBtn, "Click to expand the request menu");
 						Utility.pause(2);
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCompletedBtn, "Click on completed button");
-						Utility.pause(15);
+						Utility.pause(25);
 						ByAttribute.click("xpath", HomeObjects.homeInboxRequestInboxCollapseBtn, "Click to collapse the request menu");
 						Utility.pause(5);
 						
@@ -5636,11 +5633,11 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States of America')]" , "Select the country");
 					Utility.pause(2);
 					
-//					ByAttribute.click("xpath",HomeObjects.homeAccessRequestDepartmentDdn , "Click to enter department name ");
-//					ByAttribute.setText("xpath",HomeObjects.homeAccessRequestDepartmentDdn,"Sales" , "Enter department name");
-//					Utility.pause(2);
-//					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Sales')]" , "Select the department");
-//					Utility.pause(2);
+					ByAttribute.click("xpath",HomeObjects.homeAccessRequestDepartmentDdn , "Click to enter department name ");
+					ByAttribute.setText("xpath",HomeObjects.homeAccessRequestDepartmentDdn,"Sales" , "Enter department name");
+					Utility.pause(2);
+					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'Sales')]" , "Select the department");
+					Utility.pause(2);
 					
 					Actions action = new Actions(driver);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestLocationDdn)).size()>0){
@@ -5997,182 +5994,191 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(15);
 				}
 				
-				if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']")).size() > 0) {
-					System.out.println("Access Request is Found in Inbox");
-					logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
-					
-					Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Request Number: "+reqNum+" Current Status OPEN", false);
-					ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Click on Request from Inbox");
-					Thread.sleep(3000);
-				
-				
-				
-				if(Utility.compareStringValues("manager", WfActor)){
-					System.out.println("Approving the request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
-					if (driver.findElements(By.xpath(IdentityObjects.idmProfileUserIdTxt)).size()>0){
-						AGlobalComponents.userId=driver.findElement(By.xpath(IdentityObjects.idmProfileUserIdTxt)).getAttribute("value");
-					}
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+				boolean inboxLoadedFlag=false;
+				for (int i=0;i<5 & (!inboxLoadedFlag);i++){
+					if ((driver.findElements(By.xpath("//*[text()='No message selected!']")).size()>0))
 						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
-						Utility.pause(1);
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else{
-						System.out.println("Approve button not visible");
-						logger.log(LogStatus.FAIL, "Approve button not visible");
-					}
-					
-						
+					else{
+						inboxLoadedFlag=true;
+						System.out.println("Approvers Inbox loaded");
+						logger.log(LogStatus.PASS, "Approvers Inbox loaded");
+					}	
 				}
 				
-				if(Utility.compareStringValues("access_owner", WfActor)){
-					System.out.println("Approving the request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
-						Utility.pause(1);
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else{
-						System.out.println("Approve button not visible");
-						logger.log(LogStatus.FAIL, "Approve button not visible");
-					}
+				if(inboxLoadedFlag){
+					if (driver.findElements(By.xpath(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']")).size() > 0) {
+						System.out.println("Access Request is Found in Inbox");
+						logger.log(LogStatus.PASS, "Access Request is Found in Inbox");
+					
+						Utility.verifyElementPresent(".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Request Number: "+reqNum+" Current Status OPEN", false);
+						ByAttribute.click("xpath", ".//td[@style='display:flex;justify-content:space-between;']/div[text()='"+requestNumber+"']", "Click on Request from Inbox");
+						Thread.sleep(3000);
+							
+						if(Utility.compareStringValues("manager", WfActor)){
+							System.out.println("Approving the request by : "+WfActor);
+							logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
+							if (driver.findElements(By.xpath(IdentityObjects.idmProfileUserIdTxt)).size()>0){
+								AGlobalComponents.userId=driver.findElement(By.xpath(IdentityObjects.idmProfileUserIdTxt)).getAttribute("value");
+							}
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+								Utility.pause(1);
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else{
+								System.out.println("Approve button not visible");
+								logger.log(LogStatus.FAIL, "Approve button not visible");
+							}
 					
 						
-				}
-				if(Utility.compareStringValues("admin_user", WfActor)){
-					System.out.println("Approving the  request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the request by ******: "+WfActor);
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@data-qtip='Click to Approve']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@data-qtip='Click to Approve']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
-						Utility.pause(1);
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else{
-						System.out.println("Approve button not visible");
-						logger.log(LogStatus.FAIL, "Approve button not visible");
-					}
+						}
+				
+						if(Utility.compareStringValues("access_owner", WfActor)){
+							System.out.println("Approving the request by : "+WfActor);
+							logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+								Utility.pause(1);
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else{
+								System.out.println("Approve button not visible");
+								logger.log(LogStatus.FAIL, "Approve button not visible");
+							}
 					
 						
-				}
-				if(Utility.compareStringValues("areaAdmin", WfActor)){
-					System.out.println("Approving the  request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
-					Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+accessName+"']", "Access Name Selected by Manager", false);
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
-						Utility.pause(1);
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else{
-						System.out.println("Approve button not visible");
-						logger.log(LogStatus.FAIL, "Approve button not visible");
-					}
+						}
+						if(Utility.compareStringValues("admin_user", WfActor)){
+							System.out.println("Approving the  request by : "+WfActor);
+							logger.log(LogStatus.INFO,"******Approving the request by ******: "+WfActor);
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@data-qtip='Click to Approve']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@data-qtip='Click to Approve']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+								Utility.pause(1);
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else{
+								System.out.println("Approve button not visible");
+								logger.log(LogStatus.FAIL, "Approve button not visible");
+							}
 					
 						
-				}
-				if(Utility.compareStringValues("badgeAdmin", WfActor)){
-					System.out.println("Approving the  request by : "+WfActor);
-					logger.log(LogStatus.INFO,"******Approving the  request by  ******: "+WfActor);
-					Thread.sleep(4000);
+						}
+						if(Utility.compareStringValues("areaAdmin", WfActor)){
+							System.out.println("Approving the  request by : "+WfActor);
+							logger.log(LogStatus.INFO,"******Approving the  request by ******: "+WfActor);
+							Utility.verifyElementPresent(".//div[@class='x-grid-cell-inner ' and text()='"+accessName+"']", "Access Name Selected by Manager", false);
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+								Utility.pause(1);
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else{
+								System.out.println("Approve button not visible");
+								logger.log(LogStatus.FAIL, "Approve button not visible");
+							}
+						}
+						if(Utility.compareStringValues("badgeAdmin", WfActor)){
+							System.out.println("Approving the  request by : "+WfActor);
+							logger.log(LogStatus.INFO,"******Approving the  request by  ******: "+WfActor);
+							Thread.sleep(4000);
 					
-					/*Giving badge to the user */
-					ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
-//					Thread.sleep(4000);
-				//  ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceEnterAssetNameTxt, AGlobalComponents.assetName, "Enter Asset Name: "+AGlobalComponents.assetName);
-					Actions action = new Actions(driver);
-					WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Badge']"));
-					action.moveToElement(elementConnector).click();
-					action.sendKeys(AGlobalComponents.assetName);
-					action.build().perform();
-					Thread.sleep(10000);
-					ByAttribute.click("xpath", ".//span[@data-qtip='"+AGlobalComponents.assetName+"' and text()='"+AGlobalComponents.assetName+"']", "Click on Asset Option");
-					Thread.sleep(1000);
-					ByAttribute.click("xpath", HomeObjects.homeAccessRequestSystemListGrid, "Move Control");
+							/*Giving badge to the user */
+							ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
+							Actions action = new Actions(driver);
+							WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Badge']"));
+							action.moveToElement(elementConnector).click();
+							action.sendKeys(AGlobalComponents.assetName);
+							action.build().perform();
+							Thread.sleep(10000);
+							ByAttribute.click("xpath", ".//span[@data-qtip='"+AGlobalComponents.assetName+"' and text()='"+AGlobalComponents.assetName+"']", "Click on Asset Option");
+							Thread.sleep(1000);
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestSystemListGrid, "Move Control");
 					
-					Thread.sleep(2000);
-					Utility.pause(5);
+							Thread.sleep(2000);
+							Utility.pause(5);
 					
-					ByAttribute.click("xpath",HomeObjects.homeAccessRequestBadgeListGrid,"Asset assigned");
-					Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", "badgeId", false);
-					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}
-					else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
-					{
-						ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
-						Utility.pause(1);
-						ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
-						Utility.pause(5);
-						logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
-					}else{
-						System.out.println("Approve button not visible");
-						logger.log(LogStatus.FAIL, "Approve button not visible");
-					}
-					ByAttribute.click("xpath",HomeObjects.homeAccessRequestYesButtonOnPopUpWindow, "Click yes button to save the changes done in badge");
-					Utility.pause(15);
-					logger.log(LogStatus.PASS,"Request successfully approved by badge admin");
+							ByAttribute.click("xpath",HomeObjects.homeAccessRequestBadgeListGrid,"Asset assigned");
+							Utility.verifyElementPresent("//*[text()='"+AGlobalComponents.badgeId+"']", "badgeId", false);
+							if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestApproveButton)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeAccessRequestApproveButton, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}
+							else if(driver.findElements(By.xpath(".//button[@class='aegrid-active2']")).size()>0)
+							{
+								ByAttribute.click("xpath", ".//button[@class='aegrid-active2']", "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else if (driver.findElements(By.xpath(HomeObjects.homeMyRequestsActionMenuBtn)).size()>0){
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsActionMenuBtn, "Click Actions Button");
+								Utility.pause(1);
+								ByAttribute.click("xpath", HomeObjects.homeMyRequestsApprovalMenuItemLnk, "Click Approve Button");
+								Utility.pause(5);
+								logger.log(LogStatus.PASS,"Request successfully approved by : "+WfActor);
+							}else{
+								System.out.println("Approve button not visible");
+								logger.log(LogStatus.FAIL, "Approve button not visible");
+							}
+							ByAttribute.click("xpath",HomeObjects.homeAccessRequestYesButtonOnPopUpWindow, "Click yes button to save the changes done in badge");
+							Utility.pause(15);
+							logger.log(LogStatus.PASS,"Request successfully approved by badge admin");
 						
+						}
+					} else 
+						logger.log(LogStatus.FAIL, "request number not present in approvers inbox");	
 				}
-			} else 
-				logger.log(LogStatus.FAIL, "request number not present in approvers inbox");	
+				else
+					logger.log(LogStatus.FAIL, "Inbox not loaded");
 				
 			} catch (Exception e) {
 				String nameofCurrMethod = new Throwable().getStackTrace()[0].getMethodName();
@@ -6672,8 +6678,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 				}
 				
-				Utility.handleAnnouncementPopup();
-
+				
 				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) {
 					System.out.println("Access Request Page Loaded Successfully");
 					logger.log(LogStatus.PASS, "Access Request Page Loaded Successfully");
@@ -6700,7 +6705,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.verifyElementPresent(".//*[contains(@data-qtip,'"+location+"') and contains(text(),'"+location+"')]", "Searched Location by Location Name", false);
 						
 					ByAttribute.click("xpath", ".//*[contains(@data-qtip,'"+location+"') and contains(text(),'"+location+"')]", "Click Location: "+location);
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 					
 					logger.log(LogStatus.INFO, "Search the user to be modified");
 					WebElement identity = driver.findElement(By.xpath(".//*[contains(@class,'x-placeholder-label') and text()='Search Identity or User']"));
