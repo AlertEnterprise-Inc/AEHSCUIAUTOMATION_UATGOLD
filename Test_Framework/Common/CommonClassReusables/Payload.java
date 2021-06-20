@@ -28,6 +28,26 @@ public class Payload {
 		String identityPayload="";
 		String identitySystemPayload="";
 		try {
+			
+			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+			Date currentDate = new Date();
+			System.out.println(dateFormat.format(currentDate));
+
+			// convert date to calendar
+			Calendar c = Calendar.getInstance();
+			c.setTime(currentDate);
+
+			// convert calendar to date
+			Date activeDate = c.getTime();
+			String validFrom = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(activeDate);
+			
+			// manipulate date
+			c.add(Calendar.MONTH, 2);
+
+			// convert calendar to date
+			Date currentDatePlusOne = c.getTime();
+			String validTo = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(currentDatePlusOne);
+			
 			ArrayList<String> identityHeaders = new ArrayList<String>();
 			String h1 ="firstName";
 			String h2 ="lastName";
@@ -44,7 +64,8 @@ public class Payload {
 			identityHeaders.add(h2);
 			identityHeaders.add(h3);
 			identityHeaders.add(h4);
-			identityHeaders.add(h5);
+			identityHeaders.add(h5)
+;
 			identityHeaders.add(h6);
 			identityHeaders.add(h7);
 			identityHeaders.add(h8);
@@ -56,8 +77,8 @@ public class Payload {
 			 map.put("lastName", lastName);
 			 map.put("workerType", workerType);
 			 map.put("masterIdentityId", firstName+"."+lastName);
-			 map.put("validFrom", "");
-			 map.put("validTo", "");
+			 map.put("validFrom", validFrom);
+			 map.put("validTo", validTo);
 			 map.put("email", email);
 			 map.put("city", city);
 			 map.put("gbId", ""+Utility.getRandomNumber(2));
@@ -69,9 +90,9 @@ public class Payload {
 			String payloadI1="";
 			for(int i=0;i<identityHeaders.size();i++) {
 				if(identityHeaders.get(i).equalsIgnoreCase("validFrom")) {
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-					LocalDateTime now = LocalDateTime.now();
-					String validFrom = dtf.format(now);
+//					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//					LocalDateTime now = LocalDateTime.now();
+//					validFrom = dtf.format(now);
 					/*Calendar c = Calendar.getInstance();
 					DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 					Date date = new Date();
@@ -87,9 +108,9 @@ public class Payload {
 					}
 				}
 				else if(identityHeaders.get(i).equalsIgnoreCase("validTo")) {
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-					LocalDateTime now = LocalDateTime.now();
-					String validTo = dtf.format(now);
+//					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//					LocalDateTime now = LocalDateTime.now();
+//					validTo = dtf.format(now);
 					/*Calendar c = Calendar.getInstance();
 					DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 					Date date = new Date();
@@ -136,9 +157,9 @@ public class Payload {
 			for(int i=0;i<identitySystemHeaders.size();i++) {
 				
 				if(identitySystemHeaders.get(i).equalsIgnoreCase("validFrom")) {
-					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-					LocalDateTime now = LocalDateTime.now();
-					String validFrom = dtf.format(now);
+//					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//					LocalDateTime now = LocalDateTime.now();
+//					validFrom = dtf.format(now);
 					/*Calendar c = Calendar.getInstance();
 					DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 					Date date = new Date();

@@ -1063,6 +1063,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 
 				logger.log(LogStatus.PASS, "identity created");	
 				
+				/**create new asset **/
+				HashMap<String, Comparable> testData = Utility.getDataFromDatasource(scriptName);
+				AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+				searchIdentity(firstName+"."+lastName);
+				
 				ByAttribute.click("xpath", IdentityObjects.idmManageIdentityAssetsTabBtn, "********Click on Assets Tab*********** ");
 				Utility.pause(2);
 				if (Utility.checkIfStringIsNotNull(AGlobalComponents.assetCode)){
@@ -1708,7 +1713,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					}
 					   
 					//Number of Days to add
-					c.add(Calendar.DAY_OF_MONTH, 365);  
+					c.add(Calendar.DAY_OF_MONTH, 370);  
 					//Date after adding the days to the given date
 					validTo = dateFormat.format(c.getTime());  
 					//Displaying the new Date after addition of Days
@@ -1729,9 +1734,11 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				ByAttribute.setText("xpath", IdentityObjects.idmManageIdentityProfileInfoDepartmentTxt, "Sales", "Enter Department");
 				Utility.pause(1);
 				
-				ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
+				if(driver.findElements(By.xpath(IdentityObjects.collapseBasicInfoSection)).size()>0)
+					ByAttribute.click("xpath", IdentityObjects.collapseBasicInfoSection, "collapse Basic Information Section");
 				Utility.pause(1);
-				ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
+				if(driver.findElements(By.xpath(IdentityObjects.collapseContactInfoSection)).size()>0)
+					ByAttribute.click("xpath", IdentityObjects.collapseContactInfoSection, "collapse Contact Information Section");
 				Utility.pause(1);
 				ByAttribute.clearSetText("xpath", IdentityObjects.idmProfileUserIdTxt, AGlobalComponents.userId, "Enter user id");
 				Utility.pause(1);
@@ -1741,11 +1748,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath","//div[contains(@id,'-listWrap')]//*[ text()='"+position+"']", "Select Position");
 					Utility.pause(1);
 				}
-				ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
+				if(driver.findElements(By.xpath(IdentityObjects.collapseOrganisationInfoSection)).size()>0)
+					ByAttribute.click("xpath", IdentityObjects.collapseOrganisationInfoSection, "collapse Organisation Information Section");
 				Utility.pause(1);
-//				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
-//				Utility.pause(2);
-//				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
+				ByAttribute.setText("xpath", IdentityObjects.validFromLnk, validFrom, "Enter valid From");
+				Utility.pause(2);
+				ByAttribute.setText("xpath", IdentityObjects.validToLnk, validTo, "Enter valid To");
 				
 			}
 			catch(Exception e)
@@ -1960,14 +1968,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				logger.log(LogStatus.INFO,"**************assign asset to the user**************************");		
 								
 				String addRecordsIcon = "(//a[normalize-space(text())='Click here to Add'])";
-				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+				ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new asset");
 				Utility.pause(2);
 				for (int i=0;i<4;i++){
 					if(driver.findElements(By.xpath("//span[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Reset']//ancestor::tr//preceding-sibling::tr//*[text()='Assign Asset']")).size()>0){
 						break;
 					}
 					else{
-						ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new access");
+						ByAttribute.click("xpath", addRecordsIcon, "click on add icon to insert new asset");
 						Utility.pause(2);
 					}
 				}
@@ -1980,19 +1988,19 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 //				Date currentDate = new Date();
 //		        System.out.println(dateFormat.format(currentDate));
 //
-//		        // convert date to calendar
+////		        // convert date to calendar
 //		        Calendar c = Calendar.getInstance();
 //		        c.setTime(currentDate);
 //
-//		        // manipulate date
-//		        c.add(Calendar.MONTH, 1);
+////		        // manipulate date
+//		        c.add(Calendar.DAY_OF_MONTH, 1);
 //		        
-//		        // convert calendar to date
+////		        // convert calendar to date
 //		        Date currentDatePlusOne = c.getTime();
-//		        AGlobalComponents.validToDate = currentDatePlusOne;
-//		        String validTo = new SimpleDateFormat("d/M/yy h:mm a").format(currentDatePlusOne);
-//				
-//		        ByAttribute.clearSetText("xpath", IdentityObjects.identityAssignAssetValidToDate, validTo, "set the valid to date after one month");
+////		        AGlobalComponents.validToDate = currentDatePlusOne;
+//		        String validFrom = new SimpleDateFormat("dd.MM.yy h:mm a").format(currentDatePlusOne);
+//		     			
+//		        ByAttribute.clearSetText("xpath", IdentityObjects.identityAssignAssetValidFromDate, validFrom, "set the valid from date ");
 //				Thread.sleep(1000);
 				
 				if(AGlobalComponents.tempWorkerOnboarding){
@@ -4068,7 +4076,7 @@ private static void validateDataInStagingTable(String firstName,String lastName,
 			logger.log(LogStatus.FAIL, "Failed to create user in HR Db");
 			return false;		
 		}
-	}	
+	}		
 	
 	public static boolean changeEmpJobTitleThroughHRDB(String userId,String jobTitle) throws ClassNotFoundException, SQLException {
 		
@@ -4089,7 +4097,7 @@ private static void validateDataInStagingTable(String firstName,String lastName,
 			return true;
 		}
 		else {
-			logger.log(LogStatus.FAIL, "Failed to change job title of user in HR Db");
+			logger.log(LogStatus.FAIL, "Failed to change Employement Status Terminate of user in HR Db");
 			return false;		
 		}
 	}
@@ -4101,7 +4109,57 @@ private static void validateDataInStagingTable(String firstName,String lastName,
 			return true;
 		}
 		else {
-			logger.log(LogStatus.FAIL, "Failed to change job title of user in HR Db");
+			logger.log(LogStatus.FAIL, "Failed to change Employee Type of user in HR Db");
+			return false;		
+		}
+	
+	}
+	
+	public static boolean changeLastNameThroughHRDB(String userId, String lastNameModified) throws ClassNotFoundException, SQLException {
+	
+		if(DBValidations.updateLastNameInHrdb(userId,lastNameModified)) {
+			AGlobalComponents.userId=userId;
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change lastName of user in HR Db");
+			return false;		
+		}
+	}
+
+	public static boolean changeLocationThroughHRDB(String userId, String locationName) throws ClassNotFoundException {
+
+		if(DBValidations.changeLocationInHrDb(userId,locationName)) {
+			AGlobalComponents.userId=userId;
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change location of user in HR Db");
+			return false;		
+		}
+	
+	}
+
+	public static boolean empRehireThroughHRDB(String userId) throws ClassNotFoundException {
+		
+		if(DBValidations.rehireUserInHrdb(userId)) {
+			AGlobalComponents.userId=userId;
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change Employement Status rehire of user in HR Db");
+			return false;		
+		}
+	}
+
+	public static boolean empLOAThroughHRDB(String userId) throws ClassNotFoundException {
+
+		if(DBValidations.lOAForUserInHrdb(userId)) {
+			AGlobalComponents.userId=userId;
+			return true;
+		}
+		else {
+			logger.log(LogStatus.FAIL, "Failed to change Employement Status LOA of user in HR Db");
 			return false;		
 		}
 	

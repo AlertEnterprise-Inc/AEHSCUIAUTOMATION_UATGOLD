@@ -593,7 +593,7 @@ public class DBValidations extends BrowserSelection{
 
 		int noOfRecordsUpdated=-1;
 		String query="insert into autouathsc.hr_data(user_id,fullname,firstname,lastname,identitytype,managerid,jobtitle,paystatus,validfrom,validto,worklocation,country,created_date)" + 
-				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','Hire','"+validFrom+"','"+validTo+"','218 2nd Ave S, Nashville','United States of America','"+created_date+"')";
+				"values('"+userId+"','"+name+"','"+firstName+"','"+lastName+"','"+identityType+"','"+managerId+"','"+jobTitle+"','NewHire','"+validFrom+"','"+validTo+"','101 E Kennedy Blvd, USA','United States of America','"+created_date+"')";
 				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
 		if(noOfRecordsUpdated>0) {		
 			System.out.println(noOfRecordsUpdated+" rows affected");
@@ -818,5 +818,137 @@ public class DBValidations extends BrowserSelection{
 			System.out.println("Unable to fetch action");
 		}
 		return action;	
+	}
+	
+	public static boolean updateLastNameInHrdb(String userId, String lastNameModified) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autouathsc.hr_data set lastname ='"+lastNameModified+"' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	}
+
+	public static String getAccessRequestOfEmployeeModificationFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autouathsc.Access_request where type='AE-EmployeeModification' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
+
+	public static boolean changeLocationInHrDb(String userId, String locationName) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autouathsc.hr_data set worklocation ='"+locationName+"' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	}
+
+	public static String getAccessRequestOfEmployeeTypeConversionFromDB(String userId) throws ClassNotFoundException {
+		
+		String query="select ext_id from autouathsc.Access_request where type='AE-EmployementTypeConversion' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	
+	}
+
+	public static String getAccessRequestOfEmployeeTransferFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autouathsc.Access_request where type='AE-EmployeeTransfer' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
+
+	public static boolean rehireUserInHrdb(String userId) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autouathsc.hr_data set paystatus = 'ReHire' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
+	}
+
+	public static String getAccessRequestOfEmployeeRehireFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autouathsc.Access_request where type='AE-EmployeeRehire' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	
+	}
+
+	public static String getAccessRequestOfLeaveOfAbsenceFromDB() throws ClassNotFoundException {
+
+		String query="select ext_id from autouathsc.Access_request where type='AE-EmployeeLOA' order by 1 desc fetch first row only";
+		ArrayList<ArrayList<String>> rs = Utility.objectToStringConversion(MsSql.getResultsFromPostgreSQLDatabase(query));
+		String requestNo =rs.get(0).get(0);
+		if(requestNo!=null) {
+			System.out.println("RequestNo: "+requestNo);
+		}
+		else {
+			System.out.println("Unable to fetch RequestNo");
+		}
+		return requestNo;	
+	}
+
+	public static boolean lOAForUserInHrdb(String userId) throws ClassNotFoundException {
+
+		int noOfRecordsUpdated=-1;
+		String query="update autouathsc.hr_data set paystatus = 'LOA' where user_id='"+userId+"'";
+				noOfRecordsUpdated = MsSql.setResultsToPostgreSQLDatabase(query);
+		if(noOfRecordsUpdated>0) {		
+			System.out.println(noOfRecordsUpdated+" rows affected");
+			return true;
+		}
+		else {
+			System.out.println("failed to update user in HR DB");
+			return false;
+		}
 	}
 }

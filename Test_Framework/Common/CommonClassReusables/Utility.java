@@ -2092,4 +2092,15 @@ public static int getColumnNumberOfHeader(String badgesDataFile, String columnHe
 	return count;
 }
 
+public static boolean waitTillInboxLoad() {
+	boolean inboxLoadedFlag=false;
+	for (int i=0;i<10 & (!inboxLoadedFlag);i++){
+		if ((driver.findElements(By.xpath("//*[text()='No message selected!']")).size()>0))
+			Utility.pause(5);
+		else
+			inboxLoadedFlag=true;
+	}	
+	return inboxLoadedFlag;
+}
+
 }

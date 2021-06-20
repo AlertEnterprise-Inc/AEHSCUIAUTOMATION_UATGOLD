@@ -20,33 +20,35 @@ public class ApiMethods extends BrowserSelection{
 	
 	
 public static boolean generateAccessToken() {
-		
-		RestAssured.baseURI=AGlobalComponents.baseURI;
-		String requestBody=Payload.accessTokenJson("admin", "Alert@783");
-		if(requestBody!=null) {
-			logger.log(LogStatus.PASS, "Generate access token json: "+requestBody);
-			Response response=given().log().all().queryParam("grant_type", "password").header("Content-Type","application/Json")
-					.body(requestBody).when().post("/api/auth/token").then().log().all().extract().response();
-			System.out.println("Response "+response);
-			String responseBody=response.getBody().asString();
-			int statusCode=response.getStatusCode();
-			if(statusCode==200) {
-				JsonPath js= new JsonPath(responseBody);
-				String accessToken=js.getString("access_token");
-				logger.log(LogStatus.PASS, "access-token: "+accessToken);
-				AGlobalComponents.access_token=accessToken;
-				return true;
-			}
-			else {
-				logger.log(LogStatus.FAIL, "status code is: "+statusCode);
-				logger.log(LogStatus.FAIL, "Error is: "+responseBody);
-				return false;
-			}	
-		}
-		else {
-			logger.log(LogStatus.FAIL, "Unable to get generate access token json ");
-			return false;
-		}
+	
+		AGlobalComponents.access_token="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VyX25hbWUiOiJhZG1pbiIsImlzcyI6IlRoZVBsYXlBcHAiLCJzYXZlTG9nVG9EQiI6ZmFsc2UsImxhc3RfbmFtZSI6InVzZXIiLCJhY2Nlc3NJZHMiOlszMDg5MjQxMzEwODYyNjkxLDMwOTA2MDE3MzQ5MzgwODFdLCJpZCI6ImFkbWluIiwibG9jYWxlIjoiZW4iLCJleHAiOjE5MzM3MzgxODEsImZpcnN0X25hbWUiOiJhZG1pbiIsInRlbmFudCI6ImF1dG91YXRoc2MifQ.ScIvjjUOHNX1fBHRA9V7SMqS4eIwu8vw-vM8f6SabwE";
+		return true;
+//		RestAssured.baseURI=AGlobalComponents.baseURI;
+//		String requestBody=Payload.accessTokenJson("admin", "Alert@783");
+//		if(requestBody!=null) {
+//			logger.log(LogStatus.PASS, "Generate access token json: "+requestBody);
+//			Response response=given().log().all().queryParam("grant_type", "password").header("Content-Type","application/Json")
+//					.body(requestBody).when().post("/api/auth/token").then().log().all().extract().response();
+//			System.out.println("Response "+response);
+//			String responseBody=response.getBody().asString();
+//			int statusCode=response.getStatusCode();
+//			if(statusCode==200) {
+//				JsonPath js= new JsonPath(responseBody);
+//				String accessToken=js.getString("access_token");
+//				logger.log(LogStatus.PASS, "access-token: "+accessToken);
+//				AGlobalComponents.access_token=accessToken;
+//				return true;
+//			}
+//			else {
+//				logger.log(LogStatus.FAIL, "status code is: "+statusCode);
+//				logger.log(LogStatus.FAIL, "Error is: "+responseBody);
+//				return false;
+//			}	
+//		}
+//		else {
+//			logger.log(LogStatus.FAIL, "Unable to get generate access token json ");
+//			return false;
+//		}
 	}
 	public static boolean generateAccessToken(String username,String password) {
 		

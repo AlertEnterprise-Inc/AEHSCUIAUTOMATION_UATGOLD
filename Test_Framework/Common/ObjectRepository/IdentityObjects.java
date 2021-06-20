@@ -14,6 +14,7 @@ public interface IdentityObjects {
 	String idmManageIdentitiesLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identities']";
 	String idmManageIdentityLnk =".//*[@class='x-btn-inner x-btn-inner-aeThirdMenuButton-small' and text()='Manage Identity']";
 	String idmManageIdentitySearchFieldTxt =".//input[@name='searchField']";
+	String idmManageIdentityLocationTabBtn = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Location']";
 	String idmManageIdentityIsUnlockPermBadgeChk =".//div[contains(@id,'header-title-textEl') and text()='Do you want to return badge?']//ancestor::div[@class='x-window x-layer x-window-default x-closable x-window-closable x-window-default-closable x-border-box']//input[contains(@id,'inputEl') and @type='checkbox']";
 	String idmManageIdentityAccessesTabBtn =".//*[@data-ref='btnInnerEl' and text()='Accesses']";
 	String idmManageIdentityAssetsAddAssetConfirmBtn =".//span[@class='x-btn-inner x-btn-inner-aebtnPrimary-medium' and text()='Confirm']";
@@ -112,7 +113,7 @@ public interface IdentityObjects {
 	String deactivateActionBtn = "//div[@class='x-action-col-icon x-action-col-0  aegrid-inactive2']";
 	String badgeTabLnk = ".//*[@class='x-tab-inner x-tab-inner-default' and text()='Badges']";
 	String identityAssignAssetValidToDate = "//span[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Reset']//ancestor::tr//preceding-sibling::tr//*[contains(@id,'baseDateTime') and @placeholder='Select Valid To']";
-	
+	String identityAssignAssetValidFromDate = "//span[@class='x-btn-inner x-btn-inner-aebtnSecondary-medium' and text()='Reset']//ancestor::tr//preceding-sibling::tr//*[contains(@id,'baseDateTime') and @placeholder='Select Valid From']";
 	
 	
 	String idmCardholdersAssetsTabBtn =".//*[@class='x-btn-inner x-btn-inner-aeTopMenuButton-small' and text()='Cardholders & Assets']";
