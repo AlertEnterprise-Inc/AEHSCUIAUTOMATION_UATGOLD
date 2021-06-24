@@ -655,7 +655,7 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 						
 					switch (heading.toLowerCase()) {
 		            case "status":
-		            	AGlobalComponents.statusIndex = j+1;
+		            	AGlobalComponents.statusIndex = j+2;
 		            	j++;
 		            	break;
 		            case "message":
@@ -667,14 +667,14 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 		            	j++;
 		            	break;
 		            case "last active":
-		            	AGlobalComponents.activeIndex = j+2;
+		            	AGlobalComponents.activeIndex = j+3;
 		            	j++;
 		            	break;
 		            case "":
 		            	
 		            	break;
 		            case "error":
-		            	AGlobalComponents.errorIndex = j+1;
+		            	AGlobalComponents.errorIndex = j+2;
 		                break;
 		            default: 
 		            	System.out.println("Need to skip this header : "+ heading);
@@ -2153,12 +2153,12 @@ public class FB_Automation_CommonMethods extends BrowserSelection{
 				 * Select the view for role recon data
 				 */
 
-//				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
-//				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
-//				settingsIcon.click();
-//				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
-//
-//				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
+				logger.log(LogStatus.INFO,"Selecting the appropriate view to check user recon data");
+				WebElement settingsIcon = driver.findElement(By.xpath(ReconObjects.settingsIcon));
+				settingsIcon.click();
+				ByAttribute.mouseHover("xpath", ReconObjects.selectViewLnk, "select the view for user recon data");
+
+				ByAttribute.click("xpath",ReconObjects.userReconViewLnk, "click on user recon view");
 				Utility.pause(10);
 				
 				if(!AGlobalComponents.userId.isEmpty()) {

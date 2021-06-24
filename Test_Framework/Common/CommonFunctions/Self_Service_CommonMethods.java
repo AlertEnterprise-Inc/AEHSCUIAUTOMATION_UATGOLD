@@ -5134,8 +5134,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				
 				if(Utility.compareStringValues(requestType, "Request Location Access")){
 				
-				  if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0)
+				  if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestHistoryBtn)).size()>0){
 					  ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryBtn, "Click on History button");
+					  Thread.sleep(2000);
+				  }
 				  else{
 					  ByAttribute.click("xpath", HomeObjects.homeInboxRequestMenuIconLnk, "Clickon menu");
 					  Utility.pause(1);
@@ -5879,7 +5881,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					ByAttribute.click("xpath",HomeObjects.homeAccessRequestCountryDdn , "Click to enter Country ");
 					ByAttribute.setText("xpath",HomeObjects.homeAccessRequestCountryDdn,"United States Of America" , "Enter Country");
 					Utility.pause(2);
-					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States of America')]" , "Select the country");
+					ByAttribute.click("xpath","//div[contains(@class,'x-boundlist-list-ct')]//li[contains(text(),'United States')]" , "Select the country");
 					Utility.pause(2);
 					
 					ByAttribute.click("xpath",HomeObjects.homeAccessRequestDepartmentDdn , "Click to enter department name ");
@@ -6155,6 +6157,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 			            robot.keyRelease(KeyEvent.VK_ENTER);
 						Utility.pause(10);
 						ByAttribute.click("xpath",HomeObjects.homeMyRequestsActualPhotoLnk, "Click on Actual Photo to crop");
+						Utility.pause(10);
 			            ByAttribute.click("xpath",HomeObjects.cropAndSaveBtn, "Click on Crop and Save button");
 		            	
 		        //    	WebElement imageElement = driver.findElement(By.xpath("//label[@class='x-component x-box-item x-component-activitySubtext' and text()='photo']//parent::div//*[@class='x-img x-box-item x-img-default']"));    
@@ -6383,12 +6386,10 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 							/*Giving badge to the user */
 							ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
-							Actions action = new Actions(driver);
-							WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Badge']"));
-							action.moveToElement(elementConnector).click();
-							action.sendKeys(AGlobalComponents.assetName);
-							action.build().perform();
-							Thread.sleep(10000);
+							Thread.sleep(2000);
+							
+							ByAttribute.clearSetText("xpath", SelfServiceObjects.selfServiceEnterAssetNameTxt, AGlobalComponents.assetName, "Enter Asset Name: "+AGlobalComponents.assetName);
+							Thread.sleep(4000);
 							ByAttribute.click("xpath", ".//span[@data-qtip='"+AGlobalComponents.assetName+"' and text()='"+AGlobalComponents.assetName+"']", "Click on Asset Option");
 							Thread.sleep(1000);
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestSystemListGrid, "Move Control");
@@ -6820,7 +6821,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 						ByAttribute.click("xpath", SelfServiceObjects.selfServiceSelectBadgeDdn, "Select Asset from list");
 						Thread.sleep(2000);
 						
-						WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Badge']"));
+						WebElement elementConnector=driver.findElement(By.xpath("//*[text()='Select Asset']"));
 						action.moveToElement(elementConnector).click();
 						action.sendKeys(AGlobalComponents.assetName);
 						action.build().perform();
@@ -7044,7 +7045,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					else
 						ByAttribute.click("xpath", HomeObjects.homeAccessRequestCreateNextBtn, "Click Next Button");
 					
-					Thread.sleep(1000);
+					Thread.sleep(6000);
 					if(driver.findElements(By.xpath(HomeObjects.homeAccessRequestSearchAccessTxt)).size() > 0)
 						{
 							System.out.println("Navigation to Access Page Successful");
@@ -7059,7 +7060,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 							ByAttribute.click("xpath", ".//h4[@data-qtip='"+access+"']", "Add Location");
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestReviewTab, "Click on Review Tab");
-							Utility.verifyElementPresent(".//tbody//td[2]/div[text()='"+access+"']", "Added Access: "+access, false);
+							Utility.verifyElementPresent(".//tbody//tr//td//*[text()='"+access+"']", "Added Access: "+access, false);
 							
 							ByAttribute.click("xpath", HomeObjects.homeAccessRequestAddLocationSubmitBtn, "Click Submit Button");
 							Thread.sleep(2000);
@@ -7223,7 +7224,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					
 					ByAttribute.click("xpath", HomeObjects.selectRequestType,"Enter the request type");
 					ByAttribute.setText("xpath", HomeObjects.selectRequestType,"Emergency Termination", "Enter the request type");
-					Thread.sleep(1000);
+					Thread.sleep(4000);
 					
 					Actions action = new Actions(driver);
 					action.sendKeys(Keys.TAB);
@@ -7270,6 +7271,60 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 				WebElement requestNo=null,latestRequestNumber=null;int index=0;
 				boolean reqFlag=true;	
 				String identityName = firstName +" "+ lastName,reqNo;
+				
+				if(requestType.equalsIgnoreCase("Employee Leave Of Absence")) {
+					
+					/*checking the history of request */
+					ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+					Utility.pause(1);
+					ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+					boolean flag=true;
+					for(int i=0;i<3 && flag;i++){
+						if(driver.findElements(By.xpath("//div[contains(text(),' removal successful for user ')]")).size()>0){
+							logger.log(LogStatus.PASS, "Removal successful");
+							flag=false;
+							Utility.verifyElementPresent("//div[contains(text(),' removal successful for user ')]", "Removal Successful Message", false);
+						}else if(driver.findElements(By.xpath("//div[contains(text(),' Skip Provisioning Successful ')][1]")).size()>0){
+							logger.log(LogStatus.PASS, "Provisioning successful");
+							flag=false;
+							Utility.verifyElementPresent("//div[contains(text(),' Skip Provisioning Successful ')][1]", "Provisioning message", false);
+						}
+						else if(driver.findElements(By.xpath("//div[contains(text(),' removal failed for user ')]")).size()>0){
+							Utility.verifyElementPresent("//div[contains(text(),' removal failed for user ')]", "Removal failed message", false);
+							break;
+						}
+						else{
+							ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
+							Utility.pause(20);
+							ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
+							Utility.pause(1);
+							ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
+						}							
+					}	
+					if(flag)
+						logger.log(LogStatus.FAIL, "Removal Unsuccessful");	
+					ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
+					
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestSystemListGrid, "SystemList Grid", true,false);
+					if((driver.findElements(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']")).size()>0)){
+						String uiSystemStatus1=DBValidations.getUiActionOfSystem(reqNum,system1ForEmpOnboarding); 
+						String uiSystemStatus2=DBValidations.getUiActionOfSystem(reqNum,system2ForEmpOnboarding);
+						if((Utility.compareStringValues(uiSystemStatus1, "LOCK")) && (Utility.compareStringValues(uiSystemStatus2, "LOCK")))
+							logger.log(LogStatus.PASS, "status of  systems :" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ ","+system2ForEmpOnboarding+ "is LOCKED ");
+						else
+							logger.log(LogStatus.FAIL, "Systems status is not LOCKED");			
+					}
+					
+					/*
+					 * checking for Asset status after offboarding request
+					 */
+					Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
+					String uiBadgeStatus=DBValidations.getUiActionOfAsset(reqNum,AGlobalComponents.assetName);
+					if(Utility.compareStringValues(uiBadgeStatus, "LOCK"))
+						logger.log(LogStatus.PASS, "status of  asset is DEACTIVATE ");
+					else
+						logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE"); 
+				}
 				
 				if(requestType.equalsIgnoreCase("Employee Offboarding")) {						
 					reqNum=DBValidations.getAccessRequestOfTerminateFromDB();
@@ -7347,59 +7402,7 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					else
 						logger.log(LogStatus.FAIL ,"Incorrect request  is expanded");
 					
-					if(requestType.equalsIgnoreCase("Employee Leave Of Absence")) {
-						
-						/*checking the history of request */
-						ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
-						Utility.pause(1);
-						ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
-						boolean flag=true;
-						for(int i=0;i<10 && flag;i++){
-							if(driver.findElements(By.xpath("//div[contains(text(),' removal successful for user ')]")).size()>0){
-								logger.log(LogStatus.PASS, "Removal successful");
-								flag=false;
-								Utility.verifyElementPresent("//div[contains(text(),' removal successful for user ')]", "Removal Successful Message", false);
-							}else if(driver.findElements(By.xpath("//div[contains(text(),' Skip Provisioning Successful ')]")).size()>0){
-								logger.log(LogStatus.PASS, "Provisioning successful");
-								flag=false;
-								Utility.verifyElementPresent("//div[contains(text(),' Skip Provisioning Successful ')]", "Provisioning message", false);
-							}
-							else if(driver.findElements(By.xpath("//div[contains(text(),' removal failed for user ')]")).size()>0){
-								Utility.verifyElementPresent("//div[contains(text(),' removal failed for user ')]", "Removal failed message", false);
-								break;
-							}
-							else{
-								ByAttribute.click("xpath", HomeObjects.homeAccessRequestHistoryPopUpCloseIcn, "close history window pop up ");
-								Utility.pause(20);
-								ByAttribute.click("xpath", "(//*[contains(@id,'button') and @class='x-btn-icon-el x-btn-icon-el-aetextlink-medium aegrid-menu '])[2]", "Clickon menu");
-								Utility.pause(1);
-								ByAttribute.click("xpath", "(//*[text()='History'])[2]", "Clickon History");
-							}							
-						}	
-						if(flag)
-							logger.log(LogStatus.FAIL, "Removal Unsuccessful");	
-						ByAttribute.click("xpath", HomeObjects.homeRequestInboxCloseHistoryWindowIcn, "close history window pop up ");
-						
-						Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestSystemListGrid, "SystemList Grid", true,false);
-						if((driver.findElements(By.xpath("//*[text()='"+system1ForEmpOnboarding+"']")).size()>0) && (driver.findElements(By.xpath("//*[text()='"+system2ForEmpOnboarding+"']")).size()>0)){
-							String uiSystemStatus1=DBValidations.getUiActionOfSystem(reqNum,system1ForEmpOnboarding); 
-							String uiSystemStatus2=DBValidations.getUiActionOfSystem(reqNum,system2ForEmpOnboarding);
-							if((Utility.compareStringValues(uiSystemStatus1, "LOCK")) && (Utility.compareStringValues(uiSystemStatus2, "LOCK")))
-								logger.log(LogStatus.PASS, "status of  systems :" +system1ForEmpOnboarding +","+system2ForEmpOnboarding+ ","+system2ForEmpOnboarding+ "is LOCKED ");
-							else
-								logger.log(LogStatus.FAIL, "Systems status is not LOCKED");			
-						}
-						
-						/*
-						 * checking for Asset status after offboarding request
-						 */
-						Utility.verifyElementPresentByScrollView(HomeObjects.homeAccessRequestBadgeListGrid, "Badge List Grid", true,false);
-						String uiBadgeStatus=DBValidations.getUiActionOfAsset(reqNum,AGlobalComponents.assetName);
-						if(Utility.compareStringValues(uiBadgeStatus, "LOCK"))
-							logger.log(LogStatus.PASS, "status of  asset is DEACTIVATE ");
-						else
-							logger.log(LogStatus.FAIL, "status of  asset is NOT DEACTIVATE"); 
-					}
+				
 					
 					if(requestType.equalsIgnoreCase("Employee Offboarding")) {
 		
@@ -7696,8 +7699,6 @@ public class Self_Service_CommonMethods extends BrowserSelection{
 					Utility.pause(5);
 				}
 
-				Utility.handleAnnouncementPopup();
-				
 				if (driver.findElements(By.xpath(HomeObjects.homeAccessRequestCreateBtn)).size() > 0) {
 					System.out.println("Access Request Page Loaded Successfully");
 					logger.log(LogStatus.PASS, "Access Request Page Loaded Successfully");

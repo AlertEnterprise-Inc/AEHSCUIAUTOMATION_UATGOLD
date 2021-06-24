@@ -14,7 +14,7 @@ public interface SelfServiceObjects
 	String selfServiceCardRequestReasonTxt = ".//input[@data-ref='inputEl' and @placeholder='Enter card request reason']";
 	
 	/** NEW BADGE APPROVAL OBJECTS**/
-	String selfServiceSelectBadgeDdn = ".//td/div[contains(@class,'x-grid-cell-inner') and text()='Select Badge']";
+	String selfServiceSelectBadgeDdn = ".//td/div[contains(@class,'x-grid-cell-inner') and text()='Select Asset']";
 	String selfServiceSaveBtn = ".//*[@class='x-btn-icon-el x-btn-icon-el-aebtnSmallPrimary-small aegrid-save ']//ancestor::a[@role='button']";
 	String selfServicePrintBtn = ".//div[@role='button' and @data-qtip='Print']";
 	String selfServiceBadgeTemplateTxt = ".//input[@role='combobox' and @name='template']";

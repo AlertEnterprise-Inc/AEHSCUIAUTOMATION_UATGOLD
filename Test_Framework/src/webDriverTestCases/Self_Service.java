@@ -1173,7 +1173,7 @@ public void Self_Service_Automation_TC017() throws Throwable
 	if(loginStatus){
 		
 		/**create new asset **/
-		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//	AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 		
 		/**create identity **/
 		FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
@@ -1278,7 +1278,7 @@ public void Self_Service_Automation_TC018_1() throws Throwable
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 			/**create identity **/
 		
@@ -1414,7 +1414,7 @@ public void Self_Service_Automation_TC018_2() throws Throwable
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 			/**create identity **/
 		
@@ -1515,7 +1515,7 @@ public void Self_Service_Automation_TC018_3() throws Throwable
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 			/**create identity **/
 		
@@ -1614,7 +1614,7 @@ public void Self_Service_Automation_TC018_4() throws Throwable
 			AGlobalComponents.userId=firstName+"."+lastName;
 			
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 				
 			/**create identity **/
 		
@@ -1664,7 +1664,6 @@ public void Self_Service_Automation_TC018_4() throws Throwable
  		logger.log(LogStatus.FAIL, "Unable to Login----> Plz Check Application");
  	}	
 }
-
 
 /*
  * TC019 : 5.0 Use cases . Manager Login Scenarios :Temp Worker Onboarding
@@ -1756,12 +1755,7 @@ public void Self_Service_Automation_TC019() throws Throwable
  		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "user_id", AGlobalComponents.userId);
 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "badge_name",AGlobalComponents.assetName);
 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "asset_code", AGlobalComponents.assetCode);
- 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "first_name", firstName);
- 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "last_name", lastName);
- 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "full_name", firstName+" "+lastName);
- 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "user_id", AGlobalComponents.userId);
-	 	Utility.updateDataInDatasource("Self_Service_Automation_TC022", "badge_name",AGlobalComponents.assetName);
-	 	Utility.updateDataInDatasource("Self_Service_Automation_TC022", "asset_code", AGlobalComponents.assetCode);
+ 		
  		
  		
  		/** Logout from Application **/
@@ -1988,11 +1982,7 @@ public void Self_Service_Automation_TC021() throws Throwable
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "badge_name",AGlobalComponents.assetName);
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC021", "asset_code", AGlobalComponents.assetCode);
 	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "first_name", firstName);
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "last_name", lastName);
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "full_name", firstName+" "+lastName);
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "user_id", AGlobalComponents.userId);
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "badge_name",AGlobalComponents.assetName);
-	 	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "asset_code", AGlobalComponents.assetCode);
+	 	 		
 	 	 		
 	 		}
 		
@@ -2040,6 +2030,12 @@ public void Self_Service_Automation_TC021() throws Throwable
 	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "last_name", "");
 	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "full_name", "");
 	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC021", "user_id", "");
+	 	 	Utility.updateDataInDatasource("Self_Service_Automation_TC022", "first_name", firstName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "last_name", lastName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "full_name", firstName+" "+lastName);
+	 		Utility.updateDataInDatasource("Self_Service_Automation_TC022", "user_id", AGlobalComponents.userId);
+		 	Utility.updateDataInDatasource("Self_Service_Automation_TC022", "badge_name",AGlobalComponents.assetName);
+		 	Utility.updateDataInDatasource("Self_Service_Automation_TC022", "asset_code", AGlobalComponents.assetCode);
  	 		
  			
  			
@@ -2154,6 +2150,7 @@ public void Self_Service_Automation_TC022() throws Throwable
  	}	
 }
 
+
 /*
  * TC023 :  Physical Access - Request Location access for Others
 */
@@ -2186,7 +2183,7 @@ public void Self_Service_Automation_TC023() throws Throwable
 			lastName ="Reqlocation";
 			
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+		//	AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 			
 			/**create identity **/
 			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
@@ -2287,7 +2284,7 @@ public void Self_Service_Automation_TC024() throws Throwable
 			firstName ="AutoTest"+Utility.getRandomString(4); lastName ="EmergencyTermination";
 			AGlobalComponents.userId=firstName+"."+lastName;
 			/**create new asset **/
-			AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
+	//		AGlobalComponents.assetName = Self_Service_CommonMethods.createNewAsset((String) testData.get("badge_type"), (String) testData.get("badge_subtype"), (String) testData.get("badge_system"));
 		
 			FB_Automation_CommonMethods.createIdentity(firstName,lastName,scriptName);
 			Utility.updateDataInDatasource("Self_Service_Automation_TC024", "first_name", firstName);

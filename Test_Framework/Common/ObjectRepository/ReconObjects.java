@@ -8,17 +8,12 @@ public interface ReconObjects {
 	
 		String announcementLnk = "//*[text()='Announcement']/parent::div/following-sibling::div";
 		String reconTabLnk ="//span[contains(@class,'x-btn-inner-aeTopMenuButton-small') and contains(text(),'Recon')]";
-		
 		String reconSetUpLnk = "//span[contains(text(),'Recon setup')]";
-		
 		String reconMonitorLnk = "//span[contains(text(),'Recon Monitor')]";
-
 		String reconRemediationLnk = "//span[contains(text(),'Recon Remediation')]";
-		
 		String trialButtonLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-trial ')]";
-		
 		String endDateForTrialJob = "//input[contains(@id,'baseDateTime')]";
-		                             
+                     
 		String addReconRowLnk = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[1]";
 		
 		String filterIconLnk = "//span[contains(@class,'x-btn-icon-el-aetextlink-medium aegrid-filter ')]";
@@ -79,10 +74,8 @@ public interface ReconObjects {
 		
 		String fetchEntity="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[11]";
 		
-		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[15]";
-		
+		String elementScheduler = "(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[14]";
 		String sequence="(//div[contains(@class,'x-action-col-0  aegrid-rowAdd')])[2]//ancestor::tr//td[4]";
-		
 		String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
 		
 		//String confirmButton = "//span[contains(text(),'Confirm') and contains(@class,'x-btn-inner x-btn-inner-aebtnPrimary-medium')]";
